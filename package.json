@@ -1,0 +1,22 @@
+{
+	"name": "@finance/monorepo",
+	"version": "1.0.0",
+	"private": true,
+	"license": "MIT",
+	"workspaces": [
+		"apps/*",
+		"packages/application",
+		"packages/domain",
+		"packages/infrastructure/*",
+		"packages/libs/*"
+	],
+	"scripts": {
+		"build": "turbo run build",
+		"dev": "turbo run dev --parallel",
+		"lint": "turbo run lint",
+		"test": "turbo run test"
+	},
+	"dependencies": {
+		"turbo": "^1.6.2"
+	}
+}

@@ -1,0 +1,28 @@
+{
+	"name": "@finance/postgres",
+	"version": "1.0.0",
+	"private": true,
+	"license": "MIT",
+	"scripts": {
+		"build": "rimraf ./build/ && tsc",
+		"dev": "tsc --watch",
+		"lint": "",
+		"test": "",
+		"typeorm": "typeorm-ts-node-commonjs"
+	},
+	"dependencies": {
+		"@finance/libs-tsconfig": "*",
+		"@finance/domain": "*",
+		"reflect-metadata": "^0.1.13",
+		"typeorm": "0.3.10",
+		"uuidv4": "^6.2.13",
+		"zod": "^3.19.1",
+		"pg": "^8.4.0"
+	},
+	"devDependencies": {
+		"rimraf": "^3.0.2",
+		"ts-node": "10.7.0",
+		"@types/node": "^16.11.10",
+		"typescript": "4.5.2"
+	}
+}
