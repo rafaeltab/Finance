@@ -1,0 +1,23 @@
+{
+	"name": "@finance/modules",
+	"version": "1.0.0",
+	"private": true,
+	"license": "MIT",
+	"files": [
+		"./build/*"
+	],
+	"types": "./build/index.d.ts",
+	"scripts": {
+		"build": "rimraf ./build/ && tsc",
+		"dev": "tsc --watch"
+	},
+	"dependencies": {
+		"@finance/libs-tsconfig": "*",
+		"@types/lodash": "^4.14.186",
+		"lodash": "^4.17.21",
+		"tsyringe": "^4.7.0"
+	},
+	"devDependencies": {
+		"rimraf": "^3.0.2"
+	}
+}

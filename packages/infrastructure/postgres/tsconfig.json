@@ -1,11 +1,21 @@
 {
-   "compilerOptions": {
-      "target": "es2021",
-      "module": "commonjs",
-      "moduleResolution": "node",
-      "outDir": "./build",
-      "emitDecoratorMetadata": true,
-      "experimentalDecorators": true,
-      "sourceMap": true
-   }
+	"compilerOptions": {
+		"target": "es2021",
+		"module": "commonjs",
+		"moduleResolution": "node",
+		"outDir": "./build",
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"resolveJsonModule": true,
+		"sourceMap": true,
+		"baseUrl": "./",
+		"paths": {
+			"#src/*": [
+				"src/*"
+			],
+			"#tests/*": [
+				"tests/*"
+			]
+		}
+	}
 }

@@ -1,0 +1,32 @@
+{
+	"folders": [
+		{
+			"name": "Root",
+			"path": "."
+		},
+		{
+			"name": "[Package] Domain",
+			"path": "packages/domain"
+		},
+		{
+			"name": "[App] Web",
+			"path": "apps/web"
+		},
+		{
+			"name": "[Package] Infra",
+			"path": "packages/infrastructure/infra"
+		},
+		{
+			"name": "[Package] Postgres",
+			"path": "packages/infrastructure/postgres"
+		}
+	],
+	"settings": {
+		"jest.disabledWorkspaceFolders": [
+			"Root",
+			"[Package] Domain",
+			"[App] Web",
+			"[Package] Infra"
+		]
+	},
+}
