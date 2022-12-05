@@ -1,4 +1,3 @@
-import "reflect-metadata";
 import { unitOfWork, UnitOfWork } from "#src/unitOfWork/unitOfWork";
 import { EntityKey, IAssetGroupRepository, PaginatedBase, AssetGroup } from "@finance/domain";
 import { inject } from "tsyringe";

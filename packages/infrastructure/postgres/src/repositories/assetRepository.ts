@@ -1,4 +1,3 @@
-import "reflect-metadata";
 import { unitOfWork, UnitOfWork } from "#src/unitOfWork/unitOfWork";
 import { EntityKey, IAssetRepository, PaginatedBase } from "@finance/domain";
 import Asset from "@finance/domain/build/aggregates/assetAggregate";

@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import { UserRepository } from "#src/repositories/userRepository";
 import { UnitOfWork } from "#src/unitOfWork/unitOfWork";
 import { arrayIdentityEquals, identityEquals } from "../test-utils/arrayUtils";
