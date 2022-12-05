@@ -45,6 +45,7 @@ export const assetGroup = new AssetGroup({
 	uniqueId: v4(),
 	user: user
 });
+user.assetGroups = [assetGroup];
 
 export const asset = new Asset({
 	identity: "asset-1",
@@ -52,7 +53,8 @@ export const asset = new Asset({
 	uniqueId: v4(),
 	user: user,
 });
-assetGroup.assets = [asset];
+assetGroup.assets = [asset]; 
+user.assets = [asset];
 
 export const stockAsset = new StockAsset({
 	amount: 5,
