@@ -10,12 +10,8 @@ const BankAccount = bankAccountAggregate.default;
 
 export { 
 	User,
-	AssetGroup,
-	Asset,
-	Job,
-	BankAccount
+	AssetGroup
 }
-
 
 export const entities = [
 	Asset,

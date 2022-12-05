@@ -6,6 +6,7 @@ import { StockAsset, StockAssetMeta } from "./assetKinds/StockAsset";
 export default Asset;
 
 export {
+	Asset,
 	AssetValue,
 	RealEstateAsset,
 	StockAsset,
