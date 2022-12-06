@@ -27,14 +27,13 @@ beforeEach(async () => {
 describe("addJobToUser", () => {
 	test('addJobToUser should create an entity with the given parameters and link it to a user', async () => {
 		const data = {
-			identity: "test-job",
 			title: "Software Engineer",
 			monthlySalary: 2000
 		}
 
 		const job = await jobFactory.addJobToUser({
 			identity: testData.user.identity
-		}, data.identity, data.title, data.monthlySalary);
+		}, data.title, data.monthlySalary);
 
 		expect(job).not.toBeNull();
 		expect(job).not.toBeUndefined();
@@ -42,12 +41,11 @@ describe("addJobToUser", () => {
 		expect(job.uniqueId).not.toBeUndefined();
 		expect(job.uniqueId).not.toBeNull();
 
-		expect(job.identity).toBe(data.identity);
 		expect(job.title).toBe(data.title);
 		expect(job.activeIncome.monthlySalary).toBe(data.monthlySalary);
 
 		const res = await jobRepository.get({
-			identity: data.identity
+			identity: job.identity
 		});
 
 		expect(res).not.toBeNull();
@@ -56,7 +54,7 @@ describe("addJobToUser", () => {
 		expect(res.uniqueId).not.toBeUndefined();
 		expect(res.uniqueId).not.toBeNull();
 
-		expect(res.identity).toBe(data.identity);
+		expect(res.identity).toBe(job.identity);
 		expect(res.title).toBe(data.title);
 		expect(res.activeIncome.monthlySalary).toBe(data.monthlySalary);
 
@@ -64,7 +62,7 @@ describe("addJobToUser", () => {
 			uniqueId: testData.user.uniqueId
 		}, ["jobs"])
 
-		const userJob = user.jobs.find(x => x.identity === data.identity);
+		const userJob = user.jobs.find(x => x.identity === job.identity);
 
 		expect(userJob).not.toBeUndefined();
 		expect(userJob).not.toBeNull();

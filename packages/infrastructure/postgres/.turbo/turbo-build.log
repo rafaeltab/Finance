@@ -1,1 +1,5 @@
 $ rimraf ./build/ && tsc
+src/factories/jobFactory.ts(13,14): error TS2304: Cannot find name 'identity'.
+tests/factories/jobFactory.test.ts(37,33): error TS2554: Expected 3 arguments, but got 4.
+error Command failed with exit code 2.
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
