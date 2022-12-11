@@ -1,5 +1,5 @@
 import { EntityMeta } from "@finance/libs-types"
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm"
+import { Entity, Column, OneToMany } from "typeorm"
 import { EnitityBase } from "../bases/Entity"
 import { Asset } from "./assetAggregate/Asset"
 import { AssetGroup } from "./AssetGroup"
@@ -15,7 +15,7 @@ export class User extends EnitityBase {
     lastName: string
 
     @Column()
-	age: number
+	dateOfBirth: Date
 	
 	@OneToMany(() => Asset, asset => asset.user)
 	assets: Asset[]
@@ -37,5 +37,5 @@ export class User extends EnitityBase {
 
 export const UserMeta: EntityMeta<User> = {
 	relations: ["assets", "assetGroups", "bankAccounts", "jobs"],
-	data: ["firstName", "lastName", "age", "uniqueId", "identity"]
+	data: ["firstName", "lastName", "dateOfBirth", "uniqueId", "identity"]
 }

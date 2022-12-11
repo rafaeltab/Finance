@@ -7,7 +7,7 @@ export class UserRepository implements IUserRepository {
 	constructor(@inject(unitOfWork) private _unitOfWork: UnitOfWork) { }
 
 	async getAll(limit: number, offset: number, fields?: (keyof User)[]): Promise<PaginatedBase<User>> {
-		fields = [...new Set([...(fields ?? []), "uniqueId", "identity", "firstName", "lastName", "age"])] as (keyof User)[];
+		fields = [...new Set([...(fields ?? []), "uniqueId", "identity", "firstName", "lastName", "dateOfBirth"])] as (keyof User)[];
 
 		const res = await this._unitOfWork.getQueryRunner().manager
 			.findAndCount(User, {
@@ -28,7 +28,7 @@ export class UserRepository implements IUserRepository {
 	}
 
 	async get(id: EntityKey, fields?: (keyof User)[]): Promise<User> {
-		fields = [...new Set([...(fields ?? []), "uniqueId", "identity", "firstName", "lastName", "age"])] as (keyof User)[];
+		fields = [...new Set([...(fields ?? []), "uniqueId", "identity", "firstName", "lastName", "dateOfBirth"])] as (keyof User)[];
 
 		return await this._unitOfWork.getQueryRunner().manager
 			.findOne(User, {

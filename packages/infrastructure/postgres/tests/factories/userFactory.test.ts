@@ -30,10 +30,10 @@ describe("createUser", () => {
 			identity: "test-user",
 			firstName: "Test",
 			lastName: "User",
-			age: 20
+			dateOfBirth: new Date("2004-09-25"),
 		}
 
-		const user = await userFactory.createUser(data.identity, data.firstName, data.lastName, data.age);
+		const user = await userFactory.createUser(data.identity, data.firstName, data.lastName, data.dateOfBirth);
 
 		expect(user).not.toBeNull();
 		expect(user).not.toBeUndefined();
@@ -44,7 +44,7 @@ describe("createUser", () => {
 		expect(user.identity).toBe(data.identity);
 		expect(user.firstName).toBe(data.firstName);
 		expect(user.lastName).toBe(data.lastName);
-		expect(user.age).toBe(data.age);
+		expect(user.dateOfBirth).toStrictEqual(data.dateOfBirth);
 
 		const res = await userRepository.get({
 			identity: data.identity
@@ -59,6 +59,6 @@ describe("createUser", () => {
 		expect(res.identity).toBe(data.identity);
 		expect(res.firstName).toBe(data.firstName);
 		expect(res.lastName).toBe(data.lastName);
-		expect(res.age).toBe(data.age);
+		expect(res.dateOfBirth).toStrictEqual(data.dateOfBirth);
 	});
 });

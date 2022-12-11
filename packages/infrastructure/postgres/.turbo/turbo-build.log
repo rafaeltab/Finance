@@ -1,13 +1,1 @@
 $ rimraf ./build/ && tsc
-tests/factories/assetGroupFactory.test.ts(5,21): error TS2305: Module '"../test-utils/dbfixture"' has no exported member 'getFixture'.
-tests/factories/bankAccountFactory.test.ts(5,21): error TS2305: Module '"../test-utils/dbfixture"' has no exported member 'getFixture'.
-tests/factories/jobFactory.test.ts(5,21): error TS2305: Module '"../test-utils/dbfixture"' has no exported member 'getFixture'.
-tests/factories/userFactory.test.ts(4,21): error TS2305: Module '"../test-utils/dbfixture"' has no exported member 'getFixture'.
-tests/fixture.test.ts(2,10): error TS2305: Module '"./test-utils/dbfixture"' has no exported member 'getFixture'.
-tests/repositories/assetGroupRepository.test.ts(5,21): error TS2305: Module '"../test-utils/dbfixture"' has no exported member 'getFixture'.
-tests/repositories/assetRepository.test.ts(5,21): error TS2305: Module '"../test-utils/dbfixture"' has no exported member 'getFixture'.
-tests/repositories/bankAccountRepository.test.ts(5,21): error TS2305: Module '"../test-utils/dbfixture"' has no exported member 'getFixture'.
-tests/repositories/jobRepository.test.ts(5,21): error TS2305: Module '"../test-utils/dbfixture"' has no exported member 'getFixture'.
-tests/repositories/userRepository.test.ts(5,21): error TS2305: Module '"../test-utils/dbfixture"' has no exported member 'getFixture'.
-error Command failed with exit code 2.
-info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.

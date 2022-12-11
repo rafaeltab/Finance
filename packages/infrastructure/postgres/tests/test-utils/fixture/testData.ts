@@ -2,7 +2,7 @@ import { BankAccount, Balance, User, ActiveIncome, Job, Asset, AssetValue, Asset
 import { v4 } from "uuid";
 
 export const user = new User({
-	age: 21,
+	dateOfBirth: new Date("2001-02-27"),
 	firstName: "Rafael",
 	lastName: "Bieze",
 	identity: "rafael-bieze",
