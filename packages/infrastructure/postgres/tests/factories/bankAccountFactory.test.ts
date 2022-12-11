@@ -1,27 +1,32 @@
 import "reflect-metadata";
 import { BankAccountFactory } from "#src/factories/bankAccountFactory";
 import { BankAccountRepository } from "#src/repositories/bankAccountRepository";
-import { UnitOfWork } from "#src/unitOfWork/unitOfWork";
-import { getFixture } from "../test-utils/dbfixture";
 import { UserRepository } from "#src/repositories/userRepository";
-BankAccountFactory
+import { DbFixture, TestDataType } from "../test-utils/dbfixture";
+
+let fixture: DbFixture;
+let testData: TestDataType;
+
 let bankAccountFactory: BankAccountFactory;
 let bankAccountRepository: BankAccountRepository;
 let userRepository: UserRepository;
-let unitOfWork: UnitOfWork;
 
-let testData: typeof import("d:/ShitsNGiggles/SoftwareEngineering/Typescript/finance/packages/infrastructure/postgres/tests/test-utils/fixture/testData");
+
+beforeAll(async () => {
+	fixture = await DbFixture.getInstance();
+	testData = fixture.getTestData();
+});
 
 beforeEach(async () => {
-	const fixture = await getFixture()
-
-	unitOfWork = new UnitOfWork(fixture[0]);
-
-	bankAccountFactory = new BankAccountFactory(unitOfWork);
-	bankAccountRepository = new BankAccountRepository(unitOfWork);
-	userRepository = new UserRepository(unitOfWork);
+	await fixture.resetUnitOfWork();
+	bankAccountFactory = fixture.getInstance(BankAccountFactory);
+	bankAccountRepository = fixture.getInstance(BankAccountRepository);
+	userRepository = fixture.getInstance(UserRepository);
 	
-	testData = fixture[1];
+});
+
+afterAll(async () => {
+	await fixture.destroy();
 });
 
 describe("addBankAccountToUser", () => {

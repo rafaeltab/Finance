@@ -1,18 +1,26 @@
 import "reflect-metadata";
 import { UserRepository } from "#src/repositories/userRepository";
-import { UnitOfWork } from "#src/unitOfWork/unitOfWork";
-import { arrayIdentityEquals, identityEquals } from "../test-utils/arrayUtils";
-import { getFixture } from "../test-utils/dbfixture";
 import { v4 } from "uuid";
+import { arrayIdentityEquals, identityEquals } from "../test-utils/arrayUtils";
+import { DbFixture, TestDataType } from "../test-utils/dbfixture";
+
+let fixture: DbFixture;
+let testData: TestDataType;
 
 let userRepository: UserRepository;
-let testData: typeof import("d:/ShitsNGiggles/SoftwareEngineering/Typescript/finance/packages/infrastructure/postgres/tests/test-utils/fixture/testData");
+
+beforeAll(async () => {
+	fixture = await DbFixture.getInstance();
+	testData = fixture.getTestData();
+});
 
 beforeEach(async () => {
-	const fixture = await getFixture()
+	await fixture.resetUnitOfWork();
+	userRepository = fixture.getInstance(UserRepository);
+});
 
-	userRepository = new UserRepository(new UnitOfWork(fixture[0]));
-	testData = fixture[1];
+afterAll(async () => {
+	await fixture.destroy();
 });
 
 describe("getAll", () => {

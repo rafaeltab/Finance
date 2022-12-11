@@ -1,18 +1,26 @@
 import "reflect-metadata";
 import { BankAccountRepository } from "#src/repositories/bankAccountRepository";
-import { UnitOfWork } from "#src/unitOfWork/unitOfWork";
-import { arrayIdentityEquals, identityEquals } from "../test-utils/arrayUtils";
-import { getFixture } from "../test-utils/dbfixture";
 import { v4 } from "uuid";
+import { arrayIdentityEquals, identityEquals } from "../test-utils/arrayUtils";
+import { DbFixture, TestDataType } from "../test-utils/dbfixture";
+
+let fixture: DbFixture;
+let testData: TestDataType;
 
 let bankAccountRepository: BankAccountRepository;
-let testData: typeof import("d:/ShitsNGiggles/SoftwareEngineering/Typescript/finance/packages/infrastructure/postgres/tests/test-utils/fixture/testData");
+
+beforeAll(async () => {
+	fixture = await DbFixture.getInstance();
+	testData = fixture.getTestData();
+});
 
 beforeEach(async () => {
-	const fixture = await getFixture()
+	await fixture.resetUnitOfWork();
+	bankAccountRepository = fixture.getInstance(BankAccountRepository);
+});
 
-	bankAccountRepository = new BankAccountRepository(new UnitOfWork(fixture[0]));
-	testData = fixture[1];
+afterAll(async () => {
+	await fixture.destroy();
 });
 
 describe("getAllBankAccountsForUser", () => {

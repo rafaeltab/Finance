@@ -4,6 +4,9 @@ const config: JestConfigWithTsJest = {
 	transform: { '^.+\\.ts?$': 'ts-jest' },
 	testEnvironment: 'node',
 	testRegex: './tests/.*\\.(test|spec)?\\.(ts|tsx)$',
+	maxConcurrency: 1,
+	maxWorkers: 1,
+	testTimeout: 10000,
 	moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
 	// moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths)
 	rootDir: __dirname,

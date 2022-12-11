@@ -1,45 +1,92 @@
 import { UnitOfWork } from "#src/unitOfWork/unitOfWork";
-import { ActiveIncome, Asset, AssetGroup, AssetValue, Balance, BankAccount, entities, Job, RealEstateAsset, StockAsset, User } from "@finance/domain";
+import { entities, User } from "@finance/domain";
 import { DataSource } from "typeorm";
+
+export type TestDataType = typeof import("./fixture/testData")
 
 async function createTestData() {
 	return await import("./fixture/testData");
 }
 
-type Fixture = {
-	dataSource: DataSource;
-	testData: ReturnType<typeof createTestData>;
+export class DbFixture {
+	private unitOfWork: UnitOfWork;
+	private dataSource: DataSource;
+	private testData: TestDataType;
+
+	private constructor() { }
+
+	async initialize() {
+		this.dataSource = await createDataSource();
+		this.testData = await insertTestData(this.dataSource);
+		this.resetUnitOfWork();
+	}
+
+	async resetUnitOfWork() {
+		if (this.unitOfWork !== null && this.unitOfWork !== undefined && this.unitOfWork.getQueryRunner().isTransactionActive === true) {
+			await this.unitOfWork.rollback();
+		}
+		this.unitOfWork = new UnitOfWork(this.dataSource);
+		await this.unitOfWork.start();
+	}
+
+	getInstance<T extends new (unitOfWork: UnitOfWork) => InstanceType<T>>(c: T): InstanceType<T> {
+		return new c(this.unitOfWork);
+	}
+
+	getTestData() {
+		return this.testData;
+	}
+
+	async destroy() {
+		if (this.unitOfWork.getQueryRunner().isTransactionActive === true) {
+			await this.unitOfWork.rollback();
+		}
+
+		await this.dataSource.destroy();
+	}
+
+	static async getInstance() {
+		const fixture = new DbFixture();
+		await fixture.initialize();
+		return fixture;
+	}
 }
 
-export async function getFixture() {
-	const dataSource = createDataSource();
+export async function createDataSource() {
+	var dataSource = new DataSource({
+		type: "postgres",
+		host: "localhost",
+		port: 5433,
+		username: "finance-test",
+		password: "finance-test",
+		database: "finance-test",
+		synchronize: false,
+		logging: false,
+		entities: entities,
+		subscribers: [],
+	});
 	await dataSource.initialize();
+	await dataSource.synchronize(true);
+	return dataSource;
+}
+
+export async function insertTestData(dataSource: DataSource) {
 	const testData = await createTestData();
+	const userTest = await dataSource.manager.findOne(User, {
+		where: {
+			identity: testData.user.identity
+		}
+	});
 
-	var unitOfWork = new UnitOfWork(dataSource);
-
-	await unitOfWork.start()
-
-	for (const entityKey of Object.keys(testData.testData)) {
-		for (const entity of testData.testData[entityKey]) {
-			try {
-				await unitOfWork.getQueryRunner().manager.insert(entityKey, entity);
-			} catch (e) { }
+	if (userTest == null) {
+		for (const entityKey of Object.keys(testData.testData)) {
+			for (const entity of testData.testData[entityKey]) {
+				try {
+					await dataSource.manager.insert(entityKey, entity);
+				} catch (e) { }
+			}
 		}
 	}
 
-	await unitOfWork.commit();
-	
-	return [dataSource, testData] as const;
-}
-
-export function createDataSource() {
-	return new DataSource({
-		type: "better-sqlite3",
-		database: ":memory:",
-		name: "default",
-		synchronize: true,
-		entities: entities,
-		// logging: true
-	});
+	return testData;
 }

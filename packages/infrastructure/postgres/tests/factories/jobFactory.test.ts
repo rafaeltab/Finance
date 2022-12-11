@@ -1,27 +1,30 @@
 import "reflect-metadata";
 import { JobFactory } from "#src/factories/jobFactory";
 import { JobRepository } from "#src/repositories/jobRepository";
-import { UnitOfWork } from "#src/unitOfWork/unitOfWork";
-import { getFixture } from "../test-utils/dbfixture";
 import { UserRepository } from "#src/repositories/userRepository";
-JobFactory
+import { DbFixture, TestDataType } from "../test-utils/dbfixture";
+
+let fixture: DbFixture;
+let testData: TestDataType;
+
 let jobFactory: JobFactory;
 let jobRepository: JobRepository;
 let userRepository: UserRepository;
-let unitOfWork: UnitOfWork;
 
-let testData: typeof import("d:/ShitsNGiggles/SoftwareEngineering/Typescript/finance/packages/infrastructure/postgres/tests/test-utils/fixture/testData");
+beforeAll(async () => {
+	fixture = await DbFixture.getInstance();
+	testData = fixture.getTestData();
+});
 
 beforeEach(async () => {
-	const fixture = await getFixture()
+	await fixture.resetUnitOfWork();
+	jobFactory = fixture.getInstance(JobFactory);
+	jobRepository = fixture.getInstance(JobRepository);
+	userRepository = fixture.getInstance(UserRepository);
+});
 
-	unitOfWork = new UnitOfWork(fixture[0]);
-
-	jobFactory = new JobFactory(unitOfWork);
-	jobRepository = new JobRepository(unitOfWork);
-	userRepository = new UserRepository(unitOfWork);
-	
-	testData = fixture[1];
+afterAll(async () => {
+	await fixture.destroy();
 });
 
 describe("addJobToUser", () => {

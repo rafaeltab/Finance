@@ -5,7 +5,10 @@ import { Asset } from "./Asset";
 
 @Entity()
 export class AssetValue extends ValueObjectBase { 
-	@Column()
+	@Column({
+		type: "decimal",
+		scale: 3
+	})
 	usdValue: number;
 
 	@Column()

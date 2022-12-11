@@ -7,8 +7,9 @@
 		"build": "rimraf ./build/ && tsc",
 		"dev": "tsc --watch",
 		"lint": "",
-		"test": "jest",
-		"typeorm": "typeorm-ts-node-commonjs"
+		"test": "jest --detectOpenHandles",
+		"typeorm": "typeorm-ts-node-commonjs",
+		"test-setup": "cd tests && docker-compose up -d"
 	},
 	"dependencies": {
 		"@finance/domain": "*",

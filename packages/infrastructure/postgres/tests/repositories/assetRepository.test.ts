@@ -1,25 +1,36 @@
 import "reflect-metadata";
 import { AssetRepository } from "#src/repositories/assetRepository";
-import { UnitOfWork } from "#src/unitOfWork/unitOfWork";
-import { arrayIdentityEquals, identityEquals } from "../test-utils/arrayUtils";
-import { getFixture } from "../test-utils/dbfixture";
 import { v4 } from "uuid";
+import { arrayIdentityEquals, identityEquals } from "../test-utils/arrayUtils";
+import { DbFixture, TestDataType } from "../test-utils/dbfixture";
+
+let fixture: DbFixture;
+let testData: TestDataType;
 
 let assetRepository: AssetRepository;
-let testData: typeof import("d:/ShitsNGiggles/SoftwareEngineering/Typescript/finance/packages/infrastructure/postgres/tests/test-utils/fixture/testData");
+
+beforeAll(async () => {
+	fixture = await DbFixture.getInstance();
+	testData = fixture.getTestData();
+});
 
 beforeEach(async () => {
-	const fixture = await getFixture()
+	console.log("Before")
+	await fixture.resetUnitOfWork();
+	assetRepository = fixture.getInstance(AssetRepository);
+});
 
-	assetRepository = new AssetRepository(new UnitOfWork(fixture[0]));
-	testData = fixture[1];
+afterAll(async () => {
+	console.log("After")
+
+	await fixture.destroy();
 });
 
 describe("getAllAssetsForUser", () => {
 	test('getAllAssetsForUser should return all assets for a user by its identity, with at least their uniqueIds and identities', async () => {
 		const assets = await assetRepository.getAllAssetsForUser({
 			identity: testData.user.identity
-		},testData.user.assets.length + 1, 0);
+		}, testData.user.assets.length + 1, 0);
 
 		expect(arrayIdentityEquals(assets.data, testData.user.assets)).toBe(true);
 	});
@@ -106,5 +117,41 @@ describe("delete", () => {
 		});
 
 		expect(asset).toBeNull();
+	});
+});
+
+describe("getGranularValuesForAsset", () => {
+	test('getGranularValuesForAsset should return an array of min, max, avg values for an asset in a given time range', async () => {
+		const data = await assetRepository.getGranularValuesForAsset({
+			uniqueId: testData.asset.uniqueId
+		}, new Date(2020, 0, 1), new Date(2023, 0, 2), "day", 100, 0);
+
+		expect(data.data.length).toBe(1);
+
+		let expectedMin = 100000;
+		let expectedMax = 0;
+
+		for (const assetValue of testData.assetValues) {
+			if (assetValue.usdValue < expectedMin) {
+				expectedMin = assetValue.usdValue;
+			}
+
+			if (assetValue.usdValue > expectedMax) {
+				expectedMax = assetValue.usdValue;
+			}
+		}
+
+
+		expect(data.data[0].minValue).toBe(expectedMin.toString());
+		expect(data.data[0].maxValue).toBe(expectedMax.toString());
+	});
+});
+describe("getValuesForAsset", () => {
+	test('getValuesForAsset should return an array of values for an asset in a given time range', async () => {
+		const data = await assetRepository.getValuesForAsset({
+			uniqueId: testData.asset.uniqueId
+		}, new Date(2020, 0, 1), new Date(2023, 0, 2), testData.assetValues.length + 1, 0);
+
+		expect(data.data.length).toBe(testData.assetValues.length);
 	});
 });

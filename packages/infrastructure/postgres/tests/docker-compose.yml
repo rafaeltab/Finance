@@ -1,0 +1,12 @@
+version: '3.9'
+services:
+  postgres:
+    image: postgres:13.2
+    container_name: finance-test
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: finance-test
+      POSTGRES_USER: finance-test
+      POSTGRES_DB: finance-test
+    ports:
+      - 5433:5432

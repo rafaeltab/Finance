@@ -66,28 +66,38 @@ export const stockAsset = new StockAsset({
 });
 asset.stockAsset = stockAsset;
 
+function createDates(count: number) {
+	// create a list of length count contiaining dates with 10 minute intervals
+	const dates = [];
+	for (let i = 0; i < count; i++) {
+		dates.push(new Date(new Date().getTime() - i * 10 * 60 * 1000));
+	}
+	return dates;
+}
+var dates = createDates(4);
+
 export const assetValues = [
 	new AssetValue({
 		asset,
-		dateTime: new Date(),
+		dateTime: dates[0],
 		uniqueId: v4(),
 		usdValue: 69.3
 	}),
 	new AssetValue({
 		asset,
-		dateTime: new Date(),
+		dateTime: dates[1],
 		uniqueId: v4(),
 		usdValue: 69.5
 	}),
 	new AssetValue({
 		asset,
-		dateTime: new Date(),
+		dateTime: dates[2],
 		uniqueId: v4(),
 		usdValue: 69.7
 	}),
 	new AssetValue({
 		asset,
-		dateTime: new Date(),
+		dateTime: dates[3],
 		uniqueId: v4(),
 		usdValue: 69.9
 	}),

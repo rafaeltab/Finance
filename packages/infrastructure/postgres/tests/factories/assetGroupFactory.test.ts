@@ -1,27 +1,31 @@
 import "reflect-metadata";
 import { AssetGroupFactory } from "#src/factories/assetGroupFactory";
 import { AssetGroupRepository } from "#src/repositories/assetGroupRepository";
-import { UnitOfWork } from "#src/unitOfWork/unitOfWork";
-import { getFixture } from "../test-utils/dbfixture";
 import { UserRepository } from "#src/repositories/userRepository";
-AssetGroupFactory
+import { DbFixture, TestDataType } from "../test-utils/dbfixture";
+
+let fixture: DbFixture;
+let testData: TestDataType;
+
 let assetGroupFactory: AssetGroupFactory;
 let assetGroupRepository: AssetGroupRepository;
 let userRepository: UserRepository;
-let unitOfWork: UnitOfWork;
 
-let testData: typeof import("d:/ShitsNGiggles/SoftwareEngineering/Typescript/finance/packages/infrastructure/postgres/tests/test-utils/fixture/testData");
+beforeAll(async () => {
+	fixture = await DbFixture.getInstance();
+	testData = fixture.getTestData();
+});
 
 beforeEach(async () => {
-	const fixture = await getFixture()
-
-	unitOfWork = new UnitOfWork(fixture[0]);
-
-	assetGroupFactory = new AssetGroupFactory(unitOfWork);
-	assetGroupRepository = new AssetGroupRepository(unitOfWork);
-	userRepository = new UserRepository(unitOfWork);
+	await fixture.resetUnitOfWork();
+	assetGroupFactory = fixture.getInstance(AssetGroupFactory);
+	assetGroupRepository = fixture.getInstance(AssetGroupRepository);
+	userRepository = fixture.getInstance(UserRepository);
 	
-	testData = fixture[1];
+});
+
+afterAll(async () => {
+	await fixture.destroy();
 });
 
 describe("addAssetGroupToUser", () => {

@@ -1,25 +1,33 @@
 import "reflect-metadata";
 import { JobRepository } from "#src/repositories/jobRepository";
-import { UnitOfWork } from "#src/unitOfWork/unitOfWork";
-import { arrayIdentityEquals, identityEquals } from "../test-utils/arrayUtils";
-import { getFixture } from "../test-utils/dbfixture";
 import { v4 } from "uuid";
+import { arrayIdentityEquals, identityEquals } from "../test-utils/arrayUtils";
+import { DbFixture, TestDataType } from "../test-utils/dbfixture";
+
+let fixture: DbFixture;
+let testData: TestDataType;
 
 let jobRepository: JobRepository;
-let testData: typeof import("d:/ShitsNGiggles/SoftwareEngineering/Typescript/finance/packages/infrastructure/postgres/tests/test-utils/fixture/testData");
+
+beforeAll(async () => {
+	fixture = await DbFixture.getInstance();
+	testData = fixture.getTestData();
+});
 
 beforeEach(async () => {
-	const fixture = await getFixture()
+	await fixture.resetUnitOfWork();
+	jobRepository = fixture.getInstance(JobRepository);
+});
 
-	jobRepository = new JobRepository(new UnitOfWork(fixture[0]));
-	testData = fixture[1];
+afterAll(async () => {
+	await fixture.destroy();
 });
 
 describe("getAllJobsForUser", () => {
 	test('getAllJobsForUser should return all jobs for a user by its identity, with at least their uniqueIds and identities', async () => {
 		const jobs = await jobRepository.getAllJobsForUser({
 			identity: testData.user.identity
-		},testData.user.jobs.length + 1, 0);
+		}, testData.user.jobs.length + 1, 0);
 
 		expect(arrayIdentityEquals(jobs.data, testData.user.jobs)).toBe(true);
 	});
