@@ -1,8 +1,8 @@
 import * as assetAggregate from "./assetAggregate";
 import * as jobAggregate from "./jobAggregrate";
 import * as bankAccountAggregate from "./bankAccountAggregate";
-import { AssetGroup, AssetGroupMeta } from "./AssetGroup";
-import { User, UserMeta } from "./User";
+import { AssetGroup } from "./AssetGroup";
+import { User } from "./User";
 
 const Asset = assetAggregate.default;
 const Job = jobAggregate.default;
@@ -18,6 +18,7 @@ export const entities = [
 	assetAggregate.AssetValue,
 	assetAggregate.RealEstateAsset,
 	assetAggregate.StockAsset,
+	assetAggregate.StockOrder,
 
 	Job,
 	jobAggregate.ActiveIncome,

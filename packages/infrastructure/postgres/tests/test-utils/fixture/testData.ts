@@ -1,4 +1,4 @@
-import { BankAccount, Balance, User, ActiveIncome, Job, Asset, AssetValue, AssetGroup, StockAsset } from "@finance/domain";
+import { BankAccount, Balance, User, ActiveIncome, Job, Asset, AssetValue, AssetGroup, StockAsset, StockOrder } from "@finance/domain";
 import { v4 } from "uuid";
 
 export const user = new User({
@@ -57,13 +57,20 @@ assetGroup.assets = [asset];
 user.assets = [asset];
 
 export const stockAsset = new StockAsset({
-	amount: 5,
 	asset: asset,
 	exchange: "NASDAQ",
 	identity: "stock-asset-1",
 	symbol: "GOOGL",
 	uniqueId: v4(),
 });
+
+export const stockOrder = new StockOrder({
+	amount: 10,
+	usdPrice: 89.3,
+	stockAsset: stockAsset,
+	uniqueId: v4(),
+});
+stockAsset.orders = [stockOrder];
 asset.stockAsset = stockAsset;
 
 function createDates(count: number) {
@@ -115,4 +122,5 @@ export const testData = {
 	StockAsset: [stockAsset],
 	RealEstateAsset: [],
 	AssetValue: [...assetValues],
+	StockOrder: [stockOrder],
 } as const;

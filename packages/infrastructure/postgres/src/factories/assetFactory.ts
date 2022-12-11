@@ -1,12 +1,38 @@
 import { UnitOfWork, unitOfWork } from "#src/unitOfWork/unitOfWork";
-import { Asset, AssetGroup, AssetValue, EntityKey, IAssetFactory, IAssetGroupFactory, RealEstateAsset, StockAsset, User } from "@finance/domain";
+import { Asset, AssetGroup, AssetValue, EntityKey, IAssetFactory, IAssetGroupFactory, RealEstateAsset, StockAsset, User, StockOrder, StockAssetKind } from "@finance/domain";
 import { inject } from "tsyringe";
 
 export class AssetFactory implements IAssetFactory {
 
 	constructor(@inject(unitOfWork) private _unitOfWork: UnitOfWork) { }
 
-	async addStockToAssetGroup(assetGroup: EntityKey, amount: number, symbol: string, exchange: string): Promise<[StockAsset, Asset]> {
+	async addStockOrderToStockAsset(asset: EntityKey, amount: number, price: number): Promise<StockAsset> {
+		const assetEntity = await this._unitOfWork.getQueryRunner().manager.findOne(Asset, {
+			where: asset,
+			relations: {
+				stockAsset: true,
+			}
+		});
+			
+		if (assetEntity === null) {
+			throw new Error("Asset not found");
+		}
+
+		if (assetEntity.stockAsset === null || assetEntity.stockAsset === undefined) {
+			throw new Error("Asset is not a stock asset");
+		}
+
+		assetEntity.stockAsset.orders.push(new StockOrder({
+			amount,
+			usdPrice: price,
+		}))
+
+		await this._unitOfWork.getQueryRunner().manager.save([assetEntity.stockAsset]);
+
+		return assetEntity.stockAsset;
+	}
+
+	async addStockToAssetGroup(assetGroup: EntityKey, symbol: string, exchange: string, stockOrders: { amount: number, price: number }[]): Promise<[StockAsset, Asset]> {
 		const assetGroupEntity = await this._unitOfWork.getQueryRunner().manager.findOne(AssetGroup, {
 			where: assetGroup,
 			relations: {
@@ -14,12 +40,12 @@ export class AssetFactory implements IAssetFactory {
 			}
 		});
 		
-		const [stockAssetEntity, assetEntity] = await this.createStockAsset({
+		const [stockAssetEntity, assetEntity, stockOrderEntities] = await this.createStockAsset({
 			kind: "group",
 			entity: assetGroupEntity
-		}, amount, symbol, exchange);
+		}, symbol, exchange, stockOrders);
 
-		await this._unitOfWork.getQueryRunner().manager.save([assetEntity, assetGroupEntity]);
+		await this._unitOfWork.getQueryRunner().manager.save([assetEntity, assetGroupEntity, ...stockOrderEntities]);
 
 		return [stockAssetEntity, assetEntity];
 	}
@@ -40,7 +66,7 @@ export class AssetFactory implements IAssetFactory {
 
 		return [realEstateAsset, assetEntity];
 	}
-	async addStockToUser(user: EntityKey, amount: number, symbol: string, exchange: string): Promise<[StockAsset, Asset]> {
+	async addStockToUser(user: EntityKey, symbol: string, exchange: string, stockOrders: { amount: number, price: number }[]): Promise<[StockAsset, Asset]> {
 		const userEntity = await this._unitOfWork.getQueryRunner().manager.findOne(User, {
 			where: user,
 			relations: {
@@ -48,12 +74,12 @@ export class AssetFactory implements IAssetFactory {
 			}
 		});
 
-		const [stockAssetEntity, assetEntity] = await this.createStockAsset({
+		const [stockAssetEntity, assetEntity, stockOrderEntities] = await this.createStockAsset({
 			kind: "user",
 			entity: userEntity
-		}, amount, symbol, exchange);
+		}, symbol, exchange, stockOrders);
 
-		await this._unitOfWork.getQueryRunner().manager.save([assetEntity, userEntity]);
+		await this._unitOfWork.getQueryRunner().manager.save([assetEntity, userEntity, ...stockOrderEntities]);
 
 		return [stockAssetEntity, assetEntity];
 	}
@@ -119,19 +145,31 @@ export class AssetFactory implements IAssetFactory {
 	}
 	
 
-	private async createStockAsset(ownerEntity: { kind: "user", entity: User } | {kind: "group", entity: AssetGroup}, amount: number, symbol: string, exchange: string) {
+	private async createStockAsset(ownerEntity: { kind: "user", entity: User } | { kind: "group", entity: AssetGroup }, symbol: string, exchange: string, stockOrders: { amount: number, price: number }[]) {
 		const identities = this.createStockAssetIdentity(ownerEntity.entity.identity, symbol, exchange)[1]
 
 		const stockAssetEntity = new StockAsset({
-			amount: amount,
 			symbol: symbol,
 			exchange: exchange,
-			identity: identities[0]
+			identity: identities[0],
+			assetKind: StockAssetKind.CS,
 		});
+
 		const assetEntity = new Asset({
 			identity: identities[1],
 			stockAsset: stockAssetEntity,
 		});
+
+		const orders: StockOrder[] = [];
+
+		for (const stockOrder of stockOrders) {
+			orders.push(new StockOrder({
+				amount: stockOrder.amount,
+				usdPrice: stockOrder.price
+			}));
+		}
+
+		stockAssetEntity.orders = orders;
 
 		if (ownerEntity.kind === "group") {
 			assetEntity[ownerEntity.kind] = ownerEntity.entity;
@@ -141,7 +179,7 @@ export class AssetFactory implements IAssetFactory {
 
 		ownerEntity.entity.assets.push(assetEntity);
 
-		return [stockAssetEntity, assetEntity] as [StockAsset, Asset];
+		return [stockAssetEntity, assetEntity, stockAssetEntity.orders] as [StockAsset, Asset, StockOrder[]];
 	}
 
 	private async createRealEstateAsset(ownerEntity: { kind: "user", entity: User } | { kind: "group", entity: AssetGroup }, address: string) {
@@ -149,7 +187,7 @@ export class AssetFactory implements IAssetFactory {
 
 		const realEstateAsset = new RealEstateAsset({
 			address: address,
-			identity: identities[0]
+			identity: identities[0],
 		});
 		const assetEntity = new Asset({
 			identity: identities[1],

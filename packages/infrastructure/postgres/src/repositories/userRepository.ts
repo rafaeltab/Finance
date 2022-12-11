@@ -2,6 +2,7 @@ import { IUserRepository, User, EntityKey, PaginatedBase, UserMeta } from "@fina
 import { inject } from "tsyringe";
 import { UnitOfWork, unitOfWork } from "../unitOfWork/unitOfWork";
 import { intersection } from "lodash"
+import { FindOptionsRelations } from "typeorm";
 
 export class UserRepository implements IUserRepository {
 	constructor(@inject(unitOfWork) private _unitOfWork: UnitOfWork) { }
@@ -34,7 +35,15 @@ export class UserRepository implements IUserRepository {
 			.findOne(User, {
 				where: id,
 				select: intersection(fields, UserMeta.data),
-				relations: intersection(fields, UserMeta.relations),
+				relations: intersection(fields, UserMeta.relations)
+			});
+	}
+
+	async getRelations(id: EntityKey, relations: FindOptionsRelations<User>): Promise<User> {
+		return await this._unitOfWork.getQueryRunner().manager
+			.findOne(User, {
+				where: id,
+				relations: relations
 			});
 	}
 

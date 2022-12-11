@@ -33,7 +33,7 @@ afterAll(async () => {
 });
 
 type StockAssetData = {
-	amount: number,
+	stockOrders: {amount: number, price: number}[],
 	symbol: string,
 	exchange: string
 }
@@ -45,14 +45,17 @@ type RealEstateAssetData = {
 describe("addStockToAssetGroup", () => {
 	test('addStockToAssetGroup should create an entity with the given parameters and link it to an asset group', async () => {
 		const data = {
-			amount: 5,
+			stockOrders: [{
+				amount: 5,
+				price: 99.3
+			}],
 			symbol: "GOOG",
 			exchange: "NASDAQ"
 		}
 
 		const [stockAsset, asset] = await assetFactory.addStockToAssetGroup({
 			identity: testData.assetGroup.identity
-		}, data.amount, data.symbol, data.exchange);
+		}, data.symbol, data.exchange, data.stockOrders);
 
 		assetAndStockAssetValid(data, stockAsset, asset);
 
@@ -75,14 +78,17 @@ describe("addStockToAssetGroup", () => {
 describe("addStockToUser", () => {
 	test('addStockToUser should create an entity with the given parameters and link it to an asset group', async () => {
 		const data = {
-			amount: 5,
+			stockOrders: [{
+				amount: 5,
+				price: 99.3
+			}],
 			symbol: "GOOG",
 			exchange: "NASDAQ"
 		}
 
 		const [stockAsset, asset] = await assetFactory.addStockToUser({
 			identity: testData.user.identity
-		}, data.amount, data.symbol, data.exchange);
+		}, data.symbol, data.exchange, data.stockOrders);
 
 		assetAndStockAssetValid(data, stockAsset, asset);
 
@@ -92,9 +98,15 @@ describe("addStockToUser", () => {
 
 		assetAndStockAssetValid(data, res.stockAsset, res);
 
-		const user = await userRepository.get({
+		const user = await userRepository.getRelations({
 			uniqueId: testData.user.uniqueId
-		}, ["assets"])
+		}, {
+			assets: {
+				stockAsset: {
+					orders: true
+				}
+			}
+		})
 
 		const userAsset = user.assets.find(x => x.identity === asset.identity);
 
@@ -169,7 +181,7 @@ function assetAndStockAssetValid(data: StockAssetData, stockAsset?: StockAsset, 
 	expect(stockAsset.uniqueId).not.toBeUndefined();
 	expect(stockAsset.uniqueId).not.toBeNull();
 
-	expect(stockAsset.amount).toBe(data.amount);
+	expect(stockAsset.orders.length).toBe(data.stockOrders.length);
 	expect(stockAsset.symbol).toBe(data.symbol);
 	expect(stockAsset.symbol).toBe(data.symbol);
 }
