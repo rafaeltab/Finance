@@ -3,13 +3,14 @@ import { JobFactory } from "#src/factories/jobFactory";
 import { JobRepository } from "#src/repositories/jobRepository";
 import { UserRepository } from "#src/repositories/userRepository";
 import { DbFixture, TestDataType } from "../test-utils/dbfixture";
+import { IJobFactory, IJobRepository, IUserRepository } from "@finance/domain";
 
 let fixture: DbFixture;
 let testData: TestDataType;
 
-let jobFactory: JobFactory;
-let jobRepository: JobRepository;
-let userRepository: UserRepository;
+let jobFactory: IJobFactory;
+let jobRepository: IJobRepository;
+let userRepository: IUserRepository;
 
 beforeAll(async () => {
 	fixture = await DbFixture.getInstance();

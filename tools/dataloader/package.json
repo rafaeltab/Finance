@@ -4,9 +4,7 @@
 	"private": true,
 	"license": "MIT",
 	"scripts": {
-		"build": "rimraf ./build/ && tsc",
-		"dev": "py src/run.py",
-		"start": "node ./build/index.js"
+		"dev": "py src/run.py"
 	},
 	"dependencies": {
 		"@finance/libs-tsconfig": "*",

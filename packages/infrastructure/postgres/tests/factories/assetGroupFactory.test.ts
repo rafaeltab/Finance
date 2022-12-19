@@ -3,13 +3,14 @@ import { AssetGroupFactory } from "#src/factories/assetGroupFactory";
 import { AssetGroupRepository } from "#src/repositories/assetGroupRepository";
 import { UserRepository } from "#src/repositories/userRepository";
 import { DbFixture, TestDataType } from "../test-utils/dbfixture";
+import { IAssetGroupFactory, IAssetGroupRepository, IUserRepository } from "@finance/domain";
 
 let fixture: DbFixture;
 let testData: TestDataType;
 
-let assetGroupFactory: AssetGroupFactory;
-let assetGroupRepository: AssetGroupRepository;
-let userRepository: UserRepository;
+let assetGroupFactory: IAssetGroupFactory;
+let assetGroupRepository: IAssetGroupRepository;
+let userRepository: IUserRepository;
 
 beforeAll(async () => {
 	fixture = await DbFixture.getInstance();

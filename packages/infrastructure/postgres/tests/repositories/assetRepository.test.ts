@@ -3,11 +3,12 @@ import { AssetRepository } from "#src/repositories/assetRepository";
 import { v4 } from "uuid";
 import { arrayIdentityEquals, identityEquals } from "../test-utils/arrayUtils";
 import { DbFixture, TestDataType } from "../test-utils/dbfixture";
+import { IAssetRepository } from "@finance/domain";
 
 let fixture: DbFixture;
 let testData: TestDataType;
 
-let assetRepository: AssetRepository;
+let assetRepository: IAssetRepository;
 
 beforeAll(async () => {
 	fixture = await DbFixture.getInstance();
@@ -15,14 +16,11 @@ beforeAll(async () => {
 });
 
 beforeEach(async () => {
-	console.log("Before")
 	await fixture.resetUnitOfWork();
 	assetRepository = fixture.getInstance(AssetRepository);
 });
 
 afterAll(async () => {
-	console.log("After")
-
 	await fixture.destroy();
 });
 
@@ -117,41 +115,5 @@ describe("delete", () => {
 		});
 
 		expect(asset).toBeNull();
-	});
-});
-
-describe("getGranularValuesForAsset", () => {
-	test('getGranularValuesForAsset should return an array of min, max, avg values for an asset in a given time range', async () => {
-		const data = await assetRepository.getGranularValuesForAsset({
-			uniqueId: testData.asset.uniqueId
-		}, new Date(2020, 0, 1), new Date(2023, 0, 2), "day", 100, 0);
-
-		expect(data.data.length).toBe(1);
-
-		let expectedMin = 100000;
-		let expectedMax = 0;
-
-		for (const assetValue of testData.assetValues) {
-			if (assetValue.usdValue < expectedMin) {
-				expectedMin = assetValue.usdValue;
-			}
-
-			if (assetValue.usdValue > expectedMax) {
-				expectedMax = assetValue.usdValue;
-			}
-		}
-
-
-		expect(data.data[0].minValue).toBe(expectedMin.toString());
-		expect(data.data[0].maxValue).toBe(expectedMax.toString());
-	});
-});
-describe("getValuesForAsset", () => {
-	test('getValuesForAsset should return an array of values for an asset in a given time range', async () => {
-		const data = await assetRepository.getValuesForAsset({
-			uniqueId: testData.asset.uniqueId
-		}, new Date(2020, 0, 1), new Date(2023, 0, 2), testData.assetValues.length + 1, 0);
-
-		expect(data.data.length).toBe(testData.assetValues.length);
 	});
 });

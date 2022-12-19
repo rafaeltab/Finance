@@ -1,6 +1,5 @@
 import { unitOfWork, UnitOfWork } from "#src/unitOfWork/unitOfWork";
-import { EntityKey, IJobRepository, PaginatedBase } from "@finance/domain";
-import Job from "@finance/domain/build/aggregates/jobAggregrate";
+import { EntityKey, IJobRepository, PaginatedBase, Job } from "@finance/domain";
 import { inject } from "tsyringe";
 
 export class JobRepository implements IJobRepository {

@@ -2,12 +2,13 @@ import "reflect-metadata";
 import { UserFactory } from "#src/factories/userFactory";
 import { UserRepository } from "#src/repositories/userRepository";
 import { DbFixture, TestDataType } from "../test-utils/dbfixture";
+import { IUserFactory, IUserRepository } from "@finance/domain";
 
 let fixture: DbFixture;
 let testData: TestDataType;
 
-let userFactory: UserFactory;
-let userRepository: UserRepository;
+let userFactory: IUserFactory;
+let userRepository: IUserRepository;
 
 beforeAll(async () => {
 	fixture = await DbFixture.getInstance();

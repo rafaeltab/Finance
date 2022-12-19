@@ -26,8 +26,6 @@ classDiagram
 
     }
     class StockAsset {
-		string symbol
-		string exchange
     }
 	class StockOrder {
 		float amount
@@ -39,6 +37,7 @@ classDiagram
     class StockData{
 		string symbol
 		string exchange
+		enum assetKind
     }
     class StockValue {
 		float open
@@ -46,9 +45,16 @@ classDiagram
 		float low
 		float close
 		float? volume
-		bool adjusted
 		Date date
     }
+	class StockDivididendEvent {
+		float amount
+		Date date
+	}
+	class StockSplitEvent {
+		float ratio
+		Date date
+	}
 
     User "1" -- "*" Job
     Job "1" -- "1" ActiveIncome
@@ -63,5 +69,8 @@ classDiagram
     StockAsset "*" -- "1" StockData
     StockData "1" -- "*" StockValue
 	StockAsset "1" -- "*" StockOrder
+	StockData "1" -- "*" StockDivididendEvent
+	StockData "1" -- "*" StockSplitEvent
+
 
 ```

@@ -1,4 +1,4 @@
-import { BankAccount, Balance, User, ActiveIncome, Job, Asset, AssetValue, AssetGroup, StockAsset, StockOrder } from "@finance/domain";
+import { BankAccount, Balance, User, ActiveIncome, Job, Asset, AssetGroup, StockAsset, StockOrder, StockData, StockAssetKind, StockValue, StockSplitEvent, StockDividendEvent } from "@finance/domain";
 import { v4 } from "uuid";
 
 export const user = new User({
@@ -39,6 +39,75 @@ export const job = new Job({
 });
 user.jobs = [job];
 
+export const googlStockData = new StockData({
+	assetKind: StockAssetKind.CS,
+	identity: "goog-nasdaq-stock-data",
+	uniqueId: v4(),
+	exchange: "NASDAQ",
+	symbol: "GOOGL",
+});
+
+var dates = createDates(6);
+export const googStockValues = [
+	new StockValue({
+		stockData: googlStockData,
+		date: dates[0],
+		uniqueId: v4(),
+		close: 69.9,
+		high: 70.1,
+		low: 69.1,
+		open: 69.3,
+		volume: 1000,
+	}),
+	new StockValue({
+		stockData: googlStockData,
+		date: dates[1],
+		uniqueId: v4(),
+		close: 67.7,
+		high: 69.9,
+		low: 65.6,
+		open: 69.9,
+		volume: 1000,
+	}),
+	new StockValue({
+		stockData: googlStockData,
+		date: dates[2],
+		uniqueId: v4(),
+		close: 69.3,
+		high: 70.8,
+		low: 67.7,
+		open: 67.7,
+		volume: 1000,
+	}),
+	new StockValue({
+		stockData: googlStockData,
+		date: dates[3],
+		uniqueId: v4(),
+		close: 69.5,
+		high: 69.7,
+		low: 64.3,
+		open: 69.3,
+		volume: 1000,
+	}),
+];
+
+export const stockSplitEvent = new StockSplitEvent({
+	date: dates[4],
+	stockData: googlStockData,
+	uniqueId: v4(),
+	ratio: 2,
+})
+
+export const stockDividendEvent = new StockDividendEvent({
+	date: dates[5],
+	stockData: googlStockData,
+	uniqueId: v4(),
+	amount: 0.052
+});
+googlStockData.dividendsEvents = [stockDividendEvent];
+googlStockData.splitEvents = [stockSplitEvent];
+googlStockData.values = googStockValues;
+
 export const assetGroup = new AssetGroup({
 	name: "Stock Assets",
 	identity: "stock-assets",
@@ -58,11 +127,20 @@ user.assets = [asset];
 
 export const stockAsset = new StockAsset({
 	asset: asset,
-	exchange: "NASDAQ",
 	identity: "stock-asset-1",
-	symbol: "GOOGL",
 	uniqueId: v4(),
+	stockData: googlStockData,
 });
+
+export const stockOrders = [
+	new StockOrder({
+		amount: 10,
+		usdPrice: 89.3,
+		stockAsset: stockAsset,
+		uniqueId: v4(),
+	})
+]
+stockAsset.orders = stockOrders;
 
 export const stockOrder = new StockOrder({
 	amount: 10,
@@ -81,35 +159,7 @@ function createDates(count: number) {
 	}
 	return dates;
 }
-var dates = createDates(4);
 
-export const assetValues = [
-	new AssetValue({
-		asset,
-		dateTime: dates[0],
-		uniqueId: v4(),
-		usdValue: 69.3
-	}),
-	new AssetValue({
-		asset,
-		dateTime: dates[1],
-		uniqueId: v4(),
-		usdValue: 69.5
-	}),
-	new AssetValue({
-		asset,
-		dateTime: dates[2],
-		uniqueId: v4(),
-		usdValue: 69.7
-	}),
-	new AssetValue({
-		asset,
-		dateTime: dates[3],
-		uniqueId: v4(),
-		usdValue: 69.9
-	}),
-]
-asset.valueHistory = assetValues;
 
 export const testData = {
 	User: [user],
@@ -121,6 +171,9 @@ export const testData = {
 	Asset: [asset],
 	StockAsset: [stockAsset],
 	RealEstateAsset: [],
-	AssetValue: [...assetValues],
+	StockData: [googlStockData],
+	StockValue: [...googStockValues],
+	StockSplitEvent: [stockSplitEvent],
+	StockDividendEvent: [stockDividendEvent],
 	StockOrder: [stockOrder],
 } as const;

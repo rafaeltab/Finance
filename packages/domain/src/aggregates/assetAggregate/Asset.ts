@@ -1,18 +1,13 @@
-import { Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from "typeorm";
+import { Entity, JoinColumn, ManyToOne, OneToOne } from "typeorm";
 import { AssetGroup } from "../AssetGroup";
 import { EnitityBase } from "../../bases/Entity";
 import { User } from "../User";
-import { AssetValue } from "./Value";
 import { StockAsset } from "./assetKinds/StockAsset";
 import { RealEstateAsset } from "./assetKinds/RealEstateAsset";
 import { EntityMeta } from "@finance/libs-types";
 
 @Entity()
-export class Asset extends EnitityBase { 
-	get CurrentValue() { 
-		return this.valueHistory[this.valueHistory.length - 1];
-	}
-
+export class Asset extends EnitityBase {
 	@OneToOne(() => StockAsset, stockAsset => stockAsset.asset, {
 		eager: true,
 		cascade: ["insert"]
@@ -23,9 +18,6 @@ export class Asset extends EnitityBase {
 		cascade: ["insert"]
 	})
 	realEstateAsset?: RealEstateAsset;
-
-	@OneToMany(() => AssetValue, (value) => value.asset)
-	valueHistory: AssetValue[];
 
 	@ManyToOne(() => AssetGroup, (group) => group.assets, {
 		cascade: ["insert"],
@@ -46,6 +38,6 @@ export class Asset extends EnitityBase {
 }
 
 export const AssetMeta: EntityMeta<Asset> = {
-	relations: ["group", "user", "stockAsset", "realEstateAsset", "valueHistory"],
+	relations: ["group", "user", "stockAsset", "realEstateAsset"],
 	data: ["uniqueId", "identity"]
 }

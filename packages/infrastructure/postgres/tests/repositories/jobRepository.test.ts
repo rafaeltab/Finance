@@ -3,11 +3,12 @@ import { JobRepository } from "#src/repositories/jobRepository";
 import { v4 } from "uuid";
 import { arrayIdentityEquals, identityEquals } from "../test-utils/arrayUtils";
 import { DbFixture, TestDataType } from "../test-utils/dbfixture";
+import { IJobRepository } from "@finance/domain";
 
 let fixture: DbFixture;
 let testData: TestDataType;
 
-let jobRepository: JobRepository;
+let jobRepository: IJobRepository;
 
 beforeAll(async () => {
 	fixture = await DbFixture.getInstance();

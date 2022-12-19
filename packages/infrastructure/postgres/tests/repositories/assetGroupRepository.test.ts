@@ -3,11 +3,12 @@ import { AssetGroupRepository } from "#src/repositories/assetGroupRepository";
 import { v4 } from "uuid";
 import { arrayIdentityEquals, identityEquals } from "../test-utils/arrayUtils";
 import { DbFixture, TestDataType } from "../test-utils/dbfixture";
+import { IAssetGroupRepository } from "@finance/domain";
 
 let fixture: DbFixture;
 let testData: TestDataType;
 
-let assetGroupRepository: AssetGroupRepository;
+let assetGroupRepository: IAssetGroupRepository;
 
 beforeAll(async () => {
 	fixture = await DbFixture.getInstance();

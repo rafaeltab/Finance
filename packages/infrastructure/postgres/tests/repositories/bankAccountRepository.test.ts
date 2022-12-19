@@ -3,11 +3,12 @@ import { BankAccountRepository } from "#src/repositories/bankAccountRepository";
 import { v4 } from "uuid";
 import { arrayIdentityEquals, identityEquals } from "../test-utils/arrayUtils";
 import { DbFixture, TestDataType } from "../test-utils/dbfixture";
+import { IBankAccountRepository } from "@finance/domain";
 
 let fixture: DbFixture;
 let testData: TestDataType;
 
-let bankAccountRepository: BankAccountRepository;
+let bankAccountRepository: IBankAccountRepository;
 
 beforeAll(async () => {
 	fixture = await DbFixture.getInstance();

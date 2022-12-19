@@ -3,16 +3,16 @@ import { AssetFactory } from "#src/factories/assetFactory";
 import { AssetGroupRepository } from "#src/repositories/assetGroupRepository";
 import { AssetRepository } from "#src/repositories/assetRepository";
 import { UserRepository } from "#src/repositories/userRepository";
-import { Asset, RealEstateAsset, StockAsset } from "@finance/domain";
+import { Asset, IAssetFactory, IAssetGroupRepository, IAssetRepository, IUserRepository, RealEstateAsset, StockAsset } from "@finance/domain";
 import { DbFixture, TestDataType } from "../test-utils/dbfixture";
 
 let fixture: DbFixture; 
 let testData: TestDataType;
 
-let assetFactory: AssetFactory;
-let assetRepository: AssetRepository;
-let userRepository: UserRepository;
-let assetGroupRepository: AssetGroupRepository;
+let assetFactory: IAssetFactory;
+let assetRepository: IAssetRepository;
+let userRepository: IUserRepository;
+let assetGroupRepository: IAssetGroupRepository;
 
 beforeAll(async () => {
 	fixture = await DbFixture.getInstance();
@@ -33,9 +33,7 @@ afterAll(async () => {
 });
 
 type StockAssetData = {
-	stockOrders: {amount: number, price: number}[],
-	symbol: string,
-	exchange: string
+	stockOrders: {amount: number, price: number}[]
 }
 
 type RealEstateAssetData = {
@@ -48,14 +46,14 @@ describe("addStockToAssetGroup", () => {
 			stockOrders: [{
 				amount: 5,
 				price: 99.3
-			}],
-			symbol: "GOOG",
-			exchange: "NASDAQ"
+			}]
 		}
 
 		const [stockAsset, asset] = await assetFactory.addStockToAssetGroup({
 			identity: testData.assetGroup.identity
-		}, data.symbol, data.exchange, data.stockOrders);
+		}, {
+			identity: testData.googlStockData.identity
+		}, data.stockOrders);
 
 		assetAndStockAssetValid(data, stockAsset, asset);
 
@@ -88,7 +86,9 @@ describe("addStockToUser", () => {
 
 		const [stockAsset, asset] = await assetFactory.addStockToUser({
 			identity: testData.user.identity
-		}, data.symbol, data.exchange, data.stockOrders);
+		}, {
+			identity: testData.googlStockData.identity
+		}, data.stockOrders);
 
 		assetAndStockAssetValid(data, stockAsset, asset);
 
@@ -182,8 +182,7 @@ function assetAndStockAssetValid(data: StockAssetData, stockAsset?: StockAsset, 
 	expect(stockAsset.uniqueId).not.toBeNull();
 
 	expect(stockAsset.orders.length).toBe(data.stockOrders.length);
-	expect(stockAsset.symbol).toBe(data.symbol);
-	expect(stockAsset.symbol).toBe(data.symbol);
+	expect(stockAsset.stockData.identity).toBe(testData.googlStockData.identity);
 }
 
 function assetAndRealEstateAssetValid(data: RealEstateAssetData, realEstateAsset?: RealEstateAsset, asset?: Asset) {

@@ -3,13 +3,14 @@ import { BankAccountFactory } from "#src/factories/bankAccountFactory";
 import { BankAccountRepository } from "#src/repositories/bankAccountRepository";
 import { UserRepository } from "#src/repositories/userRepository";
 import { DbFixture, TestDataType } from "../test-utils/dbfixture";
+import { IBankAccountFactory, IBankAccountRepository, IUserRepository } from "@finance/domain";
 
 let fixture: DbFixture;
 let testData: TestDataType;
 
-let bankAccountFactory: BankAccountFactory;
-let bankAccountRepository: BankAccountRepository;
-let userRepository: UserRepository;
+let bankAccountFactory: IBankAccountFactory;
+let bankAccountRepository: IBankAccountRepository;
+let userRepository: IUserRepository;
 
 
 beforeAll(async () => {

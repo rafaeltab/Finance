@@ -1,5 +1,5 @@
 import { UnitOfWork, unitOfWork } from "#src/unitOfWork/unitOfWork";
-import { Asset, AssetGroup, AssetValue, EntityKey, IAssetFactory, IAssetGroupFactory, RealEstateAsset, StockAsset, User, StockOrder, StockAssetKind } from "@finance/domain";
+import { Asset, AssetGroup, EntityKey, IAssetFactory, RealEstateAsset, StockAsset, User, StockOrder, StockData } from "@finance/domain";
 import { inject } from "tsyringe";
 
 export class AssetFactory implements IAssetFactory {
@@ -32,7 +32,7 @@ export class AssetFactory implements IAssetFactory {
 		return assetEntity.stockAsset;
 	}
 
-	async addStockToAssetGroup(assetGroup: EntityKey, symbol: string, exchange: string, stockOrders: { amount: number, price: number }[]): Promise<[StockAsset, Asset]> {
+	async addStockToAssetGroup(assetGroup: EntityKey, stockDataId: EntityKey, stockOrders: { amount: number, price: number }[]): Promise<[StockAsset, Asset]> {
 		const assetGroupEntity = await this._unitOfWork.getQueryRunner().manager.findOne(AssetGroup, {
 			where: assetGroup,
 			relations: {
@@ -43,7 +43,7 @@ export class AssetFactory implements IAssetFactory {
 		const [stockAssetEntity, assetEntity, stockOrderEntities] = await this.createStockAsset({
 			kind: "group",
 			entity: assetGroupEntity
-		}, symbol, exchange, stockOrders);
+		}, stockDataId, stockOrders);
 
 		await this._unitOfWork.getQueryRunner().manager.save([assetEntity, assetGroupEntity, ...stockOrderEntities]);
 
@@ -66,7 +66,7 @@ export class AssetFactory implements IAssetFactory {
 
 		return [realEstateAsset, assetEntity];
 	}
-	async addStockToUser(user: EntityKey, symbol: string, exchange: string, stockOrders: { amount: number, price: number }[]): Promise<[StockAsset, Asset]> {
+	async addStockToUser(user: EntityKey, stockDataId: EntityKey, stockOrders: { amount: number, price: number }[]): Promise<[StockAsset, Asset]> {
 		const userEntity = await this._unitOfWork.getQueryRunner().manager.findOne(User, {
 			where: user,
 			relations: {
@@ -77,7 +77,7 @@ export class AssetFactory implements IAssetFactory {
 		const [stockAssetEntity, assetEntity, stockOrderEntities] = await this.createStockAsset({
 			kind: "user",
 			entity: userEntity
-		}, symbol, exchange, stockOrders);
+		}, stockDataId, stockOrders);
 
 		await this._unitOfWork.getQueryRunner().manager.save([assetEntity, userEntity, ...stockOrderEntities]);
 
@@ -99,60 +99,18 @@ export class AssetFactory implements IAssetFactory {
 		await this._unitOfWork.getQueryRunner().manager.save([assetEntity, realEstateAsset]);
 
 		return [realEstateAsset, assetEntity];
-	}
+	}	
 
-	async addValueToAsset(asset: EntityKey, value: { usdValue: number; time: Date; }): Promise<AssetValue> {
-		const assetEntity = await this._unitOfWork.getQueryRunner().manager.findOne(Asset, {
-			where: asset,
-			relations: {
-				valueHistory: true,
-			}
+	private async createStockAsset(ownerEntity: { kind: "user", entity: User } | { kind: "group", entity: AssetGroup }, stockDataId: EntityKey, stockOrders: { amount: number, price: number }[]) {
+		const stockData = await this._unitOfWork.getQueryRunner().manager.findOne(StockData, {
+			where: stockDataId,
 		});
 
-		const valueEntity = new AssetValue({
-			usdValue: value.usdValue,
-			dateTime: value.time,
-		});
-
-		assetEntity.valueHistory.push(valueEntity);
-
-		await this._unitOfWork.getQueryRunner().manager.save([assetEntity, valueEntity]);
-
-		return valueEntity;
-	}
-	async addValuesToAsset(asset: EntityKey, values: { usdValue: number; time: Date; }[]): Promise<AssetValue[]> {
-		const assetEntity = await this._unitOfWork.getQueryRunner().manager.findOne(Asset, {
-			where: asset,
-			relations: {
-				valueHistory: true,
-			}
-		});
-
-		let valueEntities = [];
-
-		for (const v of values) {
-			valueEntities.push(new AssetValue({
-				usdValue: v.usdValue,
-				dateTime: v.time,
-			}));
-		}
-
-		assetEntity.valueHistory.push(...valueEntities);
-
-		await this._unitOfWork.getQueryRunner().manager.save([assetEntity, ...valueEntities]);
-
-		return valueEntities;
-	}
-	
-
-	private async createStockAsset(ownerEntity: { kind: "user", entity: User } | { kind: "group", entity: AssetGroup }, symbol: string, exchange: string, stockOrders: { amount: number, price: number }[]) {
-		const identities = this.createStockAssetIdentity(ownerEntity.entity.identity, symbol, exchange)[1]
+		const identities = this.createStockAssetIdentity(ownerEntity.entity.identity, stockData)[1]
 
 		const stockAssetEntity = new StockAsset({
-			symbol: symbol,
-			exchange: exchange,
+			stockData: stockData,
 			identity: identities[0],
-			assetKind: StockAssetKind.CS,
 		});
 
 		const assetEntity = new Asset({
@@ -205,8 +163,8 @@ export class AssetFactory implements IAssetFactory {
 		return [realEstateAsset, assetEntity] as [RealEstateAsset, Asset];
 	}
 
-	private createStockAssetIdentity(ownerIdentity: string, symbol: string, exchange: string): [string, string] {
-		return [`${ownerIdentity}-stock-asset-${exchange.toLowerCase()}-${symbol.toLowerCase()}`, `${ownerIdentity}-asset-${exchange.toLowerCase()}-${symbol.toLowerCase()}`];
+	private createStockAssetIdentity(ownerIdentity: string, stockData: StockData): [string, string] {
+		return [`${ownerIdentity}-stock-asset-${stockData.exchange.toLowerCase()}-${stockData.assetKind.toString().toLowerCase()}-${stockData.symbol.toLowerCase()}`, `${ownerIdentity}-asset-${stockData.exchange.toLowerCase()}-${stockData.assetKind.toString().toLowerCase()}-${stockData.symbol.toLowerCase()}`];
 	}
 
 	private createRealEstateAssetIdentity(ownerIdentity: string, address: string): [string, string] {
