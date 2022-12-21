@@ -13,7 +13,7 @@ let userRepository: IUserRepository;
 beforeAll(async () => {
 	fixture = await DbFixture.getInstance();
 	testData = fixture.getTestData();
-});
+}, 20000);
 
 beforeEach(async () => {
 	await fixture.resetUnitOfWork();
