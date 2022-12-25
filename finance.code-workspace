@@ -13,13 +13,17 @@
 			"path": "apps/web"
 		},
 		{
+			"name": "[Packages] Application",
+			"path": "packages/application"
+		},
+		{
 			"name": "[Package] Infra",
 			"path": "packages/infrastructure/infra"
 		},
 		{
 			"name": "[Package] Postgres",
 			"path": "packages/infrastructure/postgres"
-		}
+		},
 	],
 	"settings": {
 		"jest.disabledWorkspaceFolders": [

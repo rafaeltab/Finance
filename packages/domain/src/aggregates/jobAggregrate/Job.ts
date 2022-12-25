@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from "typeorm";
 import { ActiveIncome } from "./ActiveIncome";
-import { EnitityBase } from "../../bases/Entity";
+import { EnitityBase } from "../../utils/Entity";
 import { User } from "../User";
 import { EntityMeta } from "@finance/libs-types";
 

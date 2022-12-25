@@ -1,6 +1,6 @@
 import { Entity, JoinColumn, ManyToOne, OneToOne } from "typeorm";
 import { AssetGroup } from "../AssetGroup";
-import { EnitityBase } from "../../bases/Entity";
+import { EnitityBase } from "../../utils/Entity";
 import { User } from "../User";
 import { StockAsset } from "./assetKinds/StockAsset";
 import { RealEstateAsset } from "./assetKinds/RealEstateAsset";

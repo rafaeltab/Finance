@@ -2,7 +2,7 @@ import { InjectionToken } from "tsyringe";
 import { StockAssetKind, StockData, StockValue } from "../aggregates";
 import { StockDividendEvent } from "../aggregates/stockAggregate/StockDividendEvent";
 import { StockSplitEvent } from "../aggregates/stockAggregate/StockSplitEvent";
-import { EntityKey, PaginatedBase } from "../bases";
+import { EntityKey, PaginatedBase } from "../utils";
 
 export type ValueGranularity = "minute" | "hour" | "day" | "week" | "month" | "year";
 
@@ -35,9 +35,20 @@ export class TimeRange {
 		const month = day.getMonth()
 		const year = day.getFullYear()
 
-		var start = new Date(year, month, date, 0, 0, 0, 0);
-		var end = new Date(year, month, date, 23, 59, 59, 999);
+		//start of today
+		var start = 
+		// var start = new Date(year, month, date, 0, 0, 0, 0);
+		var end = new Date(start.getTime() + 60 * 60 * 24 * 1000 - 1);
+		console.log(start, end);
 
+		return new TimeRange(start, end);
+	}
+
+	static halfDayAroundNow(day: Date) {
+		var start = new Date(day.getTime() - 60 * 60 * 12 * 1000);
+		var end = new Date(day.getTime() + 60 * 60 * 12 * 1000);
+
+		console.log(start, end);
 		return new TimeRange(start, end);
 	}
 }

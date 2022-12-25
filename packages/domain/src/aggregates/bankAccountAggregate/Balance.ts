@@ -1,6 +1,6 @@
 import { EntityMeta } from "@finance/libs-types";
 import { Column, Entity, JoinColumn, OneToOne } from "typeorm";
-import { ValueObjectBase } from "../../bases";
+import { ValueObjectBase } from "../../utils";
 import { BankAccount } from "./BankAccount";
 
 @Entity()

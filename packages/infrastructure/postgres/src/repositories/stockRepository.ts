@@ -1,7 +1,8 @@
 import { UnitOfWork, unitOfWork } from "#src/unitOfWork/unitOfWork";
 import { EntityKey, IStockRepository, PaginatedBase, StockData, StockDividendEvent, StockSplitEvent, StockValue, ValueGranularity, TimeRange, StockAssetKind } from "@finance/domain";
 import { inject } from "tsyringe";
-import { SelectQueryBuilder, In, Like, FindOptionsWhere } from "typeorm";
+import { SelectQueryBuilder, In, Like, FindOptionsWhere, ObjectLiteral, EntityManager, EntityMetadata, EntityTarget } from "typeorm";
+import { get, set } from "lodash";
 
 const granularities = new Set(["minute", "hour", "day", "week", "month", "year"]);
 
@@ -40,7 +41,7 @@ export class StockRepository implements IStockRepository {
 		if (granularities.has(granularity) == false) {
 			throw new Error("Invalid granularity");
 		}
-		
+
 		const stockData = await this._unitOfWork.getQueryRunner().manager.findOne(StockData, {
 			where: stockDataId
 		});
@@ -49,9 +50,10 @@ export class StockRepository implements IStockRepository {
 		const groupby = `${trunc}`
 		const distinct = [trunc];
 
-		const stockId = {stockId: stockData.uniqueId};
+		const stockId = { stockId: stockData.uniqueId };
 
-		var stockValues = await this._unitOfWork.getQueryRunner().manager
+		const entityManager = this._unitOfWork.getQueryRunner().manager;
+		const queryResult = await entityManager
 			.createQueryBuilder()
 			.from((subQuery) => {
 				return subQuery
@@ -101,14 +103,16 @@ export class StockRepository implements IStockRepository {
 			.skip(offset)
 			.limit(limit)
 			.getRawMany();
-		
-		
+
+
+		const stockValues = mapRawsToEntities(StockValue, queryResult, entityManager);
+
 		return {
 			data: stockValues as any,
 			page: {
 				count: stockValues.length,
 				offset: offset,
-				total: stockValues[0].total
+				total: queryResult[0].total
 			}
 		}
 	}
@@ -131,10 +135,10 @@ export class StockRepository implements IStockRepository {
 		let allowedKinds: `${StockAssetKind}`[] = [];
 		if (stockType !== undefined) {
 			allowedKinds = kinds.filter(kind => kind.includes(stockType));
-		} else { 
+		} else {
 			allowedKinds = kinds;
 		}
-		
+
 		let where: FindOptionsWhere<StockData> = {
 			assetKind: In(allowedKinds),
 		}
@@ -193,7 +197,8 @@ export class StockRepository implements IStockRepository {
 
 		const stockIds = { stockIds: stockData.map(x => x.uniqueId) }
 
-		var stockValues = await this._unitOfWork.getQueryRunner().manager
+		const entityManager = this._unitOfWork.getQueryRunner().manager;
+		const queryResult = await entityManager
 			.createQueryBuilder()
 			.from((subQuery) => {
 				return subQuery.from(StockValue, "sv")
@@ -238,14 +243,49 @@ export class StockRepository implements IStockRepository {
 			.addSelect(`"lhv"."volume"`, "volume")
 			.addSelect(`"lhv"."date"`, "date")
 			.addSelect(`"lhv"."stockDataUniqueId"`, "stockDataUniqueId")
-			.getRawMany()
+			.getRawMany();
+
+		const stockValues = mapRawsToEntities(StockValue, queryResult, entityManager);
 
 		for (const value of stockValues) {
-			if (stockDataMap.get(value.stockDataUniqueId).values == undefined) {
-				stockDataMap.get(value.stockDataUniqueId).values = [];
+			if (stockDataMap.get(value.stockData.uniqueId).values == undefined) {
+				stockDataMap.get(value.stockData.uniqueId).values = [];
 			}
-			stockDataMap.get(value.stockDataUniqueId).values.push(value);
+			stockDataMap.get(value.stockData.uniqueId).values.push(value);
 		}
 		return Array.from(stockDataMap.values());
 	}
+}
+
+function mapRawsToEntities<T>(entity: EntityTarget<T>, raw: ObjectLiteral[], entityManager: EntityManager): T[] {
+	const meta = entityManager.connection.getMetadata(entity);
+	return raw.map((r) => mapRawToEntity(entity, r, entityManager, meta));
+}
+
+function mapRawToEntity<T>(entity: EntityTarget<T>, raw: ObjectLiteral, entityManager: EntityManager, meta?: EntityMetadata): T {
+	var result: Partial<T> = {}
+	
+	if(meta === undefined) {
+		meta = entityManager.connection.getMetadata(entity);
+	}
+
+	for (const column of meta.columns) {
+		if (raw[column.databaseName] !== undefined) {
+			let value = raw[column.databaseName];
+			if (column.transformer !== undefined) { 
+				let transformers = column.transformer;
+				if (!Array.isArray(transformers)) { 
+					transformers = [transformers];
+				}
+
+				for (const transformer of transformers) {
+					value = transformer.from(value);
+				}
+			}
+
+			set(result, column.propertyPath, value)
+		}
+	}
+
+	return result as T;
 }

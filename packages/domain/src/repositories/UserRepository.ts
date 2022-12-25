@@ -1,8 +1,8 @@
 import { InjectionToken } from "tsyringe";
 import { FindOptionsRelations } from "typeorm";
 import { User } from "../aggregates/User";
-import { EntityKey } from "../bases";
-import { PaginatedBase } from "../bases/PaginatedBase";
+import { EntityKey } from "../utils";
+import { PaginatedBase } from "../utils/PaginatedBase";
 
 export const userRepository: InjectionToken = "IUserRepository";
 

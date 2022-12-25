@@ -1,6 +1,6 @@
 import { EntityMeta } from "@finance/libs-types";
 import { Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from "typeorm";
-import { EnitityBase } from "../../../bases";
+import { EnitityBase } from "../../../utils";
 import { StockData } from "../../stockAggregate/StockData";
 import { Asset } from "../Asset";
 import { StockOrder } from "./StockOrder";

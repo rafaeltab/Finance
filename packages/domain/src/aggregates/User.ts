@@ -1,6 +1,6 @@
 import { EntityMeta } from "@finance/libs-types"
 import { Entity, Column, OneToMany } from "typeorm"
-import { EnitityBase } from "../bases/Entity"
+import { EnitityBase } from "../utils/Entity"
 import { Asset } from "./assetAggregate/Asset"
 import { AssetGroup } from "./AssetGroup"
 import BankAccount from "./bankAccountAggregate"

@@ -1,37 +1,43 @@
 import { EntityMeta } from "@finance/libs-types";
 import { Column, Entity, ManyToOne } from "typeorm";
-import { ValueObjectBase } from "../../bases";
+import { ValueObjectBase } from "../../utils";
 import { StockData } from "./StockData";
+import { ColumnNumericTransformer } from "../../utils/numericTransformer";
 
 @Entity()
 export class StockValue extends ValueObjectBase {
-	@Column({
-		type: "decimal",
-		scale: 3
+	@Column("numeric", {
+		scale: 3,
+		precision: 10,
+		transformer: new ColumnNumericTransformer()
 	})
 	open: number;
 
 	@Column({
-		type: "decimal",
-		scale: 3
+		type: "numeric",
+		scale: 3,
+		transformer: new ColumnNumericTransformer()
 	})
 	high: number;
 
 	@Column({
-		type: "decimal",
-		scale: 3
+		type: "numeric",
+		scale: 3,
+		transformer: new ColumnNumericTransformer()
 	})
 	low: number;
 
 	@Column({
-		type: "decimal",
-		scale: 3
+		type: "numeric",
+		scale: 3,
+		transformer: new ColumnNumericTransformer()
 	})
 	close: number;
 
 	@Column({
-		type: "decimal",
-		scale: 3
+		type: "numeric",
+		scale: 3,
+		transformer: new ColumnNumericTransformer()
 	})
 	volume: number;
 

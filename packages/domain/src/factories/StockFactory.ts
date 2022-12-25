@@ -1,6 +1,6 @@
 import { InjectionToken } from "tsyringe";
-import { StockAssetKind, StockData, StockValue } from "../aggregates";
-import { EntityKey } from "../bases";
+import { StockAssetKind, StockData, StockDividendEvent, StockSplitEvent, StockValue } from "../aggregates";
+import { EntityKey } from "../utils";
 
 export type InsertStockValue = {
 	open: number;
@@ -24,7 +24,7 @@ export interface IStockFactory {
 
 	addStockValues(stockData: EntityKey, values: InsertStockValue[]): Promise<StockValue[]>;
 	
-	addStockDividendEvents(stockData: EntityKey, events: InsertEvent[]): Promise<InsertEvent[]>;
+	addStockDividendEvents(stockData: EntityKey, events: InsertEvent[]): Promise<StockDividendEvent[]>;
 
-	addStockSplitEvents(stockData: EntityKey, events: InsertEvent[]): Promise<InsertEvent[]>;
+	addStockSplitEvents(stockData: EntityKey, events: InsertEvent[]): Promise<StockSplitEvent[]>;
 }

@@ -1,7 +1,8 @@
 import { EntityMeta } from "@finance/libs-types";
 import { Column, Entity, ManyToOne } from "typeorm";
-import { ValueObjectBase } from "../../bases";
+import { ValueObjectBase } from "../../utils";
 import { StockData } from "./StockData";
+import { ColumnNumericTransformer } from "../../utils/numericTransformer";
 
 
 @Entity()
@@ -12,6 +13,7 @@ export class StockSplitEvent extends ValueObjectBase {
 	@Column({
 		type: "decimal",
 		precision: 10,
+		transformer: new ColumnNumericTransformer()
 	})
 	ratio: number;
 

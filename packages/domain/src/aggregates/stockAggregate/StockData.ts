@@ -1,6 +1,6 @@
 import { EntityMeta } from "@finance/libs-types";
 import { Column, Entity, OneToMany } from "typeorm";
-import { EnitityBase } from "../../bases";
+import { EnitityBase } from "../../utils";
 import { StockDividendEvent } from "./StockDividendEvent";
 import { StockSplitEvent } from "./StockSplitEvent";
 import { StockValue } from "./StockValue";
@@ -45,7 +45,9 @@ export class StockData extends EnitityBase {
 	})
 	assetKind: StockAssetKind;
 
-	@OneToMany(() => StockValue, (value) => value.stockData)
+	@OneToMany(() => StockValue, (value) => value.stockData, {
+		cascade: ["insert"],
+	})
 	values: StockValue[];
 
 	@OneToMany(() => StockSplitEvent, (event) => event.stockData)

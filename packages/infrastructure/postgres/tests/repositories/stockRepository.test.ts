@@ -50,7 +50,7 @@ describe("getStockValues", () => {
 		const stockValues = await stockRepository.getStockValues({ identity: testData.googlStockData.identity }, "hour",
 			TimeRange.fromDay(new Date()));
 		expect(stockValues).toBeDefined();
-		expect(stockValues.data.length).toBe(1);
+		expect(stockValues.data.length).toBeLessThan(3);// 1 or 2 depending on when the test is run
 	});
 });
 

@@ -1,5 +1,5 @@
 import { Column, Entity, JoinColumn, OneToOne } from "typeorm";
-import { EnitityBase } from "../../../bases";
+import { EnitityBase } from "../../../utils";
 import { Asset } from "../Asset";
 import { EntityMeta } from "@finance/libs-types";
 

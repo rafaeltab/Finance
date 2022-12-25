@@ -1,4 +1,1 @@
 $ rimraf ./build/ && tsc
-src/repositories/stockRepository.ts(114,29): error TS1003: Identifier expected.
-error Command failed with exit code 2.
-info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.

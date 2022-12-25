@@ -1,7 +1,7 @@
 import { InjectionToken } from "tsyringe";
 import BankAccount from "../aggregates/bankAccountAggregate";
-import { EntityKey } from "../bases";
-import { PaginatedBase } from "../bases/PaginatedBase";
+import { EntityKey } from "../utils";
+import { PaginatedBase } from "../utils/PaginatedBase";
 
 export const bankAccountRepository: InjectionToken = "IBankAccountRepository";
 

@@ -1,6 +1,6 @@
 import { InjectionToken } from "tsyringe";
 import Job from "../aggregates/jobAggregrate";
-import { EntityKey } from "../bases";
+import { EntityKey } from "../utils";
 
 export const jobFactory: InjectionToken = "IJobFactory";
 
