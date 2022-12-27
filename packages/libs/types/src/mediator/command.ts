@@ -13,7 +13,7 @@ export type ICommandResult = ISuccessCommandResult | IFailedCommandResult;
 
 export abstract class ICommand<TImplementation> implements ITokenable {
 	/** This should be created by the query class, not the user */
-	abstract token: string;
+	readonly abstract token: string;
 
 	constructor(c: Omit<TImplementation, "token">) {
 	Object.assign(this, c);
