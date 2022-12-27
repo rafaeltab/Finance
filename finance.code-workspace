@@ -24,6 +24,10 @@
 			"name": "[Package] Postgres",
 			"path": "packages/infrastructure/postgres"
 		},
+		{
+			"name": "[Package] libs types",
+			"path": "packages/libs/types"
+		}
 	],
 	"settings": {
 		"jest.disabledWorkspaceFolders": [

@@ -36,8 +36,7 @@ export class TimeRange {
 		const year = day.getFullYear()
 
 		//start of today
-		var start = 
-		// var start = new Date(year, month, date, 0, 0, 0, 0);
+		var start = new Date(year, month, date, 0, 0, 0, 0);
 		var end = new Date(start.getTime() + 60 * 60 * 24 * 1000 - 1);
 		console.log(start, end);
 

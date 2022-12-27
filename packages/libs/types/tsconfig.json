@@ -4,5 +4,13 @@
 	"compilerOptions": {
 		"outDir": "build",
 		"declaration": true
+	},
+	"paths": {
+		"#src/*": [
+			"src/*"
+		],
+		"#tests/*": [
+			"tests/*"
+		]
 	}
 }

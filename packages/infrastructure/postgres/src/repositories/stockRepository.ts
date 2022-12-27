@@ -1,8 +1,8 @@
 import { UnitOfWork, unitOfWork } from "#src/unitOfWork/unitOfWork";
-import { EntityKey, IStockRepository, PaginatedBase, StockData, StockDividendEvent, StockSplitEvent, StockValue, ValueGranularity, TimeRange, StockAssetKind } from "@finance/domain";
+import { EntityKey, IStockRepository, PaginatedBase, StockAssetKind, StockData, StockDividendEvent, StockSplitEvent, StockValue, TimeRange, ValueGranularity } from "@finance/domain";
+import { set } from "lodash";
 import { inject } from "tsyringe";
-import { SelectQueryBuilder, In, Like, FindOptionsWhere, ObjectLiteral, EntityManager, EntityMetadata, EntityTarget } from "typeorm";
-import { get, set } from "lodash";
+import { EntityManager, EntityMetadata, EntityTarget, FindOptionsWhere, In, Like, ObjectLiteral } from "typeorm";
 
 const granularities = new Set(["minute", "hour", "day", "week", "month", "year"]);
 
@@ -38,7 +38,8 @@ export class StockRepository implements IStockRepository {
 	}
 
 	async getStockValues(stockDataId: EntityKey, granularity: ValueGranularity, timerange: TimeRange, limit?: number, offset?: number): Promise<PaginatedBase<StockValue>> {
-		if (granularities.has(granularity) == false) {
+		let isValidGranularity = granularities.has(granularity);
+		if (!isValidGranularity) {
 			throw new Error("Invalid granularity");
 		}
 

@@ -1,6 +1,6 @@
 import { Module } from "@finance/modules";
 import { DependencyContainer } from "tsyringe";
-import { DomainEventsModuleModule } from "./domainEventsModule";
+import { DomainEventsModule } from "./domainEventsModule";
 import { Mediator } from "./mediator";
 
 export class ApplicationModule implements Module {
@@ -8,7 +8,7 @@ export class ApplicationModule implements Module {
 
 	async init(): Promise<void> {
 		this.mediator = new Mediator();
-		await this.mediator.register(DomainEventsModuleModule);
+		await this.mediator.register(DomainEventsModule);
 		return;
 	}
 
