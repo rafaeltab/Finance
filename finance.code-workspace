@@ -13,7 +13,11 @@
 			"path": "apps/web"
 		},
 		{
-			"name": "[Packages] Application",
+			"name": "[App] Api",
+			"path": "apps/api"
+		},
+		{
+			"name": "[Package] Application",
 			"path": "packages/application"
 		},
 		{
@@ -34,7 +38,8 @@
 			"Root",
 			"[Package] Domain",
 			"[App] Web",
-			"[Package] Infra"
+			"[Package] Infra",
+			"[Package] Application"
 		]
 	},
 }

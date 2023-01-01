@@ -1,5 +1,5 @@
-import { EntityMeta } from "@finance/libs-types";
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from "typeorm";
+import type { EntityMeta } from "@finance/libs-types";
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne, Relation } from "typeorm";
 import { EnitityBase } from "../../utils";
 import { User } from "../User";
 import { Balance } from "./Balance";
@@ -7,20 +7,20 @@ import { Balance } from "./Balance";
 @Entity()
 export class BankAccount extends EnitityBase { 
 	@Column()
-	bank: string;
+	bank?: string;
 
 	@OneToOne(() => Balance, balance => balance.bankAccount, {
 		eager: true,
 		cascade: ["insert"]
 	})
-	balance: Balance;
+	balance?: Relation<Balance>;
 
 	@ManyToOne(() => User, user => user.bankAccounts, {
 		cascade: ["insert"],
 		onDelete: "CASCADE",
 	})
 	@JoinColumn()
-	user: User;
+	user?: Relation<User>;
 
 	constructor(init: Partial<BankAccount>) {
 		super();

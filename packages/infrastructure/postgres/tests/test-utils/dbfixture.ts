@@ -9,9 +9,9 @@ async function createTestData() {
 }
 
 export class DbFixture {
-	private unitOfWork: UnitOfWork;
-	private dataSource: DataSource;
-	private testData: TestDataType;
+	private unitOfWork?: UnitOfWork;
+	private dataSource?: DataSource;
+	private testData?: TestDataType;
 
 	private constructor() { }
 
@@ -25,19 +25,28 @@ export class DbFixture {
 		if (this.unitOfWork !== null && this.unitOfWork !== undefined && this.unitOfWork.getQueryRunner().isTransactionActive === true) {
 			await this.unitOfWork.rollback();
 		}
+		if (!this.dataSource) throw new Error("DataSource is not initialized");
+
 		this.unitOfWork = new UnitOfWork(this.dataSource);
 		await this.unitOfWork.start();
 	}
 
 	getInstance<T extends new (unitOfWork: UnitOfWork) => InstanceType<T>>(c: T): InstanceType<T> {
+		if (!this.unitOfWork) throw new Error("UnitOfWork is not initialized");
+
 		return new c(this.unitOfWork);
 	}
 
 	getTestData() {
+		if (!this.testData) throw new Error("TestData is not initialized");
+
 		return this.testData;
 	}
 
 	async destroy() {
+		if (!this.unitOfWork) throw new Error("UnitOfWork is not initialized");
+		if (!this.dataSource) throw new Error("DataSource is not initialized");
+		
 		if (this.unitOfWork.getQueryRunner().isTransactionActive === true) {
 			await this.unitOfWork.rollback();
 		}
@@ -80,10 +89,14 @@ export async function insertTestData(dataSource: DataSource) {
 
 	if (userTest == null) {
 		for (const entityKey of Object.keys(testData.testData)) {
-			for (const entity of testData.testData[entityKey]) {
+			const key = entityKey as keyof (typeof testData.testData);
+
+			for (const entity of testData.testData[key]) {
 				try {
 					await dataSource.manager.insert(entityKey, entity);
-				} catch (e) { }
+				} catch (e) {
+					console.log(e);
+				}
 			}
 		}
 	}

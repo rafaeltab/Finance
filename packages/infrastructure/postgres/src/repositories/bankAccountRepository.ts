@@ -1,8 +1,8 @@
-import { unitOfWork, UnitOfWork } from "#src/unitOfWork/unitOfWork";
-import { EntityKey, IBankAccountRepository, PaginatedBase } from "@finance/domain";
-import BankAccount from "@finance/domain/build/aggregates/bankAccountAggregate";
-import { inject } from "tsyringe";
+import { unitOfWork, UnitOfWork } from "../unitOfWork/unitOfWork";
+import { EntityKey, IBankAccountRepository, PaginatedBase, BankAccount } from "@finance/domain";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class BankAccountRepository implements IBankAccountRepository {
 	constructor(@inject(unitOfWork) private _unitOfWork: UnitOfWork) { }
 
@@ -26,9 +26,15 @@ export class BankAccountRepository implements IBankAccountRepository {
 	}
 
 	async get(id: EntityKey): Promise<BankAccount> {
-		return await this._unitOfWork.getQueryRunner().manager.findOne(BankAccount, {
+		const bankAccount =  await this._unitOfWork.getQueryRunner().manager.findOne(BankAccount, {
 			where: id
 		});
+
+		if (!bankAccount) {
+			throw new Error("Bank account not found");
+		}
+
+		return bankAccount;
 	}
 
 	async delete(id: EntityKey): Promise<void> {

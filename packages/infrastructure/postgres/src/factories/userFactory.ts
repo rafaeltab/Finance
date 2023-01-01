@@ -1,7 +1,8 @@
 import { User, IUserFactory } from "@finance/domain";
-import { inject } from "tsyringe";
+import { inject, injectable } from "tsyringe";
 import { UnitOfWork, unitOfWork } from "../unitOfWork/unitOfWork";
 
+@injectable()
 export class UserFactory implements IUserFactory {
 	constructor(@inject(unitOfWork) private _unitOfWork: UnitOfWork) { }
 

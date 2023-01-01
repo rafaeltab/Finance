@@ -1,6 +1,6 @@
-import { InjectionToken } from "tsyringe";
-import BankAccount from "../aggregates/bankAccountAggregate";
-import { EntityKey } from "../utils";
+import type { InjectionToken } from "tsyringe";
+import type BankAccount from "../aggregates/bankAccountAggregate";
+import type { EntityKey } from "../utils";
 
 export const bankAccountFactory: InjectionToken = "IBankAccountFactory";
 

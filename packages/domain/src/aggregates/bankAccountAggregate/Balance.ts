@@ -1,22 +1,22 @@
-import { EntityMeta } from "@finance/libs-types";
-import { Column, Entity, JoinColumn, OneToOne } from "typeorm";
+import type { EntityMeta } from "@finance/libs-types";
+import { Column, Entity, JoinColumn, OneToOne, Relation } from "typeorm";
 import { ValueObjectBase } from "../../utils";
 import { BankAccount } from "./BankAccount";
 
 @Entity()
 export class Balance extends ValueObjectBase { 
 	@Column()
-	amount: number;
+	amount?: number;
 
 	@Column()
-	currency: string;
+	currency?: string;
 
 	@OneToOne(() => BankAccount, bankAccount => bankAccount.balance, {
 		cascade: ["insert"],
 		onDelete: "CASCADE",
 	})
 	@JoinColumn()
-	bankAccount: BankAccount;
+	bankAccount?: Relation<BankAccount>;
 
 	constructor(init: Partial<Balance>) {
 		super();

@@ -1,7 +1,7 @@
 import { IAssetFactory, IAssetGroupFactory, IAssetGroupRepository, IAssetRepository, IBankAccountFactory, IBankAccountRepository, IJobFactory, IJobRepository, IStockFactory, IStockRepository, IUserFactory, IUserRepository, assetFactory, assetGroupFactory, assetGroupRepository, assetRepository, bankAccountFactory, bankAccountRepository, jobFactory, jobRepository, stockFactory, stockRepository, userFactory, userRepository } from "@finance/domain";
-import { Module } from "@finance/modules";
-import { DependencyContainer } from "tsyringe";
-import { DataSource } from "typeorm";
+import type { Module } from "@finance/modules";
+import type { DependencyContainer } from "tsyringe";
+import type { DataSource } from "typeorm";
 import { AppDataSource, dataSource } from "./data-source";
 import { AssetFactory } from "./factories/assetFactory";
 import { AssetGroupFactory } from "./factories/assetGroupFactory";

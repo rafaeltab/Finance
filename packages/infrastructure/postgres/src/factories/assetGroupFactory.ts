@@ -1,7 +1,8 @@
-import { UnitOfWork, unitOfWork } from "#src/unitOfWork/unitOfWork";
+import { UnitOfWork, unitOfWork } from "../unitOfWork/unitOfWork";
 import { AssetGroup, EntityKey, IAssetGroupFactory, User } from "@finance/domain";
-import { inject } from "tsyringe";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class AssetGroupFactory implements IAssetGroupFactory {
 
 	constructor(@inject(unitOfWork) private _unitOfWork: UnitOfWork) { }
@@ -14,10 +15,18 @@ export class AssetGroupFactory implements IAssetGroupFactory {
 			}
 		});
 
+		if (!userEntity) {
+			throw new Error("User not found");
+		}
+
 		const assetGroup = new AssetGroup({
 			name: name,
 			identity: this.createIdentity(userEntity, name)
 		})
+
+		if (userEntity.assetGroups === undefined) {
+			throw new Error("Asset groups not loaded");
+		}
 
 		userEntity.assetGroups.push(assetGroup);
 

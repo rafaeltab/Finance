@@ -3,6 +3,7 @@
 	"version": "1.0.0",
 	"private": true,
 	"license": "MIT",
+	"type": "module",
 	"files": [
 		"./build/*"
 	],
@@ -13,8 +14,8 @@
 	},
 	"dependencies": {
 		"@finance/libs-tsconfig": "*",
-		"@types/lodash": "^4.14.186",
-		"lodash": "^4.17.21",
+		"@types/lodash-es": "^4.17.6",
+		"lodash-es": "^4.17.21",
 		"tsyringe": "^4.7.0"
 	},
 	"devDependencies": {

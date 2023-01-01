@@ -1,7 +1,8 @@
-import { unitOfWork, UnitOfWork } from "#src/unitOfWork/unitOfWork";
+import { unitOfWork, UnitOfWork } from "../unitOfWork/unitOfWork";
 import { EntityKey, IAssetGroupRepository, PaginatedBase, AssetGroup } from "@finance/domain";
-import { inject } from "tsyringe";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class AssetGroupRepository implements IAssetGroupRepository {
 	constructor(@inject(unitOfWork) private _unitOfWork: UnitOfWork) { }
 
@@ -25,9 +26,15 @@ export class AssetGroupRepository implements IAssetGroupRepository {
 	}
 	
 	async get(id: EntityKey): Promise<AssetGroup> {
-		return await this._unitOfWork.getQueryRunner().manager.findOne(AssetGroup, {
+		const assetGroup = await this._unitOfWork.getQueryRunner().manager.findOne(AssetGroup, {
 			where: id
 		});
+
+		if (!assetGroup) {
+			throw new Error("Asset group not found");
+		}
+
+		return assetGroup;
 	}
 
 	async delete(id: EntityKey): Promise<void> {

@@ -3,7 +3,8 @@ import { AssetGroupFactory } from "#src/factories/assetGroupFactory";
 import { AssetGroupRepository } from "#src/repositories/assetGroupRepository";
 import { UserRepository } from "#src/repositories/userRepository";
 import { DbFixture, TestDataType } from "../test-utils/dbfixture";
-import { IAssetGroupFactory, IAssetGroupRepository, IUserRepository } from "@finance/domain";
+import type { IAssetGroupFactory, IAssetGroupRepository, IUserRepository } from "@finance/domain";
+import { expectNotNullOrUndefined, expectRequiredProps } from "#tests/test-utils/expectUtils";
 
 let fixture: DbFixture;
 let testData: TestDataType;
@@ -39,11 +40,8 @@ describe("addAssetGroupToUser", () => {
 			identity: testData.user.identity
 		}, data.name);
 
-		expect(assetGroup).not.toBeNull();
-		expect(assetGroup).not.toBeUndefined();
-
-		expect(assetGroup.uniqueId).not.toBeUndefined();
-		expect(assetGroup.uniqueId).not.toBeNull();
+		expectNotNullOrUndefined(assetGroup)
+		expectRequiredProps(assetGroup, ["uniqueId", "name"]);
 
 		expect(assetGroup.name).toBe(data.name);
 
@@ -51,11 +49,8 @@ describe("addAssetGroupToUser", () => {
 			identity: assetGroup.identity
 		});
 
-		expect(res).not.toBeNull();
-		expect(res).not.toBeUndefined();
-
-		expect(res.uniqueId).not.toBeUndefined();
-		expect(res.uniqueId).not.toBeNull();
+		expectNotNullOrUndefined(res)
+		expectRequiredProps(res, ["uniqueId", "name"]);
 
 		expect(res.name).toBe(data.name);
 
@@ -63,10 +58,13 @@ describe("addAssetGroupToUser", () => {
 			uniqueId: testData.user.uniqueId
 		}, ["assetGroups"])
 
-		const userAssetGroup = user.assetGroups.find(x => x.identity === assetGroup.identity);
+		expectRequiredProps(user, ["assetGroups"]);
 
-		expect(userAssetGroup).not.toBeUndefined();
-		expect(userAssetGroup).not.toBeNull();
-		expect(userAssetGroup.uniqueId).toBe(res.uniqueId);
+		const userAssetGroup = user.assetGroups!.find(x => x.identity === assetGroup.identity);
+
+		expectNotNullOrUndefined(userAssetGroup)
+		expectRequiredProps(userAssetGroup, ["uniqueId"]);
+
+		expect(userAssetGroup!.uniqueId).toBe(res.uniqueId);
 	});
 });

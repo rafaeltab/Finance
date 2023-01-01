@@ -1,17 +1,17 @@
-import { EntityMeta } from "@finance/libs-types";
-import { Column, Entity, OneToOne } from "typeorm";
+import type { EntityMeta } from "@finance/libs-types";
+import { Column, Entity, OneToOne, Relation } from "typeorm";
 import { ValueObjectBase } from "../../utils/ValueObject";
-import { Job } from "./job";
+import { Job } from "./Job";
 
 @Entity()
 export class ActiveIncome extends ValueObjectBase { 
 	@Column()
-	monthlySalary: number;
+	monthlySalary?: number;
 
 	@OneToOne(() => Job, job => job.activeIncome, {
 		onDelete: "CASCADE",
 	})
-	job: Job;
+	job?: Relation<Job>;
 
 	constructor(init: Partial<ActiveIncome>) {
 		super();

@@ -1,18 +1,17 @@
 import "reflect-metadata";
 import { UserFactory } from "#src/factories/userFactory";
 import { UserRepository } from "#src/repositories/userRepository";
-import { DbFixture, TestDataType } from "../test-utils/dbfixture";
-import { IUserFactory, IUserRepository } from "@finance/domain";
+import { DbFixture } from "../test-utils/dbfixture";
+import type { IUserFactory, IUserRepository } from "@finance/domain";
+import { expectNotNullOrUndefined, expectRequiredProps } from "#tests/test-utils/expectUtils";
 
 let fixture: DbFixture;
-let testData: TestDataType;
 
 let userFactory: IUserFactory;
 let userRepository: IUserRepository;
 
 beforeAll(async () => {
 	fixture = await DbFixture.getInstance();
-	testData = fixture.getTestData();
 }, 20000);
 
 beforeEach(async () => {
@@ -36,11 +35,8 @@ describe("createUser", () => {
 
 		const user = await userFactory.createUser(data.identity, data.firstName, data.lastName, data.dateOfBirth);
 
-		expect(user).not.toBeNull();
-		expect(user).not.toBeUndefined();
-
-		expect(user.uniqueId).not.toBeUndefined();
-		expect(user.uniqueId).not.toBeNull();
+		expectNotNullOrUndefined(user);
+		expectRequiredProps(user, ["uniqueId", "identity", "firstName", "lastName", "dateOfBirth"]);
 
 		expect(user.identity).toBe(data.identity);
 		expect(user.firstName).toBe(data.firstName);
@@ -51,11 +47,8 @@ describe("createUser", () => {
 			identity: data.identity
 		});
 
-		expect(res).not.toBeNull();
-		expect(res).not.toBeUndefined();
-
-		expect(res.uniqueId).not.toBeUndefined();
-		expect(res.uniqueId).not.toBeNull();
+		expectNotNullOrUndefined(res);
+		expectRequiredProps(res, ["uniqueId", "identity", "firstName", "lastName", "dateOfBirth"]);
 
 		expect(res.identity).toBe(data.identity);
 		expect(res.firstName).toBe(data.firstName);

@@ -1,11 +1,9 @@
-import "reflect-metadata";
-import { JobFactory } from "#src/factories/jobFactory";
-import { JobRepository } from "#src/repositories/jobRepository";
-import { UserRepository } from "#src/repositories/userRepository";
-import { DbFixture, TestDataType } from "../test-utils/dbfixture";
-import { IStockFactory, StockAssetKind, TimeRange } from "@finance/domain";
 import { StockFactory } from "#src/factories/stockFactory";
 import { StockRepository } from "#src/repositories/stockRepository";
+import { InsertStockValue, StockAssetKind, TimeRange } from "@finance/domain";
+import "reflect-metadata";
+import { DbFixture, TestDataType } from "../test-utils/dbfixture";
+import { expectNotNullOrUndefined, expectRequiredProps } from "#tests/test-utils/expectUtils";
 
 let fixture: DbFixture;
 let testData: TestDataType;
@@ -38,11 +36,8 @@ describe("addStockData", () => {
 
 		const stockData = await stockFactory.addStockData(data.symbol, data.exchange, data.stockKind);
 
-		expect(stockData).not.toBeNull();
-		expect(stockData).not.toBeUndefined();
-
-		expect(stockData.uniqueId).not.toBeUndefined();
-		expect(stockData.uniqueId).not.toBeNull();
+		expectNotNullOrUndefined(stockData);
+		expectRequiredProps(stockData, ["uniqueId", "assetKind", "symbol", "exchange"]);
 
 		expect(stockData.assetKind).toBe(data.stockKind);
 		expect(stockData.symbol).toBe(data.symbol);
@@ -50,13 +45,12 @@ describe("addStockData", () => {
 
 		const result = await stockRepository.searchStockData(data.symbol, data.exchange, data.stockKind);
 
-		expect(result).not.toBeNull();
-		expect(result).not.toBeUndefined();
+		expectNotNullOrUndefined(result);
+		expectRequiredProps(result, ["data"]);
 
 		expect(result.data.length).toBe(1);
 
-		expect(result.data[0]).not.toBeUndefined();
-		expect(result.data[0]).not.toBeNull();
+		expectNotNullOrUndefined(result.data[0]);
 
 		expect(result.data[0].assetKind).toBe(data.stockKind);
 		expect(result.data[0].symbol).toBe(data.symbol);
@@ -77,17 +71,18 @@ describe("addStockValues", () => {
 				low: 50,
 				close: 150,
 				volume: 32479,
-			}]
+			}] as [InsertStockValue],
 		}
 
 		const stockValues = await stockFactory.addStockValues({
 			uniqueId: testData.googlStockData.uniqueId,
 		}, data.values);
 
-		expect(stockValues).not.toBeNull();
-		expect(stockValues).not.toBeUndefined();
+		expectNotNullOrUndefined(stockValues);
 
 		expect(stockValues.length).toBe(1);
+
+		expectNotNullOrUndefined(stockValues[0]);
 
 		expect(stockValues[0].date).toBe(data.values[0].date);
 		expect(stockValues[0].open).toBe(data.values[0].open);
@@ -101,19 +96,14 @@ describe("addStockValues", () => {
 			uniqueId: testData.googlStockData.uniqueId,
 		}, "minute", TimeRange.fromDay(new Date()), 100, 0);
 
-		expect(result).not.toBeNull();
-		expect(result).not.toBeUndefined();
-		
-		expect(result.data).not.toBeNull();
-		expect(result.data).not.toBeUndefined();
-
+		expectNotNullOrUndefined(result);
+		expectRequiredProps(result, ["data"]);
 		
 		expect(result.data.length).toBe(testData.googStockValues.length + 1);
 
 		const inserted = result.data.find(x => x.volume == data.values[0].volume);
 
-		expect(inserted).not.toBeUndefined();
-		expect(inserted).not.toBeNull();
+		expectNotNullOrUndefined(inserted);
 
 		expect(inserted.date).toStrictEqual(data.values[0].date);
 		expect(inserted.open).toBe(data.values[0].open);

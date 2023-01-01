@@ -1,5 +1,5 @@
-import { EntityMeta } from "@finance/libs-types";
-import { Column, Entity, OneToMany } from "typeorm";
+import type { EntityMeta } from "@finance/libs-types";
+import { Column, Entity, OneToMany, Relation } from "typeorm";
 import { EnitityBase } from "../../utils";
 import { StockDividendEvent } from "./StockDividendEvent";
 import { StockSplitEvent } from "./StockSplitEvent";
@@ -34,27 +34,27 @@ export enum StockAssetKind {
 @Entity()
 export class StockData extends EnitityBase {
 	@Column()
-	symbol: string;
+	symbol?: string;
 
 	@Column()
-	exchange: string;
+	exchange?: string;
 
 	@Column({
 		type: "enum",
 		enum: StockAssetKind,
 	})
-	assetKind: StockAssetKind;
+	assetKind?: StockAssetKind;
 
 	@OneToMany(() => StockValue, (value) => value.stockData, {
 		cascade: ["insert"],
 	})
-	values: StockValue[];
+	values?: Relation<StockValue>[];
 
 	@OneToMany(() => StockSplitEvent, (event) => event.stockData)
-	splitEvents: StockSplitEvent[];
+	splitEvents?: Relation<StockSplitEvent>[];
 
 	@OneToMany(() => StockDividendEvent, (event) => event.stockData)
-	dividendsEvents: StockDividendEvent[];
+	dividendsEvents?: Relation<StockDividendEvent>[];
 
 	constructor(init: Partial<StockData>) {
 		super();

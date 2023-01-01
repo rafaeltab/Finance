@@ -3,7 +3,8 @@ import { BankAccountFactory } from "#src/factories/bankAccountFactory";
 import { BankAccountRepository } from "#src/repositories/bankAccountRepository";
 import { UserRepository } from "#src/repositories/userRepository";
 import { DbFixture, TestDataType } from "../test-utils/dbfixture";
-import { IBankAccountFactory, IBankAccountRepository, IUserRepository } from "@finance/domain";
+import type { IBankAccountFactory, IBankAccountRepository, IUserRepository } from "@finance/domain";
+import { expectNotNullOrUndefined, expectRequiredProps } from "#tests/test-utils/expectUtils";
 
 let fixture: DbFixture;
 let testData: TestDataType;
@@ -42,11 +43,8 @@ describe("addBankAccountToUser", () => {
 			identity: testData.user.identity
 		}, data.bank, data.balance, data.currency);
 
-		expect(bankAccount).not.toBeNull();
-		expect(bankAccount).not.toBeUndefined();
-
-		expect(bankAccount.uniqueId).not.toBeUndefined();
-		expect(bankAccount.uniqueId).not.toBeNull();
+		expectNotNullOrUndefined(bankAccount);
+		expectRequiredProps(bankAccount, ["uniqueId", "identity", "bank", "balance"]);
 
 		expect(bankAccount.bank).toBe(data.bank);
 		expect(bankAccount.balance.amount).toBe(data.balance);
@@ -56,11 +54,8 @@ describe("addBankAccountToUser", () => {
 			identity: bankAccount.identity
 		});
 
-		expect(res).not.toBeNull();
-		expect(res).not.toBeUndefined();
-
-		expect(res.uniqueId).not.toBeUndefined();
-		expect(res.uniqueId).not.toBeNull();
+		expectNotNullOrUndefined(res);
+		expectRequiredProps(res, ["uniqueId", "identity", "bank", "balance"]);
 
 		expect(res.bank).toBe(data.bank);
 		expect(res.balance.amount).toBe(data.balance);
@@ -70,7 +65,11 @@ describe("addBankAccountToUser", () => {
 			uniqueId: testData.user.uniqueId
 		}, ["bankAccounts"])
 
+		expectRequiredProps(user, ["bankAccounts"]);
+
 		const userBankAccount = user.bankAccounts.find(x => x.identity === bankAccount.identity);
+
+		expectNotNullOrUndefined(userBankAccount);
 
 		expect(userBankAccount).not.toBeUndefined();
 		expect(userBankAccount).not.toBeNull();

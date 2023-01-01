@@ -2,7 +2,8 @@ import { container, DependencyContainer, } from "tsyringe";
 import { IQuery, IQueryHandler, IQueryResult } from "./query";
 import { IEvent, IEventHandler } from "./event";
 import { ICommand, ICommandHandler, ICommandResult } from "./command";
-import { AnyConstructor, Constructor } from "../constructor";
+import type { AnyConstructor } from "../constructor";
+import type { Module } from "@finance/modules";
 
 export interface ITokenable { 
 	token: string;
@@ -42,7 +43,7 @@ export abstract class MediatorModule {
 	constructor(private container: DependencyContainer) { 
 	}
 
-	abstract register(): void;
+	abstract register(): Promise<void>;
 
 	protected registerQuery<TQuery extends IQuery<TQuery, TResult>, TResult extends IQueryResult<any>>(query: AnyConstructor<TQuery>, handler: AnyConstructor<IQueryHandler<TQuery, TResult>>) {
 		var handlerToken = IQueryHandler.createToken(query);
@@ -60,5 +61,11 @@ export abstract class MediatorModule {
 		var handlerToken = ICommandHandler.createToken(comand);
 
 		this.container.register(handlerToken, handler);
+	}
+
+	protected async registerModule<TModule extends Module>(module: new () => TModule) {
+		var moduleInstance = new module();
+		await moduleInstance.init();
+		await moduleInstance.register(this.container);
 	}
 }

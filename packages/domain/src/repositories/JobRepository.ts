@@ -1,7 +1,7 @@
-import { InjectionToken } from "tsyringe";
-import Job from "../aggregates/jobAggregrate";
-import { EntityKey } from "../utils";
-import { PaginatedBase } from "../utils/PaginatedBase";
+import type { InjectionToken } from "tsyringe";
+import type Job from "../aggregates/jobAggregrate";
+import type { EntityKey } from "../utils";
+import type { PaginatedBase } from "../utils/PaginatedBase";
 
 export const jobRepository: InjectionToken = "IJobRepository";
 

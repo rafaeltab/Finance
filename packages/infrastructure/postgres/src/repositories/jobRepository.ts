@@ -1,7 +1,8 @@
-import { unitOfWork, UnitOfWork } from "#src/unitOfWork/unitOfWork";
+import { unitOfWork, UnitOfWork } from "../unitOfWork/unitOfWork";
 import { EntityKey, IJobRepository, PaginatedBase, Job } from "@finance/domain";
-import { inject } from "tsyringe";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class JobRepository implements IJobRepository {
 	constructor(@inject(unitOfWork) private _unitOfWork: UnitOfWork) { }
 
@@ -11,7 +12,7 @@ export class JobRepository implements IJobRepository {
 				user: user
 			},
 			skip: offset,
-			take: limit,
+			take: limit
 		});
 
 		return {
@@ -25,9 +26,15 @@ export class JobRepository implements IJobRepository {
 	}
 	
 	async get(id: EntityKey): Promise<Job> {
-		return await this._unitOfWork.getQueryRunner().manager.findOne(Job, {
+		const job =  await this._unitOfWork.getQueryRunner().manager.findOne(Job, {
 			where: id
 		});
+
+		if (!job) {
+			throw new Error("Job not found");
+		}
+		
+		return job;
 	}
 
 	async delete(id: EntityKey): Promise<void> {

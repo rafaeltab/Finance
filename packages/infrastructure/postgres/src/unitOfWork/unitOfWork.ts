@@ -1,5 +1,6 @@
-import { Lifecycle, scoped, DependencyContainer, InjectionToken } from "tsyringe";
+import { Lifecycle, scoped, InjectionToken, injectable, inject } from "tsyringe";
 import { DataSource, QueryRunner } from "typeorm";
+import { dataSource } from "../data-source";
 
 
 export const unitOfWork: InjectionToken = "unitOfWork";
@@ -12,11 +13,12 @@ export interface IUnitOfWork {
 }
 
 @scoped(Lifecycle.ResolutionScoped)
+@injectable()
 export class UnitOfWork implements IUnitOfWork {
-	private _queryRunner: QueryRunner;
+	private _queryRunner: QueryRunner | null;
 
 	constructor(
-		private dataSource: DataSource
+		@inject(dataSource) private dataSource: DataSource
 	) {
 		this._queryRunner = dataSource.createQueryRunner();
 	}
@@ -41,6 +43,8 @@ export class UnitOfWork implements IUnitOfWork {
 	}	
 	
 	async rollback(): Promise<void> {
+		if (this._queryRunner === null) throw new Error("Query runner has been released. Call restart to get a new query runner.")
+
 		await this._queryRunner.rollbackTransaction();
 		await this._queryRunner.release();
 		this._queryRunner = null;

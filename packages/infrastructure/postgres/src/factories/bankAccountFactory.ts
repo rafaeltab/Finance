@@ -1,7 +1,8 @@
-import { UnitOfWork, unitOfWork } from "#src/unitOfWork/unitOfWork";
+import { UnitOfWork, unitOfWork } from "../unitOfWork/unitOfWork";
 import { Balance, BankAccount, EntityKey, IBankAccountFactory, User } from "@finance/domain";
-import { inject } from "tsyringe";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class BankAccountFactory implements IBankAccountFactory {
 
 	constructor(@inject(unitOfWork) private _unitOfWork: UnitOfWork) { }
@@ -14,6 +15,10 @@ export class BankAccountFactory implements IBankAccountFactory {
 			}
 		});
 
+		if (!userEntity) {
+			throw new Error("User not found");
+		}
+
 		const balanceEntity = new Balance({
 			amount: balance,
 			currency: currency,
@@ -24,6 +29,10 @@ export class BankAccountFactory implements IBankAccountFactory {
 			balance: balanceEntity,
 			identity: this.createIdentity(userEntity, bank)
 		})
+
+		if (userEntity.bankAccounts === undefined) {
+			throw new Error("Bank accounts not loaded");
+		}
 
 		userEntity.bankAccounts.push(bankAccount);
 

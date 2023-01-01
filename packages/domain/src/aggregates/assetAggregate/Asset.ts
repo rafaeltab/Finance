@@ -1,10 +1,10 @@
-import { Entity, JoinColumn, ManyToOne, OneToOne } from "typeorm";
+import { Entity, JoinColumn, ManyToOne, OneToOne, Relation } from "typeorm";
 import { AssetGroup } from "../AssetGroup";
 import { EnitityBase } from "../../utils/Entity";
 import { User } from "../User";
 import { StockAsset } from "./assetKinds/StockAsset";
 import { RealEstateAsset } from "./assetKinds/RealEstateAsset";
-import { EntityMeta } from "@finance/libs-types";
+import type { EntityMeta } from "@finance/libs-types";
 
 @Entity()
 export class Asset extends EnitityBase {
@@ -12,24 +12,24 @@ export class Asset extends EnitityBase {
 		eager: true,
 		cascade: ["insert"]
 	})
-	stockAsset?: StockAsset;
+	stockAsset?: Relation<StockAsset>;
 	@OneToOne(() => RealEstateAsset, realEstateAsset => realEstateAsset.asset, {
 		eager: true,
 		cascade: ["insert"]
 	})
-	realEstateAsset?: RealEstateAsset;
+	realEstateAsset?: Relation<RealEstateAsset>;
 
 	@ManyToOne(() => AssetGroup, (group) => group.assets, {
 		cascade: ["insert"],
 		onDelete: "CASCADE",
 	})
 	@JoinColumn()
-	group: AssetGroup;
+	group?: Relation<AssetGroup>;
 
 	@ManyToOne(() => User, (user) => user.assets, {
 		onDelete: "CASCADE",
 	})
-	user: User;
+	user?: Relation<User>;
 
 	constructor(init: Partial<Asset>) {
 		super();

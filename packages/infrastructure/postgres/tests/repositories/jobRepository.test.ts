@@ -3,7 +3,7 @@ import { JobRepository } from "#src/repositories/jobRepository";
 import { v4 } from "uuid";
 import { arrayIdentityEquals, identityEquals } from "../test-utils/arrayUtils";
 import { DbFixture, TestDataType } from "../test-utils/dbfixture";
-import { IJobRepository } from "@finance/domain";
+import type { IJobRepository } from "@finance/domain";
 
 let fixture: DbFixture;
 let testData: TestDataType;
@@ -28,17 +28,17 @@ describe("getAllJobsForUser", () => {
 	test('getAllJobsForUser should return all jobs for a user by its identity, with at least their uniqueIds and identities', async () => {
 		const jobs = await jobRepository.getAllJobsForUser({
 			identity: testData.user.identity
-		}, testData.user.jobs.length + 1, 0);
+		}, testData.user.jobs!.length + 1, 0);
 
-		expect(arrayIdentityEquals(jobs.data, testData.user.jobs)).toBe(true);
+		expect(arrayIdentityEquals(jobs.data, testData.user.jobs!)).toBe(true);
 	});
 
 	test('getAllJobsForUser should return all jobs for a user by its uniqueId, with at least their uniqueIds and identities', async () => {
 		const jobs = await jobRepository.getAllJobsForUser({
 			uniqueId: testData.user.uniqueId
-		}, testData.user.jobs.length + 1, 0);
+		}, testData.user.jobs!.length + 1, 0);
 
-		expect(arrayIdentityEquals(jobs.data, testData.user.jobs)).toBe(true);
+		expect(arrayIdentityEquals(jobs.data, testData.user.jobs!)).toBe(true);
 	});
 });
 
@@ -59,14 +59,14 @@ describe("get", () => {
 		expect(identityEquals(job, testData.job)).toBe(true);
 	});
 
-	test('get should return null when no job can be found for a given id', async () => {
+	test('get should throw when no job can be found for a given id', async () => {
 		const uniqueId = v4();
 
-		const job = await jobRepository.get({
-			uniqueId
-		});
-
-		expect(job).toBeNull();
+		expect(async () => {
+			await jobRepository.get({
+				uniqueId
+			});
+		}).rejects.toThrow();
 	});
 });
 
@@ -92,10 +92,10 @@ describe("delete", () => {
 			uniqueId
 		});
 
-		const job = await jobRepository.get({
-			uniqueId
-		});
-
-		expect(job).toBeNull();
+		expect(async () => {
+			await jobRepository.get({
+				uniqueId
+			});
+		}).rejects.toThrow();
 	});
 });

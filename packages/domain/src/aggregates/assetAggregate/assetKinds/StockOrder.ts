@@ -1,6 +1,6 @@
-import { EntityMeta } from "@finance/libs-types";
-import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
-import { EnitityBase, ValueObjectBase } from "../../../utils";
+import type { EntityMeta } from "@finance/libs-types";
+import { Column, Entity, JoinColumn, ManyToOne, Relation } from "typeorm";
+import { ValueObjectBase } from "../../../utils";
 import { StockAsset } from "./StockAsset";
 import { ColumnNumericTransformer } from "../../../utils/numericTransformer";
 
@@ -12,21 +12,21 @@ export class StockOrder extends ValueObjectBase {
 		scale: 3,
 		transformer: new ColumnNumericTransformer()
 	})
-	amount: number;
+	amount?: number;
 
 	@Column({
 		type: "decimal",
 		scale: 3,
 		transformer: new ColumnNumericTransformer()
 	})
-	usdPrice: number;
+	usdPrice?: number;
 
 	@ManyToOne(() => StockAsset, (asset) => asset.orders, {
 		cascade: ["insert"],
 		onDelete: "CASCADE",
 	})
 	@JoinColumn()
-	stockAsset: StockAsset;
+	stockAsset?: Relation<StockAsset>;
 
 	constructor(init: Partial<StockOrder>) {
 		super();

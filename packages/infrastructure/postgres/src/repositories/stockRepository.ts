@@ -1,11 +1,12 @@
-import { UnitOfWork, unitOfWork } from "#src/unitOfWork/unitOfWork";
+import { UnitOfWork, unitOfWork } from "../unitOfWork/unitOfWork";
 import { EntityKey, IStockRepository, PaginatedBase, StockAssetKind, StockData, StockDividendEvent, StockSplitEvent, StockValue, TimeRange, ValueGranularity } from "@finance/domain";
-import { set } from "lodash";
-import { inject } from "tsyringe";
+import { set } from "lodash-es";
+import { inject, injectable } from "tsyringe";
 import { EntityManager, EntityMetadata, EntityTarget, FindOptionsWhere, In, Like, ObjectLiteral } from "typeorm";
 
 const granularities = new Set(["minute", "hour", "day", "week", "month", "year"]);
 
+@injectable()
 export class StockRepository implements IStockRepository {
 	constructor(@inject(unitOfWork) private _unitOfWork: UnitOfWork) { }
 
@@ -21,7 +22,7 @@ export class StockRepository implements IStockRepository {
 				data: stockData[0],
 				page: {
 					count: stockData[0].length,
-					offset: offset,
+					offset: offset ?? 0,
 					total: stockData[1]
 				}
 			}
@@ -31,7 +32,7 @@ export class StockRepository implements IStockRepository {
 			data: await this.addValuesToStockData(stockData[0]),
 			page: {
 				count: stockData[0].length,
-				offset: offset,
+				offset: offset ?? 0,
 				total: stockData[1]
 			}
 		}
@@ -46,6 +47,10 @@ export class StockRepository implements IStockRepository {
 		const stockData = await this._unitOfWork.getQueryRunner().manager.findOne(StockData, {
 			where: stockDataId
 		});
+
+		if (!stockData) {
+			throw new Error("Stock data not found");
+		}
 
 		const trunc = `DATE_TRUNC('${granularity}', "sv"."date")`
 		const groupby = `${trunc}`
@@ -112,13 +117,13 @@ export class StockRepository implements IStockRepository {
 			data: stockValues as any,
 			page: {
 				count: stockValues.length,
-				offset: offset,
+				offset: offset ?? 0,
 				total: queryResult[0].total
 			}
 		}
 	}
 
-	async getStockEvents(stockDataId: EntityKey, timerange: TimeRange, limit?: number, offset?: number): Promise<[StockDividendEvent[], StockSplitEvent[]]> {
+	async getStockEvents(stockDataId: EntityKey): Promise<[StockDividendEvent[], StockSplitEvent[]]> {
 		const stockData = await this._unitOfWork.getQueryRunner().manager.findOne(StockData, {
 			where: stockDataId,
 			relations: {
@@ -127,7 +132,23 @@ export class StockRepository implements IStockRepository {
 			}
 		});
 
-		return [stockData.dividendsEvents, stockData.splitEvents];
+		if (!stockData) {
+			throw new Error(`StockData not found`);
+		}
+
+		return [stockData.dividendsEvents ?? [], stockData.splitEvents ?? []];
+	}
+
+	async getStockData(stockDataId: EntityKey): Promise<StockData> {
+		const stockData =  await this._unitOfWork.getQueryRunner().manager.findOne(StockData, {
+			where: stockDataId
+		});
+
+		if (!stockData) {
+			throw new Error(`StockData not found`);
+		}	
+
+		return stockData;
 	}
 
 	async searchStockData(symbol?: string, exchange?: string, stockType?: string, withValues?: boolean, limit?: number, offset?: number): Promise<PaginatedBase<StockData>> {
@@ -167,7 +188,7 @@ export class StockRepository implements IStockRepository {
 				data: stockData[0],
 				page: {
 					count: stockData[0].length,
-					offset: offset,
+					offset: offset ?? 0,
 					total: stockData[1]
 				}
 			}
@@ -177,13 +198,17 @@ export class StockRepository implements IStockRepository {
 			data: await this.addValuesToStockData(stockData[0]),
 			page: {
 				count: stockData[0].length,
-				offset: offset,
+				offset: offset ?? 0,
 				total: stockData[1]
 			}
 		}
 	}
 
 	private async addValuesToStockData(stockData: StockData[]) {
+		if (stockData.length === 0) {
+			return stockData;
+		}
+		
 		var twoYearsAgo = new Date();
 		twoYearsAgo.setFullYear(twoYearsAgo.getFullYear() - 2);
 
@@ -249,10 +274,16 @@ export class StockRepository implements IStockRepository {
 		const stockValues = mapRawsToEntities(StockValue, queryResult, entityManager);
 
 		for (const value of stockValues) {
-			if (stockDataMap.get(value.stockData.uniqueId).values == undefined) {
-				stockDataMap.get(value.stockData.uniqueId).values = [];
+			if(value.stockData == undefined) continue;
+
+			const uniqueId = value.stockData.uniqueId;
+
+			if (stockDataMap.get(uniqueId) == undefined) continue;
+
+			if (stockDataMap.get(uniqueId)!.values == undefined) {
+				stockDataMap.get(uniqueId)!.values = [];
 			}
-			stockDataMap.get(value.stockData.uniqueId).values.push(value);
+			stockDataMap.get(uniqueId)!.values!.push(value);
 		}
 		return Array.from(stockDataMap.values());
 	}

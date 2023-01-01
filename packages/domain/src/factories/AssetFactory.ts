@@ -1,6 +1,7 @@
-import { InjectionToken } from "tsyringe";
-import Asset, { RealEstateAsset, StockAsset } from "../aggregates/assetAggregate";
-import { EntityKey } from "../utils";
+import type { InjectionToken } from "tsyringe";
+import type Asset from "../aggregates/assetAggregate";
+import type { RealEstateAsset, StockAsset } from "../aggregates/assetAggregate";
+import type { EntityKey } from "../utils";
 
 export const assetFactory: InjectionToken = "IAssetFactory";
 export interface IAssetFactory {

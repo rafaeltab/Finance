@@ -3,10 +3,11 @@ import { AssetFactory } from "#src/factories/assetFactory";
 import { AssetGroupRepository } from "#src/repositories/assetGroupRepository";
 import { AssetRepository } from "#src/repositories/assetRepository";
 import { UserRepository } from "#src/repositories/userRepository";
-import { Asset, IAssetFactory, IAssetGroupRepository, IAssetRepository, IUserRepository, RealEstateAsset, StockAsset } from "@finance/domain";
+import type { Asset, IAssetFactory, IAssetGroupRepository, IAssetRepository, IUserRepository, RealEstateAsset, StockAsset } from "@finance/domain";
 import { DbFixture, TestDataType } from "../test-utils/dbfixture";
+import { expectNotNullOrUndefined, expectRequiredProps } from "#tests/test-utils/expectUtils";
 
-let fixture: DbFixture; 
+let fixture: DbFixture;
 let testData: TestDataType;
 
 let assetFactory: IAssetFactory;
@@ -34,7 +35,7 @@ afterAll(async () => {
 });
 
 type StockAssetData = {
-	stockOrders: {amount: number, price: number}[]
+	stockOrders: { amount: number, price: number }[]
 }
 
 type RealEstateAssetData = {
@@ -63,12 +64,16 @@ describe("addStockToAssetGroup", () => {
 		});
 
 		assetAndStockAssetValid(data, res.stockAsset, res);
-		
+
 		const assetGroup = await assetGroupRepository.get({
 			uniqueId: testData.assetGroup.uniqueId
 		})
 
+		expectRequiredProps(assetGroup, ["assets"]);
+
 		const assetGroupAsset = assetGroup.assets.find(x => x.identity === asset.identity);
+
+		expectNotNullOrUndefined(assetGroupAsset);
 
 		assetAndStockAssetValid(data, assetGroupAsset.stockAsset, assetGroupAsset);
 	});
@@ -108,8 +113,11 @@ describe("addStockToUser", () => {
 				}
 			}
 		})
+		expectRequiredProps(user, ["assets"]);
 
 		const userAsset = user.assets.find(x => x.identity === asset.identity);
+
+		expectNotNullOrUndefined(userAsset);
 
 		assetAndStockAssetValid(data, userAsset.stockAsset, userAsset);
 	});
@@ -135,11 +143,13 @@ describe("addRealEstateToAssetGroup", () => {
 
 		const assetGroup = await assetGroupRepository.get({
 			uniqueId: testData.assetGroup.uniqueId
-		})
+		})		
+		expectRequiredProps(assetGroup, ["assets"]);
 
-		const assetGroupAsset = assetGroup.assets.find(x => x.identity === asset.identity);
+		const assetGroupAsset = assetGroup.assets!.find(x => x.identity === asset.identity);		
+		expectNotNullOrUndefined(assetGroupAsset);
 
-		assetAndRealEstateAssetValid(data, assetGroupAsset.realEstateAsset, assetGroupAsset);
+		assetAndRealEstateAssetValid(data, assetGroupAsset!.realEstateAsset, assetGroupAsset);
 	});
 });
 
@@ -164,38 +174,34 @@ describe("addRealEstateToUser", () => {
 		const user = await userRepository.get({
 			uniqueId: testData.user.uniqueId
 		}, ["assets"])
+		expectRequiredProps(user, ["assets"]);
 
 		const userAsset = user.assets.find(x => x.identity === asset.identity);
+		expectNotNullOrUndefined(userAsset);
 
 		assetAndRealEstateAssetValid(data, userAsset.realEstateAsset, userAsset);
 	});
 });
 
 function assetAndStockAssetValid(data: StockAssetData, stockAsset?: StockAsset, asset?: Asset) {
-	expect(asset).not.toBeNull();
-	expect(asset).not.toBeUndefined();
-	expect(stockAsset).not.toBeNull();
-	expect(stockAsset).not.toBeUndefined();
+	expectNotNullOrUndefined(asset);
+	expectNotNullOrUndefined(stockAsset);
 
-	expect(asset.uniqueId).not.toBeUndefined();
-	expect(asset.uniqueId).not.toBeNull();
-	expect(stockAsset.uniqueId).not.toBeUndefined();
-	expect(stockAsset.uniqueId).not.toBeNull();
+
+	expectRequiredProps(asset, ["uniqueId"]);
+	expectRequiredProps(stockAsset, ["uniqueId", "orders", "stockData"]);
 
 	expect(stockAsset.orders.length).toBe(data.stockOrders.length);
 	expect(stockAsset.stockData.identity).toBe(testData.googlStockData.identity);
 }
 
 function assetAndRealEstateAssetValid(data: RealEstateAssetData, realEstateAsset?: RealEstateAsset, asset?: Asset) {
-	expect(asset).not.toBeNull();
-	expect(asset).not.toBeUndefined();
-	expect(realEstateAsset).not.toBeNull();
-	expect(realEstateAsset).not.toBeUndefined();
+	expectNotNullOrUndefined(asset);
+	expectNotNullOrUndefined(realEstateAsset);
 
-	expect(asset.uniqueId).not.toBeUndefined();
-	expect(asset.uniqueId).not.toBeNull();
-	expect(realEstateAsset.uniqueId).not.toBeUndefined();
-	expect(realEstateAsset.uniqueId).not.toBeNull();
+	expectRequiredProps(asset, ["uniqueId"]);
+	expectRequiredProps(realEstateAsset, ["uniqueId"]);
+
 
 	expect(realEstateAsset.address).toBe(data.address);
 }

@@ -1,18 +1,20 @@
-import { ITokenable } from "./mediator";
+import type { ITokenable } from "./mediator";
 
 export interface ISuccessQueryResult<TData> {
 	data: TData
 	success: true;
+	httpCode?: number;
 }
 
 export interface IFailedQueryResult {
 	message: string;
 	success: false;
+	httpCode?: number;
 }
 
 export type IQueryResult<T> = ISuccessQueryResult<T> | IFailedQueryResult;
 
-export abstract class IQuery<TImplementation, TResult extends IQueryResult<any>> implements ITokenable { 
+export abstract class IQuery<TImplementation, _TResult extends IQueryResult<any>> implements ITokenable { 
 	/** This should be created by the query class, not the user */
 	readonly abstract token: string;
 

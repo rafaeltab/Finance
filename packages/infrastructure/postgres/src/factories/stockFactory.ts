@@ -1,7 +1,8 @@
-import { unitOfWork, UnitOfWork } from "#src/unitOfWork/unitOfWork";
+import { unitOfWork, UnitOfWork } from "../unitOfWork/unitOfWork";
 import { EntityKey, IStockFactory, InsertEvent, InsertStockValue, StockAssetKind, StockData, StockDividendEvent, StockValue, StockSplitEvent } from "@finance/domain";
-import { inject } from "tsyringe";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class StockFactory implements IStockFactory {
 	constructor(@inject(unitOfWork) private _unitOfWork: UnitOfWork) { }
 
@@ -22,8 +23,12 @@ export class StockFactory implements IStockFactory {
 			where: stockDataId,
 		});
 
+		if (stockData === undefined || stockData === null) {
+			throw new Error("Stock data not found");
+		}
+
 		var stockValues = values.map(value => new StockValue({
-			stockData: stockData,
+			stockData: stockData!,
 			date: value.date,
 			open: value.open,
 			high: value.high,
@@ -41,8 +46,12 @@ export class StockFactory implements IStockFactory {
 			where: stockDataId,
 		});
 
+		if (stockData === undefined || stockData === null) {
+			throw new Error("Stock data not found");
+		}
+
 		var stockDividendEvents = events.map(event => new StockDividendEvent({
-			stockData: stockData,
+			stockData: stockData!,
 			date: event.date,
 			amount: event.value,
 		}));
@@ -56,8 +65,12 @@ export class StockFactory implements IStockFactory {
 			where: stockDataId,
 		});
 
+		if (stockData === undefined || stockData === null) {
+			throw new Error("Stock data not found");
+		}
+
 		var stockDividendEvents = events.map(event => new StockSplitEvent({
-			stockData: stockData,
+			stockData: stockData!,
 			date: event.date,
 			ratio: event.value,
 		}));

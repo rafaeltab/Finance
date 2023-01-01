@@ -1,4 +1,4 @@
-import { ValueObjectBase } from "@finance/domain";
+import type { ValueObjectBase } from "@finance/domain";
 
 export function identityEquals<T extends ValueObjectBase>(resultA: PossibleReadonly<T>, resultB: PossibleReadonly<T>): boolean {
 	if ((resultA as any).identity !== (resultB as any).identity) return false;
@@ -9,7 +9,7 @@ export function arrayIdentityEquals<T extends ValueObjectBase>(resultA: Possible
 	if (resultA.length !== resultB.length) return false;
 
 	for (let i = 0; i < resultA.length; i++) {
-		if (!identityEquals(resultA[i], resultB[i])) return false;
+		if (!identityEquals(resultA[i]!, resultB[i]!)) return false;
 	}
 
 	return true;

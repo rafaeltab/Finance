@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import type { MigrationInterface, QueryRunner } from "typeorm";
 
 export class linkBankAccountToUser1667849837196 implements MigrationInterface {
     name = 'linkBankAccountToUser1667849837196'

@@ -6,10 +6,11 @@
 	"files": [
 		"./configs/*"
 	],
+	"type": "module",
 	"dependencies": {
 		"eslint-config-next": "^12.3.0",
 		"eslint-config-prettier": "^8.3.0",
-		"eslint-plugin-react": "7.28.0",
-		"eslint-config-turbo": "latest"
+		"eslint-config-turbo": "latest",
+		"eslint-plugin-react": "7.28.0"
 	}
 }

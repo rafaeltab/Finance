@@ -1,5 +1,5 @@
-import { InjectionToken } from "tsyringe";
-import { User } from "../aggregates/User";
+import type { InjectionToken } from "tsyringe";
+import type { User } from "../aggregates/User";
 
 export const userFactory: InjectionToken = "IUserFactory";
 

@@ -1,5 +1,5 @@
-import { EntityMeta } from "@finance/libs-types";
-import { Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from "typeorm";
+import type { EntityMeta } from "@finance/libs-types";
+import { Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, Relation } from "typeorm";
 import { EnitityBase } from "../../../utils";
 import { StockData } from "../../stockAggregate/StockData";
 import { Asset } from "../Asset";
@@ -11,14 +11,14 @@ export class StockAsset extends EnitityBase {
 	@OneToMany(() => StockOrder, (order) => order.stockAsset, {
 		eager: true
 	})
-	orders: StockOrder[];
+	orders?: Relation<StockOrder>[];
 
 	@OneToOne(() => Asset, (asset) => asset.stockAsset, {
 		cascade: ["insert"],
 		onDelete: "CASCADE",
 	})
 	@JoinColumn()
-	asset: Asset;
+	asset?: Relation<Asset>;
 
 	@ManyToOne(() => StockData, {
 		eager: true,
@@ -26,7 +26,7 @@ export class StockAsset extends EnitityBase {
 		onDelete: "CASCADE",
 	})
 	@JoinColumn()
-	stockData: StockData;
+	stockData?: Relation<StockData>;
 
 	constructor(init: Partial<StockAsset>) {
 		super();

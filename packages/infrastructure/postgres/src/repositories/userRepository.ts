@@ -1,9 +1,10 @@
 import { IUserRepository, User, EntityKey, PaginatedBase, UserMeta } from "@finance/domain";
-import { inject } from "tsyringe";
+import { inject, injectable } from "tsyringe";
 import { UnitOfWork, unitOfWork } from "../unitOfWork/unitOfWork";
-import { intersection } from "lodash"
-import { FindOptionsRelations } from "typeorm";
+import { intersection } from "lodash-es"
+import type { FindOptionsRelations } from "typeorm";
 
+@injectable()
 export class UserRepository implements IUserRepository {
 	constructor(@inject(unitOfWork) private _unitOfWork: UnitOfWork) { }
 
@@ -31,20 +32,32 @@ export class UserRepository implements IUserRepository {
 	async get(id: EntityKey, fields?: (keyof User)[]): Promise<User> {
 		fields = [...new Set([...(fields ?? []), "uniqueId", "identity", "firstName", "lastName", "dateOfBirth"])] as (keyof User)[];
 
-		return await this._unitOfWork.getQueryRunner().manager
+		const user = await this._unitOfWork.getQueryRunner().manager
 			.findOne(User, {
 				where: id,
 				select: intersection(fields, UserMeta.data),
 				relations: intersection(fields, UserMeta.relations)
 			});
+		
+		if (!user) {
+			throw new Error("User not found");
+		}
+		
+		return user;
 	}
 
 	async getRelations(id: EntityKey, relations: FindOptionsRelations<User>): Promise<User> {
-		return await this._unitOfWork.getQueryRunner().manager
+		const user = await this._unitOfWork.getQueryRunner().manager
 			.findOne(User, {
 				where: id,
 				relations: relations
 			});
+		
+		if (!user) {
+			throw new Error("User not found");
+		}
+
+		return user;
 	}
 
 	async delete(id: EntityKey): Promise<void> {

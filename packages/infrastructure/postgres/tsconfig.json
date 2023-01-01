@@ -1,21 +1,11 @@
 {
+	"extends": "@finance/libs-tsconfig/configs/tsconfig.base.json",
+	"include": [
+		"src/**/*.ts"
+	],
 	"compilerOptions": {
-		"target": "es2021",
-		"module": "commonjs",
-		"moduleResolution": "node",
-		"outDir": "./build",
-		"emitDecoratorMetadata": true,
-		"experimentalDecorators": true,
-		"resolveJsonModule": true,
-		"sourceMap": true,
-		"baseUrl": "./",
-		"paths": {
-			"#src/*": [
-				"src/*"
-			],
-			"#tests/*": [
-				"tests/*"
-			]
-		}
+		"outDir": "build",
+		"declaration": true,
+		"rootDir": "src",
 	}
 }

@@ -1,7 +1,7 @@
-import { Column, Entity, JoinColumn, OneToOne } from "typeorm";
+import { Column, Entity, JoinColumn, OneToOne, Relation } from "typeorm";
 import { EnitityBase } from "../../../utils";
 import { Asset } from "../Asset";
-import { EntityMeta } from "@finance/libs-types";
+import type { EntityMeta } from "@finance/libs-types";
 
 @Entity()
 export class RealEstateAsset extends EnitityBase {
@@ -13,14 +13,14 @@ export class RealEstateAsset extends EnitityBase {
 	 * 	Main Street 123, New York, NY, USA
 	 */
 	@Column()
-	address: string;
+	address?: string;
 
 	@OneToOne(() => Asset, (asset) => asset.realEstateAsset, {
 		cascade: ["insert"],
 		onDelete: "CASCADE",
 	})
 	@JoinColumn()
-	asset: Asset;
+	asset?: Relation<Asset>;
 	
 	constructor(init: Partial<RealEstateAsset>) {
 		super();

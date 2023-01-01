@@ -1,12 +1,11 @@
-import { Module } from "@finance/modules";
-import { DependencyContainer } from "tsyringe";
+import type { Module } from "@finance/modules";
 
 export class DomainModule implements Module {
 	async init(): Promise<void> {
 		return;
 	}
 
-	register(container: DependencyContainer) {
+	register() {
 		return;
 	}
 }

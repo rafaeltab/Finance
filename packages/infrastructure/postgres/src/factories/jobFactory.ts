@@ -1,7 +1,8 @@
 import { IJobFactory, EntityKey, Job, ActiveIncome, User } from "@finance/domain";
-import { inject } from "tsyringe";
+import { inject, injectable } from "tsyringe";
 import { UnitOfWork, unitOfWork } from "../unitOfWork/unitOfWork";
 
+@injectable()
 export class JobFactory implements IJobFactory {
 	constructor(@inject(unitOfWork) private _unitOfWork: UnitOfWork) { }
 	
@@ -13,6 +14,10 @@ export class JobFactory implements IJobFactory {
 			}
 		});
 
+		if (!userEntity) {
+			throw new Error("User not found");
+		}
+
 		const activeIncome = new ActiveIncome({
 			monthlySalary: monthlySalary
 		});
@@ -22,6 +27,10 @@ export class JobFactory implements IJobFactory {
 			title: title,
 			activeIncome: activeIncome
 		});
+
+		if (userEntity.jobs === undefined) {
+			throw new Error("Jobs not loaded");
+		}
 
 		userEntity.jobs.push(job);
 

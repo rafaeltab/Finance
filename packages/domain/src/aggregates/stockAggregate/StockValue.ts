@@ -1,5 +1,5 @@
-import { EntityMeta } from "@finance/libs-types";
-import { Column, Entity, ManyToOne } from "typeorm";
+import type { EntityMeta } from "@finance/libs-types";
+import { Column, Entity, ManyToOne, Relation } from "typeorm";
 import { ValueObjectBase } from "../../utils";
 import { StockData } from "./StockData";
 import { ColumnNumericTransformer } from "../../utils/numericTransformer";
@@ -11,44 +11,44 @@ export class StockValue extends ValueObjectBase {
 		precision: 10,
 		transformer: new ColumnNumericTransformer()
 	})
-	open: number;
+	open?: number;
 
 	@Column({
 		type: "numeric",
 		scale: 3,
 		transformer: new ColumnNumericTransformer()
 	})
-	high: number;
+	high?: number;
 
 	@Column({
 		type: "numeric",
 		scale: 3,
 		transformer: new ColumnNumericTransformer()
 	})
-	low: number;
+	low?: number;
 
 	@Column({
 		type: "numeric",
 		scale: 3,
 		transformer: new ColumnNumericTransformer()
 	})
-	close: number;
+	close?: number;
 
 	@Column({
 		type: "numeric",
 		scale: 3,
 		transformer: new ColumnNumericTransformer()
 	})
-	volume: number;
+	volume?: number;
 
 	@Column()
-	date: Date;
+	date?: Date;
 
 	@ManyToOne(() => StockData, (stockData) => stockData.values, {
 		cascade: ["insert"],
 		onDelete: "CASCADE",
 	})
-	stockData: StockData;
+	stockData?: Relation<StockData>;
 
 	constructor(init: Partial<StockValue>) {
 		super();

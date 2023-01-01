@@ -1,4 +1,4 @@
-import { ITokenable } from "./mediator";
+import type { ITokenable } from "./mediator";
 
 export abstract class IEvent<TImplementation> implements ITokenable {
 	/** This should be created by the query class, not the user */

@@ -1,3 +1,9 @@
 {
-	"extends": "@tsconfig/recommended/tsconfig.json"
+	"extends": "@tsconfig/node18-strictest-esm/tsconfig.json",
+	"compilerOptions": {
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
+		"exactOptionalPropertyTypes": false,
+		"useDefineForClassFields": false,
+	}
 }

@@ -3,7 +3,7 @@ import { BankAccountRepository } from "#src/repositories/bankAccountRepository";
 import { v4 } from "uuid";
 import { arrayIdentityEquals, identityEquals } from "../test-utils/arrayUtils";
 import { DbFixture, TestDataType } from "../test-utils/dbfixture";
-import { IBankAccountRepository } from "@finance/domain";
+import type { IBankAccountRepository } from "@finance/domain";
 
 let fixture: DbFixture;
 let testData: TestDataType;
@@ -28,17 +28,17 @@ describe("getAllBankAccountsForUser", () => {
 	test('getAllBankAccountsForUser should return all bankAccounts for a user by its identity, with at least their uniqueIds and identities', async () => {
 		const bankAccounts = await bankAccountRepository.getAllBankAccountsForUser({
 			identity: testData.user.identity
-		},testData.user.bankAccounts.length + 1, 0);
+		},testData.user.bankAccounts!.length + 1, 0);
 
-		expect(arrayIdentityEquals(bankAccounts.data, testData.user.bankAccounts)).toBe(true);
+		expect(arrayIdentityEquals(bankAccounts.data, testData.user.bankAccounts!)).toBe(true);
 	});
 
 	test('getAllBankAccountsForUser should return all bankAccounts for a user by its uniqueId, with at least their uniqueIds and identities', async () => {
 		const bankAccounts = await bankAccountRepository.getAllBankAccountsForUser({
 			uniqueId: testData.user.uniqueId
-		}, testData.user.bankAccounts.length + 1, 0);
+		}, testData.user.bankAccounts!.length + 1, 0);
 
-		expect(arrayIdentityEquals(bankAccounts.data, testData.user.bankAccounts)).toBe(true);
+		expect(arrayIdentityEquals(bankAccounts.data, testData.user.bankAccounts!)).toBe(true);
 	});
 });
 
@@ -59,14 +59,14 @@ describe("get", () => {
 		expect(identityEquals(bankAccount, testData.bankAccount)).toBe(true);
 	});
 
-	test('get should return null when no bankAccount can be found for a given id', async () => {
+	test('get should throw when no bankAccount can be found for a given id', async () => {
 		const uniqueId = v4();
 
-		const bankAccount = await bankAccountRepository.get({
-			uniqueId
-		});
-
-		expect(bankAccount).toBeNull();
+		expect(async () => {
+			await bankAccountRepository.get({
+				uniqueId
+			});
+		}).rejects.toThrow();
 	});
 });
 
@@ -92,10 +92,10 @@ describe("delete", () => {
 			uniqueId
 		});
 
-		const bankAccount = await bankAccountRepository.get({
-			uniqueId
-		});
-
-		expect(bankAccount).toBeNull();
+		expect(async () => {
+			await bankAccountRepository.get({
+				uniqueId
+			});
+		}).rejects.toThrow();
 	});
 });

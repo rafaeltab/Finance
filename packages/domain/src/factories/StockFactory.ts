@@ -1,6 +1,6 @@
-import { InjectionToken } from "tsyringe";
-import { StockAssetKind, StockData, StockDividendEvent, StockSplitEvent, StockValue } from "../aggregates";
-import { EntityKey } from "../utils";
+import type { InjectionToken } from "tsyringe";
+import type { StockAssetKind, StockData, StockDividendEvent, StockSplitEvent, StockValue } from "../aggregates";
+import type { EntityKey } from "../utils";
 
 export type InsertStockValue = {
 	open: number;

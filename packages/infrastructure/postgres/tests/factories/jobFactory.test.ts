@@ -3,7 +3,8 @@ import { JobFactory } from "#src/factories/jobFactory";
 import { JobRepository } from "#src/repositories/jobRepository";
 import { UserRepository } from "#src/repositories/userRepository";
 import { DbFixture, TestDataType } from "../test-utils/dbfixture";
-import { IJobFactory, IJobRepository, IUserRepository } from "@finance/domain";
+import type { IJobFactory, IJobRepository, IUserRepository } from "@finance/domain";
+import { expectNotNullOrUndefined, expectRequiredProps } from "#tests/test-utils/expectUtils";
 
 let fixture: DbFixture;
 let testData: TestDataType;
@@ -39,11 +40,8 @@ describe("addJobToUser", () => {
 			identity: testData.user.identity
 		}, data.title, data.monthlySalary);
 
-		expect(job).not.toBeNull();
-		expect(job).not.toBeUndefined();
-
-		expect(job.uniqueId).not.toBeUndefined();
-		expect(job.uniqueId).not.toBeNull();
+		expectNotNullOrUndefined(job);
+		expectRequiredProps(job, ["uniqueId", "title", "activeIncome"]);
 
 		expect(job.title).toBe(data.title);
 		expect(job.activeIncome.monthlySalary).toBe(data.monthlySalary);
@@ -52,11 +50,8 @@ describe("addJobToUser", () => {
 			identity: job.identity
 		});
 
-		expect(res).not.toBeNull();
-		expect(res).not.toBeUndefined();
-
-		expect(res.uniqueId).not.toBeUndefined();
-		expect(res.uniqueId).not.toBeNull();
+		expectNotNullOrUndefined(res);
+		expectRequiredProps(res, ["uniqueId", "identity", "title", "activeIncome"]);
 
 		expect(res.identity).toBe(job.identity);
 		expect(res.title).toBe(data.title);
@@ -66,10 +61,12 @@ describe("addJobToUser", () => {
 			uniqueId: testData.user.uniqueId
 		}, ["jobs"])
 
+		expectNotNullOrUndefined(user);
+		expectRequiredProps(user, ["uniqueId", "identity", "jobs"]);
+
 		const userJob = user.jobs.find(x => x.identity === job.identity);
 
-		expect(userJob).not.toBeUndefined();
-		expect(userJob).not.toBeNull();
+		expectNotNullOrUndefined(userJob);
 		expect(userJob.uniqueId).toBe(res.uniqueId);
 	});
 });

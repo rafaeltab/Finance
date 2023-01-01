@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import type { MigrationInterface, QueryRunner } from "typeorm";
 
 export class addTimeToAsset1667853828276 implements MigrationInterface {
     name = 'addTimeToAsset1667853828276'

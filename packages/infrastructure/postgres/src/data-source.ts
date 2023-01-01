@@ -2,7 +2,7 @@ import "reflect-metadata"
 import { DataSource } from "typeorm"
 import { entities } from "@finance/domain";
 import * as migrations from "./migrations";
-import { InjectionToken } from "tsyringe";
+import type { InjectionToken } from "tsyringe";
 
 export const dataSource: InjectionToken = "DataSource";
 export const AppDataSource = new DataSource({

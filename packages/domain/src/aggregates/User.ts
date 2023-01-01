@@ -1,5 +1,5 @@
-import { EntityMeta } from "@finance/libs-types"
-import { Entity, Column, OneToMany } from "typeorm"
+import type { EntityMeta } from "@finance/libs-types"
+import { Entity, Column, OneToMany, Relation } from "typeorm"
 import { EnitityBase } from "../utils/Entity"
 import { Asset } from "./assetAggregate/Asset"
 import { AssetGroup } from "./AssetGroup"
@@ -9,25 +9,25 @@ import Job from "./jobAggregrate"
 @Entity()
 export class User extends EnitityBase {
     @Column()
-    firstName: string
+    firstName?: string
 
     @Column()
-    lastName: string
+    lastName?: string
 
     @Column()
-	dateOfBirth: Date
+	dateOfBirth?: Date
 	
 	@OneToMany(() => Asset, asset => asset.user)
-	assets: Asset[]
+	assets?: Relation<Asset>[]
 	
 	@OneToMany(() => AssetGroup, assetGroup => assetGroup.user)
-	assetGroups: AssetGroup[]
+	assetGroups?: Relation<AssetGroup>[]
 
 	@OneToMany(() => BankAccount, bankAccount => bankAccount.user)
-	bankAccounts: BankAccount[]
+	bankAccounts?: Relation<BankAccount>[]
 	
 	@OneToMany(() => Job, job => job.user)
-	jobs: Job[]
+	jobs?: Relation<Job>[]
 
 	constructor(init: Partial<User>) {
 		super();

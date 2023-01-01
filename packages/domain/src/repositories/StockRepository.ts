@@ -1,8 +1,8 @@
-import { InjectionToken } from "tsyringe";
-import { StockAssetKind, StockData, StockValue } from "../aggregates";
-import { StockDividendEvent } from "../aggregates/stockAggregate/StockDividendEvent";
-import { StockSplitEvent } from "../aggregates/stockAggregate/StockSplitEvent";
-import { EntityKey, PaginatedBase } from "../utils";
+import type { InjectionToken } from "tsyringe";
+import type { StockAssetKind, StockData, StockValue } from "../aggregates";
+import type { StockDividendEvent } from "../aggregates/stockAggregate/StockDividendEvent";
+import type { StockSplitEvent } from "../aggregates/stockAggregate/StockSplitEvent";
+import type { EntityKey, PaginatedBase } from "../utils";
 
 export type ValueGranularity = "minute" | "hour" | "day" | "week" | "month" | "year";
 
@@ -21,6 +21,9 @@ export interface IStockRepository  {
 
 	/** search for stock data based on some input */
 	searchStockData(symbol?: string, exchange?: string, stockAssetKind?: StockAssetKind, withValues?: boolean, limit?: number, offset?: number): Promise<PaginatedBase<StockData>>;
+
+	/** get a stock data without values */
+	getStockData(stockDataId: EntityKey): Promise<StockData>;
 }
 
 
@@ -38,7 +41,6 @@ export class TimeRange {
 		//start of today
 		var start = new Date(year, month, date, 0, 0, 0, 0);
 		var end = new Date(start.getTime() + 60 * 60 * 24 * 1000 - 1);
-		console.log(start, end);
 
 		return new TimeRange(start, end);
 	}

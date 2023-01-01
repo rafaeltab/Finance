@@ -3,14 +3,7 @@
 	"include": ["src/**/*.ts"],
 	"compilerOptions": {
 		"outDir": "build",
-		"declaration": true
-	},
-	"paths": {
-		"#src/*": [
-			"src/*"
-		],
-		"#tests/*": [
-			"tests/*"
-		]
+		"declaration": true,
+		"rootDir": "src",
 	}
 }

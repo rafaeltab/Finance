@@ -1,12 +1,15 @@
-import { ITokenable } from "./mediator";
+import type { ITokenable } from "./mediator";
 
 export type ISuccessCommandResult = {
 	success: true;
+
+	httpCode?: number;
 }
 
 export type IFailedCommandResult = {
 	message: string;
 	success: false;
+	httpCode?: number;
 }
 
 export type ICommandResult = ISuccessCommandResult | IFailedCommandResult;

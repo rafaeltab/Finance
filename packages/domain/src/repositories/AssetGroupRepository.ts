@@ -1,7 +1,7 @@
-import { InjectionToken } from "tsyringe";
-import { AssetGroup } from "../aggregates/AssetGroup";
-import { EntityKey } from "../utils";
-import { PaginatedBase } from "../utils/PaginatedBase";
+import type { InjectionToken } from "tsyringe";
+import type { AssetGroup } from "../aggregates/AssetGroup";
+import type { EntityKey } from "../utils";
+import type { PaginatedBase } from "../utils/PaginatedBase";
 
 export const assetGroupRepository: InjectionToken = "IAssetGroupRepository";
 

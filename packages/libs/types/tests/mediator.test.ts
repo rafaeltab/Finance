@@ -1,19 +1,18 @@
 import "reflect-metadata"
-import { ICommand, ICommandHandler, ICommandResult, IEvent, IEventHandler, IQuery, IQueryHandler, IQueryResult, Mediator, MediatorModule } from '../src/mediator';
+import { ICommand, ICommandHandler, ICommandResult, IEvent, IEventHandler, IQuery, IQueryHandler, IQueryResult, Mediator, MediatorModule } from '#src/mediator';
 
 let mediator: Mediator;
 
 //#region setup
 
 class TestModule extends MediatorModule {
-	register(): void {
+	async register(): Promise<void> {
 		this.registerQuery(TestQuery, TestQueryHandler);
 
 		this.registerEvent(TestEvent, TestEventHandler);
 
 		this.registerCommand(TestCommand, TestCommandHandler);
-	} 
-
+	}
 }
 
 class TestQuery extends IQuery<TestQuery, IQueryResult<string>> {
@@ -66,9 +65,11 @@ beforeAll(async () => {
 })
 
 test("query", async () => {
-	const result = await mediator.query(new TestQuery({
+	const query = new TestQuery({
 		data: "TestQueryData"
-	}));
+	})
+	
+	const result = await mediator.query(query);
 
 	expect(result.success).toBe(true);
 	if (result.success) {
@@ -77,14 +78,16 @@ test("query", async () => {
 });
 
 test("event", () => {
+	
+
 	return new Promise((resolve) => {
-		let event = new TestEvent({
+		const event = new TestEvent({
 			data: () => {
 				expect(true).toBe(true);
 				resolve(true);
 			}
-		});
-
+		})
+		
 		mediator.send(event);
 	});	
 });

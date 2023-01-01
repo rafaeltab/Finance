@@ -1,8 +1,8 @@
-import { unitOfWork, UnitOfWork } from "#src/unitOfWork/unitOfWork";
-import { EntityKey, IAssetRepository, PaginatedBase, Asset, ValueGranularity } from "@finance/domain";
-import { inject } from "tsyringe";
-import { SelectQueryBuilder } from "typeorm";
+import { unitOfWork, UnitOfWork } from "../unitOfWork/unitOfWork";
+import { EntityKey, IAssetRepository, PaginatedBase, Asset } from "@finance/domain";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class AssetRepository implements IAssetRepository {
 	constructor(@inject(unitOfWork) private _unitOfWork: UnitOfWork) { }
 
@@ -14,6 +14,10 @@ export class AssetRepository implements IAssetRepository {
 			},
 			skip: offset,
 			take: limit,
+			relations: {
+				realEstateAsset: true,
+				stockAsset: true,
+			}
 		});
 
 		return {
@@ -33,6 +37,10 @@ export class AssetRepository implements IAssetRepository {
 			},
 			skip: offset,
 			take: limit,
+			relations: {
+				realEstateAsset: true,
+				stockAsset: true,
+			}
 		});
 
 		return {
@@ -46,13 +54,19 @@ export class AssetRepository implements IAssetRepository {
 	}
 
 	async get(id: EntityKey): Promise<Asset> {
-		return await this._unitOfWork.getQueryRunner().manager.findOne(Asset, {
+		const asset = await this._unitOfWork.getQueryRunner().manager.findOne(Asset, {
 			where: id,
 			relations: {
 				stockAsset: true,
 				realEstateAsset: true,
 			}
 		});
+
+		if (!asset) {
+			throw new Error("Asset not found");
+		}
+
+		return asset;
 	}
 
 	async delete(id: EntityKey): Promise<void> {

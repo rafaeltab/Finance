@@ -1,5 +1,5 @@
 export class PaginatedBase<TData> {
-	page: {
+	page!: {
 		/** The amount available in this response */
 		count: number;
 		/** The starting index of the paginated data */
@@ -8,6 +8,6 @@ export class PaginatedBase<TData> {
 		total: number;
 	}
 
-	data: TData[]
+	data!: TData[]
 }
 

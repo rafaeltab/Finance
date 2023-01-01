@@ -1,7 +1,8 @@
-import { UnitOfWork, unitOfWork } from "#src/unitOfWork/unitOfWork";
+import { inject, injectable } from "tsyringe";
+import { UnitOfWork, unitOfWork } from "../unitOfWork/unitOfWork";
 import { Asset, AssetGroup, EntityKey, IAssetFactory, RealEstateAsset, StockAsset, User, StockOrder, StockData } from "@finance/domain";
-import { inject } from "tsyringe";
 
+@injectable()
 export class AssetFactory implements IAssetFactory {
 
 	constructor(@inject(unitOfWork) private _unitOfWork: UnitOfWork) { }
@@ -13,13 +14,18 @@ export class AssetFactory implements IAssetFactory {
 				stockAsset: true,
 			}
 		});
-			
+
 		if (assetEntity === null) {
 			throw new Error("Asset not found");
 		}
 
 		if (assetEntity.stockAsset === null || assetEntity.stockAsset === undefined) {
 			throw new Error("Asset is not a stock asset");
+		}
+
+
+		if (assetEntity.stockAsset.orders === undefined) {
+			throw new Error("Orders not loaded");
 		}
 
 		assetEntity.stockAsset.orders.push(new StockOrder({
@@ -39,7 +45,11 @@ export class AssetFactory implements IAssetFactory {
 				assets: true,
 			}
 		});
-		
+
+		if (!assetGroupEntity) {
+			throw new Error("Asset group not found");
+		}
+
 		const [stockAssetEntity, assetEntity, stockOrderEntities] = await this.createStockAsset({
 			kind: "group",
 			entity: assetGroupEntity
@@ -56,6 +66,10 @@ export class AssetFactory implements IAssetFactory {
 				assets: true,
 			}
 		});
+
+		if (!assetGroupEntity) {
+			throw new Error("Asset group not found");
+		}
 
 		const [realEstateAsset, assetEntity] = await this.createRealEstateAsset({
 			kind: "group",
@@ -74,6 +88,10 @@ export class AssetFactory implements IAssetFactory {
 			}
 		});
 
+		if (!userEntity) {
+			throw new Error("User not found");
+		}
+
 		const [stockAssetEntity, assetEntity, stockOrderEntities] = await this.createStockAsset({
 			kind: "user",
 			entity: userEntity
@@ -91,6 +109,10 @@ export class AssetFactory implements IAssetFactory {
 			}
 		});
 
+		if (!userEntity) {
+			throw new Error("User not found");
+		}
+
 		const [realEstateAsset, assetEntity] = await this.createRealEstateAsset({
 			kind: "user",
 			entity: userEntity
@@ -99,14 +121,18 @@ export class AssetFactory implements IAssetFactory {
 		await this._unitOfWork.getQueryRunner().manager.save([assetEntity, realEstateAsset]);
 
 		return [realEstateAsset, assetEntity];
-	}	
+	}
 
 	private async createStockAsset(ownerEntity: { kind: "user", entity: User } | { kind: "group", entity: AssetGroup }, stockDataId: EntityKey, stockOrders: { amount: number, price: number }[]) {
 		const stockData = await this._unitOfWork.getQueryRunner().manager.findOne(StockData, {
 			where: stockDataId,
 		});
 
-		const identities = this.createStockAssetIdentity(ownerEntity.entity.identity, stockData)[1]
+		if (!stockData) {
+			throw new Error("Stock data not found");
+		}
+
+		const identities = this.createStockAssetIdentity(ownerEntity.entity.identity, stockData)
 
 		const stockAssetEntity = new StockAsset({
 			stockData: stockData,
@@ -134,6 +160,9 @@ export class AssetFactory implements IAssetFactory {
 		} else {
 			assetEntity[ownerEntity.kind] = ownerEntity.entity;
 		}
+		if (ownerEntity.entity.assets === undefined) {
+			throw new Error("Assets not loaded");
+		}
 
 		ownerEntity.entity.assets.push(assetEntity);
 
@@ -141,7 +170,7 @@ export class AssetFactory implements IAssetFactory {
 	}
 
 	private async createRealEstateAsset(ownerEntity: { kind: "user", entity: User } | { kind: "group", entity: AssetGroup }, address: string) {
-		const identities = this.createRealEstateAssetIdentity(ownerEntity.entity.identity, address)[1]
+		const identities = this.createRealEstateAssetIdentity(ownerEntity.entity.identity, address)
 
 		const realEstateAsset = new RealEstateAsset({
 			address: address,
@@ -157,6 +186,9 @@ export class AssetFactory implements IAssetFactory {
 		} else {
 			assetEntity[ownerEntity.kind] = ownerEntity.entity;
 		}
+		if (ownerEntity.entity.assets === undefined) {
+			throw new Error("Assets not loaded");
+		}
 
 		ownerEntity.entity.assets.push(assetEntity);
 
@@ -164,10 +196,16 @@ export class AssetFactory implements IAssetFactory {
 	}
 
 	private createStockAssetIdentity(ownerIdentity: string, stockData: StockData): [string, string] {
-		return [`${ownerIdentity}-stock-asset-${stockData.exchange.toLowerCase()}-${stockData.assetKind.toString().toLowerCase()}-${stockData.symbol.toLowerCase()}`, `${ownerIdentity}-asset-${stockData.exchange.toLowerCase()}-${stockData.assetKind.toString().toLowerCase()}-${stockData.symbol.toLowerCase()}`];
+		return [
+			`${ownerIdentity}-stock-asset-${stockData.exchange?.toLowerCase()}-${stockData.assetKind?.toString().toLowerCase()}-${stockData.symbol?.toLowerCase()}`,
+			`${ownerIdentity}-asset-${stockData.exchange?.toLowerCase()}-${stockData.assetKind?.toString().toLowerCase()}-${stockData.symbol?.toLowerCase()}`
+		];
 	}
 
 	private createRealEstateAssetIdentity(ownerIdentity: string, address: string): [string, string] {
-		return [`${ownerIdentity}-realestate-asset-${address.replaceAll(" ", "-").toLowerCase()}`, `${ownerIdentity}-asset-${address.replaceAll(" ", "-").toLowerCase()}`];
+		return [
+			`${ownerIdentity}-realestate-asset-${address.replaceAll(" ", "-").toLowerCase()}`,
+			`${ownerIdentity}-asset-${address.replaceAll(" ", "-").toLowerCase()}`
+		];
 	}
 }
