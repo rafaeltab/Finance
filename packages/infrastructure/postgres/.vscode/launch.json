@@ -8,9 +8,14 @@
 			"internalConsoleOptions": "neverOpen",
 			"disableOptimisticBPs": true,
 			"cwd": "${workspaceFolder}",
+			"env": {
+				"NODE_OPTIONS": "--experimental-vm-modules"
+			},
 			"runtimeExecutable": "yarn",
 			"args": [
 				"jest",
+				"-c",
+				"jest.config.ts",
 				"--runInBand",
 				"--watchAll=false",
 				"--testNamePattern",

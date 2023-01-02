@@ -1,5 +1,7 @@
 import type { JestConfigWithTsJest } from "ts-jest";
 
+console.log(process.argv)
+
 const config: JestConfigWithTsJest = {
 	transform: {
 		'^.+\\.ts?$':
@@ -15,6 +17,7 @@ const config: JestConfigWithTsJest = {
 	testRegex: './tests/.*\\.(test|spec)?\\.(ts|tsx)$',
 	extensionsToTreatAsEsm: ['.ts'],
 	maxConcurrency: 1,
+	
 	maxWorkers: 1,
 	testTimeout: 10000,
 	moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],

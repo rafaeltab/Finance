@@ -1,4 +1,7 @@
 {
-	"jest.jestCommandLine": "yarn jest",
-	"jest.autoRun": "off"
+	"jest.jestCommandLine": "yarn node --experimental-vm-modules D:\\\\ShitsNGiggles\\\\SoftwareEngineering\\\\Typescript\\\\finance\\\\node_modules\\\\jest\\\\bin\\\\jest.js --detectOpenHandles",
+	"jest.autoRun": "off",
+	"jest.nodeEnv": {
+		"NODE_OPTIONS": "--experimental-vm-modules"
+	}
 }
