@@ -9,11 +9,28 @@
 				"^build"
 			]
 		},
+		"build:dev": {
+			"outputs": [
+				"build/**"
+			],
+			"dependsOn": [
+				"^build:dev"
+			]
+		},
 		"dev": {
 			"cache": false
 		},
+		"start": {
+			"cache": false
+		},
 		"test": {
-			"outputMode": "new-only"
+			"outputMode": "new-only",
+			"dependsOn": [
+				"^build"
+			]
+		},
+		"clean": {
+			"cache": false
 		}
 	}	
 }

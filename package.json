@@ -13,9 +13,12 @@
 	],
 	"scripts": {
 		"build": "turbo run build",
+		"build:dev": "turbo run build:dev",
 		"dev": "turbo run dev --parallel",
 		"lint": "turbo run lint",
-		"test": "turbo run test"
+		"test": "turbo run test",
+		"start": "turbo run start",
+		"clean": "turbo run clean"
 	},
 	"dependencies": {
 		"turbo": "^1.6.2",

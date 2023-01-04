@@ -2,6 +2,7 @@
 
 import { IBankAccountRepository, BankAccount, PaginatedBase, bankAccountRepository } from "@finance/domain";
 import { IQuery, IQueryHandler, IQueryResult } from "@finance/libs-types";
+import { unitOfWork, type IUnitOfWork } from "@finance/postgres";
 import { inject, injectable } from "tsyringe";
 
 type ResponseType = IQueryResult<PaginatedBase<BankAccount>>
@@ -19,15 +20,21 @@ export class BankAccountViewQueryHandler extends IQueryHandler<BankAccountViewQu
 	/**
 	 *
 	 */
-	constructor(@inject(bankAccountRepository) private bankAccountRepository: IBankAccountRepository) {
+	constructor(
+		@inject(bankAccountRepository) private bankAccountRepository: IBankAccountRepository,
+		@inject(unitOfWork) private unitOfWork: IUnitOfWork
+	) {
 		super();
-
 	}
 
 	async handle(query: BankAccountViewQuery): Promise<ResponseType> {
+		await this.unitOfWork.start();
+
 		const bankAccounts = await this.bankAccountRepository.getAllBankAccountsForUser({
 			identity: query.userIdentity,
 		}, query.limit, query.offset);
+
+		await this.unitOfWork.commit();
 
 		return {
 			success: true,

@@ -1,9 +1,9 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import type { INestApplication } from '@nestjs/common';
-import request from 'supertest';
-import { StockModuleMetadata } from '../../../../src/api/v1/stock/stock.module';
+import { Test, TestingModule } from "@nestjs/testing";
+import type { INestApplication } from "@nestjs/common";
+import request from "supertest";
+import { StockModuleMetadata } from "../../../../src/api/v1/stock/stock.module";
 
-describe('AppController (e2e)', () => {
+describe('StockController (e2e)', () => {
 	let app: INestApplication;
 
 	beforeEach(async () => {
@@ -12,6 +12,10 @@ describe('AppController (e2e)', () => {
 		app = moduleFixture.createNestApplication();
 		await app.init();
 	});
+
+	afterAll(async () => {
+		await app.close();
+	})
 
 	it('/api/v1/stock (GET)', async () => {
 		const response = await request(app.getHttpServer())

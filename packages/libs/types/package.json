@@ -11,8 +11,10 @@
 	"type": "module",
 	"scripts": {
 		"build": "rimraf ./build/ && tsc",
-		"dev": "tsc --watch",
-		"test": "yarn node --experimental-vm-modules $(yarn bin jest) --detectOpenHandles"
+		"build:dev": "rimraf ./build/ && tsc -p ./tsconfig.dev.json",
+		"dev": "tsc -p ./tsconfig.dev.json --watch",
+		"test": "yarn node --experimental-vm-modules $(yarn bin jest) --detectOpenHandles",
+		"clean": "rimraf build"
 	},
 	"dependencies": {
 		"@finance/libs-tsconfig": "*",

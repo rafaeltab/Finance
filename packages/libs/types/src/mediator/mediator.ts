@@ -15,9 +15,12 @@ export class Mediator {
 		this.container = container.createChildContainer();
 	}
 
+	private _mediatorModules: MediatorModule[] = [];
+
 	async register<TModule extends new (container: DependencyContainer) => MediatorModule>(module: TModule) {
 		var moduleInstance = new module(this.container);
 		await moduleInstance.register();
+		this._mediatorModules.push(moduleInstance);
 	}
 
 	/** Run a query and wait for the result */
@@ -37,11 +40,19 @@ export class Mediator {
 		var handler: ICommandHandler<TCommand> = this.container.resolve(ICommandHandler.createToken(Object.getPrototypeOf(command).constructor));
 		return handler.handle(command);
 	}
+
+	async dispose() { 
+		await Promise.all(this._mediatorModules.map(async (x) => {
+			await x.dispose();
+		}));
+	}
 }
 
 export abstract class MediatorModule {  
 	constructor(private container: DependencyContainer) { 
 	}
+
+	private _modules: Module[] = [];
 
 	abstract register(): Promise<void>;
 
@@ -67,5 +78,14 @@ export abstract class MediatorModule {
 		var moduleInstance = new module();
 		await moduleInstance.init();
 		await moduleInstance.register(this.container);
+		this._modules.push(moduleInstance);
+	}
+
+	abstract dispose(): Promise<void>;
+
+	protected disposeModules() {
+		return Promise.all(this._modules.map(async x => {
+			await x.dispose();
+		}));
 	}
 }

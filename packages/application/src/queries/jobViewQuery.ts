@@ -2,6 +2,7 @@
 
 import { IJobRepository, Job, PaginatedBase, jobRepository } from "@finance/domain";
 import { IQuery, IQueryHandler, IQueryResult } from "@finance/libs-types";
+import { unitOfWork, type IUnitOfWork } from "@finance/postgres";
 import { inject, injectable } from "tsyringe";
 
 type ResponseType = IQueryResult<PaginatedBase<Job>>
@@ -19,15 +20,22 @@ export class JobViewQueryHandler extends IQueryHandler<JobViewQuery, ResponseTyp
 	/**
 	 *
 	 */
-	constructor(@inject(jobRepository) private jobRepository: IJobRepository) {
+	constructor(
+		@inject(jobRepository) private jobRepository: IJobRepository,
+		@inject(unitOfWork) private unitOfWork: IUnitOfWork
+	) {
 		super();
 
 	}
 
 	async handle(query: JobViewQuery): Promise<ResponseType> {
+		await this.unitOfWork.start();
+
 		const jobs = await this.jobRepository.getAllJobsForUser({
 			identity: query.userIdentity,
 		}, query.limit, query.offset);
+
+		await this.unitOfWork.commit();
 
 		return {
 			success: true,

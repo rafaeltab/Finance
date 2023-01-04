@@ -2,6 +2,7 @@
 
 import { IAssetGroupRepository, PaginatedBase, assetGroupRepository } from "@finance/domain";
 import { IQuery, IQueryHandler, IQueryResult } from "@finance/libs-types";
+import { unitOfWork, type IUnitOfWork } from "@finance/postgres";
 import { inject, injectable } from "tsyringe";
 
 type AssetGroupResponse = {
@@ -24,15 +25,22 @@ export class GetAssetGroupsQueryHandler extends IQueryHandler<GetAssetGroupsQuer
 	/**
 	 *
 	 */
-	constructor(@inject(assetGroupRepository) private assetGroupRepository: IAssetGroupRepository ) {
+	constructor(
+		@inject(assetGroupRepository) private assetGroupRepository: IAssetGroupRepository,
+		@inject(unitOfWork) private unitOfWork: IUnitOfWork
+	) {
 		super();
 		
 	}
 
 	async handle(query: GetAssetGroupsQuery): Promise<ResponseType> {
+		await this.unitOfWork.start();
+		
 		const assetGroups = await this.assetGroupRepository.getAllAssetGroupsForUser({
 			identity: query.userIdentity,
 		}, query.limit, query.offset);
+
+		await this.unitOfWork.commit();
 
 		return {
 			success: true,

@@ -2,6 +2,7 @@
 
 import { IStockRepository, PaginatedBase, StockData, StockValue, TimeRange, stockRepository } from "@finance/domain";
 import { IQuery, IQueryHandler, IQueryResult } from "@finance/libs-types";
+import { unitOfWork, type IUnitOfWork } from "@finance/postgres";
 import { inject, injectable } from "tsyringe";
 
 type ResponseType = IQueryResult<Response>
@@ -25,7 +26,10 @@ export class StockDataViewQueryHandler extends IQueryHandler<StockDataViewQuery,
 	/**
 	 *
 	 */
-	constructor(@inject(stockRepository) private stockRepository: IStockRepository) {
+	constructor(
+		@inject(stockRepository) private stockRepository: IStockRepository,
+		@inject(unitOfWork) private unitOfWork: IUnitOfWork
+	) {
 		super();
 
 	}
@@ -42,10 +46,14 @@ export class StockDataViewQueryHandler extends IQueryHandler<StockDataViewQuery,
 		}
 
 		try {
+			await this.unitOfWork.start();
+
 			const stockData = await this.stockRepository.getStockData(identity);
 	
 			const stocks = await this.stockRepository.getStockValues(identity, "year", new TimeRange(start, end), 1000, 0);
 		
+			await this.unitOfWork.commit();
+
 			return {
 				success: true,
 				data: {
@@ -62,6 +70,8 @@ export class StockDataViewQueryHandler extends IQueryHandler<StockDataViewQuery,
 				}
 			}
 		} catch (e: unknown) {
+			await this.unitOfWork.rollback();
+
 			if (e instanceof Error) { 
 				return {
 					success: false,

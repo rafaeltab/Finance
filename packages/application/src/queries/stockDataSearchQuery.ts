@@ -2,6 +2,7 @@
 
 import { IStockRepository, PaginatedBase, StockAssetKind, StockData, stockRepository } from "@finance/domain";
 import { IQuery, IQueryHandler, IQueryResult } from "@finance/libs-types";
+import { unitOfWork, type IUnitOfWork } from "@finance/postgres";
 import { inject, injectable } from "tsyringe";
 
 type ResponseType = IQueryResult<Response>
@@ -27,7 +28,10 @@ export class StockDataSearchQueryHandler extends IQueryHandler<StockDataSearchQu
 	/**
 	 *
 	 */
-	constructor(@inject(stockRepository) private stockRepository: IStockRepository) {
+	constructor(
+		@inject(stockRepository) private stockRepository: IStockRepository,
+		@inject(unitOfWork) private unitOfWork: IUnitOfWork
+	) {
 		super();
 	}
 
@@ -46,6 +50,8 @@ export class StockDataSearchQueryHandler extends IQueryHandler<StockDataSearchQu
 			kind = StockAssetKind[Object.keys(StockAssetKind).find(x => x.toLowerCase() === query.type.toLowerCase()) as keyof typeof StockAssetKind];
 		}
 
+		await this.unitOfWork.start();
+
 		const stocks = await this.stockRepository.searchStockData(
 			query.symbol,
 			query.exchange,
@@ -54,6 +60,8 @@ export class StockDataSearchQueryHandler extends IQueryHandler<StockDataSearchQu
 			query.limit,
 			query.offset);
 
+		await this.unitOfWork.commit();
+		
 		return {
 			success: true,
 			data: {

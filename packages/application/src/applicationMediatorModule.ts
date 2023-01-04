@@ -7,6 +7,8 @@ import { StocksDataListViewQuery, StocksDataListViewQueryHandler } from "./queri
 import { StockDataViewQuery, StockDataViewQueryHandler } from "./queries/stockDataViewQuery";
 import { PostgresInfrastructureModule } from "@finance/postgres";
 import { StockDataSearchQuery, StockDataSearchQueryHandler } from "./queries/stockDataSearchQuery";
+import { UserListQuery, UserListQueryHandler } from "./queries/userListQuery";
+import { UserViewQuery, UserViewQueryHandler } from "./queries/userViewQuery";
 
 export class ApplicationMediatorModule extends MediatorModule {
 	async register(): Promise<void> {
@@ -17,7 +19,14 @@ export class ApplicationMediatorModule extends MediatorModule {
 		this.registerQuery(StocksDataListViewQuery, StocksDataListViewQueryHandler);
 		this.registerQuery(StockDataViewQuery, StockDataViewQueryHandler);
 		this.registerQuery(StockDataSearchQuery, StockDataSearchQueryHandler);
+		this.registerQuery(UserListQuery, UserListQueryHandler);
+		this.registerQuery(UserViewQuery, UserViewQueryHandler);
+
 
 		await this.registerModule(PostgresInfrastructureModule)
-	}	
+	}
+
+	async dispose() {
+		await this.disposeModules();
+	}
 }

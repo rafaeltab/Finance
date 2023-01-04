@@ -21,4 +21,8 @@ export class ApplicationModule implements Module {
 			useValue: this.mediator
 		});
 	}
+
+	async dispose() { 
+
+	}
 }

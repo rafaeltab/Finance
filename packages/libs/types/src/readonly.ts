@@ -1,0 +1,1 @@
+export type OptionalReadonly<T> = T | Readonly<T>;

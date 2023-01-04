@@ -1,5 +1,5 @@
 import "reflect-metadata"
-import { ICommand, ICommandHandler, ICommandResult, IEvent, IEventHandler, IQuery, IQueryHandler, IQueryResult, Mediator, MediatorModule } from '#src/mediator';
+import { ICommand, ICommandHandler, ICommandResult, IEvent, IEventHandler, IQuery, IQueryHandler, IQueryResult, Mediator, MediatorModule } from "#src/mediator";
 
 let mediator: Mediator;
 
@@ -12,6 +12,10 @@ class TestModule extends MediatorModule {
 		this.registerEvent(TestEvent, TestEventHandler);
 
 		this.registerCommand(TestCommand, TestCommandHandler);
+	}
+
+	async dispose() {
+		
 	}
 }
 

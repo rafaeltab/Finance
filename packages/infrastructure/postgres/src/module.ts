@@ -44,4 +44,8 @@ export class PostgresInfrastructureModule implements Module {
 		container.register<IStockFactory>(stockFactory, StockFactory);
 		return;
 	}
+
+	async dispose() {
+		await AppDataSource.destroy();
+	}
 }

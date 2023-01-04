@@ -1,0 +1,11 @@
+{
+	"extends": "@finance/libs-tsconfig/configs/tsconfig.dev.json",
+	"include": [
+		"src/**/*.ts"
+	],
+	"compilerOptions": {
+		"outDir": "build",
+		"declaration": true,
+		"rootDir": "src",
+	}
+}

@@ -2,6 +2,7 @@
 
 import { IStockRepository, PaginatedBase, StockData, stockRepository } from "@finance/domain";
 import { IQuery, IQueryHandler, IQueryResult } from "@finance/libs-types";
+import { unitOfWork, type IUnitOfWork } from "@finance/postgres";
 import { inject, injectable } from "tsyringe";
 
 type ResponseType = IQueryResult<Response>
@@ -22,13 +23,20 @@ export class StocksDataListViewQueryHandler extends IQueryHandler<StocksDataList
 	/**
 	 *
 	 */
-	constructor(@inject(stockRepository) private stockRepository: IStockRepository) {
+	constructor(
+		@inject(stockRepository) private stockRepository: IStockRepository,
+		@inject(unitOfWork) private unitOfWork: IUnitOfWork
+	) {
 		super();
 
 	}
 
 	async handle(query: StocksDataListViewQuery): Promise<ResponseType> {
+		await this.unitOfWork.start();
+
 		const stocks = await this.stockRepository.getAllStockData(true, query.limit, query.offset);
+
+		await this.unitOfWork.commit();
 
 		return {
 			success: true,

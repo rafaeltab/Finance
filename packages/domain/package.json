@@ -8,8 +8,9 @@
 	"type": "module",
 	"scripts": {
 		"build": "rimraf ./build/ && tsc",
-		"dev": "tsc --watch",
-		"start": "ts-node src/index.ts"
+		"build:dev": "rimraf ./build/ && tsc -p ./tsconfig.dev.json",
+		"dev": "tsc -p ./tsconfig.dev.json --watch",
+		"clean": "rimraf build"
 	},
 	"dependencies": {
 		"@finance/libs-tsconfig": "*",

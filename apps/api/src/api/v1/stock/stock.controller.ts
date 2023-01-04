@@ -1,6 +1,6 @@
-import { Controller, Get, Inject, Query, Param, HttpException } from '@nestjs/common';
-import { Mediator } from '@finance/libs-types';
-import { StocksDataListViewQuery, StockDataSearchQuery, StockDataViewQuery } from '@finance/application';
+import { Controller, Get, Inject, Query, Param, HttpException } from "@nestjs/common";
+import { Mediator } from "@finance/libs-types";
+import { StocksDataListViewQuery, StockDataSearchQuery, StockDataViewQuery } from "@finance/application";
 
 @Controller("/api/v1/stock")
 export class StockController {
@@ -28,7 +28,9 @@ export class StockController {
 	}
 
 	@Get("/:identity")
-	async get(@Param("identity") identity: string) {
+	async get(
+		@Param("identity") identity: string
+	) {
 		const queryResult =  await this.mediator.query(new StockDataViewQuery({
 			stockDataIdentity: identity,
 			offset: 0,

@@ -36,11 +36,13 @@ export class UnitOfWork implements IUnitOfWork {
 	async commit(): Promise<void> {
 		if (this._queryRunner === null) throw new Error("Query runner has been released. Call restart to get a new query runner.")
 		await this._queryRunner.commitTransaction();
+		await this._queryRunner.release();
+		this._queryRunner = null;
 	}
 
 	restart(): void {
 		this._queryRunner = this.dataSource.createQueryRunner();
-	}	
+	}
 	
 	async rollback(): Promise<void> {
 		if (this._queryRunner === null) throw new Error("Query runner has been released. Call restart to get a new query runner.")

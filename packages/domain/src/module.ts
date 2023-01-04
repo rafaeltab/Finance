@@ -8,4 +8,9 @@ export class DomainModule implements Module {
 	register() {
 		return;
 	}
+
+
+	async dispose() {
+
+	}
 }
