@@ -9,6 +9,9 @@ import { PostgresInfrastructureModule } from "@finance/postgres";
 import { StockDataSearchQuery, StockDataSearchQueryHandler } from "./queries/stockDataSearchQuery";
 import { UserListQuery, UserListQueryHandler } from "./queries/userListQuery";
 import { UserViewQuery, UserViewQueryHandler } from "./queries/userViewQuery";
+import { CreateUserCommand, CreateUserCommandHandler } from "./commands/createUserCommand";
+import { DeleteUserCommand } from "./commands";
+import { DeleteUserCommandHandler } from "./commands/deleteUserCommand";
 
 export class ApplicationMediatorModule extends MediatorModule {
 	async register(): Promise<void> {
@@ -22,6 +25,8 @@ export class ApplicationMediatorModule extends MediatorModule {
 		this.registerQuery(UserListQuery, UserListQueryHandler);
 		this.registerQuery(UserViewQuery, UserViewQueryHandler);
 
+		this.registerCommand(CreateUserCommand, CreateUserCommandHandler);
+		this.registerCommand(DeleteUserCommand, DeleteUserCommandHandler);
 
 		await this.registerModule(PostgresInfrastructureModule)
 	}

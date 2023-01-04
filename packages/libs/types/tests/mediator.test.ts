@@ -46,22 +46,24 @@ class TestEventHandler extends IEventHandler<TestEvent> {
 	}
 }
 
-class TestCommand extends ICommand<TestCommand> {
+class TestCommand extends ICommand<TestCommand, ICommandResult<string>> {
 	token: string = "TestCommand";
 
 	data!: () => void;
 }
 
-class TestCommandHandler extends ICommandHandler<TestCommand> {
-	async handle(event: TestCommand): Promise<ICommandResult> {
+class TestCommandHandler extends ICommandHandler<TestCommand, ICommandResult<string>> {
+	async handle(event: TestCommand): Promise<ICommandResult<string>> {
 		event.data();
 		return {
-			success: true
+			data: "TestCommandData",
+			success: true,
 		}
 	}
 }
 
 //#endregion setup
+
 
 beforeAll(async () => {
 	mediator = new Mediator();

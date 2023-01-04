@@ -1,8 +1,8 @@
 import type { ITokenable } from "./mediator";
 
-export type ISuccessCommandResult = {
+export type ISuccessCommandResult<TData> = {
 	success: true;
-
+	data: TData
 	httpCode?: number;
 }
 
@@ -12,21 +12,26 @@ export type IFailedCommandResult = {
 	httpCode?: number;
 }
 
-export type ICommandResult = ISuccessCommandResult | IFailedCommandResult;
+export type ICommandResult<TData> = ISuccessCommandResult<TData> | IFailedCommandResult;
 
-export abstract class ICommand<TImplementation> implements ITokenable {
+const responseSymbol = Symbol("response");
+
+export abstract class ICommand<TImplementation, TResult extends ICommandResult<any>> implements ITokenable {
 	/** This should be created by the query class, not the user */
 	readonly abstract token: string;
 
-	constructor(c: Omit<TImplementation, "token">) {
-	Object.assign(this, c);
-}
+	/** Just ignore this */
+	[responseSymbol]?: TResult;
+
+	constructor(c: Omit<TImplementation, "token" | typeof responseSymbol>) {
+		Object.assign(this, c);
+	}
 }
 
-export abstract class ICommandHandler<TCommand extends ICommand<TCommand>> {
-	static createToken<TCommand extends ICommand<TCommand>>(command: new () => TCommand) {
+export abstract class ICommandHandler<TCommand extends ICommand<TCommand, TResult>, TResult extends ICommandResult<any>> {
+	static createToken<TCommand extends ICommand<TCommand, TResult>, TResult extends ICommandResult<any>>(command: new () => TCommand) {
 		return `ICommandHandler<${new command().token}>`
 	}
 
-	abstract handle(command: TCommand): Promise<ICommandResult>
+	abstract handle(command: TCommand): Promise<TResult>
 }

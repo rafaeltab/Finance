@@ -14,11 +14,15 @@ export interface IFailedQueryResult {
 
 export type IQueryResult<T> = ISuccessQueryResult<T> | IFailedQueryResult;
 
-export abstract class IQuery<TImplementation, _TResult extends IQueryResult<any>> implements ITokenable { 
+const responseSymbol = Symbol("response");
+
+export abstract class IQuery<TImplementation, TResult extends IQueryResult<any>> implements ITokenable { 
 	/** This should be created by the query class, not the user */
 	readonly abstract token: string;
+	/** Just ignore this */
+	[responseSymbol]?: TResult;
 
-	constructor(c: Omit<TImplementation, "token">) { 
+	constructor(c: Omit<TImplementation, "token" | typeof responseSymbol>) { 
 		Object.assign(this, c);
 	}
 }

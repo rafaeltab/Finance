@@ -1,6 +1,6 @@
 import { IAssetFactory, IAssetGroupFactory, IAssetGroupRepository, IAssetRepository, IBankAccountFactory, IBankAccountRepository, IJobFactory, IJobRepository, IStockFactory, IStockRepository, IUserFactory, IUserRepository, assetFactory, assetGroupFactory, assetGroupRepository, assetRepository, bankAccountFactory, bankAccountRepository, jobFactory, jobRepository, stockFactory, stockRepository, userFactory, userRepository } from "@finance/domain";
 import type { Module } from "@finance/modules";
-import type { DependencyContainer } from "tsyringe";
+import { DependencyContainer, Lifecycle } from "tsyringe";
 import type { DataSource } from "typeorm";
 import { AppDataSource, dataSource } from "./data-source";
 import { AssetFactory } from "./factories/assetFactory";
@@ -24,7 +24,9 @@ export class PostgresInfrastructureModule implements Module {
 	}
 
 	register(container: DependencyContainer): void {
-		container.register<IUnitOfWork>(unitOfWork, UnitOfWork);
+		container.register<IUnitOfWork>(unitOfWork, UnitOfWork, {
+			lifecycle: Lifecycle.ResolutionScoped
+		});
 		container.register<DataSource>(dataSource, {
 			useValue: AppDataSource
 		});

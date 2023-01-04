@@ -9,6 +9,9 @@ export interface ITokenable {
 	token: string;
 }
 
+export type CommandResponeType<T extends ICommand<any, any>> = T extends ICommand<T, infer TResponse> ? TResponse : null;
+export type QueryResponeType<T extends IQuery<any, any>> = T extends IQuery<T, infer TResponse> ? TResponse : null;
+
 export class Mediator {
 	private container: DependencyContainer;
 	constructor() {
@@ -24,9 +27,9 @@ export class Mediator {
 	}
 
 	/** Run a query and wait for the result */
-	query<TQuery extends IQuery<TQuery, TResult>, TResult extends IQueryResult<any>>(query: TQuery): Promise<IQueryResult<TResult>>{
+	query<TQuery extends IQuery<TQuery, TResult>, TResult extends IQueryResult<any>>(query: TQuery): Promise<QueryResponeType<TQuery>>{
 		var handler: IQueryHandler<TQuery, TResult> = this.container.resolve(IQueryHandler.createToken(Object.getPrototypeOf(query).constructor));
-		return handler.handle(query);
+		return handler.handle(query) as any;
 	}
 
 	/** Send an event and let it run behind the scenes */
@@ -36,9 +39,9 @@ export class Mediator {
 	}
 
 	/** Run a command, and wait for it to complete */
-	command<TCommand extends ICommand<TCommand>>(command: TCommand): Promise<ICommandResult>{
-		var handler: ICommandHandler<TCommand> = this.container.resolve(ICommandHandler.createToken(Object.getPrototypeOf(command).constructor));
-		return handler.handle(command);
+	command<TCommand extends ICommand<TCommand, TResult>, TResult extends ICommandResult<any>>(command: TCommand): Promise<CommandResponeType<TCommand>>{
+		var handler: ICommandHandler<TCommand, TResult> = this.container.resolve(ICommandHandler.createToken(Object.getPrototypeOf(command).constructor));
+		return handler.handle(command) as any;
 	}
 
 	async dispose() { 
@@ -68,7 +71,7 @@ export abstract class MediatorModule {
 		this.container.register(handlerToken, handler);
 	}
 
-	protected registerCommand<TCommand extends ICommand<TCommand>>(comand: AnyConstructor<TCommand>, handler: AnyConstructor<ICommandHandler<TCommand>>) {
+	protected registerCommand<TCommand extends ICommand<TCommand, TResult>, TResult extends ICommandResult<any>>(comand: AnyConstructor<TCommand>, handler: AnyConstructor<ICommandHandler<TCommand, TResult>>) {
 		var handlerToken = ICommandHandler.createToken(comand);
 
 		this.container.register(handlerToken, handler);
