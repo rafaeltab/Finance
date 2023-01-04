@@ -25,11 +25,21 @@
 			]
 		},
 		{
+			"name": "Launch via NPM",
+			"request": "launch",
+			"runtimeArgs": [
+				"run",
+				"start:debug"
+			],
+			"env": {
+				"NODE_OPTIONS": "--experimental-specifier-resolution=node --no-warnings"
+			},
+			"runtimeExecutable": "yarn",
+			"skipFiles": [
+				"<node_internals>/**"
+			],
 			"type": "node",
-			"request": "attach",
-			"name": "Attach NestJS WS",
-			"port": 9229,
-			"restart": true
+			"outputCapture": "std"
 		}
 	]
 }
