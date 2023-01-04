@@ -27,17 +27,20 @@
 		{
 			"name": "Launch via NPM",
 			"request": "launch",
-			"runtimeArgs": [
-				"run",
-				"start:debug"
-			],
 			"env": {
 				"NODE_OPTIONS": "--experimental-specifier-resolution=node --no-warnings"
 			},
 			"runtimeExecutable": "yarn",
+			"runtimeArgs": [
+				"workspace",
+				"@finance/api",
+				"run",
+				"start:debug"
+			],
 			"skipFiles": [
 				"<node_internals>/**"
 			],
+			"cwd": "${workspaceFolder}/../../",
 			"type": "node",
 			"outputCapture": "std"
 		}
