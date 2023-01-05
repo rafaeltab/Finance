@@ -1,9 +1,10 @@
 import { CreateBankAccountCommand, DeleteBankAccountCommand, BankAccountViewQuery } from "@finance/application";
 import { Mediator } from "@finance/libs-types";
-import { Body, Controller, Get, HttpException, Inject, Param, Put } from "@nestjs/common";
+import { Body, Controller, Get, HttpException, Inject, Param, Put, ValidationPipe } from "@nestjs/common";
 import { Delete } from "@nestjs/common/decorators";
-import type { CreateBankAccountBody } from "./createBankAccount.body";
-import type { UserIdentityParams } from "../userIdentity.params";
+import { CreateBankAccountBody } from "./createBankAccount.body";
+import { UserIdentityParams } from "../userIdentity.params";
+import { IdentityParams } from "../../identity.params";
 
 @Controller("/api/v1/user/:userIdentity/bankAccount")
 export class BankAccountController {
@@ -12,7 +13,6 @@ export class BankAccountController {
 	@Get()
 	async get(
 		@Param() param: UserIdentityParams,
-
 	) {
 		const queryResult = await this.mediator.query(new BankAccountViewQuery({
 			userIdentity: param.userIdentity,
@@ -30,7 +30,7 @@ export class BankAccountController {
 	@Put()
 	async insert(
 		@Param() param: UserIdentityParams,
-		@Body() body: CreateBankAccountBody,
+		@Body(new ValidationPipe()) body: CreateBankAccountBody
 	) {
 		const commandResult = await this.mediator.command(new CreateBankAccountCommand({
 			userIdentity: param.userIdentity,
@@ -38,7 +38,6 @@ export class BankAccountController {
 			bank: body.bank,
 			currrency: body.currency,
 		}));
-
 		if (commandResult.success) {
 			return commandResult;
 		}
@@ -47,9 +46,11 @@ export class BankAccountController {
 	}
 
 	@Delete("/:identity")
-	async delete(@Param("identity") identity: string) {
+	async delete(
+		@Param() param: IdentityParams
+	) {
 		const commandResult = await this.mediator.command(new DeleteBankAccountCommand({
-			bankAccountIdentity: identity
+			bankAccountIdentity: param.identity
 		}));
 
 		if (commandResult.success) {

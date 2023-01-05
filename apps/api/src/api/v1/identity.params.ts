@@ -1,7 +1,7 @@
 import { IsString, MinLength } from "class-validator";
 
-export class UserIdentityParams {
+export class IdentityParams {
 	@IsString()
 	@MinLength(5)
-	userIdentity!: string;
+	identity!: string;
 }

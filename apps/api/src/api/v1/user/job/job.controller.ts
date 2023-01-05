@@ -2,8 +2,9 @@ import { CreateJobCommand, DeleteJobCommand, JobViewQuery } from "@finance/appli
 import { Mediator } from "@finance/libs-types";
 import { Body, Controller, Get, HttpException, Inject, Param, Put } from "@nestjs/common";
 import { Delete } from "@nestjs/common/decorators";
-import type { CreateJobBody } from "./createJob.body";
-import type { UserIdentityParams } from "../userIdentity.params";
+import { CreateJobBody } from "./createJob.body";
+import { UserIdentityParams } from "../userIdentity.params";
+import { IdentityParams } from "../../identity.params";
 
 @Controller("/api/v1/user/:userIdentity/job")
 export class JobController {
@@ -46,9 +47,11 @@ export class JobController {
 	}
 
 	@Delete("/:identity")
-	async delete(@Param("identity") identity: string) {
+	async delete(
+		@Param() param: IdentityParams
+	) {
 		const commandResult = await this.mediator.command(new DeleteJobCommand({
-			jobIdentity: identity
+			jobIdentity: param.identity
 		}));
 
 		if (commandResult.success) {

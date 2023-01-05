@@ -3,6 +3,8 @@ import { Mediator } from "@finance/libs-types";
 import { Body, Controller, Get, HttpException, Inject, Param, Put } from "@nestjs/common";
 import { Delete } from "@nestjs/common/decorators";
 import { DateTime } from "luxon";
+import { CreateUserBody } from "./createUser.body";
+import { IdentityParams } from "../identity.params";
 
 @Controller("/api/v1/user")
 export class UserController {
@@ -24,10 +26,10 @@ export class UserController {
 
 	@Get(":identity")
 	async getByIdentity(
-		@Param("identity") identity: string
+		@Param() param: IdentityParams
 	) {
 		const queryResult = await this.mediator.query(new UserViewQuery({
-			userIdentity: identity,
+			userIdentity: param.identity,
 		}))
 
 		if (queryResult.success) {
@@ -39,16 +41,14 @@ export class UserController {
 
 	@Put()
 	async insert(
-		@Body("firstName") firstName: string,
-		@Body("lastName") lastName: string,
-		@Body("dateOfBirth") dateOfBirthString: string,
+		@Body() body: CreateUserBody
 	) {
-		let dateOfBirth = DateTime.fromISO(dateOfBirthString, {
+		let dateOfBirth = DateTime.fromISO(body.dateOfBirth, {
 			zone: "utc"
 		})
 		const commandResult = await this.mediator.command(new CreateUserCommand({
-			firstName,
-			lastName,
+			firstName: body.firstName,
+			lastName: body.lastName,
 			dateOfBirth,
 		}));
 
@@ -60,9 +60,11 @@ export class UserController {
 	}
 
 	@Delete("/:identity")
-	async delete(@Param("identity") identity: string){
+	async delete(
+		@Param() param: IdentityParams
+	){
 		const commandResult = await this.mediator.command(new DeleteUserCommand({
-			userIdentity: identity
+			userIdentity: param.identity
 		}));
 
 		if (commandResult.success) {
