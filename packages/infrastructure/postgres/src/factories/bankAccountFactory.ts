@@ -1,5 +1,6 @@
 import { UnitOfWork, unitOfWork } from "../unitOfWork/unitOfWork";
 import { Balance, BankAccount, EntityKey, IBankAccountFactory, User } from "@finance/domain";
+import { assertContains } from "@finance/libs-types";
 import { inject, injectable } from "tsyringe";
 
 @injectable()
@@ -30,9 +31,11 @@ export class BankAccountFactory implements IBankAccountFactory {
 			identity: this.createIdentity(userEntity, bank)
 		})
 
-		if (userEntity.bankAccounts === undefined) {
+		if (userEntity.bankAccounts === null) {
 			throw new Error("Bank accounts not loaded");
 		}
+
+		assertContains(userEntity, ["bankAccounts"]);
 
 		userEntity.bankAccounts.push(bankAccount);
 

@@ -41,15 +41,15 @@ export class UserController {
 	async insert(
 		@Body("firstName") firstName: string,
 		@Body("lastName") lastName: string,
-		@Body("dateOfBirth") dateOfBirth: string,
+		@Body("dateOfBirth") dateOfBirthString: string,
 	) {
-		let dateDOB = DateTime.fromISO(dateOfBirth, {
+		let dateOfBirth = DateTime.fromISO(dateOfBirthString, {
 			zone: "utc"
-		}).toJSDate();
+		})
 		const commandResult = await this.mediator.command(new CreateUserCommand({
 			firstName,
 			lastName,
-			dateOfBirth: dateDOB,
+			dateOfBirth,
 		}));
 
 		if (commandResult.success) {
@@ -59,8 +59,8 @@ export class UserController {
 		throw new HttpException(commandResult.message, commandResult.httpCode ?? 500);
 	}
 
-	@Delete(":identity")
-	async delete(@Param("idenitity") identity: string){
+	@Delete("/:identity")
+	async delete(@Param("identity") identity: string){
 		const commandResult = await this.mediator.command(new DeleteUserCommand({
 			userIdentity: identity
 		}));

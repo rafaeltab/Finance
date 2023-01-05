@@ -10,8 +10,11 @@ import { StockDataSearchQuery, StockDataSearchQueryHandler } from "./queries/sto
 import { UserListQuery, UserListQueryHandler } from "./queries/userListQuery";
 import { UserViewQuery, UserViewQueryHandler } from "./queries/userViewQuery";
 import { CreateUserCommand, CreateUserCommandHandler } from "./commands/createUserCommand";
-import { DeleteUserCommand } from "./commands";
-import { DeleteUserCommandHandler } from "./commands/deleteUserCommand";
+import { DeleteUserCommand, DeleteUserCommandHandler } from "./commands/deleteUserCommand";
+import { CreateJobCommand, CreateJobCommandHandler } from "./commands/createJobCommand";
+import { DeleteJobCommand, DeleteJobCommandHandler } from "./commands/deleteJobCommand";
+import { DeleteBankAccountCommand, DeleteBankAccountCommandHandler } from "./commands/deleteBankAccountCommand";
+import { CreateBankAccountCommand, CreateBankAccountCommandHandler } from "./commands/createBankAccountCommand";
 
 export class ApplicationMediatorModule extends MediatorModule {
 	async register(): Promise<void> {
@@ -27,6 +30,10 @@ export class ApplicationMediatorModule extends MediatorModule {
 
 		this.registerCommand(CreateUserCommand, CreateUserCommandHandler);
 		this.registerCommand(DeleteUserCommand, DeleteUserCommandHandler);
+		this.registerCommand(CreateJobCommand, CreateJobCommandHandler);
+		this.registerCommand(DeleteJobCommand, DeleteJobCommandHandler);
+		this.registerCommand(CreateBankAccountCommand, CreateBankAccountCommandHandler);
+		this.registerCommand(DeleteBankAccountCommand, DeleteBankAccountCommandHandler);
 
 		await this.registerModule(PostgresInfrastructureModule)
 	}

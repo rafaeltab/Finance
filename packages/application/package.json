@@ -19,6 +19,7 @@
 		"@finance/modules": "*",
 		"@finance/postgres": "*",
 		"@types/lodash-es": "^4.17.6",
+		"@types/luxon": "^3.2.0",
 		"esbuild": "^0.15.12",
 		"lodash-es": "^4.17.21",
 		"reflect-metadata": "^0.1.13",

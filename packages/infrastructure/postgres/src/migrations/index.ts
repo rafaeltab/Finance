@@ -6,3 +6,4 @@ export { addNameToAssetGroup1667854592192 } from "./1667854592192-addNameToAsset
 export { dateOfBirthInsteadOfAge1670787247502 } from "./1670787247502-dateOfBirthInsteadOfAge";
 export { stockOrders1670802741225 } from "./1670802741225-stockOrders";
 export { stockData1672513071280 } from "./1672513071280-stockData";
+export { numberOptions1672947580058 } from "./1672947580058-numberOptions";

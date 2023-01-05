@@ -25,6 +25,7 @@
 		"@nestjs/platform-express": "^9.0.0",
 		"@types/luxon": "^3.2.0",
 		"@types/moment": "^2.13.0",
+		"class-validator": "^0.14.0",
 		"cross-env": "^7.0.3",
 		"luxon": "^3.2.0",
 		"moment": "^2.29.4",

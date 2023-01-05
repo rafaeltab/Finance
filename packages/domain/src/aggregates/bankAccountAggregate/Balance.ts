@@ -2,10 +2,15 @@ import type { EntityMeta } from "@finance/libs-types";
 import { Column, Entity, JoinColumn, OneToOne, Relation } from "typeorm";
 import { ValueObjectBase } from "../../utils";
 import { BankAccount } from "./BankAccount";
+import { ColumnNumericTransformer } from "../../utils/numericTransformer";
 
 @Entity()
 export class Balance extends ValueObjectBase { 
-	@Column()
+	@Column({
+		type: "numeric",
+		scale: 3,
+		transformer: new ColumnNumericTransformer()
+	})
 	amount?: number;
 
 	@Column()

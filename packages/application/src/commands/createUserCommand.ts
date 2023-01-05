@@ -3,6 +3,7 @@
 import { IUserFactory, userFactory } from "@finance/domain";
 import { ICommand, ICommandHandler, ICommandResult } from "@finance/libs-types";
 import { IUnitOfWork, unitOfWork } from "@finance/postgres";
+import type { DateTime } from "luxon";
 import { inject, injectable } from "tsyringe";
 
 type ResponseType = ICommandResult<{
@@ -13,7 +14,7 @@ export class CreateUserCommand extends ICommand<CreateUserCommand, ResponseType>
 	token = "CreateUserCommand";
 	firstName!: string;
 	lastName!: string;
-	dateOfBirth!: Date;
+	dateOfBirth!: DateTime;
 }
 
 @injectable()
@@ -29,10 +30,10 @@ export class CreateUserCommandHandler extends ICommandHandler<CreateUserCommand,
 		try {
 			await this.unitOfWork.start();
 
-			const user = await this.userFactory.createUser(`user-${command.firstName}-${command.lastName}-${command.dateOfBirth}`,
+			const user = await this.userFactory.createUser(`user-${command.firstName}-${command.lastName}-${command.dateOfBirth.toFormat("yyyy-MM-dd")}`,
 				command.firstName,
 				command.lastName,
-				command.dateOfBirth);
+				command.dateOfBirth.toJSDate());
 
 			await this.unitOfWork.commit();
 
