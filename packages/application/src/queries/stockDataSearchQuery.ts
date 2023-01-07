@@ -14,9 +14,9 @@ type Response = {
 export class StockDataSearchQuery extends IQuery<StockDataSearchQuery, ResponseType> {
 	token = "StockDataSearchQuery";
 
-	exchange: string = "";
-	symbol: string = "";
-	type: string = "";
+	exchange?: string;
+	symbol?: string;
+	type?: string;
 
 
 	limit: number = 30;
@@ -46,8 +46,10 @@ export class StockDataSearchQueryHandler extends IQueryHandler<StockDataSearchQu
 
 		let kind: StockAssetKind | undefined = undefined;
 
-		if (kinds.includes(query.type.toLowerCase())) {
-			kind = StockAssetKind[Object.keys(StockAssetKind).find(x => x.toLowerCase() === query.type.toLowerCase()) as keyof typeof StockAssetKind];
+		if (query.type !== undefined) {
+			if (kinds.includes(query.type.toLowerCase())) {
+				kind = StockAssetKind[Object.keys(StockAssetKind).find(x => x.toLowerCase() === query.type!.toLowerCase()) as keyof typeof StockAssetKind];
+			}
 		}
 
 		await this.unitOfWork.start();

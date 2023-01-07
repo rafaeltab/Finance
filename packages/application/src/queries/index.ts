@@ -1,6 +1,5 @@
 export { BankAccountViewQuery } from "./bankAccountViewQuery";
-export { GetAssetGroupsQuery } from "./getAssetGroupsQuery";
-export { GetAssetsForAssetGroupQuery } from "./getAssetsForAssetGroupQuery";
+export * from "./assets";
 export { JobViewQuery } from "./jobViewQuery";
 export { StockDataViewQuery } from "./stockDataViewQuery";
 export { StocksDataListViewQuery } from "./stocksDataListViewQuery";

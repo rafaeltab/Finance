@@ -27,7 +27,7 @@ export class AssetGroupRepository implements IAssetGroupRepository {
 	
 	async get(id: EntityKey): Promise<AssetGroup> {
 		const assetGroup = await this._unitOfWork.getQueryRunner().manager.findOne(AssetGroup, {
-			where: id
+			where: id,
 		});
 
 		if (!assetGroup) {

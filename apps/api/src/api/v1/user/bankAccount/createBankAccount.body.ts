@@ -3,18 +3,25 @@ import { ApiProperty } from "@nestjs/swagger";
 
 
 export class CreateBankAccountBody { 
-	@ApiProperty()
+	@ApiProperty({
+		type: String
+	})
 	@IsString()
 	bank!: string;
 
-	@ApiProperty()
+	@ApiProperty({
+		type: Number,
+		minimum: 0
+	})
 	@IsNumber({
 		maxDecimalPlaces: 2
 	})
 	@Min(0)
 	balance!: number;
 
-	@ApiProperty()
+	@ApiProperty({
+		type: String
+	})
 	@IsString()
 	currency!: string;
 }
