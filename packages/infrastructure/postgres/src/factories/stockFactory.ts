@@ -37,6 +37,17 @@ export class StockFactory implements IStockFactory {
 			volume: value.volume
 		}));
 
+		const chunkSize = 5000;
+
+		if (stockValues.length > chunkSize) {
+			for (let i = 0; i < stockValues.length+5; i += chunkSize) {
+				const chunk = stockValues.slice(i, i + chunkSize);
+				if (chunk.length === 0) continue;
+				await this._unitOfWork.getQueryRunner().manager.insert(StockValue, chunk);
+			}
+			return stockValues;
+		}
+
 		await this._unitOfWork.getQueryRunner().manager.insert(StockValue, stockValues);
 		return stockValues;
 	}
