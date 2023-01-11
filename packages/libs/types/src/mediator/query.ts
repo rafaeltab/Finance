@@ -3,13 +3,11 @@ import type { ITokenable } from "./mediator";
 export interface ISuccessQueryResult<TData> {
 	data: TData
 	success: true;
-	httpCode?: number;
 }
 
 export interface IFailedQueryResult {
 	message: string;
 	success: false;
-	httpCode?: number;
 }
 
 export type IQueryResult<T> = ISuccessQueryResult<T> | IFailedQueryResult;

@@ -52,20 +52,7 @@ export class GetAssetsForUserQueryHandler extends IQueryHandler<GetAssetsForUser
 			}
 		} catch (e: unknown) {
 			await this.unitOfWork.rollback();
-
-			if (e instanceof Error) {
-				return {
-					success: false,
-					message: e.message,
-					httpCode: e.message.includes("not found") ? 404 : 500
-				}
-			}
-		}
-
-		return {
-			success: false,
-			message: "Unknown error occured",
-			httpCode: 500
+			throw e;
 		}
 	}
 }

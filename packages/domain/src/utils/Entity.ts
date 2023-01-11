@@ -11,6 +11,14 @@ export abstract class EnitityBase {
 	identity!: string;
 }
 
+export function getKey(id: EntityKey) {
+	if("uniqueId" in id) {
+		return id.uniqueId;
+	}
+
+	return id.identity;
+}
+
 export type EntityKey = {
 	uniqueId: string;
 } | {

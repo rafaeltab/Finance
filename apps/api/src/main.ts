@@ -3,6 +3,7 @@ import { AppModule } from "./app.module";
 import { ValidationPipe } from "@nestjs/common";
 import { createSwaggerDocument, setupSwagger } from "./swagger";
 import { writeFileSync } from "fs";
+import { FinanceProgrammerErrorExceptionFilter, FinanceUserErrorExceptionFilter } from "@finance/errors-nest";
 
 async function bootstrap() {
 	const app = await createApp();
@@ -18,6 +19,7 @@ async function createApp() {
 		transform: true,
 		forbidUnknownValues: true,
 	}));
+	app.useGlobalFilters(new FinanceUserErrorExceptionFilter(app.getHttpAdapter()), new FinanceProgrammerErrorExceptionFilter(app.getHttpAdapter()));
 	return app;
 }
 
@@ -30,7 +32,6 @@ async function generateDefinition() {
 
 if (process.argv.includes("--generate-swagger")) {
 	generateDefinition();
-} else { 
+} else {
 	bootstrap();
 }
-

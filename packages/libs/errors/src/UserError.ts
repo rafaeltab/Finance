@@ -1,4 +1,3 @@
-import type { IErrorParser } from "./IErrorParser";
 import type { IHttpCodeError } from "./IHttpCodeError";
 
 export abstract class UserError extends Error implements IHttpCodeError {

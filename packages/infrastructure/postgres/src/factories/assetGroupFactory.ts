@@ -1,5 +1,6 @@
 import { UnitOfWork, unitOfWork } from "../unitOfWork/unitOfWork";
-import { AssetGroup, EntityKey, IAssetGroupFactory, User } from "@finance/domain";
+import { AssetGroup, EntityKey, IAssetGroupFactory, User, getKey } from "@finance/domain";
+import { DuplicateEntryError, EntryNotFoundError, UnexpectedError } from "@finance/errors";
 import { inject, injectable } from "tsyringe";
 
 @injectable()
@@ -16,16 +17,28 @@ export class AssetGroupFactory implements IAssetGroupFactory {
 		});
 
 		if (!userEntity) {
-			throw new Error("User not found");
+			throw new EntryNotFoundError(User.name, getKey(user));
+		}
+
+		const identity = this.createIdentity(userEntity, name);
+
+		const existingAssetGroup = await this._unitOfWork.getQueryRunner().manager.findOne(AssetGroup, {
+			where: {
+				identity
+			}
+		});
+
+		if (existingAssetGroup != null) {
+			throw new DuplicateEntryError(AssetGroup.name, identity);
 		}
 
 		const assetGroup = new AssetGroup({
 			name: name,
-			identity: this.createIdentity(userEntity, name)
+			identity: identity
 		})
 
 		if (userEntity.assetGroups === undefined) {
-			throw new Error("Asset groups not loaded");
+			throw new UnexpectedError(new Error("Asset groups not loaded"));
 		}
 
 		userEntity.assetGroups.push(assetGroup);

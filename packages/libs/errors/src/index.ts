@@ -1,7 +1,5 @@
-import type { DependencyContainer } from "tsyringe";
-
-export interface Module {
-	init(): Promise<void>;
-	register(container: DependencyContainer): void;
-	dispose(): Promise<void>;
-}
+export * from "./UserError";
+export * from "./ProgrammerError";
+export * from "./IHttpCodeError";
+export * from "./misc";
+export * from "./database";

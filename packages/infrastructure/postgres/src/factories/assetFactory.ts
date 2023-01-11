@@ -1,6 +1,7 @@
 import { inject, injectable } from "tsyringe";
 import { UnitOfWork, unitOfWork } from "../unitOfWork/unitOfWork";
-import { Asset, AssetGroup, EntityKey, IAssetFactory, RealEstateAsset, StockAsset, User, StockOrder, StockData } from "@finance/domain";
+import { Asset, AssetGroup, EntityKey, IAssetFactory, RealEstateAsset, StockAsset, User, StockOrder, StockData, getKey } from "@finance/domain";
+import { DuplicateEntryError, EntryNotFoundError, UnexpectedError } from "@finance/errors";
 
 @injectable()
 export class AssetFactory implements IAssetFactory {
@@ -16,16 +17,16 @@ export class AssetFactory implements IAssetFactory {
 		});
 
 		if (assetEntity === null) {
-			throw new Error("Asset not found");
+			throw new EntryNotFoundError(Asset.name, getKey(asset));
 		}
 
 		if (assetEntity.stockAsset === null || assetEntity.stockAsset === undefined) {
-			throw new Error("Asset is not a stock asset");
+			throw new UnexpectedError(new Error("Asset is not a stock asset"));
 		}
 
 
 		if (assetEntity.stockAsset.orders === undefined) {
-			throw new Error("Orders not loaded");
+			throw new UnexpectedError(new Error("Orders not loaded"));
 		}
 
 		assetEntity.stockAsset.orders.push(new StockOrder({
@@ -47,7 +48,7 @@ export class AssetFactory implements IAssetFactory {
 		});
 
 		if (!assetGroupEntity) {
-			throw new Error("Asset group not found");
+			throw new EntryNotFoundError(AssetGroup.name, getKey(assetGroup));
 		}
 
 		const [stockAssetEntity, assetEntity, stockOrderEntities] = await this.createStockAsset({
@@ -68,7 +69,7 @@ export class AssetFactory implements IAssetFactory {
 		});
 
 		if (!assetGroupEntity) {
-			throw new Error("Asset group not found");
+			throw new EntryNotFoundError(AssetGroup.name, getKey(assetGroup));
 		}
 
 		const [realEstateAsset, assetEntity] = await this.createRealEstateAsset({
@@ -89,7 +90,7 @@ export class AssetFactory implements IAssetFactory {
 		});
 
 		if (!userEntity) {
-			throw new Error("User not found");
+			throw new EntryNotFoundError(User.name, getKey(user));
 		}
 
 		const [stockAssetEntity, assetEntity, stockOrderEntities] = await this.createStockAsset({
@@ -110,7 +111,7 @@ export class AssetFactory implements IAssetFactory {
 		});
 
 		if (!userEntity) {
-			throw new Error("User not found");
+			throw new EntryNotFoundError(User.name, getKey(user));
 		}
 
 		const [realEstateAsset, assetEntity] = await this.createRealEstateAsset({
@@ -129,10 +130,30 @@ export class AssetFactory implements IAssetFactory {
 		});
 
 		if (!stockData) {
-			throw new Error("Stock data not found");
+			throw new EntryNotFoundError(StockData.name, getKey(stockDataId));
 		}
 
 		const identities = this.createStockAssetIdentity(ownerEntity.entity.identity, stockData)
+
+		const existingAsset = await this._unitOfWork.getQueryRunner().manager.findOne(Asset, {
+			where: {
+				identity: identities[1],
+			}
+		});
+
+		if (existingAsset) {
+			throw new DuplicateEntryError(Asset.name, identities[1]);
+		}
+
+		const existingStockAsset = await this._unitOfWork.getQueryRunner().manager.findOne(StockAsset, {
+			where: {
+				identity: identities[0],
+			}
+		});
+
+		if (existingStockAsset) {
+			throw new DuplicateEntryError(StockAsset.name, identities[0]);
+		}
 
 		const stockAssetEntity = new StockAsset({
 			stockData: stockData,
@@ -161,7 +182,7 @@ export class AssetFactory implements IAssetFactory {
 			assetEntity[ownerEntity.kind] = ownerEntity.entity;
 		}
 		if (ownerEntity.entity.assets === undefined) {
-			throw new Error("Assets not loaded");
+			throw new UnexpectedError(new Error("Assets not loaded"));
 		}
 
 		ownerEntity.entity.assets.push(assetEntity);
@@ -171,6 +192,26 @@ export class AssetFactory implements IAssetFactory {
 
 	private async createRealEstateAsset(ownerEntity: { kind: "user", entity: User } | { kind: "group", entity: AssetGroup }, address: string) {
 		const identities = this.createRealEstateAssetIdentity(ownerEntity.entity.identity, address)
+
+		const existingAsset = await this._unitOfWork.getQueryRunner().manager.findOne(Asset, {
+			where: {
+				identity: identities[1],
+			}
+		});
+
+		if (existingAsset) {
+			throw new DuplicateEntryError(Asset.name, identities[1]);
+		}
+
+		const existingRealEstateAsset = await this._unitOfWork.getQueryRunner().manager.findOne(RealEstateAsset, {
+			where: {
+				identity: identities[0],
+			}
+		});
+
+		if (existingRealEstateAsset) {
+			throw new DuplicateEntryError(RealEstateAsset.name, identities[0]);
+		}
 
 		const realEstateAsset = new RealEstateAsset({
 			address: address,
@@ -187,7 +228,7 @@ export class AssetFactory implements IAssetFactory {
 			assetEntity[ownerEntity.kind] = ownerEntity.entity;
 		}
 		if (ownerEntity.entity.assets === undefined) {
-			throw new Error("Assets not loaded");
+			throw new UnexpectedError(new Error("Assets not loaded"));
 		}
 
 		ownerEntity.entity.assets.push(assetEntity);

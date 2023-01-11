@@ -1,6 +1,7 @@
-import { IJobFactory, EntityKey, Job, ActiveIncome, User } from "@finance/domain";
+import { IJobFactory, EntityKey, Job, ActiveIncome, User, getKey } from "@finance/domain";
 import { inject, injectable } from "tsyringe";
 import { UnitOfWork, unitOfWork } from "../unitOfWork/unitOfWork";
+import { DuplicateEntryError, EntryNotFoundError, UnexpectedError } from "@finance/errors";
 
 @injectable()
 export class JobFactory implements IJobFactory {
@@ -15,7 +16,19 @@ export class JobFactory implements IJobFactory {
 		});
 
 		if (!userEntity) {
-			throw new Error("User not found");
+			throw new EntryNotFoundError(User.name, getKey(user));
+		}
+
+		const identity = this.createIdentity(userEntity, title);
+
+		const existingJob = await this._unitOfWork.getQueryRunner().manager.findOne(Job, {
+			where: {
+				identity
+			}
+		});
+
+		if (existingJob != null) { 
+			throw new DuplicateEntryError(Job.name, identity);
 		}
 
 		const activeIncome = new ActiveIncome({
@@ -23,13 +36,14 @@ export class JobFactory implements IJobFactory {
 		});
 
 		const job = new Job({
-			identity: this.createIdentity(userEntity, title),
+			identity: identity,
 			title: title,
 			activeIncome: activeIncome
 		});
 
 		if (userEntity.jobs === undefined) {
-			throw new Error("Jobs not loaded");
+			throw new UnexpectedError(new Error("Jobs not loaded"));
+
 		}
 
 		userEntity.jobs.push(job);

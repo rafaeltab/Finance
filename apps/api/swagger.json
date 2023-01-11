@@ -1,0 +1,581 @@
+{
+    "openapi": "3.0.0",
+    "paths": {
+        "/api/v1/stock/search": {
+            "get": {
+                "operationId": "StockController_getSearch",
+                "parameters": [
+                    {
+                        "name": "exchange",
+                        "required": true,
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "symbol",
+                        "required": true,
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "required": true,
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "500": {
+                        "description": "UnexpectedError"
+                    }
+                }
+            }
+        },
+        "/api/v1/stock/{identity}": {
+            "get": {
+                "operationId": "StockController_get",
+                "parameters": [
+                    {
+                        "name": "identity",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "404": {
+                        "description": "EntryNotFoundError"
+                    },
+                    "500": {
+                        "description": "UnexpectedError"
+                    }
+                }
+            }
+        },
+        "/api/v1/stock": {
+            "get": {
+                "operationId": "StockController_getStocks",
+                "parameters": [],
+                "responses": {
+                    "500": {
+                        "description": "UnexpectedError"
+                    }
+                }
+            }
+        },
+        "/api/v1/stock/data/csv": {
+            "put": {
+                "operationId": "StockController_createDataFromCsv",
+                "parameters": [],
+                "responses": {
+                    "409": {
+                        "description": "DuplicateEntryError"
+                    },
+                    "500": {
+                        "description": "UnexpectedError"
+                    }
+                }
+            }
+        },
+        "/api/v1/stock/values/csv": {
+            "put": {
+                "operationId": "StockController_createValuesFromCsv",
+                "parameters": [],
+                "responses": {
+                    "409": {
+                        "description": "DuplicateEntryError"
+                    },
+                    "500": {
+                        "description": "UnexpectedError"
+                    }
+                }
+            }
+        },
+        "/api/v1/user": {
+            "get": {
+                "operationId": "UserController_get",
+                "parameters": [],
+                "responses": {
+                    "500": {
+                        "description": "UnexpectedError"
+                    }
+                }
+            },
+            "put": {
+                "operationId": "UserController_insert",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateUserBody"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "409": {
+                        "description": "DuplicateEntryError"
+                    },
+                    "500": {
+                        "description": "UnexpectedError"
+                    }
+                }
+            }
+        },
+        "/api/v1/user/{identity}": {
+            "get": {
+                "operationId": "UserController_getByIdentity",
+                "parameters": [],
+                "responses": {
+                    "404": {
+                        "description": "EntryNotFoundError"
+                    },
+                    "500": {
+                        "description": "UnexpectedError"
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "UserController_delete",
+                "parameters": [],
+                "responses": {
+                    "404": {
+                        "description": "EntryNotFoundError"
+                    },
+                    "500": {
+                        "description": "UnexpectedError"
+                    }
+                }
+            }
+        },
+        "/api/v1/user/{userIdentity}/job": {
+            "get": {
+                "operationId": "JobController_get",
+                "parameters": [],
+                "responses": {
+                    "404": {
+                        "description": "EntryNotFoundError"
+                    },
+                    "500": {
+                        "description": "UnexpectedError"
+                    }
+                }
+            },
+            "put": {
+                "operationId": "JobController_insert",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateJobBody"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "409": {
+                        "description": "DuplicateEntryError"
+                    },
+                    "500": {
+                        "description": "UnexpectedError"
+                    }
+                }
+            }
+        },
+        "/api/v1/user/{userIdentity}/job/{identity}": {
+            "delete": {
+                "operationId": "JobController_delete",
+                "parameters": [],
+                "responses": {
+                    "404": {
+                        "description": "EntryNotFoundError"
+                    },
+                    "500": {
+                        "description": "UnexpectedError"
+                    }
+                }
+            }
+        },
+        "/api/v1/user/{userIdentity}/bankAccount": {
+            "get": {
+                "operationId": "BankAccountController_get",
+                "parameters": [],
+                "responses": {
+                    "404": {
+                        "description": "EntryNotFoundError"
+                    },
+                    "500": {
+                        "description": "UnexpectedError"
+                    }
+                }
+            },
+            "put": {
+                "operationId": "BankAccountController_insert",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateBankAccountBody"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "404": {
+                        "description": "EntryNotFoundError"
+                    },
+                    "409": {
+                        "description": "DuplicateEntryError"
+                    },
+                    "500": {
+                        "description": "UnexpectedError"
+                    }
+                }
+            }
+        },
+        "/api/v1/user/{userIdentity}/bankAccount/{identity}": {
+            "delete": {
+                "operationId": "BankAccountController_delete",
+                "parameters": [],
+                "responses": {
+                    "404": {
+                        "description": "EntryNotFoundError"
+                    },
+                    "500": {
+                        "description": "UnexpectedError"
+                    }
+                }
+            }
+        },
+        "/api/v1/asset/{assetIdentity}": {
+            "get": {
+                "operationId": "AssetController_getAsset",
+                "parameters": [],
+                "responses": {
+                    "404": {
+                        "description": "EntryNotFoundError"
+                    },
+                    "500": {
+                        "description": "UnexpectedError"
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "AssetController_deleteAsset",
+                "parameters": [],
+                "responses": {
+                    "404": {
+                        "description": "EntryNotFoundError"
+                    },
+                    "500": {
+                        "description": "UnexpectedError"
+                    }
+                }
+            }
+        },
+        "/api/v1/assetGroup/{assetGroupIdentity}": {
+            "get": {
+                "operationId": "AssetController_getAssetGroup",
+                "parameters": [],
+                "responses": {
+                    "404": {
+                        "description": "EntryNotFoundError"
+                    },
+                    "500": {
+                        "description": "UnexpectedError"
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "AssetController_deleteAssetGroup",
+                "parameters": [],
+                "responses": {
+                    "404": {
+                        "description": "EntryNotFoundError"
+                    },
+                    "500": {
+                        "description": "UnexpectedError"
+                    }
+                }
+            }
+        },
+        "/api/v1/user/{userIdentity}/asset": {
+            "get": {
+                "operationId": "AssetController_getUserAssets",
+                "parameters": [],
+                "responses": {
+                    "404": {
+                        "description": "EntryNotFoundError"
+                    },
+                    "500": {
+                        "description": "UnexpectedError"
+                    }
+                }
+            }
+        },
+        "/api/v1/user/{userIdentity}/assetGroup": {
+            "get": {
+                "operationId": "AssetController_getUserAssetGroups",
+                "parameters": [],
+                "responses": {
+                    "404": {
+                        "description": "EntryNotFoundError"
+                    },
+                    "500": {
+                        "description": "UnexpectedError"
+                    }
+                }
+            },
+            "put": {
+                "operationId": "AssetController_createAssetGroupForUser",
+                "parameters": [],
+                "responses": {
+                    "404": {
+                        "description": "EntryNotFoundError"
+                    },
+                    "409": {
+                        "description": "DuplicateEntryError"
+                    },
+                    "500": {
+                        "description": "UnexpectedError"
+                    }
+                }
+            }
+        },
+        "/api/v1/user/{userIdentity}/asset/stock": {
+            "put": {
+                "operationId": "AssetController_createStockAssetForUser",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateStockAssetBody"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "404": {
+                        "description": "EntryNotFoundError"
+                    },
+                    "409": {
+                        "description": "DuplicateEntryError"
+                    },
+                    "500": {
+                        "description": "UnexpectedError"
+                    }
+                }
+            }
+        },
+        "/api/v1/user/{userIdentity}/asset/realEstate": {
+            "put": {
+                "operationId": "AssetController_createRealEstateAssetForUser",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateRealEstateAssetBody"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "404": {
+                        "description": "EntryNotFoundError"
+                    },
+                    "409": {
+                        "description": "DuplicateEntryError"
+                    },
+                    "500": {
+                        "description": "UnexpectedError"
+                    }
+                }
+            }
+        },
+        "/api/v1/assetGroup/{assetGroupIdentity}/asset/stock": {
+            "put": {
+                "operationId": "AssetController_createStockAssetForGroup",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateStockAssetBody"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "404": {
+                        "description": "EntryNotFoundError"
+                    },
+                    "409": {
+                        "description": "DuplicateEntryError"
+                    },
+                    "500": {
+                        "description": "UnexpectedError"
+                    }
+                }
+            }
+        },
+        "/api/v1/assetGroup/{assetGroupIdentity}/asset/realEstate": {
+            "put": {
+                "operationId": "AssetController_createRealEstateAssetForGroup",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateRealEstateAssetBody"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "404": {
+                        "description": "EntryNotFoundError"
+                    },
+                    "409": {
+                        "description": "DuplicateEntryError"
+                    },
+                    "500": {
+                        "description": "UnexpectedError"
+                    }
+                }
+            }
+        }
+    },
+    "info": {
+        "title": "Finance API",
+        "description": "Finance API description",
+        "version": "1.0",
+        "contact": {}
+    },
+    "tags": [
+        {
+            "name": "finance",
+            "description": ""
+        }
+    ],
+    "servers": [],
+    "components": {
+        "schemas": {
+            "CreateUserBody": {
+                "type": "object",
+                "properties": {
+                    "firstName": {
+                        "type": "string"
+                    },
+                    "lastName": {
+                        "type": "string"
+                    },
+                    "dateOfBirth": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "firstName",
+                    "lastName",
+                    "dateOfBirth"
+                ]
+            },
+            "CreateJobBody": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string"
+                    },
+                    "monthlySalary": {
+                        "type": "number",
+                        "minimum": 0
+                    }
+                },
+                "required": [
+                    "title",
+                    "monthlySalary"
+                ]
+            },
+            "CreateBankAccountBody": {
+                "type": "object",
+                "properties": {
+                    "bank": {
+                        "type": "string"
+                    },
+                    "balance": {
+                        "type": "number",
+                        "minimum": 0
+                    },
+                    "currency": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "bank",
+                    "balance",
+                    "currency"
+                ]
+            },
+            "StockOrderBody": {
+                "type": "object",
+                "properties": {
+                    "price": {
+                        "type": "number",
+                        "minimum": 0
+                    },
+                    "amount": {
+                        "type": "number",
+                        "minimum": 0
+                    }
+                },
+                "required": [
+                    "price",
+                    "amount"
+                ]
+            },
+            "CreateStockAssetBody": {
+                "type": "object",
+                "properties": {
+                    "stockDataIdentity": {
+                        "type": "string",
+                        "minLength": 5
+                    },
+                    "stockOrders": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/StockOrderBody",
+                            "minLength": 5
+                        }
+                    }
+                },
+                "required": [
+                    "stockDataIdentity",
+                    "stockOrders"
+                ]
+            },
+            "CreateRealEstateAssetBody": {
+                "type": "object",
+                "properties": {}
+            }
+        }
+    }
+}

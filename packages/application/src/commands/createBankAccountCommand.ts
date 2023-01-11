@@ -40,15 +40,6 @@ export class CreateBankAccountCommandHandler extends ICommandHandler<CreateBankA
 			}
 		} catch (error) {
 			await this.unitOfWork.rollback();
-
-			if (error instanceof Error) {
-				return {
-					success: false,
-					message: error.message,
-					httpCode: 500
-				}
-			}
-
 			throw error;
 		}
 	}

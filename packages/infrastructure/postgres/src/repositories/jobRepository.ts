@@ -1,6 +1,7 @@
-import { unitOfWork, UnitOfWork } from "../unitOfWork/unitOfWork";
-import { EntityKey, IJobRepository, PaginatedBase, Job } from "@finance/domain";
+import { EntityKey, getKey, IJobRepository, Job, PaginatedBase } from "@finance/domain";
+import { EntryNotFoundError } from "@finance/errors";
 import { inject, injectable } from "tsyringe";
+import { unitOfWork, UnitOfWork } from "../unitOfWork/unitOfWork";
 
 @injectable()
 export class JobRepository implements IJobRepository {
@@ -31,13 +32,16 @@ export class JobRepository implements IJobRepository {
 		});
 
 		if (!job) {
-			throw new Error("Job not found");
+			throw new EntryNotFoundError(Job.name, getKey(id));
 		}
 		
 		return job;
 	}
 
 	async delete(id: EntityKey): Promise<void> {
-		await this._unitOfWork.getQueryRunner().manager.delete(Job, id);
+		const res = await this._unitOfWork.getQueryRunner().manager.delete(Job, id);
+		if ((res.affected ?? 0) == 0) {
+			throw new EntryNotFoundError(Job.name, getKey(id));
+		}
 	}
 }

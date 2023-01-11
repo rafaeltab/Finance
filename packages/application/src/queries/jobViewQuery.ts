@@ -29,24 +29,29 @@ export class JobViewQueryHandler extends IQueryHandler<JobViewQuery, ResponseTyp
 	}
 
 	async handle(query: JobViewQuery): Promise<ResponseType> {
-		await this.unitOfWork.start();
+		try {
+			await this.unitOfWork.start();
 
-		const jobs = await this.jobRepository.getAllJobsForUser({
-			identity: query.userIdentity,
-		}, query.limit, query.offset);
+			const jobs = await this.jobRepository.getAllJobsForUser({
+				identity: query.userIdentity,
+			}, query.limit, query.offset);
 
-		await this.unitOfWork.commit();
+			await this.unitOfWork.commit();
 
-		return {
-			success: true,
-			data: {
-				page: {
-					count: jobs.page.count,
-					offset: jobs.page.offset,
-					total: jobs.page.total,
-				},
-				data: jobs.data
+			return {
+				success: true,
+				data: {
+					page: {
+						count: jobs.page.count,
+						offset: jobs.page.offset,
+						total: jobs.page.total,
+					},
+					data: jobs.data
+				}
 			}
+		} catch (e: unknown) {
+			await this.unitOfWork.rollback();
+			throw e;
 		}
 	}
 }

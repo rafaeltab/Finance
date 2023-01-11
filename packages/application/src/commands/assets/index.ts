@@ -4,3 +4,4 @@ export { CreateStockAssetForAssetGroupCommand } from "./createStockAssetForAsset
 export { CreateStockAssetForUserCommand } from "./createStockAssetForUserCommand";
 export { DeleteAssetCommand } from "./deleteAssetCommand";
 export { DeleteAssetGroupCommand } from "./deleteAssetGroupCommand";
+export { CreateAssetGroupForUserCommand } from "./createAssetGroupForUserCommand";
