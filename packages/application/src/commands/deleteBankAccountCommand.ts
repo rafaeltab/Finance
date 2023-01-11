@@ -37,15 +37,6 @@ export class DeleteBankAccountCommandHandler extends ICommandHandler<DeleteBankA
 			}
 		} catch (error) {
 			await this.unitOfWork.rollback();
-
-			if (error instanceof Error) {
-				return {
-					success: false,
-					message: error.message,
-					httpCode: error.message.includes("not found") ? 404 : 500
-				}
-			}
-
 			throw error;
 		}
 	}

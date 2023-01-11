@@ -36,45 +36,50 @@ export class StockDataSearchQueryHandler extends IQueryHandler<StockDataSearchQu
 	}
 
 	async handle(query: StockDataSearchQuery): Promise<ResponseType> {
-		const start = new Date();
-		start.setFullYear(start.getFullYear() - 100);
+		try {
+			const start = new Date();
+			start.setFullYear(start.getFullYear() - 100);
 
-		const end = new Date();
-		end.setDate(end.getDate() + 1);
+			const end = new Date();
+			end.setDate(end.getDate() + 1);
 
-		const kinds = Object.keys(StockAssetKind).map(x => x.toLowerCase());
+			const kinds = Object.keys(StockAssetKind).map(x => x.toLowerCase());
 
-		let kind: StockAssetKind | undefined = undefined;
+			let kind: StockAssetKind | undefined = undefined;
 
-		if (query.type !== undefined) {
-			if (kinds.includes(query.type.toLowerCase())) {
-				kind = StockAssetKind[Object.keys(StockAssetKind).find(x => x.toLowerCase() === query.type!.toLowerCase()) as keyof typeof StockAssetKind];
+			if (query.type !== undefined) {
+				if (kinds.includes(query.type.toLowerCase())) {
+					kind = StockAssetKind[Object.keys(StockAssetKind).find(x => x.toLowerCase() === query.type!.toLowerCase()) as keyof typeof StockAssetKind];
+				}
 			}
-		}
 
-		await this.unitOfWork.start();
+			await this.unitOfWork.start();
 
-		const stocks = await this.stockRepository.searchStockData(
-			query.symbol,
-			query.exchange,
-			kind,
-			true,
-			query.limit,
-			query.offset);
+			const stocks = await this.stockRepository.searchStockData(
+				query.symbol,
+				query.exchange,
+				kind,
+				true,
+				query.limit,
+				query.offset);
 
-		await this.unitOfWork.commit();
-		
-		return {
-			success: true,
-			data: {
-				isEmpty: stocks.page.total === 0,
-				page: {
-					count: stocks.page.count,
-					offset: stocks.page.offset,
-					total: stocks.page.total,
-				},
-				data: stocks.data
+			await this.unitOfWork.commit();
+
+			return {
+				success: true,
+				data: {
+					isEmpty: stocks.page.total === 0,
+					page: {
+						count: stocks.page.count,
+						offset: stocks.page.offset,
+						total: stocks.page.total,
+					},
+					data: stocks.data
+				}
 			}
+		} catch (e: unknown) {
+			await this.unitOfWork.rollback();
+			throw e;
 		}
 	}
 }

@@ -28,24 +28,29 @@ export class BankAccountViewQueryHandler extends IQueryHandler<BankAccountViewQu
 	}
 
 	async handle(query: BankAccountViewQuery): Promise<ResponseType> {
-		await this.unitOfWork.start();
-
-		const bankAccounts = await this.bankAccountRepository.getAllBankAccountsForUser({
-			identity: query.userIdentity,
-		}, query.limit, query.offset);
-
-		await this.unitOfWork.commit();
-
-		return {
-			success: true,
-			data: {
-				page: {
-					count: bankAccounts.page.count,
-					offset: bankAccounts.page.offset,
-					total: bankAccounts.page.total,
-				},
-				data: bankAccounts.data
+		try {
+			await this.unitOfWork.start();
+	
+			const bankAccounts = await this.bankAccountRepository.getAllBankAccountsForUser({
+				identity: query.userIdentity,
+			}, query.limit, query.offset);
+	
+			await this.unitOfWork.commit();
+	
+			return {
+				success: true,
+				data: {
+					page: {
+						count: bankAccounts.page.count,
+						offset: bankAccounts.page.offset,
+						total: bankAccounts.page.total,
+					},
+					data: bankAccounts.data
+				}
 			}
+		} catch (e: unknown) { 
+			await this.unitOfWork.rollback();
+			throw e;
 		}
 	}
 }

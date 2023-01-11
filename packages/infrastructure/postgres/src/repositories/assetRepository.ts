@@ -1,5 +1,6 @@
 import { unitOfWork, UnitOfWork } from "../unitOfWork/unitOfWork";
-import { EntityKey, IAssetRepository, PaginatedBase, Asset } from "@finance/domain";
+import { EntityKey, IAssetRepository, PaginatedBase, Asset, getKey } from "@finance/domain";
+import { EntryNotFoundError } from "@finance/errors";
 import { inject, injectable } from "tsyringe";
 
 @injectable()
@@ -63,13 +64,16 @@ export class AssetRepository implements IAssetRepository {
 		});
 
 		if (!asset) {
-			throw new Error("Asset not found");
+			throw new EntryNotFoundError(Asset.name, getKey(id));
 		}
 
 		return asset;
 	}
 
 	async delete(id: EntityKey): Promise<void> {
-		await this._unitOfWork.getQueryRunner().manager.delete(Asset, id);
+		const res = await this._unitOfWork.getQueryRunner().manager.delete(Asset, id);
+		if ((res.affected ?? 0) == 0) {
+			throw new EntryNotFoundError(Asset.name, getKey(id));
+		}
 	}
 }

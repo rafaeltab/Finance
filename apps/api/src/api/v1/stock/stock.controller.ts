@@ -1,5 +1,7 @@
 import { AddValuesToStockDataCommand, CreateStockDatasCommand, StockDataSearchQuery, StockDataViewQuery, StocksDataListViewQuery } from "@finance/application";
 import { InsertStockValue, StockAssetKind } from "@finance/domain";
+import { DuplicateEntryError, EntryNotFoundError } from "@finance/errors";
+import { FinanceErrors } from "@finance/errors-nest";
 import { IQueryResult, Mediator } from "@finance/libs-types";
 import { Controller, Get, HttpException, Inject, Param, Query, UploadedFile, UseInterceptors } from "@nestjs/common";
 import { Put } from "@nestjs/common/decorators/http/request-mapping.decorator";
@@ -12,59 +14,45 @@ export class StockController {
 	constructor(@Inject(Mediator) private readonly mediator: Mediator) { }
 
 	@Get("/search")
+	@FinanceErrors([])
 	async getSearch(
 		@Query("exchange") exchange: string,
 		@Query("symbol") symbol: string,
 		@Query("type") type: string
 	) {
-		const queryResult = await this.mediator.query(new StockDataSearchQuery({
+		return await this.mediator.query(new StockDataSearchQuery({
 			exchange: exchange,
 			symbol: symbol,
 			type: type,
 			limit: 30,
 			offset: 0
 		}));
-
-		if (queryResult.success) {
-			return queryResult;
-		}
-
-		throw new HttpException(queryResult.message, queryResult.httpCode ?? 500);
 	}
 
 	@Get("/:identity")
+	@FinanceErrors([EntryNotFoundError])
 	async get(
 		@Param("identity") identity: string
 	) {
-		const queryResult =  await this.mediator.query(new StockDataViewQuery({
+		return  await this.mediator.query(new StockDataViewQuery({
 			stockDataIdentity: identity,
 			offset: 0,
 			limit: 30
 		}));
-
-		if (queryResult.success) {
-			return queryResult;
-		}
-
-		throw new HttpException(queryResult.message, queryResult.httpCode ?? 500);
 	}
 
 	@Get()
+	@FinanceErrors([])
 	async getStocks() {
-		const queryResult = await this.mediator.query(new StocksDataListViewQuery({
+		return await this.mediator.query(new StocksDataListViewQuery({
 			limit: 30,
 			offset: 0
 		}))
-
-		if (queryResult.success) {
-			return queryResult;
-		}
-
-		throw new HttpException(queryResult.message, queryResult.httpCode ?? 500);
 	}
 
 	@Put("data/csv")
-		@UseInterceptors(FileInterceptor('stockData'))
+	@UseInterceptors(FileInterceptor('stockData'))
+	@FinanceErrors([DuplicateEntryError])
 	async createDataFromCsv(
 		@UploadedFile() stockData: Express.Multer.File
 	) {
@@ -74,19 +62,14 @@ export class StockController {
 
 		const parsed = await parseDataCsv(stockData.buffer);
 		
-		const commandResult = await this.mediator.command(new CreateStockDatasCommand({
+		return await this.mediator.command(new CreateStockDatasCommand({
 			stockDatas: parsed
 		}))
-
-		if (commandResult.success) {
-			return commandResult;
-		}
-
-		throw new HttpException(commandResult.message, commandResult.httpCode ?? 500);
 	}
 	
 	@Put("values/csv")
 	@UseInterceptors(FileInterceptor('stockValues'))
+	@FinanceErrors([DuplicateEntryError])
 	async createValuesFromCsv(
 		@UploadedFile() stockValues: Express.Multer.File
 	) {

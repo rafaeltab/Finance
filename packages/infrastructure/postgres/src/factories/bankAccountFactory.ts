@@ -1,5 +1,6 @@
 import { UnitOfWork, unitOfWork } from "../unitOfWork/unitOfWork";
-import { Balance, BankAccount, EntityKey, IBankAccountFactory, User } from "@finance/domain";
+import { Balance, BankAccount, EntityKey, IBankAccountFactory, User, getKey } from "@finance/domain";
+import { DuplicateEntryError, EntryNotFoundError, UnexpectedError } from "@finance/errors";
 import { assertContains } from "@finance/libs-types";
 import { inject, injectable } from "tsyringe";
 
@@ -17,7 +18,19 @@ export class BankAccountFactory implements IBankAccountFactory {
 		});
 
 		if (!userEntity) {
-			throw new Error("User not found");
+			throw new EntryNotFoundError(User.name, getKey(user));
+		}
+
+		const identity = this.createIdentity(userEntity, bank);
+
+		const existingBankAccount = await this._unitOfWork.getQueryRunner().manager.findOne(BankAccount, {
+			where: {
+				identity
+			}
+		});
+
+		if (existingBankAccount != null) {
+			throw new DuplicateEntryError(BankAccount.name, identity);
 		}
 
 		const balanceEntity = new Balance({
@@ -28,11 +41,11 @@ export class BankAccountFactory implements IBankAccountFactory {
 		const bankAccount = new BankAccount({
 			bank: bank,
 			balance: balanceEntity,
-			identity: this.createIdentity(userEntity, bank)
+			identity: identity
 		})
 
 		if (userEntity.bankAccounts === null) {
-			throw new Error("Bank accounts not loaded");
+			throw new UnexpectedError(new Error("Bank accounts not loaded"));
 		}
 
 		assertContains(userEntity, ["bankAccounts"]);

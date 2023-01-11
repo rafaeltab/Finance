@@ -3,11 +3,12 @@
 	"version": "1.0.0",
 	"private": true,
 	"license": "MIT",
-	"type": "module",
 	"files": [
 		"./build/*"
 	],
+	"main": "./build/index.js",
 	"types": "./build/index.d.ts",
+	"type": "module",
 	"scripts": {
 		"build": "rimraf ./build/ && tsc",
 		"build:dev": "rimraf ./build/ && tsc -p ./tsconfig.dev.json",

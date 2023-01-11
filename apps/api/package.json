@@ -20,6 +20,7 @@
 	},
 	"dependencies": {
 		"@finance/application": "*",
+		"@finance/errors-nest": "*",
 		"@finance/libs-types": "*",
 		"@nestjs/common": "^9.0.0",
 		"@nestjs/core": "^9.0.0",

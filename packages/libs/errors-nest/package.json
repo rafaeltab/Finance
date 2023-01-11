@@ -3,11 +3,12 @@
 	"version": "1.0.0",
 	"private": true,
 	"license": "MIT",
-	"type": "module",
 	"files": [
 		"./build/*"
 	],
+	"main": "./build/index.js",
 	"types": "./build/index.d.ts",
+	"type": "module",
 	"scripts": {
 		"build": "rimraf ./build/ && tsc",
 		"build:dev": "rimraf ./build/ && tsc -p ./tsconfig.dev.json",
@@ -15,8 +16,15 @@
 		"clean": "rimraf build"
 	},
 	"dependencies": {
+		"@finance/errors": "*",
 		"@finance/libs-tsconfig": "*",
+		"@finance/libs-types": "*",
+		"@nestjs/common": "^9.2.1",
+		"@nestjs/core": "^9.2.1",
+		"@nestjs/swagger": "^6.1.4",
+		"@types/express": "^4.17.15",
 		"@types/lodash-es": "^4.17.6",
+		"express": "^4.18.2",
 		"lodash-es": "^4.17.21",
 		"tsyringe": "^4.7.0"
 	},

@@ -21,6 +21,7 @@
 	},
 	"dependencies": {
 		"@finance/domain": "*",
+		"@finance/errors": "*",
 		"@finance/libs-tsconfig": "*",
 		"@finance/modules": "*",
 		"cross-env": "^7.0.3",

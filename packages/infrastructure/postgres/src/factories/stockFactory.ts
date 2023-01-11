@@ -1,5 +1,6 @@
 import { unitOfWork, UnitOfWork } from "../unitOfWork/unitOfWork";
-import { EntityKey, IStockFactory, InsertEvent, InsertStockValue, StockAssetKind, StockData, StockDividendEvent, StockValue, StockSplitEvent } from "@finance/domain";
+import { EntityKey, IStockFactory, InsertEvent, InsertStockValue, StockAssetKind, StockData, StockDividendEvent, StockValue, StockSplitEvent, getKey } from "@finance/domain";
+import { EntryNotFoundError } from "@finance/errors";
 import { inject, injectable } from "tsyringe";
 
 @injectable()
@@ -24,7 +25,7 @@ export class StockFactory implements IStockFactory {
 		});
 
 		if (stockData === undefined || stockData === null) {
-			throw new Error("Stock data not found");
+			throw new EntryNotFoundError(StockData.name, getKey(stockDataId));
 		}
 
 		var stockValues = values.map(value => new StockValue({
@@ -58,7 +59,7 @@ export class StockFactory implements IStockFactory {
 		});
 
 		if (stockData === undefined || stockData === null) {
-			throw new Error("Stock data not found");
+			throw new EntryNotFoundError(StockData.name, getKey(stockDataId));
 		}
 
 		var stockDividendEvents = events.map(event => new StockDividendEvent({
@@ -77,7 +78,7 @@ export class StockFactory implements IStockFactory {
 		});
 
 		if (stockData === undefined || stockData === null) {
-			throw new Error("Stock data not found");
+			throw new EntryNotFoundError(StockData.name, getKey(stockDataId));
 		}
 
 		var stockDividendEvents = events.map(event => new StockSplitEvent({

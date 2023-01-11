@@ -32,23 +32,28 @@ export class StocksDataListViewQueryHandler extends IQueryHandler<StocksDataList
 	}
 
 	async handle(query: StocksDataListViewQuery): Promise<ResponseType> {
-		await this.unitOfWork.start();
+		try {
+			await this.unitOfWork.start();
 
-		const stocks = await this.stockRepository.getAllStockData(true, query.limit, query.offset);
+			const stocks = await this.stockRepository.getAllStockData(true, query.limit, query.offset);
 
-		await this.unitOfWork.commit();
+			await this.unitOfWork.commit();
 
-		return {
-			success: true,
-			data: {
-				isEmpty: stocks.page.total === 0,
-				page: {
-					count: stocks.page.count,
-					offset: stocks.page.offset,
-					total: stocks.page.total,
-				},
-				data: stocks.data	
+			return {
+				success: true,
+				data: {
+					isEmpty: stocks.page.total === 0,
+					page: {
+						count: stocks.page.count,
+						offset: stocks.page.offset,
+						total: stocks.page.total,
+					},
+					data: stocks.data
+				}
 			}
+		} catch (e: unknown) {
+			await this.unitOfWork.rollback();
+			throw e;
 		}
 	}
 }

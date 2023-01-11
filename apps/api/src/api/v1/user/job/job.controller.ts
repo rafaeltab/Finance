@@ -1,63 +1,50 @@
 import { CreateJobCommand, DeleteJobCommand, JobViewQuery } from "@finance/application";
+import { DuplicateEntryError, EntryNotFoundError } from "@finance/errors";
+import { FinanceErrors } from "@finance/errors-nest";
 import { Mediator } from "@finance/libs-types";
-import { Body, Controller, Get, HttpException, Inject, Param, Put } from "@nestjs/common";
+import { Body, Controller, Get, Inject, Param, Put } from "@nestjs/common";
 import { Delete } from "@nestjs/common/decorators";
-import { CreateJobBody } from "./createJob.body";
-import { UserIdentityParams } from "../userIdentity.params";
 import { IdentityParams } from "../../identity.params";
+import { UserIdentityParams } from "../userIdentity.params";
+import { CreateJobBody } from "./createJob.body";
 
 @Controller("/api/v1/user/:userIdentity/job")
 export class JobController {
 	constructor(@Inject(Mediator) private mediator: Mediator) { }
 
 	@Get()
+	@FinanceErrors([EntryNotFoundError])
 	async get(
 		@Param() param: UserIdentityParams,
 
 	) {
-		const queryResult = await this.mediator.query(new JobViewQuery({
+		return await this.mediator.query(new JobViewQuery({
 			userIdentity: param.userIdentity,
 			limit: 30,
 			offset: 0,
 		}));
-
-		if (queryResult.success) {
-			return queryResult;
-		}
-
-		throw new HttpException(queryResult.message, queryResult.httpCode ?? 500);
 	}
 
 	@Put()
+	@FinanceErrors([DuplicateEntryError])
 	async insert(
 		@Param() param: UserIdentityParams,
 		@Body() body: CreateJobBody,
 	) {
-		const commandResult = await this.mediator.command(new CreateJobCommand({
+		return await this.mediator.command(new CreateJobCommand({
 			userIdentity: param.userIdentity,
 			title: body.title,
 			monthlySalary: body.monthlySalary,
 		}));
-
-		if (commandResult.success) {
-			return commandResult;
-		}
-
-		throw new HttpException(commandResult.message, commandResult.httpCode ?? 500);
 	}
 
 	@Delete("/:identity")
+	@FinanceErrors([EntryNotFoundError])
 	async delete(
 		@Param() param: IdentityParams
 	) {
-		const commandResult = await this.mediator.command(new DeleteJobCommand({
+		return await this.mediator.command(new DeleteJobCommand({
 			jobIdentity: param.identity
 		}));
-
-		if (commandResult.success) {
-			return commandResult;
-		}
-
-		throw new HttpException(commandResult.message, commandResult.httpCode ?? 500);
 	}
 }

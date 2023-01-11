@@ -1,199 +1,156 @@
+import { CreateAssetGroupForUserCommand, CreateRealEstateAssetForAssetGroupCommand, CreateRealEstateAssetForUserCommand, CreateStockAssetForAssetGroupCommand, CreateStockAssetForUserCommand, DeleteAssetCommand, DeleteAssetGroupCommand, GetAssetGroupQuery, GetAssetGroupsForUserQuery, GetAssetQuery, GetAssetsForUserQuery } from "@finance/application";
+import { DuplicateEntryError, EntryNotFoundError } from "@finance/errors";
+import { FinanceErrors } from "@finance/errors-nest";
 import { Mediator } from "@finance/libs-types";
-import { Body, Controller, Delete, Get, HttpException, Inject, Param, Put } from "@nestjs/common";
-import { AssetIdentityParams } from "./assetIdentity.params";
-import { GetAssetGroupsForUserQuery, GetAssetQuery, GetAssetGroupQuery, GetAssetsForUserQuery, CreateStockAssetForUserCommand, CreateRealEstateAssetForUserCommand, CreateStockAssetForAssetGroupCommand, CreateRealEstateAssetForAssetGroupCommand, DeleteAssetCommand, DeleteAssetGroupCommand } from "@finance/application";
+import { Body, Controller, Delete, Get, Inject, Param, Put } from "@nestjs/common";
 import { UserIdentityParams } from "../userIdentity.params";
 import { AssetGroupIdentityParams } from "./assetGroupIdentity.params";
-import { CreateStockAssetBody } from "./createStockAsset.body";
+import { AssetIdentityParams } from "./assetIdentity.params";
 import { CreateRealEstateAssetBody } from "./createRealEstateAsset.body";
+import { CreateStockAssetBody } from "./createStockAsset.body";
+import type { CreateAssetGroupBody } from "./createAssetGroup.body";
 
 @Controller("/api/v1")
 export class AssetController {
 	constructor(@Inject(Mediator) private mediator: Mediator) { }
 
-	
-	
 	// GET /api/v1/asset/:assetIdentity -> Single asset
 	@Get("/asset/:assetIdentity")
+	@FinanceErrors([EntryNotFoundError])
 	async getAsset(
 		@Param() params: AssetIdentityParams
 	) {
-		var queryResult = await this.mediator.query(new GetAssetQuery({
+		return await this.mediator.query(new GetAssetQuery({
 			assetIdentity: params.assetIdentity
 		}))
-
-		if (queryResult.success) {
-			return queryResult;
-		}
-
-		throw new HttpException(queryResult.message, queryResult.httpCode ?? 500);
 	}
-	
+
 	// GET /api/v1/assetGroup/:assetGroupIdentity -> Get a group with all assets
 	@Get("/assetGroup/:assetGroupIdentity")
+	@FinanceErrors([EntryNotFoundError])
 	async getAssetGroup(
 		@Param() params: AssetGroupIdentityParams
 	) {
-		var queryResult = await this.mediator.query(new GetAssetGroupQuery({
+		return await this.mediator.query(new GetAssetGroupQuery({
 			assetGroupIdentity: params.assetGroupIdentity,
 			limit: 30,
 			offset: 0
 		}))
-
-		if (queryResult.success) {
-			return queryResult;
-		}
-
-		throw new HttpException(queryResult.message, queryResult.httpCode ?? 500);
 	}
-	
+
 	// GET /api/v1/user/:userIdentity/asset -> All assets for user
 	@Get("/user/:userIdentity/asset")
+	@FinanceErrors([EntryNotFoundError])
 	async getUserAssets(
 		@Param() params: UserIdentityParams
 	) {
-		var queryResult = await this.mediator.query(new GetAssetsForUserQuery({
+		return await this.mediator.query(new GetAssetsForUserQuery({
 			userIdentity: params.userIdentity,
 			limit: 30,
 			offset: 0
 		}))
-
-		if (queryResult.success) {
-			return queryResult;
-		}
-
-		throw new HttpException(queryResult.message, queryResult.httpCode ?? 500);
 	}
 
 	// GET /api/v1/user/:userIdentity/assetGroup -> All asset groups for user
-	
+
 	@Get("/user/:userIdentity/assetGroup")
+	@FinanceErrors([EntryNotFoundError])
 	async getUserAssetGroups(
 		@Param() params: UserIdentityParams
 	) {
-		var queryResult = await this.mediator.query(new GetAssetGroupsForUserQuery({
+		return await this.mediator.query(new GetAssetGroupsForUserQuery({
 			userIdentity: params.userIdentity,
 			limit: 30,
 			offset: 0
-		}))
-
-		if (queryResult.success) {
-			return queryResult;
-		}
-
-		throw new HttpException(queryResult.message, queryResult.httpCode ?? 500);
+		}));
 	}
-	
-	
+
 	// PUT /api/v1/user/:userIdentity/asset/stock -> Create a stcck asset for user
 	@Put("/user/:userIdentity/asset/stock")
+	@FinanceErrors([EntryNotFoundError, DuplicateEntryError])
 	async createStockAssetForUser(
 		@Param() params: UserIdentityParams,
 		@Body() body: CreateStockAssetBody
 	) {
-		var commandResult = await this.mediator.query(new CreateStockAssetForUserCommand({
+		return await this.mediator.query(new CreateStockAssetForUserCommand({
 			userIdentity: params.userIdentity,
 			stockDataIdentity: body.stockDataIdentity,
 			stockOrders: body.stockOrders
 		}))
-
-		if (commandResult.success) {
-			return commandResult;
-		}
-
-		throw new HttpException(commandResult.message, commandResult.httpCode ?? 500);
 	}
-	
+
 	// PUT /api/v1/user/:userIdentity/asset/realEstate -> Create a real estate asset for user
 	@Put("/user/:userIdentity/asset/realEstate")
+	@FinanceErrors([EntryNotFoundError, DuplicateEntryError])
 	async createRealEstateAssetForUser(
 		@Param() params: UserIdentityParams,
 		@Body() body: CreateRealEstateAssetBody
 	) {
-		var commandResult = await this.mediator.query(new CreateRealEstateAssetForUserCommand({
+		return await this.mediator.query(new CreateRealEstateAssetForUserCommand({
 			userIdentity: params.userIdentity,
 			address: body.address,
 		}))
-
-		if (commandResult.success) {
-			return commandResult;
-		}
-
-		throw new HttpException(commandResult.message, commandResult.httpCode ?? 500);
 	}
-	
+
 	// PUT /api/v1/user/:userIdentity/assetGroup -> Create asset group for user
 	@Put("/user/:userIdentity/assetGroup")
-	createAssetGroupForUser() {
-		
+	@FinanceErrors([EntryNotFoundError, DuplicateEntryError])
+	async createAssetGroupForUser(
+		@Param() params: UserIdentityParams,
+		@Body() body: CreateAssetGroupBody
+	) {
+		return await this.mediator.command(new CreateAssetGroupForUserCommand({
+			name: body.name,
+			userIdentity: params.userIdentity
+		}))
 	}
-	
+
 	// PUT /api/v1/user/:userIdentity/assetGroup/:assetGroupIdentity/asset/stock -> Create stock asset for group
 	@Put("/assetGroup/:assetGroupIdentity/asset/stock")
+	@FinanceErrors([EntryNotFoundError, DuplicateEntryError])
 	async createStockAssetForGroup(
 		@Param() params: AssetGroupIdentityParams,
 		@Body() body: CreateStockAssetBody
 	) {
-		var commandResult = await this.mediator.query(new CreateStockAssetForAssetGroupCommand({
+		return await this.mediator.query(new CreateStockAssetForAssetGroupCommand({
 			assetGroupIdentity: params.assetGroupIdentity,
 			stockDataIdentity: body.stockDataIdentity,
 			stockOrders: body.stockOrders
 		}))
-
-		if (commandResult.success) {
-			return commandResult;
-		}
-
-		throw new HttpException(commandResult.message, commandResult.httpCode ?? 500);
 	}
-	
+
 	// PUT /api/v1/user/:userIdentity/assetGroup/:assetGroupIdentity/asset/realEstate -> Create real estate asset for group
 	@Put("/assetGroup/:assetGroupIdentity/asset/realEstate")
+	@FinanceErrors([EntryNotFoundError, DuplicateEntryError])
 	async createRealEstateAssetForGroup(
 		@Param() params: AssetGroupIdentityParams,
 		@Body() body: CreateRealEstateAssetBody
 	) {
-		var commandResult = await this.mediator.query(new CreateRealEstateAssetForAssetGroupCommand({
+		return await this.mediator.query(new CreateRealEstateAssetForAssetGroupCommand({
 			assetGroupIdentity: params.assetGroupIdentity,
 			address: body.address,
 		}))
-
-		if (commandResult.success) {
-			return commandResult;
-		}
-
-		throw new HttpException(commandResult.message, commandResult.httpCode ?? 500);
 	}
-	
+
 	// DELETE /api/v1/asset/:assetIdentity
 	@Delete("/asset/:assetIdentity")
+	@FinanceErrors([EntryNotFoundError])
 	async deleteAsset(
 		@Param() params: AssetIdentityParams
 	) {
-		var commandResult = await this.mediator.query(new DeleteAssetCommand({
+		await this.mediator.query(new DeleteAssetCommand({
 			assetIdentity: params.assetIdentity
 		}))
-
-		if (commandResult.success) {
-			return commandResult;
-		}
-
-		throw new HttpException(commandResult.message, commandResult.httpCode ?? 500);
 	}
-	
+
 	// DELETE /api/v1/assetGroup/:assetGroupIdentity
 	@Delete("/assetGroup/:assetGroupIdentity")
+	@FinanceErrors([EntryNotFoundError])
 	async deleteAssetGroup(
 		@Param() params: AssetGroupIdentityParams
 	) {
-		var commandResult = await this.mediator.query(new DeleteAssetGroupCommand({
+		return await this.mediator.query(new DeleteAssetGroupCommand({
 			assetGroupIdentity: params.assetGroupIdentity
 		}))
-
-		if (commandResult.success) {
-			return commandResult;
-		}
-
-		throw new HttpException(commandResult.message, commandResult.httpCode ?? 500);
 	}
 }

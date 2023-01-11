@@ -37,15 +37,6 @@ export class DeleteAssetCommandHandler extends ICommandHandler<DeleteAssetComman
 			}
 		} catch (error) {
 			await this.unitOfWork.rollback();
-
-			if (error instanceof Error) {
-				return {
-					success: false,
-					message: error.message,
-					httpCode: 500
-				}
-			}
-
 			throw error;
 		}
 	}

@@ -1,8 +1,9 @@
-import { IUserRepository, User, EntityKey, PaginatedBase, UserMeta } from "@finance/domain";
+import { IUserRepository, User, EntityKey, PaginatedBase, UserMeta, getKey } from "@finance/domain";
 import { inject, injectable } from "tsyringe";
 import { UnitOfWork, unitOfWork } from "../unitOfWork/unitOfWork";
 import { intersection } from "lodash-es"
 import type { FindOptionsRelations } from "typeorm";
+import { EntryNotFoundError } from "@finance/errors";
 
 @injectable()
 export class UserRepository implements IUserRepository {
@@ -40,7 +41,7 @@ export class UserRepository implements IUserRepository {
 			});
 		
 		if (!user) {
-			throw new Error("User not found");
+			throw new EntryNotFoundError(User.name, getKey(id));
 		}
 		
 		return user;
@@ -54,13 +55,16 @@ export class UserRepository implements IUserRepository {
 			});
 		
 		if (!user) {
-			throw new Error("User not found");
+			throw new EntryNotFoundError(User.name, getKey(id));
 		}
 
 		return user;
 	}
 
 	async delete(id: EntityKey): Promise<void> {
-		await this._unitOfWork.getQueryRunner().manager.delete(User, id);
+		const res = await this._unitOfWork.getQueryRunner().manager.delete(User, id);
+		if ((res.affected ?? 0) == 0) { 
+			throw new EntryNotFoundError(User.name, getKey(id));
+		} 
 	}
 }

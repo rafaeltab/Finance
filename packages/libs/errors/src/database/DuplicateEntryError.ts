@@ -1,4 +1,3 @@
-import type { IErrorParser } from "../IErrorParser";
 import { UserError } from "../UserError";
 
 export class DuplicateEntryError extends UserError { 
@@ -13,11 +12,4 @@ export class DuplicateEntryError extends UserError {
 	}
 	
 	override _httpCode: number = 409;
-}
-
-export class DuplicateEntryParser implements IErrorParser<DuplicateEntryError> {
-	isError(error: Error): error is DuplicateEntryError {
-		const messageRegex = /duplicate\skey/;
-		return error.message.match(messageRegex) != null;
-	}
 }

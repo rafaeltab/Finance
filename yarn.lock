@@ -534,6 +534,7 @@ __metadata:
   resolution: "@finance/api@workspace:apps/api"
   dependencies:
     "@finance/application": "*"
+    "@finance/errors-nest": "*"
     "@finance/libs-types": "*"
     "@nestjs/cli": ^9.0.0
     "@nestjs/common": ^9.0.0
@@ -639,19 +640,26 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@finance/errors-nest@workspace:packages/libs/errors-nest":
+"@finance/errors-nest@*, @finance/errors-nest@workspace:packages/libs/errors-nest":
   version: 0.0.0-use.local
   resolution: "@finance/errors-nest@workspace:packages/libs/errors-nest"
   dependencies:
+    "@finance/errors": "*"
     "@finance/libs-tsconfig": "*"
+    "@finance/libs-types": "*"
+    "@nestjs/common": ^9.2.1
+    "@nestjs/core": ^9.2.1
+    "@nestjs/swagger": ^6.1.4
+    "@types/express": ^4.17.15
     "@types/lodash-es": ^4.17.6
+    express: ^4.18.2
     lodash-es: ^4.17.21
     rimraf: ^3.0.2
     tsyringe: ^4.7.0
   languageName: unknown
   linkType: soft
 
-"@finance/errors@workspace:packages/libs/errors":
+"@finance/errors@*, @finance/errors@workspace:packages/libs/errors":
   version: 0.0.0-use.local
   resolution: "@finance/errors@workspace:packages/libs/errors"
   dependencies:
@@ -739,6 +747,7 @@ __metadata:
   resolution: "@finance/postgres@workspace:packages/infrastructure/postgres"
   dependencies:
     "@finance/domain": "*"
+    "@finance/errors": "*"
     "@finance/libs-tsconfig": "*"
     "@finance/modules": "*"
     "@types/jest": ^29.2.3
@@ -1152,7 +1161,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/common@npm:^9.0.0":
+"@nestjs/common@npm:^9.0.0, @nestjs/common@npm:^9.2.1":
   version: 9.2.1
   resolution: "@nestjs/common@npm:9.2.1"
   dependencies:
@@ -1176,7 +1185,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/core@npm:^9.0.0":
+"@nestjs/core@npm:^9.0.0, @nestjs/core@npm:^9.2.1":
   version: 9.2.1
   resolution: "@nestjs/core@npm:9.2.1"
   dependencies:
@@ -1561,7 +1570,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/express@npm:*, @types/express@npm:^4.17.13":
+"@types/express@npm:*, @types/express@npm:^4.17.13, @types/express@npm:^4.17.15":
   version: 4.17.15
   resolution: "@types/express@npm:4.17.15"
   dependencies:
@@ -3897,7 +3906,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express@npm:4.18.2":
+"express@npm:4.18.2, express@npm:^4.18.2":
   version: 4.18.2
   resolution: "express@npm:4.18.2"
   dependencies:

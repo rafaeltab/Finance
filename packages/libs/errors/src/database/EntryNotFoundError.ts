@@ -1,4 +1,3 @@
-import type { IErrorParser } from "../IErrorParser";
 import { UserError } from "../UserError";
 
 export class EntryNotFoundError extends UserError {
@@ -13,11 +12,4 @@ export class EntryNotFoundError extends UserError {
 	}
 
 	override _httpCode: number = 404;
-}
-
-export class EntryNotFoundParser implements IErrorParser<EntryNotFoundError> {
-	isError(error: Error): error is EntryNotFoundError {
-		const messageRegex = /not\sfound/;
-		return error.message.match(messageRegex) != null;
-	}
 }

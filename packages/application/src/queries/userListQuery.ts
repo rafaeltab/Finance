@@ -26,23 +26,28 @@ export class UserListQueryHandler extends IQueryHandler<UserListQuery, ResponseT
 	}
 
 	async handle(query: UserListQuery): Promise<ResponseType> {
-		await this.unitOfWork.start();
+		try {
+			await this.unitOfWork.start();
 
-		const users = await this.userRepository.getAll(query.limit, query.offset);
+			const users = await this.userRepository.getAll(query.limit, query.offset);
 
-		await this.unitOfWork.commit();
+			await this.unitOfWork.commit();
 
-		return {
-			success: true,
-			data: {
-				page: {
-					count: users.page.count,
-					offset: users.page.offset,
-					total: users.page.total,
-				},
-				data: users.data,
-				isEmpty: users.page.total === 0,
+			return {
+				success: true,
+				data: {
+					page: {
+						count: users.page.count,
+						offset: users.page.offset,
+						total: users.page.total,
+					},
+					data: users.data,
+					isEmpty: users.page.total === 0,
+				}
 			}
+		} catch (e: unknown) {
+			await this.unitOfWork.rollback();
+			throw e;
 		}
 	}
 }

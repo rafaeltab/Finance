@@ -3,13 +3,11 @@ import type { ITokenable } from "./mediator";
 export type ISuccessCommandResult<TData> = {
 	success: true;
 	data: TData
-	httpCode?: number;
 }
 
 export type IFailedCommandResult = {
 	message: string;
 	success: false;
-	httpCode?: number;
 }
 
 export type ICommandResult<TData> = ISuccessCommandResult<TData> | IFailedCommandResult;

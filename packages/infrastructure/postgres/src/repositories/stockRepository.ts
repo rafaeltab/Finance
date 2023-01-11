@@ -1,8 +1,9 @@
-import { UnitOfWork, unitOfWork } from "../unitOfWork/unitOfWork";
-import { EntityKey, IStockRepository, PaginatedBase, StockAssetKind, StockData, StockDividendEvent, StockSplitEvent, StockValue, TimeRange, ValueGranularity } from "@finance/domain";
+import { EntityKey, IStockRepository, PaginatedBase, StockAssetKind, StockData, StockDividendEvent, StockSplitEvent, StockValue, TimeRange, ValueGranularity, getKey } from "@finance/domain";
+import { EntryNotFoundError } from "@finance/errors";
 import { set } from "lodash-es";
 import { inject, injectable } from "tsyringe";
 import { EntityManager, EntityMetadata, EntityTarget, FindOptionsWhere, In, Like, ObjectLiteral } from "typeorm";
+import { UnitOfWork, unitOfWork } from "../unitOfWork/unitOfWork";
 
 const granularities = new Set(["minute", "hour", "day", "week", "month", "year"]);
 
@@ -49,7 +50,7 @@ export class StockRepository implements IStockRepository {
 		});
 
 		if (!stockData) {
-			throw new Error("Stock data not found");
+			throw new EntryNotFoundError(StockData.name, getKey(stockDataId));
 		}
 
 		const trunc = `DATE_TRUNC('${granularity}', "sv"."date")`
@@ -133,7 +134,7 @@ export class StockRepository implements IStockRepository {
 		});
 
 		if (!stockData) {
-			throw new Error(`StockData not found`);
+			throw new EntryNotFoundError(StockData.name, getKey(stockDataId));
 		}
 
 		return [stockData.dividendsEvents ?? [], stockData.splitEvents ?? []];
@@ -145,7 +146,7 @@ export class StockRepository implements IStockRepository {
 		});
 
 		if (!stockData) {
-			throw new Error(`StockData not found`);
+			throw new EntryNotFoundError(StockData.name, getKey(stockDataId));
 		}	
 
 		return stockData;

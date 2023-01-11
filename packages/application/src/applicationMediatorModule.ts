@@ -25,6 +25,7 @@ import { DeleteAssetCommand, DeleteAssetCommandHandler } from "./commands/assets
 import { DeleteAssetGroupCommand, DeleteAssetGroupCommandHandler } from "./commands/assets/deleteAssetGroupCommand";
 import { CreateStockDatasCommand, CreateStockDatasCommandHandler } from "./commands/createStockDatasCommand";
 import { AddValuesToStockDataCommand, AddValuesToStockDataCommandHandler } from "./commands/addValuesToStockDataCommand";
+import { CreateAssetGroupForUserCommand, CreateAssetGroupForUserCommandHandler } from "./commands/assets/createAssetGroupForUserCommand";
 
 export class ApplicationMediatorModule extends MediatorModule {
 	async register(): Promise<void> {
@@ -54,6 +55,7 @@ export class ApplicationMediatorModule extends MediatorModule {
 		this.registerCommand(DeleteAssetGroupCommand, DeleteAssetGroupCommandHandler);
 		this.registerCommand(CreateStockDatasCommand, CreateStockDatasCommandHandler);
 		this.registerCommand(AddValuesToStockDataCommand, AddValuesToStockDataCommandHandler);
+		this.registerCommand(CreateAssetGroupForUserCommand, CreateAssetGroupForUserCommandHandler);
 
 		await this.registerModule(PostgresInfrastructureModule)
 	}

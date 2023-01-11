@@ -1,6 +1,7 @@
-import { unitOfWork, UnitOfWork } from "../unitOfWork/unitOfWork";
-import { EntityKey, IBankAccountRepository, PaginatedBase, BankAccount } from "@finance/domain";
+import { BankAccount, EntityKey, IBankAccountRepository, PaginatedBase, getKey } from "@finance/domain";
+import { EntryNotFoundError } from "@finance/errors";
 import { inject, injectable } from "tsyringe";
+import { UnitOfWork, unitOfWork } from "../unitOfWork/unitOfWork";
 
 @injectable()
 export class BankAccountRepository implements IBankAccountRepository {
@@ -31,13 +32,16 @@ export class BankAccountRepository implements IBankAccountRepository {
 		});
 
 		if (!bankAccount) {
-			throw new Error("Bank account not found");
+			throw new EntryNotFoundError(BankAccount.name, getKey(id));
 		}
 
 		return bankAccount;
 	}
 
 	async delete(id: EntityKey): Promise<void> {
-		await this._unitOfWork.getQueryRunner().manager.delete(BankAccount, id);
+		const res = await this._unitOfWork.getQueryRunner().manager.delete(BankAccount, id);
+		if ((res.affected ?? 0) == 0) {
+			throw new EntryNotFoundError(BankAccount.name, getKey(id));
+		}
 	}
 }
