@@ -65,7 +65,6 @@ function setActivePath(pathname: string) {
 			if (nav.flyout !== undefined) {
 				for (const flyout of nav.flyout) {
 					const flyoutpath = `${nav.href}${flyout.href}`;
-					console.log(flyoutpath, pathname)
 					if (pathname.startsWith(flyoutpath)) flyout.current = true;
 					else flyout.current = false;
 				}
