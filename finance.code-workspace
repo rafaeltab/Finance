@@ -38,7 +38,7 @@
 		},
 		{
 			"name": "[Package] errors nest",
-			"path": "packages/libs/errors-nest"
+			"path": "packages/libs/errors-nest",
 		}
 	],
 	"settings": {
@@ -47,7 +47,11 @@
 			"[Package] Domain",
 			"[App] Web",
 			"[Package] Infra",
-			"[Package] Application"
-		]
+			"[Package] Application",
+			"[Package] errors",
+			"[Package] errors nest",
+		],
+		"typescript.tsdk": "..\\..\\node_modules\\typescript\\lib",
+		"typescript.enablePromptUseWorkspaceTsdk": true
 	},
 }
