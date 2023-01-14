@@ -5,7 +5,7 @@ import { ICommand, ICommandHandler, ICommandResult } from "@finance/libs-types";
 import { IUnitOfWork, unitOfWork } from "@finance/postgres";
 import { inject, injectable } from "tsyringe";
 
-type ResponseType = ICommandResult<number>;
+export type ResponseType = ICommandResult<number>;
 
 export class AddValuesToStockDataCommand extends ICommand<AddValuesToStockDataCommand, ResponseType> {
 	token = "AddValuesToStockDataCommand";

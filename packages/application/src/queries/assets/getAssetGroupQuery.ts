@@ -5,7 +5,7 @@ import { IQuery, IQueryHandler, IQueryResult } from "@finance/libs-types";
 import { IUnitOfWork, unitOfWork } from "@finance/postgres";
 import { inject, injectable } from "tsyringe";
 
-type ResponseType = IQueryResult<{
+export type ResponseType = IQueryResult<{
 	group: AssetGroup,
 	assets: PaginatedBase<Asset>
 }>

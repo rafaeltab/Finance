@@ -5,12 +5,7 @@ export interface ISuccessQueryResult<TData> {
 	success: true;
 }
 
-export interface IFailedQueryResult {
-	message: string;
-	success: false;
-}
-
-export type IQueryResult<T> = ISuccessQueryResult<T> | IFailedQueryResult;
+export type IQueryResult<T> = ISuccessQueryResult<T>;
 
 const responseSymbol = Symbol("response");
 

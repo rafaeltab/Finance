@@ -10,7 +10,7 @@ type AssetGroupResponse = {
 	name: string;
 }
 
-type ResponseType = IQueryResult<PaginatedBase<AssetGroupResponse>>
+export type ResponseType = IQueryResult<PaginatedBase<AssetGroupResponse>>
 
 export class GetAssetGroupsForUserQuery extends IQuery<GetAssetGroupsForUserQuery, ResponseType> {
 	token = "GetAssetGroupsForUserQuery";

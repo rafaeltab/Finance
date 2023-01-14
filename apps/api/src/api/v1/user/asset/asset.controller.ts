@@ -3,9 +3,9 @@ import { DuplicateEntryError, EntryNotFoundError } from "@finance/errors";
 import { FinanceErrors } from "@finance/errors-nest";
 import { Mediator } from "@finance/libs-types";
 import { Body, Controller, Delete, Get, Inject, Param, Put } from "@nestjs/common";
-import { UserIdentityParams } from "../userIdentity.params";
-import { AssetGroupIdentityParams } from "./assetGroupIdentity.params";
-import { AssetIdentityParams } from "./assetIdentity.params";
+import { UserIdentityParam, UserIdentityParams } from "../userIdentity.params";
+import { AssetGroupIdentityParam, AssetGroupIdentityParams } from "./assetGroupIdentity.params";
+import { AssetIdentityParam, AssetIdentityParams } from "./assetIdentity.params";
 import { CreateRealEstateAssetBody } from "./createRealEstateAsset.body";
 import { CreateStockAssetBody } from "./createStockAsset.body";
 import type { CreateAssetGroupBody } from "./createAssetGroup.body";
@@ -17,6 +17,7 @@ export class AssetController {
 	// GET /api/v1/asset/:assetIdentity -> Single asset
 	@Get("/asset/:assetIdentity")
 	@FinanceErrors([EntryNotFoundError])
+	@AssetIdentityParam()
 	async getAsset(
 		@Param() params: AssetIdentityParams
 	) {
@@ -28,6 +29,7 @@ export class AssetController {
 	// GET /api/v1/assetGroup/:assetGroupIdentity -> Get a group with all assets
 	@Get("/assetGroup/:assetGroupIdentity")
 	@FinanceErrors([EntryNotFoundError])
+	@AssetGroupIdentityParam()
 	async getAssetGroup(
 		@Param() params: AssetGroupIdentityParams
 	) {
@@ -41,6 +43,7 @@ export class AssetController {
 	// GET /api/v1/user/:userIdentity/asset -> All assets for user
 	@Get("/user/:userIdentity/asset")
 	@FinanceErrors([EntryNotFoundError])
+	@UserIdentityParam()
 	async getUserAssets(
 		@Param() params: UserIdentityParams
 	) {
@@ -55,6 +58,7 @@ export class AssetController {
 
 	@Get("/user/:userIdentity/assetGroup")
 	@FinanceErrors([EntryNotFoundError])
+	@UserIdentityParam()
 	async getUserAssetGroups(
 		@Param() params: UserIdentityParams
 	) {
@@ -68,6 +72,7 @@ export class AssetController {
 	// PUT /api/v1/user/:userIdentity/asset/stock -> Create a stcck asset for user
 	@Put("/user/:userIdentity/asset/stock")
 	@FinanceErrors([EntryNotFoundError, DuplicateEntryError])
+	@UserIdentityParam()
 	async createStockAssetForUser(
 		@Param() params: UserIdentityParams,
 		@Body() body: CreateStockAssetBody
@@ -82,6 +87,7 @@ export class AssetController {
 	// PUT /api/v1/user/:userIdentity/asset/realEstate -> Create a real estate asset for user
 	@Put("/user/:userIdentity/asset/realEstate")
 	@FinanceErrors([EntryNotFoundError, DuplicateEntryError])
+	@UserIdentityParam()
 	async createRealEstateAssetForUser(
 		@Param() params: UserIdentityParams,
 		@Body() body: CreateRealEstateAssetBody
@@ -95,6 +101,7 @@ export class AssetController {
 	// PUT /api/v1/user/:userIdentity/assetGroup -> Create asset group for user
 	@Put("/user/:userIdentity/assetGroup")
 	@FinanceErrors([EntryNotFoundError, DuplicateEntryError])
+	@UserIdentityParam()
 	async createAssetGroupForUser(
 		@Param() params: UserIdentityParams,
 		@Body() body: CreateAssetGroupBody
@@ -108,6 +115,7 @@ export class AssetController {
 	// PUT /api/v1/user/:userIdentity/assetGroup/:assetGroupIdentity/asset/stock -> Create stock asset for group
 	@Put("/assetGroup/:assetGroupIdentity/asset/stock")
 	@FinanceErrors([EntryNotFoundError, DuplicateEntryError])
+	@AssetGroupIdentityParam()
 	async createStockAssetForGroup(
 		@Param() params: AssetGroupIdentityParams,
 		@Body() body: CreateStockAssetBody
@@ -122,6 +130,7 @@ export class AssetController {
 	// PUT /api/v1/user/:userIdentity/assetGroup/:assetGroupIdentity/asset/realEstate -> Create real estate asset for group
 	@Put("/assetGroup/:assetGroupIdentity/asset/realEstate")
 	@FinanceErrors([EntryNotFoundError, DuplicateEntryError])
+	@AssetGroupIdentityParam()
 	async createRealEstateAssetForGroup(
 		@Param() params: AssetGroupIdentityParams,
 		@Body() body: CreateRealEstateAssetBody
@@ -135,6 +144,7 @@ export class AssetController {
 	// DELETE /api/v1/asset/:assetIdentity
 	@Delete("/asset/:assetIdentity")
 	@FinanceErrors([EntryNotFoundError])
+	@AssetIdentityParam()
 	async deleteAsset(
 		@Param() params: AssetIdentityParams
 	) {
@@ -146,6 +156,7 @@ export class AssetController {
 	// DELETE /api/v1/assetGroup/:assetGroupIdentity
 	@Delete("/assetGroup/:assetGroupIdentity")
 	@FinanceErrors([EntryNotFoundError])
+	@AssetGroupIdentityParam()
 	async deleteAssetGroup(
 		@Param() params: AssetGroupIdentityParams
 	) {

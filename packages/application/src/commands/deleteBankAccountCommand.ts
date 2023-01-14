@@ -5,7 +5,7 @@ import { ICommand, ICommandHandler, ICommandResult } from "@finance/libs-types";
 import { IUnitOfWork, unitOfWork } from "@finance/postgres";
 import { inject, injectable } from "tsyringe";
 
-type ResponseType = ICommandResult<undefined>;
+export type ResponseType = ICommandResult<undefined>;
 
 export class DeleteBankAccountCommand extends ICommand<DeleteBankAccountCommand, ResponseType> {
 	token = "DeleteBankAccountCommand";

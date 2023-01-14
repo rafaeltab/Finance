@@ -6,7 +6,7 @@ import { unitOfWork, type IUnitOfWork } from "@finance/postgres";
 import { inject, injectable } from "tsyringe";
 
 
-type ResponseType = IQueryResult<PaginatedBase<Asset>>
+export type ResponseType = IQueryResult<PaginatedBase<Asset>>
 
 export class GetAssetsForUserQuery extends IQuery<GetAssetsForUserQuery, ResponseType> {
 	token = "GetAssetsForUserQuery";

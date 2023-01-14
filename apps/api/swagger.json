@@ -135,7 +135,18 @@
         "/api/v1/user/{identity}": {
             "get": {
                 "operationId": "UserController_getByIdentity",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "identity",
+                        "required": true,
+                        "in": "path",
+                        "description": "Identity",
+                        "schema": {
+                            "type": "string",
+                            "minLength": 5
+                        }
+                    }
+                ],
                 "responses": {
                     "404": {
                         "description": "EntryNotFoundError"
@@ -147,7 +158,18 @@
             },
             "delete": {
                 "operationId": "UserController_delete",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "identity",
+                        "required": true,
+                        "in": "path",
+                        "description": "Identity",
+                        "schema": {
+                            "type": "string",
+                            "minLength": 5
+                        }
+                    }
+                ],
                 "responses": {
                     "404": {
                         "description": "EntryNotFoundError"
@@ -161,7 +183,18 @@
         "/api/v1/user/{userIdentity}/job": {
             "get": {
                 "operationId": "JobController_get",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "userIdentity",
+                        "required": true,
+                        "in": "path",
+                        "description": "User identity",
+                        "schema": {
+                            "type": "string",
+                            "minLength": 5
+                        }
+                    }
+                ],
                 "responses": {
                     "404": {
                         "description": "EntryNotFoundError"
@@ -173,7 +206,18 @@
             },
             "put": {
                 "operationId": "JobController_insert",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "userIdentity",
+                        "required": true,
+                        "in": "path",
+                        "description": "User identity",
+                        "schema": {
+                            "type": "string",
+                            "minLength": 5
+                        }
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -197,7 +241,28 @@
         "/api/v1/user/{userIdentity}/job/{identity}": {
             "delete": {
                 "operationId": "JobController_delete",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "userIdentity",
+                        "required": true,
+                        "in": "path",
+                        "description": "User identity",
+                        "schema": {
+                            "type": "string",
+                            "minLength": 5
+                        }
+                    },
+                    {
+                        "name": "identity",
+                        "required": true,
+                        "in": "path",
+                        "description": "Identity",
+                        "schema": {
+                            "type": "string",
+                            "minLength": 5
+                        }
+                    }
+                ],
                 "responses": {
                     "404": {
                         "description": "EntryNotFoundError"
@@ -211,7 +276,18 @@
         "/api/v1/user/{userIdentity}/bankAccount": {
             "get": {
                 "operationId": "BankAccountController_get",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "userIdentity",
+                        "required": true,
+                        "in": "path",
+                        "description": "User identity",
+                        "schema": {
+                            "type": "string",
+                            "minLength": 5
+                        }
+                    }
+                ],
                 "responses": {
                     "404": {
                         "description": "EntryNotFoundError"
@@ -223,7 +299,18 @@
             },
             "put": {
                 "operationId": "BankAccountController_insert",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "userIdentity",
+                        "required": true,
+                        "in": "path",
+                        "description": "User identity",
+                        "schema": {
+                            "type": "string",
+                            "minLength": 5
+                        }
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -250,7 +337,28 @@
         "/api/v1/user/{userIdentity}/bankAccount/{identity}": {
             "delete": {
                 "operationId": "BankAccountController_delete",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "userIdentity",
+                        "required": true,
+                        "in": "path",
+                        "description": "User identity",
+                        "schema": {
+                            "type": "string",
+                            "minLength": 5
+                        }
+                    },
+                    {
+                        "name": "identity",
+                        "required": true,
+                        "in": "path",
+                        "description": "Identity",
+                        "schema": {
+                            "type": "string",
+                            "minLength": 5
+                        }
+                    }
+                ],
                 "responses": {
                     "404": {
                         "description": "EntryNotFoundError"
@@ -264,7 +372,18 @@
         "/api/v1/asset/{assetIdentity}": {
             "get": {
                 "operationId": "AssetController_getAsset",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "assetIdentity",
+                        "required": true,
+                        "in": "path",
+                        "description": "Asset identity",
+                        "schema": {
+                            "type": "string",
+                            "minLength": 5
+                        }
+                    }
+                ],
                 "responses": {
                     "404": {
                         "description": "EntryNotFoundError"
@@ -276,7 +395,18 @@
             },
             "delete": {
                 "operationId": "AssetController_deleteAsset",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "assetIdentity",
+                        "required": true,
+                        "in": "path",
+                        "description": "Asset identity",
+                        "schema": {
+                            "type": "string",
+                            "minLength": 5
+                        }
+                    }
+                ],
                 "responses": {
                     "404": {
                         "description": "EntryNotFoundError"
@@ -290,7 +420,18 @@
         "/api/v1/assetGroup/{assetGroupIdentity}": {
             "get": {
                 "operationId": "AssetController_getAssetGroup",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "assetGroupIdentity",
+                        "required": true,
+                        "in": "path",
+                        "description": "Asset group identity",
+                        "schema": {
+                            "type": "string",
+                            "minLength": 5
+                        }
+                    }
+                ],
                 "responses": {
                     "404": {
                         "description": "EntryNotFoundError"
@@ -302,7 +443,18 @@
             },
             "delete": {
                 "operationId": "AssetController_deleteAssetGroup",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "assetGroupIdentity",
+                        "required": true,
+                        "in": "path",
+                        "description": "Asset group identity",
+                        "schema": {
+                            "type": "string",
+                            "minLength": 5
+                        }
+                    }
+                ],
                 "responses": {
                     "404": {
                         "description": "EntryNotFoundError"
@@ -316,7 +468,18 @@
         "/api/v1/user/{userIdentity}/asset": {
             "get": {
                 "operationId": "AssetController_getUserAssets",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "userIdentity",
+                        "required": true,
+                        "in": "path",
+                        "description": "User identity",
+                        "schema": {
+                            "type": "string",
+                            "minLength": 5
+                        }
+                    }
+                ],
                 "responses": {
                     "404": {
                         "description": "EntryNotFoundError"
@@ -330,7 +493,18 @@
         "/api/v1/user/{userIdentity}/assetGroup": {
             "get": {
                 "operationId": "AssetController_getUserAssetGroups",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "userIdentity",
+                        "required": true,
+                        "in": "path",
+                        "description": "User identity",
+                        "schema": {
+                            "type": "string",
+                            "minLength": 5
+                        }
+                    }
+                ],
                 "responses": {
                     "404": {
                         "description": "EntryNotFoundError"
@@ -342,7 +516,28 @@
             },
             "put": {
                 "operationId": "AssetController_createAssetGroupForUser",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "userIdentity",
+                        "required": true,
+                        "in": "path",
+                        "description": "User identity",
+                        "schema": {
+                            "type": "string",
+                            "minLength": 5
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Function"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "404": {
                         "description": "EntryNotFoundError"
@@ -359,7 +554,18 @@
         "/api/v1/user/{userIdentity}/asset/stock": {
             "put": {
                 "operationId": "AssetController_createStockAssetForUser",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "userIdentity",
+                        "required": true,
+                        "in": "path",
+                        "description": "User identity",
+                        "schema": {
+                            "type": "string",
+                            "minLength": 5
+                        }
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -386,7 +592,18 @@
         "/api/v1/user/{userIdentity}/asset/realEstate": {
             "put": {
                 "operationId": "AssetController_createRealEstateAssetForUser",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "userIdentity",
+                        "required": true,
+                        "in": "path",
+                        "description": "User identity",
+                        "schema": {
+                            "type": "string",
+                            "minLength": 5
+                        }
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -413,7 +630,18 @@
         "/api/v1/assetGroup/{assetGroupIdentity}/asset/stock": {
             "put": {
                 "operationId": "AssetController_createStockAssetForGroup",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "assetGroupIdentity",
+                        "required": true,
+                        "in": "path",
+                        "description": "Asset group identity",
+                        "schema": {
+                            "type": "string",
+                            "minLength": 5
+                        }
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -440,7 +668,18 @@
         "/api/v1/assetGroup/{assetGroupIdentity}/asset/realEstate": {
             "put": {
                 "operationId": "AssetController_createRealEstateAssetForGroup",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "assetGroupIdentity",
+                        "required": true,
+                        "in": "path",
+                        "description": "Asset group identity",
+                        "schema": {
+                            "type": "string",
+                            "minLength": 5
+                        }
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -573,6 +812,10 @@
                 ]
             },
             "CreateRealEstateAssetBody": {
+                "type": "object",
+                "properties": {}
+            },
+            "Function": {
                 "type": "object",
                 "properties": {}
             }

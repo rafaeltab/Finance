@@ -6,7 +6,7 @@ import { IUnitOfWork, unitOfWork } from "@finance/postgres";
 import type { DateTime } from "luxon";
 import { inject, injectable } from "tsyringe";
 
-type ResponseType = ICommandResult<{
+export type ResponseType = ICommandResult<{
 	userIdentity: string;
 }>;
 

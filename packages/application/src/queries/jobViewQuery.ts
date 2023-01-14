@@ -5,7 +5,7 @@ import { IQuery, IQueryHandler, IQueryResult } from "@finance/libs-types";
 import { unitOfWork, type IUnitOfWork } from "@finance/postgres";
 import { inject, injectable } from "tsyringe";
 
-type ResponseType = IQueryResult<PaginatedBase<Job>>
+export type ResponseType = IQueryResult<PaginatedBase<Job>>
 
 export class JobViewQuery extends IQuery<JobViewQuery, ResponseType> {
 	token = "JobViewQuery";

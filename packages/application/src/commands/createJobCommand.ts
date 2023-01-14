@@ -5,7 +5,7 @@ import { ICommand, ICommandHandler, ICommandResult } from "@finance/libs-types";
 import { IUnitOfWork, unitOfWork } from "@finance/postgres";
 import { inject, injectable } from "tsyringe";
 
-type ResponseType = ICommandResult<Job>;
+export type ResponseType = ICommandResult<Job>;
 
 export class CreateJobCommand extends ICommand<CreateJobCommand, ResponseType> {
 	token = "CreateJobCommand";

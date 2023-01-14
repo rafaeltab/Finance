@@ -5,7 +5,7 @@ import { Mediator } from "@finance/libs-types";
 import { Body, Controller, Get, Inject, Param, Put } from "@nestjs/common";
 import { Delete } from "@nestjs/common/decorators";
 import { DateTime } from "luxon";
-import { IdentityParams } from "../identity.params";
+import { IdentityParam, IdentityParams } from "../identity.params";
 import { CreateUserBody } from "./createUser.body";
 
 @Controller("/api/v1/user")
@@ -23,6 +23,7 @@ export class UserController {
 
 	@Get(":identity")
 	@FinanceErrors([EntryNotFoundError])
+	@IdentityParam()
 	async getByIdentity(
 		@Param() param: IdentityParams
 	) {
@@ -48,6 +49,7 @@ export class UserController {
 
 	@Delete("/:identity")
 	@FinanceErrors([EntryNotFoundError])
+	@IdentityParam()
 	async delete(
 		@Param() param: IdentityParams
 	){

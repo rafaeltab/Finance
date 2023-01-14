@@ -8,7 +8,7 @@ import { inject, injectable } from "tsyringe";
 
 
 const fields = ["assetGroups", "bankAccounts", "jobs", "dateOfBirth", "firstName", "lastName"] as const;
-type ResponseType = IQueryResult<WithRequiredProperty<User, (typeof fields)[number]>>
+export type ResponseType = IQueryResult<WithRequiredProperty<User, (typeof fields)[number]>>
 
 export class UserViewQuery extends IQuery<UserViewQuery, ResponseType> {
 	token = "UserViewQuery";

@@ -6,6 +6,7 @@ import { IQueryResult, Mediator } from "@finance/libs-types";
 import { Controller, Get, HttpException, Inject, Param, Query, UploadedFile, UseInterceptors } from "@nestjs/common";
 import { Put } from "@nestjs/common/decorators/http/request-mapping.decorator";
 import { FileInterceptor } from "@nestjs/platform-express";
+import { ApiOkResponse } from "@nestjs/swagger";
 import { parse as csvParse } from "csv-parse";
 import JsZip from 'jszip';
 
@@ -118,15 +119,15 @@ export class StockController {
 
 			const stock = fileName.split("ohclv/")[1]?.split("/")[0];
 
-			var search = await this.mediator.query(new StockDataSearchQuery({
-				exchange: "NASDAQ",
-				symbol: stock,
-				type: StockAssetKind.CS,
-				limit: 30,
-				offset: 0
-			}));
-
-			if (!search.success) {
+			try {
+				var search = await this.mediator.query(new StockDataSearchQuery({
+					exchange: "NASDAQ",
+					symbol: stock,
+					type: StockAssetKind.CS,
+					limit: 30,
+					offset: 0
+				}));
+			} catch (e) { 
 				failed.push(stock ?? "UNKNOWN");
 				continue;
 			}
@@ -149,14 +150,15 @@ export class StockController {
 
 			const values = await parseValuesCsv(fileContent);
 			if (previousInsert !== undefined) { 
-				const previousResult = await previousInsert;
-
-				if (previousResult.success === false) {
+				try {
+					await previousInsert;
+				} catch (e) { 
 					failed.push(previousStock ?? "UNKNOWN");
 					console.log("Store values failed for " + previousStock ?? "UNKNOWN")
-				} else { 
-					console.log("Stored values for " + previousStock ?? "UNKNOWN")
+					continue;
 				}
+
+				console.log("Stored values for " + previousStock ?? "UNKNOWN")				
 			}
 
 			previousInsert = this.mediator.command(new AddValuesToStockDataCommand({

@@ -5,7 +5,7 @@ import { ICommand, ICommandHandler, ICommandResult } from "@finance/libs-types";
 import { IUnitOfWork, unitOfWork } from "@finance/postgres";
 import { inject, injectable } from "tsyringe";
 
-type ResponseType = ICommandResult<BankAccount>;
+export type ResponseType = ICommandResult<BankAccount>;
 
 export class CreateBankAccountCommand extends ICommand<CreateBankAccountCommand, ResponseType> {
 	token = "CreateBankAccountCommand";

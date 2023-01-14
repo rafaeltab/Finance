@@ -4,8 +4,8 @@ import { FinanceErrors } from "@finance/errors-nest";
 import { Mediator } from "@finance/libs-types";
 import { Body, Controller, Get, Inject, Param, Put } from "@nestjs/common";
 import { Delete } from "@nestjs/common/decorators";
-import { IdentityParams } from "../../identity.params";
-import { UserIdentityParams } from "../userIdentity.params";
+import { IdentityParam, IdentityParams } from "../../identity.params";
+import { UserIdentityParam, UserIdentityParams } from "../userIdentity.params";
 import { CreateJobBody } from "./createJob.body";
 
 @Controller("/api/v1/user/:userIdentity/job")
@@ -14,9 +14,9 @@ export class JobController {
 
 	@Get()
 	@FinanceErrors([EntryNotFoundError])
+	@UserIdentityParam()
 	async get(
 		@Param() param: UserIdentityParams,
-
 	) {
 		return await this.mediator.query(new JobViewQuery({
 			userIdentity: param.userIdentity,
@@ -27,6 +27,7 @@ export class JobController {
 
 	@Put()
 	@FinanceErrors([DuplicateEntryError])
+	@UserIdentityParam()
 	async insert(
 		@Param() param: UserIdentityParams,
 		@Body() body: CreateJobBody,
@@ -40,6 +41,8 @@ export class JobController {
 
 	@Delete("/:identity")
 	@FinanceErrors([EntryNotFoundError])
+	@IdentityParam()
+	@UserIdentityParam()
 	async delete(
 		@Param() param: IdentityParams
 	) {
