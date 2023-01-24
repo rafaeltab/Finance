@@ -25,7 +25,7 @@ export class UserResponse {
 
 	static map(user: User): UserResponse { 
 		return {
-			dateOfBirth: user.dateOfBirth ? DateTime.fromJSDate(user.dateOfBirth).toFormat("yyyy-mm-dd") : "",
+			dateOfBirth: user.dateOfBirth ? DateTime.fromJSDate(user.dateOfBirth).toFormat("yyyy-MM-dd") : "",
 			firstName: user.firstName ?? "",
 			lastName: user.lastName ?? "",
 		}
