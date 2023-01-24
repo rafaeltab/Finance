@@ -3,87 +3,9 @@
 import { IBankAccountRepository, BankAccount, PaginatedBase, bankAccountRepository } from "@finance/domain";
 import { IQuery, IQueryHandler, IQueryResult, ISuccessQueryResult } from "@finance/libs-types";
 import { unitOfWork, type IUnitOfWork } from "@finance/postgres";
-import type { JSONSchemaType } from "ajv";
 import { inject, injectable } from "tsyringe";
 
 export type ResponseType = IQueryResult<PaginatedBase<BankAccount>>
-
-
-
-export const bankAccountResponseSchema: JSONSchemaType<ResponseType> = {
-	type: "object",
-	properties: {
-		data: {
-			type: "object",
-			properties: {
-				page: {
-					type: "object",
-					properties: {
-						count: {
-							type: "number",
-							nullable: false
-						},
-						offset: {
-							type: "number",
-							nullable: false
-						},
-						total: {
-							type: "number",
-							nullable: false
-						},
-					},
-					required: ["count", "offset", "total"]
-				},
-				data: {
-					type: "array",
-					items: {
-						type: "object",
-						properties: {
-							uniqueId: {
-								type: "string",
-								nullable: true
-							},
-							identity: {
-								type: "string",
-								nullable: true
-							},
-							balance: {
-								type: "object",
-								properties: {
-									amount: {
-										type: "number",
-										nullable: false
-									},
-									bankAccount: {
-										type: "string",
-										nullable: true
-									}
-								}
-							},
-							bank: {
-								type: "string",
-								nullable: true
-							},
-							user: {
-								type: "string",
-								nullable: true
-							},
-						},
-						required: ["uniqueId", "identity", "balance", "bank", "user"]
-					}
-				}
-			},
-			required: ["data", "page"]
-
-		},
-		success: {
-			type: "boolean",
-			const: true,
-			nullable: false
-		}
-	},
-	required: ["data", "success"]
-}
 
 export class Response implements ISuccessQueryResult<PaginatedBase<BankAccount>> {
 	success!: true;

@@ -1,16 +1,11 @@
 // list a maximum of 30 asset groups
 
-import { IAssetGroupRepository, PaginatedBase, assetGroupRepository } from "@finance/domain";
+import { IAssetGroupRepository, PaginatedBase, assetGroupRepository, AssetGroup } from "@finance/domain";
 import { IQuery, IQueryHandler, IQueryResult } from "@finance/libs-types";
 import { unitOfWork, type IUnitOfWork } from "@finance/postgres";
 import { inject, injectable } from "tsyringe";
 
-type AssetGroupResponse = {
-	identity: string;
-	name: string;
-}
-
-export type ResponseType = IQueryResult<PaginatedBase<AssetGroupResponse>>
+export type ResponseType = IQueryResult<PaginatedBase<AssetGroup>>
 
 export class GetAssetGroupsForUserQuery extends IQuery<GetAssetGroupsForUserQuery, ResponseType> {
 	token = "GetAssetGroupsForUserQuery";
@@ -51,12 +46,7 @@ export class GetAssetGroupsForUserQueryHandler extends IQueryHandler<GetAssetGro
 						offset: assetGroups.page.offset,
 						total: assetGroups.page.total,
 					},
-					data: assetGroups.data.map((assetGroup) => {
-						return {
-							identity: assetGroup.identity,
-							name: assetGroup.name ?? "Unknown",
-						};
-					})
+					data: assetGroups.data
 				}
 			}
 		} catch (e: unknown) {

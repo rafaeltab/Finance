@@ -31,6 +31,16 @@
                     }
                 ],
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetSearchStockResponse"
+                                }
+                            }
+                        }
+                    },
                     "500": {
                         "description": "UnexpectedError"
                     }
@@ -51,6 +61,16 @@
                     }
                 ],
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetSearchStockResponse"
+                                }
+                            }
+                        }
+                    },
                     "404": {
                         "description": "EntryNotFoundError"
                     },
@@ -65,6 +85,16 @@
                 "operationId": "StockController_getStocks",
                 "parameters": [],
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetStockListResponse"
+                                }
+                            }
+                        }
+                    },
                     "500": {
                         "description": "UnexpectedError"
                     }
@@ -104,6 +134,16 @@
                 "operationId": "UserController_get",
                 "parameters": [],
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetUsersResponse"
+                                }
+                            }
+                        }
+                    },
                     "500": {
                         "description": "UnexpectedError"
                     }
@@ -123,6 +163,16 @@
                     }
                 },
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/InsertUserResponse"
+                                }
+                            }
+                        }
+                    },
                     "409": {
                         "description": "DuplicateEntryError"
                     },
@@ -148,6 +198,16 @@
                     }
                 ],
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserViewResponse"
+                                }
+                            }
+                        }
+                    },
                     "404": {
                         "description": "EntryNotFoundError"
                     },
@@ -171,6 +231,16 @@
                     }
                 ],
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SuccessResponse"
+                                }
+                            }
+                        }
+                    },
                     "404": {
                         "description": "EntryNotFoundError"
                     },
@@ -196,6 +266,16 @@
                     }
                 ],
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/JobsViewResponse"
+                                }
+                            }
+                        }
+                    },
                     "404": {
                         "description": "EntryNotFoundError"
                     },
@@ -229,6 +309,16 @@
                     }
                 },
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CreateJobResponse"
+                                }
+                            }
+                        }
+                    },
                     "409": {
                         "description": "DuplicateEntryError"
                     },
@@ -264,6 +354,16 @@
                     }
                 ],
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SuccessResponse"
+                                }
+                            }
+                        }
+                    },
                     "404": {
                         "description": "EntryNotFoundError"
                     },
@@ -289,6 +389,16 @@
                     }
                 ],
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BankAccountsViewResponse"
+                                }
+                            }
+                        }
+                    },
                     "404": {
                         "description": "EntryNotFoundError"
                     },
@@ -322,6 +432,16 @@
                     }
                 },
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CreateBankAccountResponse"
+                                }
+                            }
+                        }
+                    },
                     "404": {
                         "description": "EntryNotFoundError"
                     },
@@ -360,6 +480,16 @@
                     }
                 ],
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SuccessResponse"
+                                }
+                            }
+                        }
+                    },
                     "404": {
                         "description": "EntryNotFoundError"
                     },
@@ -385,6 +515,16 @@
                     }
                 ],
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetAssetResponse"
+                                }
+                            }
+                        }
+                    },
                     "404": {
                         "description": "EntryNotFoundError"
                     },
@@ -408,6 +548,16 @@
                     }
                 ],
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SuccessResponse"
+                                }
+                            }
+                        }
+                    },
                     "404": {
                         "description": "EntryNotFoundError"
                     },
@@ -433,6 +583,16 @@
                     }
                 ],
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetAssetGroupResponse"
+                                }
+                            }
+                        }
+                    },
                     "404": {
                         "description": "EntryNotFoundError"
                     },
@@ -456,6 +616,16 @@
                     }
                 ],
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SuccessResponse"
+                                }
+                            }
+                        }
+                    },
                     "404": {
                         "description": "EntryNotFoundError"
                     },
@@ -481,6 +651,16 @@
                     }
                 ],
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetUserAssetsResponse"
+                                }
+                            }
+                        }
+                    },
                     "404": {
                         "description": "EntryNotFoundError"
                     },
@@ -506,6 +686,16 @@
                     }
                 ],
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetUserAssetGroupsResponse"
+                                }
+                            }
+                        }
+                    },
                     "404": {
                         "description": "EntryNotFoundError"
                     },
@@ -539,6 +729,16 @@
                     }
                 },
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CreateAssetGroupForUserResponse"
+                                }
+                            }
+                        }
+                    },
                     "404": {
                         "description": "EntryNotFoundError"
                     },
@@ -577,6 +777,16 @@
                     }
                 },
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CreateStockAssetForUserResponse"
+                                }
+                            }
+                        }
+                    },
                     "404": {
                         "description": "EntryNotFoundError"
                     },
@@ -615,6 +825,16 @@
                     }
                 },
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CreateRealEstateAssetForUserResponse"
+                                }
+                            }
+                        }
+                    },
                     "404": {
                         "description": "EntryNotFoundError"
                     },
@@ -653,6 +873,16 @@
                     }
                 },
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CreateStockAssetForAssetGroupResponse"
+                                }
+                            }
+                        }
+                    },
                     "404": {
                         "description": "EntryNotFoundError"
                     },
@@ -691,6 +921,16 @@
                     }
                 },
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CreateRealEstateAssetForGroup"
+                                }
+                            }
+                        }
+                    },
                     "404": {
                         "description": "EntryNotFoundError"
                     },
@@ -719,6 +959,364 @@
     "servers": [],
     "components": {
         "schemas": {
+            "PaginatedResponsePage": {
+                "type": "object",
+                "properties": {
+                    "count": {
+                        "type": "number",
+                        "description": "The amount available in this response",
+                        "example": 10
+                    },
+                    "offset": {
+                        "type": "number",
+                        "description": "The starting index of the paginated data",
+                        "example": 0
+                    },
+                    "total": {
+                        "type": "number",
+                        "description": "The total number of items available",
+                        "example": 10
+                    }
+                },
+                "required": [
+                    "count",
+                    "offset",
+                    "total"
+                ]
+            },
+            "StockDataResponse": {
+                "type": "object",
+                "properties": {
+                    "symbol": {
+                        "type": "string"
+                    },
+                    "exchange": {
+                        "type": "string"
+                    },
+                    "assetKind": {
+                        "type": "string",
+                        "enum": [
+                            "CS",
+                            "ADRC",
+                            "ADRP",
+                            "ADRR",
+                            "UNIT",
+                            "RIGHT",
+                            "PFD",
+                            "FUND",
+                            "SP",
+                            "WARRANT",
+                            "INDEX",
+                            "ETF",
+                            "ETN",
+                            "OS",
+                            "GDR",
+                            "OTHER",
+                            "NYRS",
+                            "AGEN",
+                            "EQLK",
+                            "BOND",
+                            "ADRW",
+                            "BASKET",
+                            "LT"
+                        ]
+                    }
+                },
+                "required": [
+                    "symbol",
+                    "exchange",
+                    "assetKind"
+                ]
+            },
+            "GetSearchStockPaginatedResponse": {
+                "type": "object",
+                "properties": {
+                    "page": {
+                        "$ref": "#/components/schemas/PaginatedResponsePage"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/StockDataResponse"
+                        }
+                    },
+                    "isEmpty": {
+                        "type": "boolean"
+                    }
+                },
+                "required": [
+                    "page",
+                    "data",
+                    "isEmpty"
+                ]
+            },
+            "GetSearchStockResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/GetSearchStockPaginatedResponse"
+                    }
+                },
+                "required": [
+                    "success",
+                    "data"
+                ]
+            },
+            "GetStockListResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/GetSearchStockPaginatedResponse"
+                    }
+                },
+                "required": [
+                    "success",
+                    "data"
+                ]
+            },
+            "UserResponse": {
+                "type": "object",
+                "properties": {
+                    "dateOfBirth": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "firstName": {
+                        "type": "string"
+                    },
+                    "lastName": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "dateOfBirth",
+                    "firstName",
+                    "lastName"
+                ]
+            },
+            "PaginatedUserResponse": {
+                "type": "object",
+                "properties": {
+                    "page": {
+                        "$ref": "#/components/schemas/PaginatedResponsePage"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserResponse"
+                        }
+                    }
+                },
+                "required": [
+                    "page",
+                    "data"
+                ]
+            },
+            "GetUsersResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/PaginatedUserResponse"
+                    }
+                },
+                "required": [
+                    "success",
+                    "data"
+                ]
+            },
+            "StockOrderResponse": {
+                "type": "object",
+                "properties": {
+                    "amount": {
+                        "type": "number"
+                    },
+                    "usdPrice": {
+                        "type": "number"
+                    }
+                },
+                "required": [
+                    "amount",
+                    "usdPrice"
+                ]
+            },
+            "StockAssetResponse": {
+                "type": "object",
+                "properties": {
+                    "orders": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/StockOrderResponse"
+                        }
+                    },
+                    "stockData": {
+                        "$ref": "#/components/schemas/StockDataResponse"
+                    }
+                },
+                "required": [
+                    "orders",
+                    "stockData"
+                ]
+            },
+            "RealEstateAssetResponse": {
+                "type": "object",
+                "properties": {
+                    "address": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "address"
+                ]
+            },
+            "AssetResponse": {
+                "type": "object",
+                "properties": {
+                    "stockAsset": {
+                        "nullable": true,
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/StockAssetResponse"
+                            }
+                        ]
+                    },
+                    "realEstateAsset": {
+                        "nullable": true,
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/RealEstateAssetResponse"
+                            }
+                        ]
+                    }
+                },
+                "required": [
+                    "stockAsset",
+                    "realEstateAsset"
+                ]
+            },
+            "AssetGroupResponse": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "assets": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/AssetResponse"
+                        }
+                    }
+                },
+                "required": [
+                    "name",
+                    "assets"
+                ]
+            },
+            "BalanceResponse": {
+                "type": "object",
+                "properties": {
+                    "amount": {
+                        "type": "number"
+                    },
+                    "currency": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "amount",
+                    "currency"
+                ]
+            },
+            "BankAccountResponse": {
+                "type": "object",
+                "properties": {
+                    "bank": {
+                        "type": "string"
+                    },
+                    "balance": {
+                        "$ref": "#/components/schemas/BalanceResponse"
+                    }
+                },
+                "required": [
+                    "bank",
+                    "balance"
+                ]
+            },
+            "ActiveIncomeResponse": {
+                "type": "object",
+                "properties": {
+                    "monthlySalary": {
+                        "type": "number"
+                    }
+                },
+                "required": [
+                    "monthlySalary"
+                ]
+            },
+            "JobResponse": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string"
+                    },
+                    "activeIncome": {
+                        "$ref": "#/components/schemas/ActiveIncomeResponse"
+                    }
+                },
+                "required": [
+                    "title",
+                    "activeIncome"
+                ]
+            },
+            "UserViewResponse": {
+                "type": "object",
+                "properties": {
+                    "dateOfBirth": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "firstName": {
+                        "type": "string"
+                    },
+                    "lastName": {
+                        "type": "string"
+                    },
+                    "assetGroups": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/AssetGroupResponse"
+                        }
+                    },
+                    "bankAccounts": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/BankAccountResponse"
+                        }
+                    },
+                    "jobs": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/JobResponse"
+                        }
+                    }
+                },
+                "required": [
+                    "dateOfBirth",
+                    "firstName",
+                    "lastName",
+                    "assetGroups",
+                    "bankAccounts",
+                    "jobs"
+                ]
+            },
             "CreateUserBody": {
                 "type": "object",
                 "properties": {
@@ -738,6 +1336,61 @@
                     "dateOfBirth"
                 ]
             },
+            "InsertUserResponse": {
+                "type": "object",
+                "properties": {
+                    "userIdentity": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "userIdentity"
+                ]
+            },
+            "SuccessResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    }
+                },
+                "required": [
+                    "success"
+                ]
+            },
+            "PaginatedJobResponse": {
+                "type": "object",
+                "properties": {
+                    "page": {
+                        "$ref": "#/components/schemas/PaginatedResponsePage"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/JobResponse"
+                        }
+                    }
+                },
+                "required": [
+                    "page",
+                    "data"
+                ]
+            },
+            "JobsViewResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/PaginatedJobResponse"
+                    }
+                },
+                "required": [
+                    "success",
+                    "data"
+                ]
+            },
             "CreateJobBody": {
                 "type": "object",
                 "properties": {
@@ -752,6 +1405,54 @@
                 "required": [
                     "title",
                     "monthlySalary"
+                ]
+            },
+            "CreateJobResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/JobResponse"
+                    }
+                },
+                "required": [
+                    "success",
+                    "data"
+                ]
+            },
+            "PaginatedBankAccountResponse": {
+                "type": "object",
+                "properties": {
+                    "page": {
+                        "$ref": "#/components/schemas/PaginatedResponsePage"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/BankAccountResponse"
+                        }
+                    }
+                },
+                "required": [
+                    "page",
+                    "data"
+                ]
+            },
+            "BankAccountsViewResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/PaginatedBankAccountResponse"
+                    }
+                },
+                "required": [
+                    "success",
+                    "data"
                 ]
             },
             "CreateBankAccountBody": {
@@ -772,6 +1473,135 @@
                     "bank",
                     "balance",
                     "currency"
+                ]
+            },
+            "CreateBankAccountResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/BankAccountResponse"
+                    }
+                },
+                "required": [
+                    "success",
+                    "data"
+                ]
+            },
+            "GetAssetResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/AssetResponse"
+                    }
+                },
+                "required": [
+                    "success",
+                    "data"
+                ]
+            },
+            "PaginatedAssetResponse": {
+                "type": "object",
+                "properties": {
+                    "page": {
+                        "$ref": "#/components/schemas/PaginatedResponsePage"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/AssetResponse"
+                        }
+                    }
+                },
+                "required": [
+                    "page",
+                    "data"
+                ]
+            },
+            "GetAssetGroupResponseData": {
+                "type": "object",
+                "properties": {
+                    "group": {
+                        "$ref": "#/components/schemas/AssetGroupResponse"
+                    },
+                    "assets": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/PaginatedAssetResponse"
+                        }
+                    }
+                },
+                "required": [
+                    "group",
+                    "assets"
+                ]
+            },
+            "GetAssetGroupResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/GetAssetGroupResponseData"
+                    }
+                },
+                "required": [
+                    "success",
+                    "data"
+                ]
+            },
+            "GetUserAssetsResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/PaginatedAssetResponse"
+                    }
+                },
+                "required": [
+                    "success",
+                    "data"
+                ]
+            },
+            "PaginatedAssetGroupResponse": {
+                "type": "object",
+                "properties": {
+                    "page": {
+                        "$ref": "#/components/schemas/PaginatedResponsePage"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/AssetGroupResponse"
+                        }
+                    }
+                },
+                "required": [
+                    "page",
+                    "data"
+                ]
+            },
+            "GetUserAssetGroupsResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/PaginatedAssetGroupResponse"
+                    }
+                },
+                "required": [
+                    "success",
+                    "data"
                 ]
             },
             "StockOrderBody": {
@@ -811,13 +1641,88 @@
                     "stockOrders"
                 ]
             },
+            "CreateStockAssetForUserResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/AssetResponse"
+                    }
+                },
+                "required": [
+                    "success",
+                    "data"
+                ]
+            },
             "CreateRealEstateAssetBody": {
                 "type": "object",
                 "properties": {}
             },
+            "CreateRealEstateAssetForUserResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/AssetResponse"
+                    }
+                },
+                "required": [
+                    "success",
+                    "data"
+                ]
+            },
             "Function": {
                 "type": "object",
                 "properties": {}
+            },
+            "CreateAssetGroupForUserResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/AssetGroupResponse"
+                    }
+                },
+                "required": [
+                    "success",
+                    "data"
+                ]
+            },
+            "CreateStockAssetForAssetGroupResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/AssetResponse"
+                    }
+                },
+                "required": [
+                    "success",
+                    "data"
+                ]
+            },
+            "CreateRealEstateAssetForGroup": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/AssetResponse"
+                    }
+                },
+                "required": [
+                    "success",
+                    "data"
+                ]
             }
         }
     }

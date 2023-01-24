@@ -10,8 +10,7 @@
 		"build": "rimraf ./build/ && tsc",
 		"build:dev": "rimraf ./build/ && tsc -p ./tsconfig.dev.json",
 		"dev": "tsc -p ./tsconfig.dev.json --watch",
-		"clean": "rimraf build",
-		"generate:schemas": "node ./schemaGenerator.js"
+		"clean": "rimraf build"
 	},
 	"dependencies": {
 		"@finance/domain": "*",

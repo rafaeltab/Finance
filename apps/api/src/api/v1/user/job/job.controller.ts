@@ -4,9 +4,12 @@ import { FinanceErrors } from "@finance/errors-nest";
 import { Mediator } from "@finance/libs-types";
 import { Body, Controller, Get, Inject, Param, Put } from "@nestjs/common";
 import { Delete } from "@nestjs/common/decorators";
+import { ApiOkResponse } from "@nestjs/swagger";
 import { IdentityParam, IdentityParams } from "../../identity.params";
+import { SuccessResponse } from "../../responses/success.response";
 import { UserIdentityParam, UserIdentityParams } from "../userIdentity.params";
 import { CreateJobBody } from "./createJob.body";
+import { CreateJobResponse, JobsViewResponse } from "./job.responses";
 
 @Controller("/api/v1/user/:userIdentity/job")
 export class JobController {
@@ -15,37 +18,46 @@ export class JobController {
 	@Get()
 	@FinanceErrors([EntryNotFoundError])
 	@UserIdentityParam()
+	@ApiOkResponse({
+		type: JobsViewResponse
+	})
 	async get(
 		@Param() param: UserIdentityParams,
-	) {
-		return await this.mediator.query(new JobViewQuery({
+	): Promise<JobsViewResponse> {
+		return JobsViewResponse.map(await this.mediator.query(new JobViewQuery({
 			userIdentity: param.userIdentity,
 			limit: 30,
 			offset: 0,
-		}));
+		})));
 	}
 
 	@Put()
 	@FinanceErrors([DuplicateEntryError])
 	@UserIdentityParam()
+	@ApiOkResponse({
+		type: CreateJobResponse
+	})
 	async insert(
 		@Param() param: UserIdentityParams,
 		@Body() body: CreateJobBody,
-	) {
-		return await this.mediator.command(new CreateJobCommand({
+	): Promise<CreateJobResponse> {
+		return CreateJobResponse.map(await this.mediator.command(new CreateJobCommand({
 			userIdentity: param.userIdentity,
 			title: body.title,
 			monthlySalary: body.monthlySalary,
-		}));
+		})));
 	}
 
 	@Delete("/:identity")
 	@FinanceErrors([EntryNotFoundError])
 	@IdentityParam()
 	@UserIdentityParam()
+	@ApiOkResponse({
+		type: SuccessResponse
+	})
 	async delete(
 		@Param() param: IdentityParams
-	) {
+	): Promise<SuccessResponse> {
 		return await this.mediator.command(new DeleteJobCommand({
 			jobIdentity: param.identity
 		}));
