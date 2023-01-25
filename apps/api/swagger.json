@@ -42,7 +42,14 @@
                         }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -72,10 +79,24 @@
                         }
                     },
                     "404": {
-                        "description": "EntryNotFoundError"
+                        "description": "EntryNotFoundError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -96,7 +117,14 @@
                         }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -107,10 +135,24 @@
                 "parameters": [],
                 "responses": {
                     "409": {
-                        "description": "DuplicateEntryError"
+                        "description": "DuplicateEntryError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -121,10 +163,24 @@
                 "parameters": [],
                 "responses": {
                     "409": {
-                        "description": "DuplicateEntryError"
+                        "description": "DuplicateEntryError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -145,7 +201,14 @@
                         }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -174,10 +237,24 @@
                         }
                     },
                     "409": {
-                        "description": "DuplicateEntryError"
+                        "description": "DuplicateEntryError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -209,10 +286,24 @@
                         }
                     },
                     "404": {
-                        "description": "EntryNotFoundError"
+                        "description": "EntryNotFoundError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -242,10 +333,24 @@
                         }
                     },
                     "404": {
-                        "description": "EntryNotFoundError"
+                        "description": "EntryNotFoundError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -277,10 +382,24 @@
                         }
                     },
                     "404": {
-                        "description": "EntryNotFoundError"
+                        "description": "EntryNotFoundError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -320,10 +439,24 @@
                         }
                     },
                     "409": {
-                        "description": "DuplicateEntryError"
+                        "description": "DuplicateEntryError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -365,10 +498,24 @@
                         }
                     },
                     "404": {
-                        "description": "EntryNotFoundError"
+                        "description": "EntryNotFoundError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -400,10 +547,24 @@
                         }
                     },
                     "404": {
-                        "description": "EntryNotFoundError"
+                        "description": "EntryNotFoundError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -443,13 +604,34 @@
                         }
                     },
                     "404": {
-                        "description": "EntryNotFoundError"
+                        "description": "EntryNotFoundError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "409": {
-                        "description": "DuplicateEntryError"
+                        "description": "DuplicateEntryError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -491,10 +673,24 @@
                         }
                     },
                     "404": {
-                        "description": "EntryNotFoundError"
+                        "description": "EntryNotFoundError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -526,10 +722,24 @@
                         }
                     },
                     "404": {
-                        "description": "EntryNotFoundError"
+                        "description": "EntryNotFoundError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -559,10 +769,24 @@
                         }
                     },
                     "404": {
-                        "description": "EntryNotFoundError"
+                        "description": "EntryNotFoundError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -594,10 +818,24 @@
                         }
                     },
                     "404": {
-                        "description": "EntryNotFoundError"
+                        "description": "EntryNotFoundError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -627,10 +865,24 @@
                         }
                     },
                     "404": {
-                        "description": "EntryNotFoundError"
+                        "description": "EntryNotFoundError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -662,10 +914,24 @@
                         }
                     },
                     "404": {
-                        "description": "EntryNotFoundError"
+                        "description": "EntryNotFoundError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -697,10 +963,24 @@
                         }
                     },
                     "404": {
-                        "description": "EntryNotFoundError"
+                        "description": "EntryNotFoundError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -740,13 +1020,34 @@
                         }
                     },
                     "404": {
-                        "description": "EntryNotFoundError"
+                        "description": "EntryNotFoundError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "409": {
-                        "description": "DuplicateEntryError"
+                        "description": "DuplicateEntryError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -788,13 +1089,34 @@
                         }
                     },
                     "404": {
-                        "description": "EntryNotFoundError"
+                        "description": "EntryNotFoundError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "409": {
-                        "description": "DuplicateEntryError"
+                        "description": "DuplicateEntryError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -836,13 +1158,34 @@
                         }
                     },
                     "404": {
-                        "description": "EntryNotFoundError"
+                        "description": "EntryNotFoundError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "409": {
-                        "description": "DuplicateEntryError"
+                        "description": "DuplicateEntryError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -884,13 +1227,34 @@
                         }
                     },
                     "404": {
-                        "description": "EntryNotFoundError"
+                        "description": "EntryNotFoundError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "409": {
-                        "description": "DuplicateEntryError"
+                        "description": "DuplicateEntryError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -932,13 +1296,34 @@
                         }
                     },
                     "404": {
-                        "description": "EntryNotFoundError"
+                        "description": "EntryNotFoundError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "409": {
-                        "description": "DuplicateEntryError"
+                        "description": "DuplicateEntryError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -987,6 +1372,9 @@
             "StockDataResponse": {
                 "type": "object",
                 "properties": {
+                    "identity": {
+                        "type": "string"
+                    },
                     "symbol": {
                         "type": "string"
                     },
@@ -1023,6 +1411,7 @@
                     }
                 },
                 "required": [
+                    "identity",
                     "symbol",
                     "exchange",
                     "assetKind"
@@ -1065,6 +1454,23 @@
                     "data"
                 ]
             },
+            "HttpErrorResponse": {
+                "type": "object",
+                "properties": {
+                    "statusCode": {
+                        "type": "integer",
+                        "description": "The http code returned by the server"
+                    },
+                    "message": {
+                        "type": "string",
+                        "description": "A message describing the error that occurred"
+                    }
+                },
+                "required": [
+                    "statusCode",
+                    "message"
+                ]
+            },
             "GetStockListResponse": {
                 "type": "object",
                 "properties": {
@@ -1083,6 +1489,9 @@
             "UserResponse": {
                 "type": "object",
                 "properties": {
+                    "identity": {
+                        "type": "string"
+                    },
                     "dateOfBirth": {
                         "type": "string",
                         "format": "date"
@@ -1095,6 +1504,7 @@
                     }
                 },
                 "required": [
+                    "identity",
                     "dateOfBirth",
                     "firstName",
                     "lastName"
@@ -1151,6 +1561,9 @@
             "StockAssetResponse": {
                 "type": "object",
                 "properties": {
+                    "identity": {
+                        "type": "string"
+                    },
                     "orders": {
                         "type": "array",
                         "items": {
@@ -1162,6 +1575,7 @@
                     }
                 },
                 "required": [
+                    "identity",
                     "orders",
                     "stockData"
                 ]
@@ -1169,17 +1583,24 @@
             "RealEstateAssetResponse": {
                 "type": "object",
                 "properties": {
+                    "identity": {
+                        "type": "string"
+                    },
                     "address": {
                         "type": "string"
                     }
                 },
                 "required": [
+                    "identity",
                     "address"
                 ]
             },
             "AssetResponse": {
                 "type": "object",
                 "properties": {
+                    "identity": {
+                        "type": "string"
+                    },
                     "stockAsset": {
                         "nullable": true,
                         "allOf": [
@@ -1198,6 +1619,7 @@
                     }
                 },
                 "required": [
+                    "identity",
                     "stockAsset",
                     "realEstateAsset"
                 ]
@@ -1205,6 +1627,9 @@
             "AssetGroupResponse": {
                 "type": "object",
                 "properties": {
+                    "identity": {
+                        "type": "string"
+                    },
                     "name": {
                         "type": "string"
                     },
@@ -1216,6 +1641,7 @@
                     }
                 },
                 "required": [
+                    "identity",
                     "name",
                     "assets"
                 ]
@@ -1238,6 +1664,9 @@
             "BankAccountResponse": {
                 "type": "object",
                 "properties": {
+                    "identity": {
+                        "type": "string"
+                    },
                     "bank": {
                         "type": "string"
                     },
@@ -1246,6 +1675,7 @@
                     }
                 },
                 "required": [
+                    "identity",
                     "bank",
                     "balance"
                 ]
@@ -1264,6 +1694,9 @@
             "JobResponse": {
                 "type": "object",
                 "properties": {
+                    "identity": {
+                        "type": "string"
+                    },
                     "title": {
                         "type": "string"
                     },
@@ -1272,6 +1705,7 @@
                     }
                 },
                 "required": [
+                    "identity",
                     "title",
                     "activeIncome"
                 ]
@@ -1279,6 +1713,9 @@
             "UserViewResponse": {
                 "type": "object",
                 "properties": {
+                    "identity": {
+                        "type": "string"
+                    },
                     "dateOfBirth": {
                         "type": "string",
                         "format": "date"
@@ -1309,6 +1746,7 @@
                     }
                 },
                 "required": [
+                    "identity",
                     "dateOfBirth",
                     "firstName",
                     "lastName",
