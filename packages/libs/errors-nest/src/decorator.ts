@@ -1,5 +1,5 @@
 import { IHttpCodeError, UnexpectedError } from "@finance/errors";
-import { ApiResponse } from "@nestjs/swagger";
+import { ApiProperty, ApiResponse } from "@nestjs/swagger";
 import type { AnyConstructor } from "@finance/libs-types";
 
 type HttpErrorConstructor = AnyConstructor<IHttpCodeError & Error>;
@@ -15,10 +15,25 @@ export function FinanceErrors<T extends HttpErrorConstructor>(errors: T[]) {
 		return ApiResponse({
 			status: (new x()).httpCode(),
 			description: x.name,
+			type: HttpErrorResponse
 		})
 	})
 
 	return function (target: object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<any>) {
 		decorators.forEach(x => x(target, propertyKey, descriptor))
 	}
+}
+
+class HttpErrorResponse { 
+	@ApiProperty({
+		type: "integer",
+		description: "The http code returned by the server"
+	})
+	statusCode!: number;
+
+	@ApiProperty({
+		type: "string",
+		description: "A message describing the error that occurred"
+	})
+	message!: string;
 }

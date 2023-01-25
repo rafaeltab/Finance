@@ -6,7 +6,7 @@ import { unitOfWork, type IUnitOfWork } from "@finance/postgres";
 import { inject, injectable } from "tsyringe";
 
 
-type ResponseType = IQueryResult<Asset>
+export type ResponseType = IQueryResult<Asset>
 
 export class GetAssetQuery extends IQuery<GetAssetQuery, ResponseType> {
 	token = "GetAssetQuery";

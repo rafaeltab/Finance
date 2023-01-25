@@ -5,7 +5,7 @@ import { ICommand, ICommandHandler, ICommandResult } from "@finance/libs-types";
 import { IUnitOfWork, unitOfWork } from "@finance/postgres";
 import { inject, injectable } from "tsyringe";
 
-type ResponseType = ICommandResult<AssetGroup>;
+export type ResponseType = ICommandResult<AssetGroup>;
 
 export class CreateAssetGroupForUserCommand extends ICommand<CreateAssetGroupForUserCommand, ResponseType> {
 	token = "CreateAssetGroupForUserCommand";

@@ -5,12 +5,7 @@ export type ISuccessCommandResult<TData> = {
 	data: TData
 }
 
-export type IFailedCommandResult = {
-	message: string;
-	success: false;
-}
-
-export type ICommandResult<TData> = ISuccessCommandResult<TData> | IFailedCommandResult;
+export type ICommandResult<TData> = ISuccessCommandResult<TData>;
 
 const responseSymbol = Symbol("response");
 

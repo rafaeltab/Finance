@@ -1,11 +1,17 @@
 // list a maximum of 30 asset groups
 
 import { IBankAccountRepository, BankAccount, PaginatedBase, bankAccountRepository } from "@finance/domain";
-import { IQuery, IQueryHandler, IQueryResult } from "@finance/libs-types";
+import { IQuery, IQueryHandler, IQueryResult, ISuccessQueryResult } from "@finance/libs-types";
 import { unitOfWork, type IUnitOfWork } from "@finance/postgres";
 import { inject, injectable } from "tsyringe";
 
-type ResponseType = IQueryResult<PaginatedBase<BankAccount>>
+export type ResponseType = IQueryResult<PaginatedBase<BankAccount>>
+
+export class Response implements ISuccessQueryResult<PaginatedBase<BankAccount>> {
+	success!: true;
+	data!: PaginatedBase<BankAccount>;
+}
+
 
 export class BankAccountViewQuery extends IQuery<BankAccountViewQuery, ResponseType> {
 	token = "BankAccountViewQuery";
@@ -30,13 +36,13 @@ export class BankAccountViewQueryHandler extends IQueryHandler<BankAccountViewQu
 	async handle(query: BankAccountViewQuery): Promise<ResponseType> {
 		try {
 			await this.unitOfWork.start();
-	
+
 			const bankAccounts = await this.bankAccountRepository.getAllBankAccountsForUser({
 				identity: query.userIdentity,
 			}, query.limit, query.offset);
-	
+
 			await this.unitOfWork.commit();
-	
+
 			return {
 				success: true,
 				data: {
@@ -48,7 +54,7 @@ export class BankAccountViewQueryHandler extends IQueryHandler<BankAccountViewQu
 					data: bankAccounts.data
 				}
 			}
-		} catch (e: unknown) { 
+		} catch (e: unknown) {
 			await this.unitOfWork.rollback();
 			throw e;
 		}

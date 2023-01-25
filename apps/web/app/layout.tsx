@@ -54,7 +54,7 @@ const userNavigation = [
 	{ name: 'Change user', href: '/user-select' }
 ]
 
-function classNames(...classes) {
+function classNames(...classes: string[]) {
 	return classes.filter(Boolean).join(' ')
 }
 

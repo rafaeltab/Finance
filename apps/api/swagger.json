@@ -31,8 +31,25 @@
                     }
                 ],
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetSearchStockResponse"
+                                }
+                            }
+                        }
+                    },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -51,11 +68,35 @@
                     }
                 ],
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetSearchStockResponse"
+                                }
+                            }
+                        }
+                    },
                     "404": {
-                        "description": "EntryNotFoundError"
+                        "description": "EntryNotFoundError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -65,8 +106,25 @@
                 "operationId": "StockController_getStocks",
                 "parameters": [],
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetStockListResponse"
+                                }
+                            }
+                        }
+                    },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -77,10 +135,24 @@
                 "parameters": [],
                 "responses": {
                     "409": {
-                        "description": "DuplicateEntryError"
+                        "description": "DuplicateEntryError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -91,10 +163,24 @@
                 "parameters": [],
                 "responses": {
                     "409": {
-                        "description": "DuplicateEntryError"
+                        "description": "DuplicateEntryError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -104,8 +190,25 @@
                 "operationId": "UserController_get",
                 "parameters": [],
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetUsersResponse"
+                                }
+                            }
+                        }
+                    },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -123,11 +226,35 @@
                     }
                 },
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/InsertUserResponse"
+                                }
+                            }
+                        }
+                    },
                     "409": {
-                        "description": "DuplicateEntryError"
+                        "description": "DuplicateEntryError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -135,25 +262,95 @@
         "/api/v1/user/{identity}": {
             "get": {
                 "operationId": "UserController_getByIdentity",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "identity",
+                        "required": true,
+                        "in": "path",
+                        "description": "Identity",
+                        "schema": {
+                            "type": "string",
+                            "minLength": 5
+                        }
+                    }
+                ],
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserViewResponse"
+                                }
+                            }
+                        }
+                    },
                     "404": {
-                        "description": "EntryNotFoundError"
+                        "description": "EntryNotFoundError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             },
             "delete": {
                 "operationId": "UserController_delete",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "identity",
+                        "required": true,
+                        "in": "path",
+                        "description": "Identity",
+                        "schema": {
+                            "type": "string",
+                            "minLength": 5
+                        }
+                    }
+                ],
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SuccessResponse"
+                                }
+                            }
+                        }
+                    },
                     "404": {
-                        "description": "EntryNotFoundError"
+                        "description": "EntryNotFoundError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -161,19 +358,65 @@
         "/api/v1/user/{userIdentity}/job": {
             "get": {
                 "operationId": "JobController_get",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "userIdentity",
+                        "required": true,
+                        "in": "path",
+                        "description": "User identity",
+                        "schema": {
+                            "type": "string",
+                            "minLength": 5
+                        }
+                    }
+                ],
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/JobsViewResponse"
+                                }
+                            }
+                        }
+                    },
                     "404": {
-                        "description": "EntryNotFoundError"
+                        "description": "EntryNotFoundError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             },
             "put": {
                 "operationId": "JobController_insert",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "userIdentity",
+                        "required": true,
+                        "in": "path",
+                        "description": "User identity",
+                        "schema": {
+                            "type": "string",
+                            "minLength": 5
+                        }
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -185,11 +428,35 @@
                     }
                 },
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CreateJobResponse"
+                                }
+                            }
+                        }
+                    },
                     "409": {
-                        "description": "DuplicateEntryError"
+                        "description": "DuplicateEntryError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -197,13 +464,58 @@
         "/api/v1/user/{userIdentity}/job/{identity}": {
             "delete": {
                 "operationId": "JobController_delete",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "userIdentity",
+                        "required": true,
+                        "in": "path",
+                        "description": "User identity",
+                        "schema": {
+                            "type": "string",
+                            "minLength": 5
+                        }
+                    },
+                    {
+                        "name": "identity",
+                        "required": true,
+                        "in": "path",
+                        "description": "Identity",
+                        "schema": {
+                            "type": "string",
+                            "minLength": 5
+                        }
+                    }
+                ],
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SuccessResponse"
+                                }
+                            }
+                        }
+                    },
                     "404": {
-                        "description": "EntryNotFoundError"
+                        "description": "EntryNotFoundError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -211,19 +523,65 @@
         "/api/v1/user/{userIdentity}/bankAccount": {
             "get": {
                 "operationId": "BankAccountController_get",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "userIdentity",
+                        "required": true,
+                        "in": "path",
+                        "description": "User identity",
+                        "schema": {
+                            "type": "string",
+                            "minLength": 5
+                        }
+                    }
+                ],
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BankAccountsViewResponse"
+                                }
+                            }
+                        }
+                    },
                     "404": {
-                        "description": "EntryNotFoundError"
+                        "description": "EntryNotFoundError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             },
             "put": {
                 "operationId": "BankAccountController_insert",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "userIdentity",
+                        "required": true,
+                        "in": "path",
+                        "description": "User identity",
+                        "schema": {
+                            "type": "string",
+                            "minLength": 5
+                        }
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -235,14 +593,45 @@
                     }
                 },
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CreateBankAccountResponse"
+                                }
+                            }
+                        }
+                    },
                     "404": {
-                        "description": "EntryNotFoundError"
+                        "description": "EntryNotFoundError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "409": {
-                        "description": "DuplicateEntryError"
+                        "description": "DuplicateEntryError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -250,13 +639,58 @@
         "/api/v1/user/{userIdentity}/bankAccount/{identity}": {
             "delete": {
                 "operationId": "BankAccountController_delete",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "userIdentity",
+                        "required": true,
+                        "in": "path",
+                        "description": "User identity",
+                        "schema": {
+                            "type": "string",
+                            "minLength": 5
+                        }
+                    },
+                    {
+                        "name": "identity",
+                        "required": true,
+                        "in": "path",
+                        "description": "Identity",
+                        "schema": {
+                            "type": "string",
+                            "minLength": 5
+                        }
+                    }
+                ],
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SuccessResponse"
+                                }
+                            }
+                        }
+                    },
                     "404": {
-                        "description": "EntryNotFoundError"
+                        "description": "EntryNotFoundError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -264,25 +698,95 @@
         "/api/v1/asset/{assetIdentity}": {
             "get": {
                 "operationId": "AssetController_getAsset",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "assetIdentity",
+                        "required": true,
+                        "in": "path",
+                        "description": "Asset identity",
+                        "schema": {
+                            "type": "string",
+                            "minLength": 5
+                        }
+                    }
+                ],
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetAssetResponse"
+                                }
+                            }
+                        }
+                    },
                     "404": {
-                        "description": "EntryNotFoundError"
+                        "description": "EntryNotFoundError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             },
             "delete": {
                 "operationId": "AssetController_deleteAsset",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "assetIdentity",
+                        "required": true,
+                        "in": "path",
+                        "description": "Asset identity",
+                        "schema": {
+                            "type": "string",
+                            "minLength": 5
+                        }
+                    }
+                ],
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SuccessResponse"
+                                }
+                            }
+                        }
+                    },
                     "404": {
-                        "description": "EntryNotFoundError"
+                        "description": "EntryNotFoundError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -290,25 +794,95 @@
         "/api/v1/assetGroup/{assetGroupIdentity}": {
             "get": {
                 "operationId": "AssetController_getAssetGroup",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "assetGroupIdentity",
+                        "required": true,
+                        "in": "path",
+                        "description": "Asset group identity",
+                        "schema": {
+                            "type": "string",
+                            "minLength": 5
+                        }
+                    }
+                ],
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetAssetGroupResponse"
+                                }
+                            }
+                        }
+                    },
                     "404": {
-                        "description": "EntryNotFoundError"
+                        "description": "EntryNotFoundError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             },
             "delete": {
                 "operationId": "AssetController_deleteAssetGroup",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "assetGroupIdentity",
+                        "required": true,
+                        "in": "path",
+                        "description": "Asset group identity",
+                        "schema": {
+                            "type": "string",
+                            "minLength": 5
+                        }
+                    }
+                ],
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SuccessResponse"
+                                }
+                            }
+                        }
+                    },
                     "404": {
-                        "description": "EntryNotFoundError"
+                        "description": "EntryNotFoundError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -316,13 +890,48 @@
         "/api/v1/user/{userIdentity}/asset": {
             "get": {
                 "operationId": "AssetController_getUserAssets",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "userIdentity",
+                        "required": true,
+                        "in": "path",
+                        "description": "User identity",
+                        "schema": {
+                            "type": "string",
+                            "minLength": 5
+                        }
+                    }
+                ],
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetUserAssetsResponse"
+                                }
+                            }
+                        }
+                    },
                     "404": {
-                        "description": "EntryNotFoundError"
+                        "description": "EntryNotFoundError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -330,28 +939,115 @@
         "/api/v1/user/{userIdentity}/assetGroup": {
             "get": {
                 "operationId": "AssetController_getUserAssetGroups",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "userIdentity",
+                        "required": true,
+                        "in": "path",
+                        "description": "User identity",
+                        "schema": {
+                            "type": "string",
+                            "minLength": 5
+                        }
+                    }
+                ],
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetUserAssetGroupsResponse"
+                                }
+                            }
+                        }
+                    },
                     "404": {
-                        "description": "EntryNotFoundError"
+                        "description": "EntryNotFoundError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             },
             "put": {
                 "operationId": "AssetController_createAssetGroupForUser",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "userIdentity",
+                        "required": true,
+                        "in": "path",
+                        "description": "User identity",
+                        "schema": {
+                            "type": "string",
+                            "minLength": 5
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Function"
+                            }
+                        }
+                    }
+                },
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CreateAssetGroupForUserResponse"
+                                }
+                            }
+                        }
+                    },
                     "404": {
-                        "description": "EntryNotFoundError"
+                        "description": "EntryNotFoundError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "409": {
-                        "description": "DuplicateEntryError"
+                        "description": "DuplicateEntryError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -359,7 +1055,18 @@
         "/api/v1/user/{userIdentity}/asset/stock": {
             "put": {
                 "operationId": "AssetController_createStockAssetForUser",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "userIdentity",
+                        "required": true,
+                        "in": "path",
+                        "description": "User identity",
+                        "schema": {
+                            "type": "string",
+                            "minLength": 5
+                        }
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -371,14 +1078,45 @@
                     }
                 },
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CreateStockAssetForUserResponse"
+                                }
+                            }
+                        }
+                    },
                     "404": {
-                        "description": "EntryNotFoundError"
+                        "description": "EntryNotFoundError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "409": {
-                        "description": "DuplicateEntryError"
+                        "description": "DuplicateEntryError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -386,7 +1124,18 @@
         "/api/v1/user/{userIdentity}/asset/realEstate": {
             "put": {
                 "operationId": "AssetController_createRealEstateAssetForUser",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "userIdentity",
+                        "required": true,
+                        "in": "path",
+                        "description": "User identity",
+                        "schema": {
+                            "type": "string",
+                            "minLength": 5
+                        }
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -398,14 +1147,45 @@
                     }
                 },
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CreateRealEstateAssetForUserResponse"
+                                }
+                            }
+                        }
+                    },
                     "404": {
-                        "description": "EntryNotFoundError"
+                        "description": "EntryNotFoundError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "409": {
-                        "description": "DuplicateEntryError"
+                        "description": "DuplicateEntryError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -413,7 +1193,18 @@
         "/api/v1/assetGroup/{assetGroupIdentity}/asset/stock": {
             "put": {
                 "operationId": "AssetController_createStockAssetForGroup",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "assetGroupIdentity",
+                        "required": true,
+                        "in": "path",
+                        "description": "Asset group identity",
+                        "schema": {
+                            "type": "string",
+                            "minLength": 5
+                        }
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -425,14 +1216,45 @@
                     }
                 },
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CreateStockAssetForAssetGroupResponse"
+                                }
+                            }
+                        }
+                    },
                     "404": {
-                        "description": "EntryNotFoundError"
+                        "description": "EntryNotFoundError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "409": {
-                        "description": "DuplicateEntryError"
+                        "description": "DuplicateEntryError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -440,7 +1262,18 @@
         "/api/v1/assetGroup/{assetGroupIdentity}/asset/realEstate": {
             "put": {
                 "operationId": "AssetController_createRealEstateAssetForGroup",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "assetGroupIdentity",
+                        "required": true,
+                        "in": "path",
+                        "description": "Asset group identity",
+                        "schema": {
+                            "type": "string",
+                            "minLength": 5
+                        }
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -452,14 +1285,45 @@
                     }
                 },
                 "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CreateRealEstateAssetForGroup"
+                                }
+                            }
+                        }
+                    },
                     "404": {
-                        "description": "EntryNotFoundError"
+                        "description": "EntryNotFoundError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "409": {
-                        "description": "DuplicateEntryError"
+                        "description": "DuplicateEntryError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "UnexpectedError"
+                        "description": "UnexpectedError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HttpErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -480,6 +1344,417 @@
     "servers": [],
     "components": {
         "schemas": {
+            "PaginatedResponsePage": {
+                "type": "object",
+                "properties": {
+                    "count": {
+                        "type": "number",
+                        "description": "The amount available in this response",
+                        "example": 10
+                    },
+                    "offset": {
+                        "type": "number",
+                        "description": "The starting index of the paginated data",
+                        "example": 0
+                    },
+                    "total": {
+                        "type": "number",
+                        "description": "The total number of items available",
+                        "example": 10
+                    }
+                },
+                "required": [
+                    "count",
+                    "offset",
+                    "total"
+                ]
+            },
+            "StockDataResponse": {
+                "type": "object",
+                "properties": {
+                    "identity": {
+                        "type": "string"
+                    },
+                    "symbol": {
+                        "type": "string"
+                    },
+                    "exchange": {
+                        "type": "string"
+                    },
+                    "assetKind": {
+                        "type": "string",
+                        "enum": [
+                            "CS",
+                            "ADRC",
+                            "ADRP",
+                            "ADRR",
+                            "UNIT",
+                            "RIGHT",
+                            "PFD",
+                            "FUND",
+                            "SP",
+                            "WARRANT",
+                            "INDEX",
+                            "ETF",
+                            "ETN",
+                            "OS",
+                            "GDR",
+                            "OTHER",
+                            "NYRS",
+                            "AGEN",
+                            "EQLK",
+                            "BOND",
+                            "ADRW",
+                            "BASKET",
+                            "LT"
+                        ]
+                    }
+                },
+                "required": [
+                    "identity",
+                    "symbol",
+                    "exchange",
+                    "assetKind"
+                ]
+            },
+            "GetSearchStockPaginatedResponse": {
+                "type": "object",
+                "properties": {
+                    "page": {
+                        "$ref": "#/components/schemas/PaginatedResponsePage"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/StockDataResponse"
+                        }
+                    },
+                    "isEmpty": {
+                        "type": "boolean"
+                    }
+                },
+                "required": [
+                    "page",
+                    "data",
+                    "isEmpty"
+                ]
+            },
+            "GetSearchStockResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/GetSearchStockPaginatedResponse"
+                    }
+                },
+                "required": [
+                    "success",
+                    "data"
+                ]
+            },
+            "HttpErrorResponse": {
+                "type": "object",
+                "properties": {
+                    "statusCode": {
+                        "type": "integer",
+                        "description": "The http code returned by the server"
+                    },
+                    "message": {
+                        "type": "string",
+                        "description": "A message describing the error that occurred"
+                    }
+                },
+                "required": [
+                    "statusCode",
+                    "message"
+                ]
+            },
+            "GetStockListResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/GetSearchStockPaginatedResponse"
+                    }
+                },
+                "required": [
+                    "success",
+                    "data"
+                ]
+            },
+            "UserResponse": {
+                "type": "object",
+                "properties": {
+                    "identity": {
+                        "type": "string"
+                    },
+                    "dateOfBirth": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "firstName": {
+                        "type": "string"
+                    },
+                    "lastName": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "identity",
+                    "dateOfBirth",
+                    "firstName",
+                    "lastName"
+                ]
+            },
+            "PaginatedUserResponse": {
+                "type": "object",
+                "properties": {
+                    "page": {
+                        "$ref": "#/components/schemas/PaginatedResponsePage"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserResponse"
+                        }
+                    }
+                },
+                "required": [
+                    "page",
+                    "data"
+                ]
+            },
+            "GetUsersResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/PaginatedUserResponse"
+                    }
+                },
+                "required": [
+                    "success",
+                    "data"
+                ]
+            },
+            "StockOrderResponse": {
+                "type": "object",
+                "properties": {
+                    "amount": {
+                        "type": "number"
+                    },
+                    "usdPrice": {
+                        "type": "number"
+                    }
+                },
+                "required": [
+                    "amount",
+                    "usdPrice"
+                ]
+            },
+            "StockAssetResponse": {
+                "type": "object",
+                "properties": {
+                    "identity": {
+                        "type": "string"
+                    },
+                    "orders": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/StockOrderResponse"
+                        }
+                    },
+                    "stockData": {
+                        "$ref": "#/components/schemas/StockDataResponse"
+                    }
+                },
+                "required": [
+                    "identity",
+                    "orders",
+                    "stockData"
+                ]
+            },
+            "RealEstateAssetResponse": {
+                "type": "object",
+                "properties": {
+                    "identity": {
+                        "type": "string"
+                    },
+                    "address": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "identity",
+                    "address"
+                ]
+            },
+            "AssetResponse": {
+                "type": "object",
+                "properties": {
+                    "identity": {
+                        "type": "string"
+                    },
+                    "stockAsset": {
+                        "nullable": true,
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/StockAssetResponse"
+                            }
+                        ]
+                    },
+                    "realEstateAsset": {
+                        "nullable": true,
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/RealEstateAssetResponse"
+                            }
+                        ]
+                    }
+                },
+                "required": [
+                    "identity",
+                    "stockAsset",
+                    "realEstateAsset"
+                ]
+            },
+            "AssetGroupResponse": {
+                "type": "object",
+                "properties": {
+                    "identity": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "assets": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/AssetResponse"
+                        }
+                    }
+                },
+                "required": [
+                    "identity",
+                    "name",
+                    "assets"
+                ]
+            },
+            "BalanceResponse": {
+                "type": "object",
+                "properties": {
+                    "amount": {
+                        "type": "number"
+                    },
+                    "currency": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "amount",
+                    "currency"
+                ]
+            },
+            "BankAccountResponse": {
+                "type": "object",
+                "properties": {
+                    "identity": {
+                        "type": "string"
+                    },
+                    "bank": {
+                        "type": "string"
+                    },
+                    "balance": {
+                        "$ref": "#/components/schemas/BalanceResponse"
+                    }
+                },
+                "required": [
+                    "identity",
+                    "bank",
+                    "balance"
+                ]
+            },
+            "ActiveIncomeResponse": {
+                "type": "object",
+                "properties": {
+                    "monthlySalary": {
+                        "type": "number"
+                    }
+                },
+                "required": [
+                    "monthlySalary"
+                ]
+            },
+            "JobResponse": {
+                "type": "object",
+                "properties": {
+                    "identity": {
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "activeIncome": {
+                        "$ref": "#/components/schemas/ActiveIncomeResponse"
+                    }
+                },
+                "required": [
+                    "identity",
+                    "title",
+                    "activeIncome"
+                ]
+            },
+            "UserViewResponse": {
+                "type": "object",
+                "properties": {
+                    "identity": {
+                        "type": "string"
+                    },
+                    "dateOfBirth": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "firstName": {
+                        "type": "string"
+                    },
+                    "lastName": {
+                        "type": "string"
+                    },
+                    "assetGroups": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/AssetGroupResponse"
+                        }
+                    },
+                    "bankAccounts": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/BankAccountResponse"
+                        }
+                    },
+                    "jobs": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/JobResponse"
+                        }
+                    }
+                },
+                "required": [
+                    "identity",
+                    "dateOfBirth",
+                    "firstName",
+                    "lastName",
+                    "assetGroups",
+                    "bankAccounts",
+                    "jobs"
+                ]
+            },
             "CreateUserBody": {
                 "type": "object",
                 "properties": {
@@ -499,6 +1774,61 @@
                     "dateOfBirth"
                 ]
             },
+            "InsertUserResponse": {
+                "type": "object",
+                "properties": {
+                    "userIdentity": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "userIdentity"
+                ]
+            },
+            "SuccessResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    }
+                },
+                "required": [
+                    "success"
+                ]
+            },
+            "PaginatedJobResponse": {
+                "type": "object",
+                "properties": {
+                    "page": {
+                        "$ref": "#/components/schemas/PaginatedResponsePage"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/JobResponse"
+                        }
+                    }
+                },
+                "required": [
+                    "page",
+                    "data"
+                ]
+            },
+            "JobsViewResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/PaginatedJobResponse"
+                    }
+                },
+                "required": [
+                    "success",
+                    "data"
+                ]
+            },
             "CreateJobBody": {
                 "type": "object",
                 "properties": {
@@ -513,6 +1843,54 @@
                 "required": [
                     "title",
                     "monthlySalary"
+                ]
+            },
+            "CreateJobResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/JobResponse"
+                    }
+                },
+                "required": [
+                    "success",
+                    "data"
+                ]
+            },
+            "PaginatedBankAccountResponse": {
+                "type": "object",
+                "properties": {
+                    "page": {
+                        "$ref": "#/components/schemas/PaginatedResponsePage"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/BankAccountResponse"
+                        }
+                    }
+                },
+                "required": [
+                    "page",
+                    "data"
+                ]
+            },
+            "BankAccountsViewResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/PaginatedBankAccountResponse"
+                    }
+                },
+                "required": [
+                    "success",
+                    "data"
                 ]
             },
             "CreateBankAccountBody": {
@@ -533,6 +1911,135 @@
                     "bank",
                     "balance",
                     "currency"
+                ]
+            },
+            "CreateBankAccountResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/BankAccountResponse"
+                    }
+                },
+                "required": [
+                    "success",
+                    "data"
+                ]
+            },
+            "GetAssetResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/AssetResponse"
+                    }
+                },
+                "required": [
+                    "success",
+                    "data"
+                ]
+            },
+            "PaginatedAssetResponse": {
+                "type": "object",
+                "properties": {
+                    "page": {
+                        "$ref": "#/components/schemas/PaginatedResponsePage"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/AssetResponse"
+                        }
+                    }
+                },
+                "required": [
+                    "page",
+                    "data"
+                ]
+            },
+            "GetAssetGroupResponseData": {
+                "type": "object",
+                "properties": {
+                    "group": {
+                        "$ref": "#/components/schemas/AssetGroupResponse"
+                    },
+                    "assets": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/PaginatedAssetResponse"
+                        }
+                    }
+                },
+                "required": [
+                    "group",
+                    "assets"
+                ]
+            },
+            "GetAssetGroupResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/GetAssetGroupResponseData"
+                    }
+                },
+                "required": [
+                    "success",
+                    "data"
+                ]
+            },
+            "GetUserAssetsResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/PaginatedAssetResponse"
+                    }
+                },
+                "required": [
+                    "success",
+                    "data"
+                ]
+            },
+            "PaginatedAssetGroupResponse": {
+                "type": "object",
+                "properties": {
+                    "page": {
+                        "$ref": "#/components/schemas/PaginatedResponsePage"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/AssetGroupResponse"
+                        }
+                    }
+                },
+                "required": [
+                    "page",
+                    "data"
+                ]
+            },
+            "GetUserAssetGroupsResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/PaginatedAssetGroupResponse"
+                    }
+                },
+                "required": [
+                    "success",
+                    "data"
                 ]
             },
             "StockOrderBody": {
@@ -572,9 +2079,88 @@
                     "stockOrders"
                 ]
             },
+            "CreateStockAssetForUserResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/AssetResponse"
+                    }
+                },
+                "required": [
+                    "success",
+                    "data"
+                ]
+            },
             "CreateRealEstateAssetBody": {
                 "type": "object",
                 "properties": {}
+            },
+            "CreateRealEstateAssetForUserResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/AssetResponse"
+                    }
+                },
+                "required": [
+                    "success",
+                    "data"
+                ]
+            },
+            "Function": {
+                "type": "object",
+                "properties": {}
+            },
+            "CreateAssetGroupForUserResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/AssetGroupResponse"
+                    }
+                },
+                "required": [
+                    "success",
+                    "data"
+                ]
+            },
+            "CreateStockAssetForAssetGroupResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/AssetResponse"
+                    }
+                },
+                "required": [
+                    "success",
+                    "data"
+                ]
+            },
+            "CreateRealEstateAssetForGroup": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/AssetResponse"
+                    }
+                },
+                "required": [
+                    "success",
+                    "data"
+                ]
             }
         }
     }

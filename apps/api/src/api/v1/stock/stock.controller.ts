@@ -6,8 +6,10 @@ import { IQueryResult, Mediator } from "@finance/libs-types";
 import { Controller, Get, HttpException, Inject, Param, Query, UploadedFile, UseInterceptors } from "@nestjs/common";
 import { Put } from "@nestjs/common/decorators/http/request-mapping.decorator";
 import { FileInterceptor } from "@nestjs/platform-express";
+import { ApiOkResponse } from "@nestjs/swagger";
 import { parse as csvParse } from "csv-parse";
 import JsZip from 'jszip';
+import { GetSearchStockResponse, GetStockListResponse, StockDataViewResponse } from "./stock.responses";
 
 @Controller("/api/v1/stock")
 export class StockController {
@@ -15,39 +17,48 @@ export class StockController {
 
 	@Get("/search")
 	@FinanceErrors([])
+	@ApiOkResponse({
+		type: GetSearchStockResponse
+	})
 	async getSearch(
 		@Query("exchange") exchange: string,
 		@Query("symbol") symbol: string,
 		@Query("type") type: string
-	) {
-		return await this.mediator.query(new StockDataSearchQuery({
+	): Promise<GetSearchStockResponse> {
+		return GetSearchStockResponse.map(await this.mediator.query(new StockDataSearchQuery({
 			exchange: exchange,
 			symbol: symbol,
 			type: type,
 			limit: 30,
 			offset: 0
-		}));
+		})));
 	}
 
 	@Get("/:identity")
 	@FinanceErrors([EntryNotFoundError])
+	@ApiOkResponse({
+		type: GetSearchStockResponse
+	})
 	async get(
 		@Param("identity") identity: string
-	) {
-		return  await this.mediator.query(new StockDataViewQuery({
+	): Promise<StockDataViewResponse> {
+		return StockDataViewResponse.map(await this.mediator.query(new StockDataViewQuery({
 			stockDataIdentity: identity,
 			offset: 0,
 			limit: 30
-		}));
+		})));
 	}
 
 	@Get()
 	@FinanceErrors([])
+	@ApiOkResponse({
+		type: GetStockListResponse
+	})
 	async getStocks() {
-		return await this.mediator.query(new StocksDataListViewQuery({
+		return GetStockListResponse.map(await this.mediator.query(new StocksDataListViewQuery({
 			limit: 30,
 			offset: 0
-		}))
+		})));
 	}
 
 	@Put("data/csv")
@@ -61,12 +72,12 @@ export class StockController {
 		}
 
 		const parsed = await parseDataCsv(stockData.buffer);
-		
+
 		return await this.mediator.command(new CreateStockDatasCommand({
 			stockDatas: parsed
 		}))
 	}
-	
+
 	@Put("values/csv")
 	@UseInterceptors(FileInterceptor('stockValues'))
 	@FinanceErrors([DuplicateEntryError])
@@ -83,14 +94,14 @@ export class StockController {
 		const zipFile = await zip.loadAsync(stockValues.buffer)
 
 		let previousInsert: Promise<IQueryResult<unknown>> | undefined = undefined;
-		let previousStock: string|undefined = undefined;
+		let previousStock: string | undefined = undefined;
 
 		let failed: string[] = [];
 
 		for (const fileName of Object.keys(zipFile.files)) {
 			const file = zipFile.files[fileName];
 
-			if (file === undefined) { 
+			if (file === undefined) {
 				continue;
 			}
 
@@ -104,11 +115,11 @@ export class StockController {
 				continue;
 			}
 
-			if(!fileName.endsWith(".csv")) {
+			if (!fileName.endsWith(".csv")) {
 				continue;
 			}
 
-			if (!fileName.includes("1d")) { 
+			if (!fileName.includes("1d")) {
 				continue;
 			}
 
@@ -118,15 +129,15 @@ export class StockController {
 
 			const stock = fileName.split("ohclv/")[1]?.split("/")[0];
 
-			var search = await this.mediator.query(new StockDataSearchQuery({
-				exchange: "NASDAQ",
-				symbol: stock,
-				type: StockAssetKind.CS,
-				limit: 30,
-				offset: 0
-			}));
-
-			if (!search.success) {
+			try {
+				var search = await this.mediator.query(new StockDataSearchQuery({
+					exchange: "NASDAQ",
+					symbol: stock,
+					type: StockAssetKind.CS,
+					limit: 30,
+					offset: 0
+				}));
+			} catch (e) {
 				failed.push(stock ?? "UNKNOWN");
 				continue;
 			}
@@ -138,7 +149,7 @@ export class StockController {
 
 			let identity = search.data.data[0]?.identity!;
 
-			if (search.data.data.length > 1) { 
+			if (search.data.data.length > 1) {
 				const found = search.data.data.find(x => x.symbol === stock);
 				if (found === undefined) {
 					failed.push(stock ?? "UNKNOWN");
@@ -148,15 +159,16 @@ export class StockController {
 			}
 
 			const values = await parseValuesCsv(fileContent);
-			if (previousInsert !== undefined) { 
-				const previousResult = await previousInsert;
-
-				if (previousResult.success === false) {
+			if (previousInsert !== undefined) {
+				try {
+					await previousInsert;
+				} catch (e) {
 					failed.push(previousStock ?? "UNKNOWN");
 					console.log("Store values failed for " + previousStock ?? "UNKNOWN")
-				} else { 
-					console.log("Stored values for " + previousStock ?? "UNKNOWN")
+					continue;
 				}
+
+				console.log("Stored values for " + previousStock ?? "UNKNOWN")
 			}
 
 			previousInsert = this.mediator.command(new AddValuesToStockDataCommand({
@@ -180,7 +192,7 @@ type StockData = {
 	type: StockAssetKind
 }
 
-async function parseValuesCsv(csv: Buffer): Promise<InsertStockValue[]> { 
+async function parseValuesCsv(csv: Buffer): Promise<InsertStockValue[]> {
 	const parsed = await csvParse(csv, {
 		columns: true,
 		skip_empty_lines: true
