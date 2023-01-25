@@ -1,5 +1,6 @@
 import type { BankAccount } from "@finance/domain";
 import { ApiProperty,  } from "@nestjs/swagger";
+import { EntityResponse } from "./identity.response";
 
 export class BalanceResponse { 
 	@ApiProperty({
@@ -13,7 +14,7 @@ export class BalanceResponse {
 	currency!: string;
 }
 
-export class BankAccountResponse { 
+export class BankAccountResponse extends EntityResponse { 
 	@ApiProperty({
 		type: "string"
 	})
@@ -30,7 +31,8 @@ export class BankAccountResponse {
 				amount: bankAccount.balance?.amount ?? 0,
 				currency: bankAccount.balance?.currency ?? ""
 			},
-			bank: bankAccount.bank ?? ""
+			bank: bankAccount.bank ?? "",
+			identity: bankAccount.identity
 		}
 	}
 }

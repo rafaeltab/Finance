@@ -1,5 +1,6 @@
 import type { Job } from "@finance/domain";
 import { ApiProperty } from "@nestjs/swagger";
+import { EntityResponse } from "./identity.response";
 
 export class ActiveIncomeResponse { 
 	@ApiProperty({
@@ -8,7 +9,7 @@ export class ActiveIncomeResponse {
 	monthlySalary!: number;
 }
 
-export class JobResponse { 
+export class JobResponse extends EntityResponse { 
 	@ApiProperty({
 		type: "string"
 	})
@@ -24,7 +25,8 @@ export class JobResponse {
 			activeIncome: {
 				monthlySalary: job.activeIncome?.monthlySalary ?? 0
 			},
-			title: job.title ?? ""
+			title: job.title ?? "",
+			identity: job.identity
 		}
 	}
 }

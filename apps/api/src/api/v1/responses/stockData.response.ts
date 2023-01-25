@@ -1,7 +1,8 @@
 import { StockAssetKind, StockData, StockValue } from "@finance/domain";
 import { ApiProperty } from "@nestjs/swagger";
+import { EntityResponse } from "./identity.response";
 
-export class StockDataResponse { 
+export class StockDataResponse extends EntityResponse { 
 	@ApiProperty({
 		type: "string"
 	})
@@ -22,7 +23,8 @@ export class StockDataResponse {
 		return {
 			symbol: data.symbol ?? "",
 			exchange: data.exchange ?? "",
-			assetKind: data.assetKind ?? StockAssetKind.CS
+			assetKind: data.assetKind ?? StockAssetKind.CS,
+			identity: data.identity
 		};
 	}
 }

@@ -5,8 +5,9 @@ import { BankAccountResponse } from "./bankAccount.response";
 import { JobResponse } from "./jobs.response";
 import type { User } from "@finance/domain";
 import { DateTime } from "luxon";
+import { EntityResponse } from "./identity.response";
 
-export class UserResponse { 
+export class UserResponse extends EntityResponse { 
 	@ApiProperty({
 		type: "string",
 		format: "date"
@@ -28,6 +29,7 @@ export class UserResponse {
 			dateOfBirth: user.dateOfBirth ? DateTime.fromJSDate(user.dateOfBirth).toFormat("yyyy-MM-dd") : "",
 			firstName: user.firstName ?? "",
 			lastName: user.lastName ?? "",
+			identity: user.identity
 		}
 	}
 }
