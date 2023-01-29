@@ -3,9 +3,29 @@ import { ApplicationModule } from "./external/ApplicationModule";
 import { StockModule } from "./api/v1/stock/stock.module";
 import { UserModule } from "./api/v1/user/user.module";
 import { AppLoggerMiddleware } from "./app.logger";
+import { ConfigModule } from "@nestjs/config";
+import configuration from "./configuration";
+import { AuthzModule } from "./authz/authz.module";
+
+const isDevelopment = process.env["NODE_ENV"] === "development";
+const environment = isDevelopment ? "development" : "production";
+
 
 export const AppModuleMetadata = {
-	imports: [ApplicationModule, StockModule, UserModule],
+	imports: [
+		ConfigModule.forRoot({
+			envFilePath: [
+				".env",
+				`.env.${environment}`
+			],
+			load: [configuration],
+			isGlobal: true,
+		}),
+		ApplicationModule,
+		StockModule,
+		UserModule,	
+		AuthzModule
+	],
 	controllers: [],
 	providers: [],
 } satisfies ModuleMetadata;

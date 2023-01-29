@@ -4,6 +4,7 @@ import { ValidationPipe } from "@nestjs/common";
 import { createSwaggerDocument, setupSwagger } from "./swagger";
 import { writeFileSync } from "fs";
 import { FinanceProgrammerErrorExceptionFilter, FinanceUserErrorExceptionFilter } from "@finance/errors-nest";
+import { AuthzGuard } from "./authz/authz.guard";
 
 async function bootstrap() {
 	const app = await createApp();
@@ -19,6 +20,7 @@ async function createApp() {
 		transform: true,
 		forbidUnknownValues: true,
 	}));
+	app.useGlobalGuards(new AuthzGuard());
 	app.useGlobalFilters(new FinanceUserErrorExceptionFilter(app.getHttpAdapter()), new FinanceProgrammerErrorExceptionFilter(app.getHttpAdapter()));
 	return app;
 }
