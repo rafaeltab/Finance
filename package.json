@@ -4,7 +4,9 @@
 	"private": true,
 	"license": "MIT",
 	"workspaces": [
-		"apps/*",
+		"apps/api",
+		"apps/sdks/*",
+		"apps/web",
 		"packages/application",
 		"packages/domain",
 		"packages/infrastructure/*",

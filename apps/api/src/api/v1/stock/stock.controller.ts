@@ -6,7 +6,7 @@ import { IQueryResult, Mediator } from "@finance/libs-types";
 import { Controller, Get, HttpException, Inject, Param, Query, UploadedFile, UseInterceptors } from "@nestjs/common";
 import { Put } from "@nestjs/common/decorators/http/request-mapping.decorator";
 import { FileInterceptor } from "@nestjs/platform-express";
-import { ApiOkResponse } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiOkResponse } from "@nestjs/swagger";
 import { parse as csvParse } from "csv-parse";
 import JsZip from 'jszip';
 import { GetSearchStockResponse, GetStockListResponse, StockDataViewResponse } from "./stock.responses";
@@ -17,6 +17,7 @@ export class StockController {
 
 	@Get("/search")
 	@FinanceErrors([])
+	@ApiBearerAuth("oauth2")
 	@ApiOkResponse({
 		type: GetSearchStockResponse
 	})
@@ -36,6 +37,7 @@ export class StockController {
 
 	@Get("/:identity")
 	@FinanceErrors([EntryNotFoundError])
+	@ApiBearerAuth("oauth2")
 	@ApiOkResponse({
 		type: GetSearchStockResponse
 	})
@@ -51,6 +53,7 @@ export class StockController {
 
 	@Get()
 	@FinanceErrors([])
+	@ApiBearerAuth("oauth2")
 	@ApiOkResponse({
 		type: GetStockListResponse
 	})
@@ -64,6 +67,7 @@ export class StockController {
 	@Put("data/csv")
 	@UseInterceptors(FileInterceptor('stockData'))
 	@FinanceErrors([DuplicateEntryError])
+	@ApiBearerAuth("oauth2")
 	async createDataFromCsv(
 		@UploadedFile() stockData: Express.Multer.File
 	) {
@@ -81,6 +85,7 @@ export class StockController {
 	@Put("values/csv")
 	@UseInterceptors(FileInterceptor('stockValues'))
 	@FinanceErrors([DuplicateEntryError])
+	@ApiBearerAuth("oauth2")
 	async createValuesFromCsv(
 		@UploadedFile() stockValues: Express.Multer.File
 	) {

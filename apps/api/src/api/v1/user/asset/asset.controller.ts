@@ -9,7 +9,7 @@ import { AssetIdentityParam, AssetIdentityParams } from "./assetIdentity.params"
 import { CreateRealEstateAssetBody } from "./createRealEstateAsset.body";
 import { CreateStockAssetBody } from "./createStockAsset.body";
 import type { CreateAssetGroupBody } from "./createAssetGroup.body";
-import { ApiOkResponse } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiOkResponse } from "@nestjs/swagger";
 import { CreateAssetGroupForUserResponse, CreateRealEstateAssetForGroup, CreateRealEstateAssetForUserResponse, CreateStockAssetForAssetGroupResponse, CreateStockAssetForUserResponse, GetAssetGroupResponse, GetAssetResponse, GetUserAssetGroupsResponse, GetUserAssetsResponse } from "./asset.responses";
 import { SuccessResponse } from "../../responses/success.response";
 
@@ -20,6 +20,7 @@ export class AssetController {
 	// GET /api/v1/asset/:assetIdentity -> Single asset
 	@Get("/asset/:assetIdentity")
 	@FinanceErrors([EntryNotFoundError])
+	@ApiBearerAuth("oauth2")
 	@AssetIdentityParam()
 	@ApiOkResponse({
 		type: GetAssetResponse
@@ -35,6 +36,7 @@ export class AssetController {
 	// GET /api/v1/assetGroup/:assetGroupIdentity -> Get a group with all assets
 	@Get("/assetGroup/:assetGroupIdentity")
 	@FinanceErrors([EntryNotFoundError])
+	@ApiBearerAuth("oauth2")
 	@AssetGroupIdentityParam()
 	@ApiOkResponse({
 		type: GetAssetGroupResponse
@@ -52,6 +54,7 @@ export class AssetController {
 	// GET /api/v1/user/:userIdentity/asset -> All assets for user
 	@Get("/user/:userIdentity/asset")
 	@FinanceErrors([EntryNotFoundError])
+	@ApiBearerAuth("oauth2")
 	@UserIdentityParam()
 	@ApiOkResponse({
 		type: GetUserAssetsResponse,
@@ -70,6 +73,7 @@ export class AssetController {
 
 	@Get("/user/:userIdentity/assetGroup")
 	@FinanceErrors([EntryNotFoundError])
+	@ApiBearerAuth("oauth2")
 	@UserIdentityParam()
 	@ApiOkResponse({
 		type: GetUserAssetGroupsResponse,
@@ -87,6 +91,7 @@ export class AssetController {
 	// PUT /api/v1/user/:userIdentity/asset/stock -> Create a stcck asset for user
 	@Put("/user/:userIdentity/asset/stock")
 	@FinanceErrors([EntryNotFoundError, DuplicateEntryError])
+	@ApiBearerAuth("oauth2")
 	@UserIdentityParam()
 	@ApiOkResponse({
 		type: CreateStockAssetForUserResponse,
@@ -105,6 +110,7 @@ export class AssetController {
 	// PUT /api/v1/user/:userIdentity/asset/realEstate -> Create a real estate asset for user
 	@Put("/user/:userIdentity/asset/realEstate")
 	@FinanceErrors([EntryNotFoundError, DuplicateEntryError])
+	@ApiBearerAuth("oauth2")
 	@UserIdentityParam()
 	@ApiOkResponse({
 		type: CreateRealEstateAssetForUserResponse
@@ -122,6 +128,7 @@ export class AssetController {
 	// PUT /api/v1/user/:userIdentity/assetGroup -> Create asset group for user
 	@Put("/user/:userIdentity/assetGroup")
 	@FinanceErrors([EntryNotFoundError, DuplicateEntryError])
+	@ApiBearerAuth("oauth2")
 	@UserIdentityParam()
 	@ApiOkResponse({
 		type: CreateAssetGroupForUserResponse
@@ -139,6 +146,7 @@ export class AssetController {
 	// PUT /api/v1/user/:userIdentity/assetGroup/:assetGroupIdentity/asset/stock -> Create stock asset for group
 	@Put("/assetGroup/:assetGroupIdentity/asset/stock")
 	@FinanceErrors([EntryNotFoundError, DuplicateEntryError])
+	@ApiBearerAuth("oauth2")
 	@AssetGroupIdentityParam()
 	@ApiOkResponse({
 		type: CreateStockAssetForAssetGroupResponse
@@ -157,6 +165,7 @@ export class AssetController {
 	// PUT /api/v1/user/:userIdentity/assetGroup/:assetGroupIdentity/asset/realEstate -> Create real estate asset for group
 	@Put("/assetGroup/:assetGroupIdentity/asset/realEstate")
 	@FinanceErrors([EntryNotFoundError, DuplicateEntryError])
+	@ApiBearerAuth("oauth2")
 	@AssetGroupIdentityParam()
 	@ApiOkResponse({
 		type: CreateRealEstateAssetForGroup
@@ -174,6 +183,7 @@ export class AssetController {
 	// DELETE /api/v1/asset/:assetIdentity
 	@Delete("/asset/:assetIdentity")
 	@FinanceErrors([EntryNotFoundError])
+	@ApiBearerAuth("oauth2")
 	@AssetIdentityParam()
 	@ApiOkResponse({
 		type: SuccessResponse
@@ -189,6 +199,7 @@ export class AssetController {
 	// DELETE /api/v1/assetGroup/:assetGroupIdentity
 	@Delete("/assetGroup/:assetGroupIdentity")
 	@FinanceErrors([EntryNotFoundError])
+	@ApiBearerAuth("oauth2")
 	@AssetGroupIdentityParam()
 	@ApiOkResponse({
 		type: SuccessResponse

@@ -2,7 +2,8 @@
 	"extends": "@finance/libs-tsconfig/configs/tsconfig.base.json",
 	"include": [
 		"**/*.ts",
-		".next/types/**/*.ts"
+		"**/*.tsx",
+		".next/types/**/*.ts",
 	],
 	"compilerOptions": {
 		"outDir": "build",
@@ -14,6 +15,9 @@
 		"resolveJsonModule": true,
 		"isolatedModules": true,
 		"jsx": "preserve",
+		"lib": [
+			"dom"
+		],
 		"plugins": [
 			{
 				"name": "next"
