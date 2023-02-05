@@ -1,7 +1,7 @@
 import { Popover, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import React from "react";
-import { NavigationItem } from "../../hooks/useNavigation";
+import type { NavigationItem } from "../../hooks/useNavigation";
 import { classNames } from "../../util/classNames";
 
 type Props = { item: NavigationItem }

@@ -7,7 +7,7 @@ import { Delete } from "@nestjs/common/decorators";
 import { DateTime } from "luxon";
 import { IdentityParam, IdentityParams } from "../identity.params";
 import { CreateUserBody } from "./createUser.body";
-import { ApiOkResponse } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiOkResponse } from "@nestjs/swagger";
 import { GetUsersResponse, InsertUserResponse, UserViewResponse } from "./user.responses";
 import { SuccessResponse } from "../responses/success.response";
 
@@ -17,6 +17,8 @@ export class UserController {
 
 	@Get()
 	@FinanceErrors([])
+	@ApiBearerAuth("oauth2")
+	@ApiBearerAuth("oauth2")
 	@ApiOkResponse({
 		type: GetUsersResponse
 	})
@@ -29,6 +31,7 @@ export class UserController {
 
 	@Get(":identity")
 	@FinanceErrors([EntryNotFoundError])
+	@ApiBearerAuth("oauth2")
 	@IdentityParam()
 	@ApiOkResponse({
 		type: UserViewResponse
@@ -43,6 +46,7 @@ export class UserController {
 
 	@Put()
 	@FinanceErrors([DuplicateEntryError])
+	@ApiBearerAuth("oauth2")
 	@ApiOkResponse({
 		type: InsertUserResponse
 	})
@@ -61,6 +65,7 @@ export class UserController {
 
 	@Delete("/:identity")
 	@FinanceErrors([EntryNotFoundError])
+	@ApiBearerAuth("oauth2")
 	@IdentityParam()
 	@ApiOkResponse({
 		type: SuccessResponse

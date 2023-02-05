@@ -22,6 +22,9 @@ async function createApp() {
 	}));
 	app.useGlobalGuards(new AuthzGuard());
 	app.useGlobalFilters(new FinanceUserErrorExceptionFilter(app.getHttpAdapter()), new FinanceProgrammerErrorExceptionFilter(app.getHttpAdapter()));
+	app.enableCors({
+		origin: /http:\/\/localhost:(3000|3001)/
+	});
 	return app;
 }
 

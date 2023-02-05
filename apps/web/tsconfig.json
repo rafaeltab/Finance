@@ -15,6 +15,9 @@
 		"resolveJsonModule": true,
 		"isolatedModules": true,
 		"jsx": "preserve",
+		"lib": [
+			"dom"
+		],
 		"plugins": [
 			{
 				"name": "next"

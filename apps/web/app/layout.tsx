@@ -1,21 +1,17 @@
 "use client";
 
-import "./globals.css";
-import { Fragment } from 'react'
-import { Disclosure, Menu, Popover, Transition } from '@headlessui/react'
+import { useAuth0 } from '@auth0/auth0-react';
 import {
-	Bars3Icon,
-	ChevronDownIcon,
-	XMarkIcon,
-	MagnifyingGlassIcon,
-	QueueListIcon,
-	GlobeEuropeAfricaIcon
-} from '@heroicons/react/24/outline'
+	GlobeEuropeAfricaIcon, MagnifyingGlassIcon,
+	QueueListIcon
+} from '@heroicons/react/24/outline';
 import { usePathname } from "next/navigation";
-import React from 'react'
-import { AuthenticationProvider, useAuthentication } from "../hooks/useAuthentication";
-import { HrefOrOnClick, NavigationItem, NavigationSpec, useNavigation } from "../hooks/useNavigation";
+import React from 'react';
 import { Navigator } from "../components/navigation/Navigator";
+import { AuthenticationProvider, useLogout } from "../hooks/useAuthentication";
+import { FinanceApiProvider } from '../hooks/useFinanceApi';
+import type { NavigationSpec } from "../hooks/useNavigation";
+import "./globals.css";
 
 const navigationSpec: NavigationSpec[] = [
 	{ name: 'Dashboard', href: '/dashboard' },
@@ -44,19 +40,18 @@ const navigationSpec: NavigationSpec[] = [
 ];
 
 function Layout({ children }: { children: React.ReactNode }) {
-	const authenticationContext = useAuthentication();
+	const { isAuthenticated, user } = useAuth0();
+	const logout = useLogout();
 	const pathname = usePathname();
-	const navigation = useNavigation(navigationSpec);
 
-
-	if (!authenticationContext.authenticated) return (
-		<html className="h-full bg-gray-100">
-			<head></head>
-			<body className="h-full"></body>
-
-		</html>
-	);
-	const { user, logout } = authenticationContext;
+	if (!isAuthenticated || !user || !logout) {
+		return (
+			<html className="h-full bg-gray-100">
+				<head></head>
+				<body className="h-full"></body>
+			</html>
+		)
+	};
 
 	if (pathname == null) {
 		throw new Error("Unexpected empty pathname");
@@ -75,11 +70,29 @@ function Layout({ children }: { children: React.ReactNode }) {
 	)
 }
 
+function Authentication({ children }: { children: React.ReactNode }) {
+	const { isAuthenticated, loginWithPopup, isLoading } = useAuth0();
+
+	if (!isAuthenticated && !isLoading) {
+		loginWithPopup();
+	}
+
+	return (
+		<>
+			{children}
+		</>
+	);
+}
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return <AuthenticationProvider>
-		<Layout>
-			{children}
-		</Layout>
+		<Authentication>
+			<FinanceApiProvider>
+				<Layout>
+					{children}
+				</Layout>
+			</FinanceApiProvider>
+		</Authentication>
 	</AuthenticationProvider>
 }
 

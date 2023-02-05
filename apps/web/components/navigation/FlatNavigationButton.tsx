@@ -1,6 +1,6 @@
 import { Disclosure } from "@headlessui/react";
 import { classNames } from "../../util/classNames";
-import { FlatNav } from "./Navigator";
+import type { FlatNav } from "./Navigator";
 import React from "react";
 
 type Props = {

@@ -4,7 +4,7 @@ import { FinanceErrors } from "@finance/errors-nest";
 import { Mediator } from "@finance/libs-types";
 import { Body, Controller, Get, Inject, Param, Put } from "@nestjs/common";
 import { Delete } from "@nestjs/common/decorators";
-import { ApiOkResponse } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiOkResponse } from "@nestjs/swagger";
 import { IdentityParam, IdentityParams } from "../../identity.params";
 import { SuccessResponse } from "../../responses/success.response";
 import { UserIdentityParam, UserIdentityParams } from "../userIdentity.params";
@@ -17,6 +17,7 @@ export class JobController {
 
 	@Get()
 	@FinanceErrors([EntryNotFoundError])
+	@ApiBearerAuth("oauth2")
 	@UserIdentityParam()
 	@ApiOkResponse({
 		type: JobsViewResponse
@@ -33,6 +34,7 @@ export class JobController {
 
 	@Put()
 	@FinanceErrors([DuplicateEntryError])
+	@ApiBearerAuth("oauth2")
 	@UserIdentityParam()
 	@ApiOkResponse({
 		type: CreateJobResponse
@@ -50,6 +52,7 @@ export class JobController {
 
 	@Delete("/:identity")
 	@FinanceErrors([EntryNotFoundError])
+	@ApiBearerAuth("oauth2")
 	@IdentityParam()
 	@UserIdentityParam()
 	@ApiOkResponse({

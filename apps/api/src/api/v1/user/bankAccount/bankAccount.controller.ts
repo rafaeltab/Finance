@@ -4,7 +4,7 @@ import { FinanceErrors } from "@finance/errors-nest";
 import { Mediator } from "@finance/libs-types";
 import { Body, Controller, Get, Inject, Param, Put, ValidationPipe } from "@nestjs/common";
 import { Delete } from "@nestjs/common/decorators";
-import { ApiOkResponse } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiOkResponse } from "@nestjs/swagger";
 import { IdentityParam, IdentityParams } from "../../identity.params";
 import { SuccessResponse } from "../../responses/success.response";
 import { UserIdentityParam, UserIdentityParams } from "../userIdentity.params";
@@ -17,6 +17,7 @@ export class BankAccountController {
 
 	@Get()
 	@FinanceErrors([EntryNotFoundError])
+	@ApiBearerAuth("oauth2")
 	@UserIdentityParam()
 	@ApiOkResponse({
 		type: BankAccountsViewResponse
@@ -33,6 +34,7 @@ export class BankAccountController {
 
 	@Put()
 	@FinanceErrors([DuplicateEntryError, EntryNotFoundError])
+	@ApiBearerAuth("oauth2")
 	@UserIdentityParam()
 	@ApiOkResponse({
 		type: CreateBankAccountResponse
@@ -51,6 +53,7 @@ export class BankAccountController {
 
 	@Delete("/:identity")
 	@FinanceErrors([EntryNotFoundError])
+	@ApiBearerAuth("oauth2")
 	@IdentityParam()
 	@UserIdentityParam()
 	@ApiOkResponse({

@@ -10,6 +10,7 @@
 		"build": "nest build",
 		"build:dev": "nest build -p ./tsconfig.dev.json",
 		"generate:swagger": "cross-env NODE_OPTIONS=\"--experimental-specifier-resolution=node\" nest start -p ./tsconfig.dev.json -- --generate-swagger",
+		"generate:swagger-dev": "cross-env NODE_OPTIONS=\"--experimental-specifier-resolution=node\" nest start -p ./tsconfig.dev.json -- --generate-swagger",
 		"dev": "cross-env NODE_OPTIONS=\"--experimental-specifier-resolution=node\" nest start -p ./tsconfig.dev.json --watch",
 		"start": "cross-env NODE_OPTIONS=\"--experimental-specifier-resolution=node\" nest start",
 		"start:debug": "nest start -p ./tsconfig.dev.json --debug --watch",

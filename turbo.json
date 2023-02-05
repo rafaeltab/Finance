@@ -6,7 +6,8 @@
 				"build/**"
 			],
 			"dependsOn": [
-				"^build"
+				"^build",
+				"generate:sdk"
 			]
 		},
 		"build:dev": {
@@ -14,7 +15,8 @@
 				"build/**"
 			],
 			"dependsOn": [
-				"^build:dev"
+				"^build:dev",
+				"generate:sdk-dev"
 			]
 		},
 		"dev": {
@@ -31,6 +33,54 @@
 		},
 		"clean": {
 			"cache": false
+		},
+		"generate:sdk": {
+			"outputs": [
+				"lib/**"
+			],
+			"dependsOn": [
+				"copy:swagger"
+			]
+		},
+		"copy:swagger": {
+			"outputs": [
+				"swagger.json"
+			],
+			"dependsOn": [
+				"^generate:swagger"
+			]
+		},
+		"generate:swagger": {
+			"outputs": [
+				"swagger.json"
+			],
+			"dependsOn": [
+				"build"
+			]
+		},
+		"generate:sdk-dev": {
+			"outputs": [
+				"lib/**"
+			],
+			"dependsOn": [
+				"copy:swagger-dev"
+			]
+		},
+		"copy:swagger-dev": {
+			"outputs": [
+				"swagger.json"
+			],
+			"dependsOn": [
+				"^generate:swagger-dev"
+			]
+		},
+		"generate:swagger-dev": {
+			"outputs": [
+				"swagger.json"
+			],
+			"dependsOn": [
+				"build:dev"
+			]
 		}
 	}	
 }

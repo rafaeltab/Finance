@@ -1,7 +1,7 @@
-import { Disclosure, Popover, Transition, Menu } from "@headlessui/react";
-import { ChevronDownIcon, XMarkIcon, Bars3Icon } from "@heroicons/react/24/outline";
+import type { User } from "@auth0/auth0-react";
+import { Disclosure, Transition, Menu } from "@headlessui/react";
+import { XMarkIcon, Bars3Icon } from "@heroicons/react/24/outline";
 import React, { Fragment } from "react";
-import { User } from "../../hooks/useAuthentication";
 import { HrefOrOnClick, NavigationItem, NavigationSpec, useNavigation } from "../../hooks/useNavigation";
 import { classNames } from "../../util/classNames";
 import { FlatNavigationButton } from "./FlatNavigationButton";
@@ -39,12 +39,12 @@ export function Navigator(props: Props) {
 							</div>
 							<div className="hidden md:block">
 								<div className="ml-10 flex items-baseline space-x-4">
-									{navigation.map((item) => {
+									{navigation.map((item, index) => {
 										if (item.flyout !== undefined) {
-											return (<NavigationWithFlyoutButton item={item}/>);
+											return (<NavigationWithFlyoutButton item={item} key={index} />);
 										} else {
 											return (
-												<NavigationButton item={item}/>
+												<NavigationButton item={item} key={index} />
 											);
 										}
 									})}
@@ -108,8 +108,8 @@ export function Navigator(props: Props) {
 
 				<Disclosure.Panel className="md:hidden mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 					<div className="space-y-1 pt-2">
-						{flattenNavigation(navigation).map((item) => (
-							<FlatNavigationButton item={item} />
+						{flattenNavigation(navigation).map((item, index) => (
+							<FlatNavigationButton item={item} key={index} />
 						))}
 					</div>
 					<div className="pb-3">
@@ -165,8 +165,6 @@ function createFlatNav(name: string, element: React.ReactNode, active: boolean, 
 		}
 	}
 
-	console.log(name)
-
 	throw new Error("href or onClick must be defined");
 }
 
@@ -179,8 +177,7 @@ function flattenNavigation(navigation: NavigationItem[]) {
 					{nav.name}
 				</>
 			);
-
-			console.log(nav);
+			
 			let flattened: FlatNav = createFlatNav(
 				nav.name,
 				navElement,
