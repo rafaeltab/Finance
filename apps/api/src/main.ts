@@ -18,7 +18,7 @@ async function createApp() {
 	const app = await NestFactory.create(AppModule);
 	app.useGlobalPipes(new ValidationPipe({
 		transform: true,
-		forbidUnknownValues: true,
+		forbidUnknownValues: false,
 	}));
 	app.useGlobalGuards(new AuthzGuard());
 	app.useGlobalFilters(new FinanceUserErrorExceptionFilter(app.getHttpAdapter()), new FinanceProgrammerErrorExceptionFilter(app.getHttpAdapter()));

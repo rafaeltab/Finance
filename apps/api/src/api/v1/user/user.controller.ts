@@ -3,13 +3,15 @@ import { DuplicateEntryError, EntryNotFoundError } from "@finance/errors";
 import { FinanceErrors } from "@finance/errors-nest";
 import { Mediator } from "@finance/libs-types";
 import { Body, Controller, Get, Inject, Param, Put } from "@nestjs/common";
-import { Delete } from "@nestjs/common/decorators";
-import { DateTime } from "luxon";
-import { IdentityParam, IdentityParams } from "../identity.params";
-import { CreateUserBody } from "./createUser.body";
+import { Delete, UseGuards } from "@nestjs/common/decorators";
 import { ApiBearerAuth, ApiOkResponse } from "@nestjs/swagger";
-import { GetUsersResponse, InsertUserResponse, UserViewResponse } from "./user.responses";
+import { DateTime } from "luxon";
+import { ScopeGuard } from "../../../authz/scope.guard";
+import { Subject } from "../../../authz/subject.param";
+import { IdentityParam, IdentityParams } from "../identity.params";
 import { SuccessResponse } from "../responses/success.response";
+import { CreateUserBody } from "./createUser.body";
+import { GetUsersResponse, InsertUserResponse, UserViewResponse } from "./user.responses";
 
 @Controller("/api/v1/user")
 export class UserController {
@@ -18,7 +20,7 @@ export class UserController {
 	@Get()
 	@FinanceErrors([])
 	@ApiBearerAuth("oauth2")
-	@ApiBearerAuth("oauth2")
+	@UseGuards(new ScopeGuard(["admin"]))
 	@ApiOkResponse({
 		type: GetUsersResponse
 	})
@@ -32,6 +34,7 @@ export class UserController {
 	@Get(":identity")
 	@FinanceErrors([EntryNotFoundError])
 	@ApiBearerAuth("oauth2")
+	@UseGuards(new ScopeGuard(["admin"], "identity"))
 	@IdentityParam()
 	@ApiOkResponse({
 		type: UserViewResponse
@@ -50,13 +53,19 @@ export class UserController {
 	@ApiOkResponse({
 		type: InsertUserResponse
 	})
-	async insert(
-		@Body() body: CreateUserBody
+	async insert( 
+		@Body() body: CreateUserBody,
+		@Subject() subject: String
 	): Promise<InsertUserResponse> {
+		let identity = subject;
+
+		if (typeof identity !== "string") throw new Error("Invalid identity type");
+
 		let dateOfBirth = DateTime.fromISO(body.dateOfBirth, {
 			zone: "utc"
 		})
 		return InsertUserResponse.map(await this.mediator.command(new CreateUserCommand({
+			identity,
 			firstName: body.firstName,
 			lastName: body.lastName,
 			dateOfBirth,

@@ -17,6 +17,7 @@
 		"build": "turbo run build",
 		"build:dev": "turbo run build:dev",
 		"dev": "turbo run dev --parallel",
+		"start:dev": "turbo run start:dev --parallel",
 		"lint": "turbo run lint",
 		"test": "turbo run test",
 		"start": "turbo run start",
