@@ -20,10 +20,19 @@
 			]
 		},
 		"dev": {
-			"cache": false
+			"cache": false,
+			"persistent": true
+		},
+		"start:dev": {
+			"cache": false,
+			"persistent": true,
+			"dependsOn": [
+				"^build:dev"
+			]
 		},
 		"start": {
-			"cache": false
+			"cache": false,
+			"persistent": true
 		},
 		"test": {
 			"outputMode": "new-only",

@@ -15,6 +15,7 @@ export class CreateUserCommand extends ICommand<CreateUserCommand, ResponseType>
 	firstName!: string;
 	lastName!: string;
 	dateOfBirth!: DateTime;
+	identity?: string;
 }
 
 @injectable()
@@ -30,7 +31,9 @@ export class CreateUserCommandHandler extends ICommandHandler<CreateUserCommand,
 		try {
 			await this.unitOfWork.start();
 
-			const user = await this.userFactory.createUser(`user-${command.firstName}-${command.lastName}-${command.dateOfBirth.toFormat("yyyy-MM-dd")}`,
+			const identity = command.identity ?? `user-${command.firstName}-${command.lastName}-${command.dateOfBirth.toFormat("yyyy-MM-dd")}`;
+
+			const user = await this.userFactory.createUser(identity,
 				command.firstName,
 				command.lastName,
 				command.dateOfBirth.toJSDate());

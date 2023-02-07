@@ -100,7 +100,7 @@ export class AssetController {
 		@Param() params: UserIdentityParams,
 		@Body() body: CreateStockAssetBody
 	): Promise<CreateStockAssetForUserResponse> {
-		return CreateStockAssetForUserResponse.map(await this.mediator.query(new CreateStockAssetForUserCommand({
+		return CreateStockAssetForUserResponse.map(await this.mediator.command(new CreateStockAssetForUserCommand({
 			userIdentity: params.userIdentity,
 			stockDataIdentity: body.stockDataIdentity,
 			stockOrders: body.stockOrders
@@ -119,7 +119,7 @@ export class AssetController {
 		@Param() params: UserIdentityParams,
 		@Body() body: CreateRealEstateAssetBody
 	): Promise<CreateRealEstateAssetForUserResponse> {
-		return CreateRealEstateAssetForUserResponse.map(await this.mediator.query(new CreateRealEstateAssetForUserCommand({
+		return CreateRealEstateAssetForUserResponse.map(await this.mediator.command(new CreateRealEstateAssetForUserCommand({
 			userIdentity: params.userIdentity,
 			address: body.address,
 		})));
@@ -155,7 +155,7 @@ export class AssetController {
 		@Param() params: AssetGroupIdentityParams,
 		@Body() body: CreateStockAssetBody
 	): Promise<CreateStockAssetForAssetGroupResponse> {
-		return CreateStockAssetForAssetGroupResponse.map(await this.mediator.query(new CreateStockAssetForAssetGroupCommand({
+		return CreateStockAssetForAssetGroupResponse.map(await this.mediator.command(new CreateStockAssetForAssetGroupCommand({
 			assetGroupIdentity: params.assetGroupIdentity,
 			stockDataIdentity: body.stockDataIdentity,
 			stockOrders: body.stockOrders
@@ -174,7 +174,7 @@ export class AssetController {
 		@Param() params: AssetGroupIdentityParams,
 		@Body() body: CreateRealEstateAssetBody
 	): Promise<CreateRealEstateAssetForGroup> {
-		return CreateRealEstateAssetForGroup.map(await this.mediator.query(new CreateRealEstateAssetForAssetGroupCommand({
+		return CreateRealEstateAssetForGroup.map(await this.mediator.command(new CreateRealEstateAssetForAssetGroupCommand({
 			assetGroupIdentity: params.assetGroupIdentity,
 			address: body.address,
 		})));
@@ -191,7 +191,7 @@ export class AssetController {
 	async deleteAsset(
 		@Param() params: AssetIdentityParams
 	): Promise<SuccessResponse> {
-		return await this.mediator.query(new DeleteAssetCommand({
+		return await this.mediator.command(new DeleteAssetCommand({
 			assetIdentity: params.assetIdentity
 		}));
 	}
@@ -207,7 +207,7 @@ export class AssetController {
 	async deleteAssetGroup(
 		@Param() params: AssetGroupIdentityParams
 	): Promise<SuccessResponse> {
-		return await this.mediator.query(new DeleteAssetGroupCommand({
+		return await this.mediator.command(new DeleteAssetGroupCommand({
 			assetGroupIdentity: params.assetGroupIdentity
 		}))
 	}

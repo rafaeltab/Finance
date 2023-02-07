@@ -31,6 +31,23 @@ export function FinanceApiProvider(props: React.PropsWithChildren) {
 	);
 }
 
+export function useApiRequest<T extends keyof DefaultApi>(request: T, ...args: Parameters<DefaultApi[T]>): [Awaited<ReturnType<DefaultApi[T]>> | null, Error | null, DefaultApi | null] {
+	const { api, isConnected } = useApi();
+	const [result, setResult] = useState<Awaited<ReturnType<DefaultApi[T]>> | null>(null);
+	const [error, setError] = useState<Error | null>(null);
+	if (!isConnected || api == null) { 
+		return [result, error, api];
+	}
+
+	if (result != null || error != null) {
+		return [result, error, api];
+	}
+
+	(api[request] as any).apply(api, args).then(setResult).catch(setError);
+
+	return [result, error, api];
+}
+
 export function useApi(): {isConnected:false,api:null} | {isConnected:true,api:DefaultApi} {
 	const context = useContext(financeApiContext);
 	

@@ -11,6 +11,7 @@ import { Navigator } from "../components/navigation/Navigator";
 import { AuthenticationProvider, useLogout } from "../hooks/useAuthentication";
 import { FinanceApiProvider } from '../hooks/useFinanceApi';
 import type { NavigationSpec } from "../hooks/useNavigation";
+import { useApiUser } from '../hooks/useUserExists';
 import "./globals.css";
 
 const navigationSpec: NavigationSpec[] = [
@@ -44,7 +45,9 @@ function Layout({ children }: { children: React.ReactNode }) {
 	const logout = useLogout();
 	const pathname = usePathname();
 
-	if (!isAuthenticated || !user || !logout) {
+	useApiUser(pathname?.includes("/user-create"));
+	
+	if (!isAuthenticated || !user || !user.sub || !logout) {
 		return (
 			<html className="h-full bg-gray-100">
 				<head></head>
