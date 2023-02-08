@@ -1,19 +1,15 @@
 "use client";
 
-import type { RealEstateAssetResponse, StockAssetResponse, StockOrderResponse } from '@finance/api~sdk';
+import type { StockOrderResponse } from '@finance/api~sdk';
 import { useUser } from '../../hooks/useAuthentication';
 import { useApiRequest } from '../../hooks/useFinanceApi';
-import {
-	HomeIcon,
-	ChartBarIcon
-} from '@heroicons/react/24/solid';
 
 export default function Assets() {
 	const authUser = useUser(false);
 
 	const [res, error] = useApiRequest("assetControllerGetUserAssets", authUser.sub)
 
-	if (res == null || error !== null) { 
+	if (res == null || error !== null) {
 		return <div>Loading</div>
 	}
 
@@ -105,9 +101,9 @@ export default function Assets() {
 }
 
 
-function calculateTotalValue(stockOrders : StockOrderResponse[] | undefined) {
+function calculateTotalValue(stockOrders: StockOrderResponse[] | undefined) {
 	if (!stockOrders) return undefined;
-	
+
 	const totalValue = stockOrders.reduce((a, b) => a + b.amount * b.usdPrice, 0);
 	return totalValue;
 }
