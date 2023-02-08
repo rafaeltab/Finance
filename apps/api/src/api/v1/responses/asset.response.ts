@@ -55,7 +55,7 @@ export class AssetResponse extends EntityResponse {
 	realEstateAsset?: RealEstateAssetResponse;
 
 	static map(asset: Asset): AssetResponse {
-		if (asset.stockAsset === undefined) { 
+		if (asset.stockAsset === undefined || asset.stockAsset === null) { 
 			return {
 				realEstateAsset: {
 					address: asset.realEstateAsset?.address ?? "",
