@@ -8,7 +8,7 @@ import { AssetGroupIdentityParam, AssetGroupIdentityParams } from "./assetGroupI
 import { AssetIdentityParam, AssetIdentityParams } from "./assetIdentity.params";
 import { CreateRealEstateAssetBody } from "./createRealEstateAsset.body";
 import { CreateStockAssetBody } from "./createStockAsset.body";
-import type { CreateAssetGroupBody } from "./createAssetGroup.body";
+import { CreateAssetGroupBody } from "./createAssetGroup.body";
 import { ApiBearerAuth, ApiOkResponse } from "@nestjs/swagger";
 import { CreateAssetGroupForUserResponse, CreateRealEstateAssetForGroup, CreateRealEstateAssetForUserResponse, CreateStockAssetForAssetGroupResponse, CreateStockAssetForUserResponse, GetAssetGroupResponse, GetAssetResponse, GetUserAssetGroupsResponse, GetUserAssetsResponse } from "./asset.responses";
 import { SuccessResponse } from "../../responses/success.response";

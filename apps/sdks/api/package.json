@@ -2,7 +2,9 @@
 	"name": "@finance/api~sdk",
 	"main": "./build/index.js",
 	"types": "./build/index.d.ts",
-	"files": ["./build/*"],
+	"files": [
+		"./build/*"
+	],
 	"version": "0.0.1",
 	"scripts": {
 		"copy:swagger": "shx rm -f ./swagger.json && shx cp ../../api/swagger.json ./swagger.json",

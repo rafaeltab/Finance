@@ -603,7 +603,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@finance/api~sdk@workspace:apps/sdks/api":
+"@finance/api~sdk@*, @finance/api~sdk@workspace:apps/sdks/api":
   version: 0.0.0-use.local
   resolution: "@finance/api~sdk@workspace:apps/sdks/api"
   dependencies:
@@ -816,10 +816,12 @@ __metadata:
   dependencies:
     "@auth0/auth0-react": ^2.0.0
     "@auth0/auth0-spa-js": ^2.0.2
+    "@finance/api~sdk": "*"
     "@finance/libs-tsconfig": "*"
     "@headlessui/react": ^1.7.7
     "@heroicons/react": ^2.0.13
     "@next/font": 13.1.1
+    "@tailwindcss/forms": ^0.5.3
     "@types/node": 18.11.18
     "@types/react": 18.0.26
     "@types/react-dom": 18.0.10
@@ -828,6 +830,7 @@ __metadata:
     postcss: ^8.4.21
     react: 18.2.0
     react-dom: 18.2.0
+    react-loading-indicators: ^0.0.11
     tailwindcss: ^3.2.4
     typescript: 4.9.4
   languageName: unknown
@@ -1702,6 +1705,17 @@ __metadata:
   dependencies:
     tslib: ^2.4.0
   checksum: 273fd3f3fc461a92f3790cc551ea054745c6d6959afbe1232e6d7aa1c722bbc114d308aab96bef5c78fc0303c85c7b472ef00e2253251cc89737f3b1af56e5a5
+  languageName: node
+  linkType: hard
+
+"@tailwindcss/forms@npm:^0.5.3":
+  version: 0.5.3
+  resolution: "@tailwindcss/forms@npm:0.5.3"
+  dependencies:
+    mini-svg-data-uri: ^1.2.3
+  peerDependencies:
+    tailwindcss: ">=3.0.0 || >= 3.0.0-alpha.1"
+  checksum: 9eddb4dbd06d01b1068138ff52a54ed0e35a28e7bfd3c72e226fc28658ecd92a9c078c4abe9c83db090984672040644d7ae2e035933fb619dd703df1d87aa275
   languageName: node
   linkType: hard
 
@@ -6545,6 +6559,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"mini-svg-data-uri@npm:^1.2.3":
+  version: 1.4.4
+  resolution: "mini-svg-data-uri@npm:1.4.4"
+  bin:
+    mini-svg-data-uri: cli.js
+  checksum: 997f1fbd8d59a70f03761e18626d335197a3479cb9d1ff75678e4b64b864d32a0b8fc18115eabde035e5299b8b4a354a78e57dd6ac10f9d604162a6170898d09
+  languageName: node
+  linkType: hard
+
 "minimatch@npm:^3.0.4, minimatch@npm:^3.0.5, minimatch@npm:^3.1.1, minimatch@npm:^3.1.2":
   version: 3.1.2
   resolution: "minimatch@npm:3.1.2"
@@ -7692,6 +7715,16 @@ __metadata:
   version: 18.2.0
   resolution: "react-is@npm:18.2.0"
   checksum: e72d0ba81b5922759e4aff17e0252bd29988f9642ed817f56b25a3e217e13eea8a7f2322af99a06edb779da12d5d636e9fda473d620df9a3da0df2a74141d53e
+  languageName: node
+  linkType: hard
+
+"react-loading-indicators@npm:^0.0.11":
+  version: 0.0.11
+  resolution: "react-loading-indicators@npm:0.0.11"
+  peerDependencies:
+    react: ">=16.8.0"
+    react-dom: ">=16.8.0"
+  checksum: 3029d7b89b938ac5fb4e429af7d47d528f2d0a0b1de2adfd43f39b3b14ec7a4e5352259bad62490fcbde4af839bdd0a25875523120a9c7e172dc2501319e2351
   languageName: node
   linkType: hard
 
