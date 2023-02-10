@@ -48,16 +48,22 @@ export default function Assets() {
 
 	const [addAssetOpen, addAssetSetOpen] = useState(false);
 
+	const [additionalAssets, setAdditionalAssets] = useState<AssetResponse[]>([]);
+
+	const addUserAsset = (asset: AssetResponse) => {
+		setAdditionalAssets(prev => [...prev, asset]);
+	}
+
 	return (
 		<BasePage>
 			<div className="px-4 sm:px-6 lg:px-8">
 				<Header addAssetSetOpen={addAssetSetOpen} />
-				<AddAssetSlideOver open={addAssetOpen} setOpen={addAssetSetOpen} user={authUser} />
+				<AddAssetSlideOver open={addAssetOpen} setOpen={addAssetSetOpen} user={authUser} addAsset={addUserAsset} />
 				<div className="mt-8 flex flex-col">
 					<div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
 						<div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
 							<Table
-								assets={data.assets}
+								assets={[...data.assets ?? [], ...additionalAssets]}
 								assetPage={data.assetPage}
 								assetGroups={data.assetGroups}
 								assetGroupsPage={data.assetGroupsPage}
@@ -138,9 +144,13 @@ const pretty: Record<AddAssetSlideOverTab, string> = {
 	realEstate: "Real Estate",
 };
 
+type RefType = {
+	saveAction: () => Promise<AssetResponse>;
+}
+
 type TabProps = {
 	user: ReturnType<typeof useUser>;
-	ref: ForwardedRef<unknown>
+	ref: ForwardedRef<RefType | undefined>
 }
 const tabMap: Record<AddAssetSlideOverTab, (props: TabProps) => JSX.Element> = {
 	stock: (props: TabProps) => (<AddAssetStockTab ref={props.ref} user={props.user} />),
@@ -151,12 +161,13 @@ function AddAssetSlideOver(props: {
 	open: boolean;
 	setOpen: Dispatch<SetStateAction<boolean>>;
 	user: ReturnType<typeof useUser>;
+	addAsset: (asset: AssetResponse) => void
 }) {
 	const { open, setOpen } = props;
 
 	const [currentTab, setCurrentTab] = useState<AddAssetSlideOverTab>("stock");
 
-	const ref = useRef<{ saveAction: () => void }>();
+	const ref = useRef<RefType>();
 
 	return (
 		<Transition.Root show={open} as={Fragment}>
@@ -249,7 +260,9 @@ function AddAssetSlideOver(props: {
 												type="submit"
 												className="ml-4 inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
 												onClick={() => {
-													ref?.current?.saveAction();
+													ref?.current?.saveAction().then((data) => { 
+														props.addAsset(data);
+													});
 												}}
 											>
 												Create
@@ -266,24 +279,31 @@ function AddAssetSlideOver(props: {
 	);
 }
 
-const AddAssetRealEstateTab = forwardRef(function (props: { user: ReturnType<typeof useUser> }, ref) {
+const AddAssetRealEstateTab = forwardRef(function (props: { user: ReturnType<typeof useUser> }, ref: ForwardedRef<RefType | undefined>) {
 	const [address, setAddress] = useState<string | undefined>(undefined);
 	const { api, isConnected } = useApi();
 
-	var saveAction = async () => {
+	var saveAction = async (): Promise<AssetResponse> => {
 		if (!isConnected || !props.user) {
 			// show some error
-			return;
+			throw new Error();
 		}
 
 		if (!address) {
 			// show some error
-			return;
+			throw new Error();
 		}
 
-		await api.assetControllerCreateRealEstateAssetForUser(props.user.sub, {
+		const res= await api.assetControllerCreateRealEstateAssetForUser(props.user.sub, {
 			address
 		});
+
+		if (res.data.data === undefined) { 
+			// show some error
+			throw new Error();
+		}
+
+		return res.data.data;
 	};
 
 	useImperativeHandle(ref, () => {
@@ -315,7 +335,7 @@ const AddAssetRealEstateTab = forwardRef(function (props: { user: ReturnType<typ
 	);
 });
 
-const AddAssetStockTab = forwardRef(function (props: { user: ReturnType<typeof useUser> }, ref) {
+const AddAssetStockTab = forwardRef(function (props: { user: ReturnType<typeof useUser> }, ref: ForwardedRef<RefType | undefined>) {
 	const [symbol, setSymbol] = useState<string | undefined>(undefined);
 	const [exchange] = useState<string | undefined>("NASDAQ");
 	const [amount, setAmount] = useState<string | undefined>(undefined);
@@ -325,12 +345,12 @@ const AddAssetStockTab = forwardRef(function (props: { user: ReturnType<typeof u
 	var saveAction = async () => {
 		if (!isConnected || !props.user) {
 			// show some error
-			return;
+			throw new Error();
 		}
 
 		if (!symbol || !exchange || !amount || !price) {
 			// show some error
-			return;
+			throw new Error();
 		}
 
 		const { data } = await api.stockControllerGetSearch(exchange, symbol, "CS");
@@ -338,10 +358,10 @@ const AddAssetStockTab = forwardRef(function (props: { user: ReturnType<typeof u
 
 		if (stock.length === 0 || stock[0]?.identity === undefined) {
 			// show some error
-			return;
+			throw new Error();
 		}
 
-		await api.assetControllerCreateStockAssetForUser(props.user.sub, {
+		const res = await api.assetControllerCreateStockAssetForUser(props.user.sub, {
 			stockOrders: [
 				{
 					amount: parseFloat(amount),
@@ -350,6 +370,12 @@ const AddAssetStockTab = forwardRef(function (props: { user: ReturnType<typeof u
 			],
 			stockDataIdentity: stock[0]?.identity
 		});
+
+		if (res.data.data === undefined) { 
+			throw new Error();
+		}
+
+		return res.data.data;
 	};
 
 	useImperativeHandle(ref, () => {
