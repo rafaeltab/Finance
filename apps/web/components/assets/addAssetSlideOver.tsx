@@ -1,141 +1,9 @@
-"use client";
-
-import type {
-	AssetGroupResponse,
-	AssetResponse, PaginatedResponsePage,
-	StockOrderResponse
-} from "@finance/api~sdk";
+import type { AssetResponse } from "@finance/api~sdk";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { Dispatch, ForwardedRef, forwardRef, Fragment, SetStateAction, useImperativeHandle, useRef, useState } from "react";
-import { Seek } from "react-loading-indicators";
-import { useUser } from "../../hooks/useAuthentication";
-import { useApi, useApiRequest } from "../../hooks/useFinanceApi";
+import { forwardRef, Fragment, useImperativeHandle, useRef, useState, type Dispatch, type ForwardedRef, type SetStateAction } from "react";
+import { useApi } from "../../hooks/useFinanceApi";
 import { classNames } from "../../util/classNames";
-
-type AllData = {
-	assets: AssetResponse[] | null;
-	assetPage: PaginatedResponsePage | null;
-	assetGroups: AssetGroupResponse[] | null;
-	assetGroupsPage: PaginatedResponsePage | null;
-	isLoading: boolean;
-};
-
-export default function Assets() {
-	const authUser = useUser(false);
-	let [assetResponse, assetError] = useApiRequest(
-		"assetControllerGetUserAssets",
-		authUser.sub
-	);
-	let [assetGroupResponse, assetGroupError] = useApiRequest(
-		"assetControllerGetUserAssetGroups",
-		authUser.sub
-	);
-
-	const isLoading =
-		assetResponse == null ||
-		assetError !== null ||
-		assetGroupResponse == null ||
-		assetGroupError !== null;
-
-	const data = {
-		assets: assetResponse?.data.data.data ?? null,
-		assetPage: assetResponse?.data.data.page ?? null,
-		assetGroups: assetGroupResponse?.data.data.data ?? null,
-		assetGroupsPage: assetGroupResponse?.data.data.page ?? null,
-		isLoading: isLoading,
-	} satisfies AllData;
-
-	const [addAssetOpen, addAssetSetOpen] = useState(false);
-
-	const [additionalAssets, setAdditionalAssets] = useState<AssetResponse[]>([]);
-
-	const addUserAsset = (asset: AssetResponse) => {
-		setAdditionalAssets(prev => [...prev, asset]);
-	}
-
-	return (
-		<BasePage>
-			<div className="px-4 sm:px-6 lg:px-8">
-				<Header addAssetSetOpen={addAssetSetOpen} />
-				<AddAssetSlideOver open={addAssetOpen} setOpen={addAssetSetOpen} user={authUser} addAsset={addUserAsset} />
-				<div className="mt-8 flex flex-col">
-					<div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
-						<div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-							<Table
-								assets={[...data.assets ?? [], ...additionalAssets]}
-								assetPage={data.assetPage}
-								assetGroups={data.assetGroups}
-								assetGroupsPage={data.assetGroupsPage}
-								isLoading={isLoading}
-							/>
-						</div>
-					</div>
-				</div>
-			</div>
-		</BasePage>
-	);
-}
-
-function Table({ assets, isLoading, assetGroups }: AllData) {
-	return (
-		<table className="min-w-full divide-y divide-gray-300">
-			<thead>
-				<tr>
-					<th
-						scope="col"
-						className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6 md:pl-2"
-					>
-						Name
-					</th>
-					<th
-						scope="col"
-						className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900"
-					>
-						Title
-					</th>
-					<th
-						scope="col"
-						className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900"
-					>
-						Price
-					</th>
-				</tr>
-			</thead>
-			<tbody className="divide-y divide-gray-200">
-				{(assets ?? []).map((asset) => (
-					<AssetRow asset={asset} key={asset.identity} />
-				))}
-				{(assetGroups ?? []).map((assetGroup) => {
-					return (
-						<Fragment key={assetGroup.identity}>
-							<AssetGroupRow
-								assetGroup={assetGroup}
-								key={assetGroup.identity}
-							/>
-							{(assetGroup.assets ?? []).map((asset) => (
-								<AssetRow asset={asset} key={asset.identity} />
-							))}
-						</Fragment>
-					);
-				})}
-				{isLoading ? (
-					<tr>
-						<td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 md:pl-2">
-							<Seek color={"rgb(55 65 81)"} size="small" />
-						</td>
-						<td className="whitespace-nowrap py-4 px-3 text-sm text-gray-500">
-							<Seek color={"rgb(55 65 81)"} size="small" />
-						</td>
-						<td className="whitespace-nowrap py-4 px-3 text-sm text-gray-500">
-							<Seek color={"rgb(55 65 81)"} size="small" />
-						</td>
-					</tr>
-				) : undefined}
-			</tbody>
-		</table>
-	);
-}
 
 const addAssetSlideOverTabs = ["stock", "realEstate"] as const;
 type AddAssetSlideOverTab = typeof addAssetSlideOverTabs[number];
@@ -149,24 +17,27 @@ type RefType = {
 }
 
 type TabProps = {
-	user: ReturnType<typeof useUser>;
+	context: AddAssetSlideOverContextType;
 	ref: ForwardedRef<RefType | undefined>
 }
 const tabMap: Record<AddAssetSlideOverTab, (props: TabProps) => JSX.Element> = {
-	stock: (props: TabProps) => (<AddAssetStockTab ref={props.ref} user={props.user} />),
-	realEstate: (props: TabProps) => (<AddAssetRealEstateTab ref={props.ref} user={props.user} />),
+	stock: (props: TabProps) => (<AddAssetStockTab ref={props.ref} context={props.context} />),
+	realEstate: (props: TabProps) => (<AddAssetRealEstateTab ref={props.ref} context={props.context} />),
 };
 
-function AddAssetSlideOver(props: {
+export type AddAssetSlideOverContextType = { type: "user" | "group", id: string };
+
+export function AddAssetSlideOver(props: {
 	open: boolean;
 	setOpen: Dispatch<SetStateAction<boolean>>;
-	user: ReturnType<typeof useUser>;
-	addAsset: (asset: AssetResponse) => void
+	addAssetToUser: (asset: AssetResponse) => void;
+	addAssetToGroup: (asset: AssetResponse, group: string) => void;
+	context: AddAssetSlideOverContextType
 }) {
 	const { open, setOpen } = props;
 
 	const [currentTab, setCurrentTab] = useState<AddAssetSlideOverTab>("stock");
-
+ 
 	const ref = useRef<RefType>();
 
 	return (
@@ -202,7 +73,7 @@ function AddAssetSlideOver(props: {
 											<div className="px-4 sm:px-6">
 												<div className="flex items-start justify-between">
 													<Dialog.Title className="text-lg font-medium text-gray-900">
-														Panel title
+														Add asset {props.context.type == "group" ? `to group` : "to user"}
 													</Dialog.Title>
 													<div className="ml-3 flex h-7 items-center">
 														<button
@@ -243,7 +114,7 @@ function AddAssetSlideOver(props: {
 													</nav>
 												</div>
 
-												<div className="mt-4">{tabMap[currentTab]({ user: props.user, ref })}</div>
+												<div className="mt-4">{tabMap[currentTab]({ context: props.context, ref })}</div>
 
 												{/* /End replace */}
 											</div>
@@ -260,8 +131,12 @@ function AddAssetSlideOver(props: {
 												type="submit"
 												className="ml-4 inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
 												onClick={() => {
-													ref?.current?.saveAction().then((data) => { 
-														props.addAsset(data);
+													ref?.current?.saveAction().then((data) => {
+														if (props.context.type == "group") {
+															props.addAssetToGroup(data, props.context.id);
+														} else { 
+															props.addAssetToUser(data);
+														}
 													});
 												}}
 											>
@@ -279,12 +154,12 @@ function AddAssetSlideOver(props: {
 	);
 }
 
-const AddAssetRealEstateTab = forwardRef(function (props: { user: ReturnType<typeof useUser> }, ref: ForwardedRef<RefType | undefined>) {
+const AddAssetRealEstateTab = forwardRef(function (props: { context: AddAssetSlideOverContextType }, ref: ForwardedRef<RefType | undefined>) {
 	const [address, setAddress] = useState<string | undefined>(undefined);
 	const { api, isConnected } = useApi();
 
 	var saveAction = async (): Promise<AssetResponse> => {
-		if (!isConnected || !props.user) {
+		if (!isConnected || !props.context) {
 			// show some error
 			throw new Error();
 		}
@@ -294,16 +169,30 @@ const AddAssetRealEstateTab = forwardRef(function (props: { user: ReturnType<typ
 			throw new Error();
 		}
 
-		const res= await api.assetControllerCreateRealEstateAssetForUser(props.user.sub, {
-			address
-		});
+		if (props.context.type == "user") {
+			const res = await api.assetControllerCreateRealEstateAssetForUser(props.context.id, {
+				address
+			});
+	
+			if (res.data.data === undefined) {
+				// show some error
+				throw new Error();
+			}
+	
+			return res.data.data;
+		} else { 
+			const res = await api.assetControllerCreateRealEstateAssetForGroup(props.context.id, {
+				address
+			});
 
-		if (res.data.data === undefined) { 
-			// show some error
-			throw new Error();
+			if (res.data.data === undefined) {
+				// show some error
+				throw new Error();
+			}
+
+			return res.data.data;
 		}
 
-		return res.data.data;
 	};
 
 	useImperativeHandle(ref, () => {
@@ -335,7 +224,7 @@ const AddAssetRealEstateTab = forwardRef(function (props: { user: ReturnType<typ
 	);
 });
 
-const AddAssetStockTab = forwardRef(function (props: { user: ReturnType<typeof useUser> }, ref: ForwardedRef<RefType | undefined>) {
+const AddAssetStockTab = forwardRef(function (props: { context: AddAssetSlideOverContextType }, ref: ForwardedRef<RefType | undefined>) {
 	const [symbol, setSymbol] = useState<string | undefined>(undefined);
 	const [exchange] = useState<string | undefined>("NASDAQ");
 	const [amount, setAmount] = useState<string | undefined>(undefined);
@@ -343,7 +232,7 @@ const AddAssetStockTab = forwardRef(function (props: { user: ReturnType<typeof u
 	const { api, isConnected } = useApi();
 
 	var saveAction = async () => {
-		if (!isConnected || !props.user) {
+		if (!isConnected || !props.context) {
 			// show some error
 			throw new Error();
 		}
@@ -361,21 +250,41 @@ const AddAssetStockTab = forwardRef(function (props: { user: ReturnType<typeof u
 			throw new Error();
 		}
 
-		const res = await api.assetControllerCreateStockAssetForUser(props.user.sub, {
-			stockOrders: [
-				{
-					amount: parseFloat(amount),
-					price: parseFloat(price)
-				}
-			],
-			stockDataIdentity: stock[0]?.identity
-		});
+		if (props.context.type == "user") {
+			const res = await api.assetControllerCreateStockAssetForUser(props.context.id, {
+				stockOrders: [
+					{
+						amount: parseFloat(amount),
+						price: parseFloat(price)
+					}
+				],
+				stockDataIdentity: stock[0]?.identity
+			});
 
-		if (res.data.data === undefined) { 
-			throw new Error();
+			if (res.data.data === undefined) {
+				// show some error
+				throw new Error();
+			}
+
+			return res.data.data;
+		} else {
+			const res = await api.assetControllerCreateStockAssetForGroup(props.context.id, {
+				stockOrders: [
+					{
+						amount: parseFloat(amount),
+						price: parseFloat(price)
+					}
+				],
+				stockDataIdentity: stock[0]?.identity
+			});
+
+			if (res.data.data === undefined) {
+				// show some error
+				throw new Error();
+			}
+
+			return res.data.data;
 		}
-
-		return res.data.data;
 	};
 
 	useImperativeHandle(ref, () => {
@@ -481,95 +390,3 @@ const AddAssetStockTab = forwardRef(function (props: { user: ReturnType<typeof u
 		</div>
 	);
 });
-
-
-function AssetRow({ asset }: { asset: AssetResponse }) {
-	return (
-		<tr>
-			<td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 md:pl-2">
-				{asset.stockAsset?.stockData.symbol ?? asset.realEstateAsset?.address}
-			</td>
-			<td className="whitespace-nowrap py-4 px-3 text-sm text-gray-500">
-				{asset.stockAsset?.stockData.exchange ?? ""}
-			</td>
-			<td className="whitespace-nowrap py-4 px-3 text-sm text-gray-500">
-				{calculateTotalValue(asset.stockAsset?.orders) ?? ""}
-			</td>
-			<td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 md:pr-0">
-				<a href="#" className="text-indigo-600 hover:text-indigo-900 pr-2">
-					View<span className="sr-only">, {asset.identity}</span>
-				</a>
-			</td>
-		</tr>
-	);
-}
-
-function AssetGroupRow({ assetGroup }: { assetGroup: AssetGroupResponse }) {
-	return (
-		<tr className="bg-gray-50">
-			<td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 md:pl-2">
-				{assetGroup.name}
-			</td>
-			<td className="whitespace-nowrap py-4 px-3 text-sm text-gray-500"></td>
-			<td className="whitespace-nowrap py-4 px-3 text-sm text-gray-500"></td>
-			<td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 md:pr-0">
-				<a href="#" className="text-indigo-600 hover:text-indigo-900 pr-2">
-					View<span className="sr-only">, {assetGroup.identity}</span>
-				</a>
-			</td>
-		</tr>
-	);
-}
-
-function Header(props: { addAssetSetOpen: Dispatch<SetStateAction<boolean>> }) {
-	return (
-		<div className="sm:flex sm:items-center">
-			<div className="sm:flex-auto">
-				<p className="mt-2 text-sm text-gray-700">
-					A list of all the assets in your account
-				</p>
-			</div>
-			<div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-				<button
-					type="button"
-					className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
-					onClick={() => props.addAssetSetOpen(true)}
-				>
-					Add asset
-				</button>
-			</div>
-		</div>
-	);
-}
-
-function BasePage(props: React.PropsWithChildren) {
-	return (
-		<>
-			<header className="bg-gray-800 shadow">
-				<div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8 pb-32">
-					<h1 className="text-3xl font-bold tracking-tight text-gray-200">
-						Assets
-					</h1>
-				</div>
-			</header>
-			<main className="-mt-32">
-				<div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
-					{/* Replace with your content */}
-					<div className="px-4 py-6 sm:px-0">
-						<div className="rounded-lg bg-white p-10 shadow-md">
-							{props.children}
-						</div>
-					</div>
-					{/* /End replace */}
-				</div>
-			</main>
-		</>
-	);
-}
-
-function calculateTotalValue(stockOrders: StockOrderResponse[] | undefined) {
-	if (!stockOrders) return undefined;
-
-	const totalValue = stockOrders.reduce((a, b) => a + b.amount * b.usdPrice, 0);
-	return `$${totalValue}`;
-}

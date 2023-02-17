@@ -5,3 +5,5 @@ build
 .yarn
 output
 apps/api/.env
+
+designs/archi.archimate
