@@ -62,7 +62,9 @@ function Layout({ children }: { children: React.ReactNode }) {
 
 	return (
 		<html className="h-full bg-gray-100">
-			<head></head>
+			<head>
+				<link rel="stylesheet" href="https://rsms.me/inter/inter.css"></link>
+			</head>
 			<body className="h-full">
 				<div className="min-h-full">
 					<Navigator logout={logout} navigationSpec={navigationSpec} user={user} />
