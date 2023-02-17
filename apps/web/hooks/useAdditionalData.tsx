@@ -5,7 +5,7 @@ export function useAdditionalData<TData extends {identity: string}>(baseData: TD
 	const [removedData, setRemovedData] = useState<TData[]>([]);
 
 	const addData = (data: TData) => {
-		if (removedData.includes(data)) {
+		if (removedData.find(x => x.identity === data.identity) != null) {
 			setRemovedData(prev => prev.filter(x => x.identity !== data.identity));
 		}
 
@@ -13,7 +13,7 @@ export function useAdditionalData<TData extends {identity: string}>(baseData: TD
 	}
 
 	const removeData = (data: TData) => {
-		if (addedData.includes(data)) {
+		if (addedData.find(x => x.identity === data.identity) != null) {
 			setAddedData(prev => prev.filter(x => x.identity !== data.identity));
 		}
 
