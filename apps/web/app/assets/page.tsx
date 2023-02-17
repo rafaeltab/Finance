@@ -1,5 +1,6 @@
 "use client";
 
+import type { User } from "@auth0/auth0-spa-js";
 import type {
 	AssetGroupResponse,
 	AssetResponse, PaginatedResponsePage,
@@ -11,12 +12,12 @@ import { Dispatch, Fragment, SetStateAction, useState } from "react";
 import { Seek } from "react-loading-indicators";
 import { AddAssetGroupSlideOver } from "../../components/assets/addAssetGroupSlideOver";
 import { AddAssetSlideOver, AddAssetSlideOverContextType } from "../../components/assets/addAssetSlideOver";
-import { useAdditionalData } from "../../hooks/useAdditionalData";
-import { useUser } from "../../hooks/useAuthentication";
-import { useApi, useApiRequest } from "../../hooks/useFinanceApi";
+import type { SubRequired } from "../../hooks/useAuthentication";
+import { useApi } from "../../hooks/useFinanceApi";
 import { classNames } from "../../util/classNames";
+import { useAssetContainer } from "./container";
 
-type AllData = {
+export type AssetPageProps = {
 	assets: AssetResponse[] | null;
 	assetPage: PaginatedResponsePage | null;
 	assetGroups: AssetGroupResponse[] | null;
@@ -26,129 +27,43 @@ type AllData = {
 	removeAssetGroupData: (data: AssetGroupResponse) => void;
 	removeAssetFromGroupData: (data: AssetResponse, group: string) => void;
 	setAddAssetContext: Dispatch<SetStateAction<AddAssetSlideOverContextType | null>>;
+	authUser: User & SubRequired;
+	setAddAssetOpen: Dispatch<SetStateAction<boolean>>;
+	addAssetContext: AddAssetSlideOverContextType | null;
+	addAssetAction: (asset: AssetResponse) => void;
+	addAssetToGroupAction: (asset: AssetResponse, group: string) => void;
+	addAssetGroupOpen: boolean,
+	addAssetGroupSetOpen: Dispatch<SetStateAction<boolean>>,
+	addAssetGroupData: (data: AssetGroupResponse, group: string) => void;
 };
 
 export default function Assets() {
-	const authUser = useUser(false);
-	let [assetResponse, assetError] = useApiRequest(
-		"assetControllerGetUserAssets",
-		authUser.sub
-	);
-	let [assetGroupResponse, assetGroupError] = useApiRequest(
-		"assetControllerGetUserAssetGroups",
-		authUser.sub
-	);
+	const data = useAssetContainer();
 
-	const { addData: addAssetData, data: assetData, removeData: removeAssetData } = useAdditionalData(assetResponse?.data?.data?.data ?? null);
-	const { addData: addAssetGroupData, data: assetGroupDatas, removeData: removeAssetGroupData } = useAdditionalData(assetGroupResponse?.data?.data?.data ?? null);
-
-	const [additionalGroupAssets, setAdditionalGroupAssets] = useState<Record<string, { addedAssets: AssetResponse[], removedAssets: AssetResponse[] }>>({});
-
-
-	function calculateTotalAssetGroups() {
-		console.log(assetGroupDatas)
-		const c: AssetGroupResponse[] = [];
-
-		if (assetGroupDatas === null) return c;
-
-		for (const group of assetGroupDatas) {
-			c.push({
-				...group,
-				assets: [
-					...group.assets.filter(x => !additionalGroupAssets[group.identity]?.removedAssets.find(y => y.identity == x.identity)),
-					...additionalGroupAssets[group.identity]?.addedAssets ?? []
-				]
-			})
-		}
-
-		return c;
-	}
-
-
-	const isLoading =
-		assetResponse == null ||
-		assetError !== null ||
-		assetGroupResponse == null ||
-		assetGroupError !== null;
-
-
-	const [addAssetContext, setAddAssetContext] = useState<AddAssetSlideOverContextType | null>(null);
-	const [addAssetGroupOpen, addAssetGroupSetOpen] = useState(false);
-
-	if (addAssetContext && addAssetGroupOpen) addAssetGroupSetOpen(false);
-
-	function addAssetAction(asset: AssetResponse) {
-		addAssetData(asset);
-		setAddAssetContext(null);
-	}
-
-	function addAssetToGroupAction(asset: AssetResponse, group: string) {
-		setAdditionalGroupAssets((prev) => ({
-			...prev,
-			[group]: {
-				removedAssets: prev[group]?.removedAssets.filter(x => x.identity != asset.identity) ?? [],
-				addedAssets: [...(prev[group]?.addedAssets ?? []), asset]
-			}
-		}));
-		setAddAssetContext(null);
-	}
-
-	var setAddAssetOpen: Dispatch<SetStateAction<boolean>> = function (value: SetStateAction<boolean>) {
-		setAddAssetContext(value ? { type: "user", id: authUser.sub } : null);
-	}
-
-	function removeAssetFromGroupData(asset: AssetResponse, group: string) {
-		setAdditionalGroupAssets((prev) => ({
-			...prev,
-			[group]: {
-				addedAssets: prev[group]?.addedAssets.filter(x => x.identity != asset.identity) ?? [],
-				removedAssets: [...(prev[group]?.removedAssets ?? []), asset]
-			}
-		}));
-	}
-
-	const data = {
-		assets: assetData,
-		assetPage: assetResponse?.data.data.page ?? null,
-		assetGroups: calculateTotalAssetGroups(),
-		assetGroupsPage: assetGroupResponse?.data.data.page ?? null,
-		isLoading: isLoading,
-		removeAssetData,
-		removeAssetGroupData,
-		setAddAssetContext,
-		removeAssetFromGroupData
-	} satisfies AllData;
+	// console.log(data);
 
 	return (
 		<BasePage>
 			<div className="px-4 sm:px-6 lg:px-8">
 				<Header
-					addAssetSetOpen={setAddAssetOpen}
-					addAssetGroupOpen={addAssetGroupSetOpen} />
+					addAssetSetOpen={data.setAddAssetOpen}
+					addAssetGroupOpen={data.addAssetGroupSetOpen} />
 				<AddAssetSlideOver
-					open={addAssetContext != null}
-					setOpen={setAddAssetOpen}
-					context={addAssetContext ?? { type: "user", id: authUser.sub }}
-					addAssetToUser={addAssetAction}
-					addAssetToGroup={addAssetToGroupAction} />
+					open={data.addAssetContext != null}
+					setOpen={data.setAddAssetOpen}
+					context={data.addAssetContext ?? { type: "user", id: data.authUser.sub }}
+					addAssetToUser={data.addAssetAction}
+					addAssetToGroup={data.addAssetToGroupAction} />
 				<AddAssetGroupSlideOver
-					open={addAssetGroupOpen}
-					setOpen={addAssetGroupSetOpen}
-					user={authUser}
-					addAssetGroup={addAssetGroupData} />
+					open={data.addAssetGroupOpen}
+					setOpen={data.addAssetGroupSetOpen}
+					user={data.authUser}
+					addAssetGroup={data.addAssetGroupData} />
 				<div className="mt-8 flex flex-col">
 					<div className="-my-2 -mx-4 sm:-mx-6 lg:-mx-8">
 						<div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
 							<Table
-								assets={data.assets}
-								assetPage={data.assetPage}
-								assetGroups={data.assetGroups}
-								assetGroupsPage={data.assetGroupsPage}
-								isLoading={isLoading}
-								removeAssetData={removeAssetData}
-								removeAssetGroupData={removeAssetGroupData}
-								setAddAssetContext={setAddAssetContext}
-								removeAssetFromGroupData={removeAssetFromGroupData}
+								{...data}
 							/>
 						</div>
 					</div>
@@ -158,7 +73,7 @@ export default function Assets() {
 	);
 }
 
-function Table({ assets, isLoading, assetGroups, removeAssetData, removeAssetGroupData, assetGroupsPage, assetPage, setAddAssetContext, removeAssetFromGroupData }: AllData) {
+function Table({ assets, isLoading, assetGroups, removeAssetData, removeAssetGroupData, assetGroupsPage, assetPage, setAddAssetContext, removeAssetFromGroupData }: AssetPageProps) {
 	return (
 		<>
 			<table className="min-w-full divide-y divide-gray-300">

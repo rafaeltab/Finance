@@ -9,6 +9,8 @@ export function useAdditionalData<TData extends {identity: string}>(baseData: TD
 			setRemovedData(prev => prev.filter(x => x.identity !== data.identity));
 		}
 
+		if(baseData?.find(x => x.identity === data.identity) != null) return;
+
 		setAddedData(prev => [...prev, data]);
 	}
 

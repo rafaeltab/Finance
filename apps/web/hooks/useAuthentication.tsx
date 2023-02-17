@@ -51,7 +51,7 @@ export function AuthenticationProvider({ children }: React.PropsWithChildren) {
 	);
 }
 
-type SubRequired = {
+export type SubRequired = {
 	sub: string;
 }
 export function useUser(): User & SubRequired | null;
