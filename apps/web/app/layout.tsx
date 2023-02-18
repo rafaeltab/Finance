@@ -7,7 +7,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { usePathname } from "next/navigation";
 import React from 'react';
-import { Navigator } from "../components/navigation/Navigator";
+import { SideNavigator } from '../components/sidenav/SideNavigator';
 import { AuthenticationProvider, useLogout } from "../hooks/useAuthentication";
 import { FinanceApiProvider } from '../hooks/useFinanceApi';
 import type { NavigationSpec } from "../hooks/useNavigation";
@@ -67,7 +67,8 @@ function Layout({ children }: { children: React.ReactNode }) {
 			</head>
 			<body className="h-full">
 				<div className="min-h-full">
-					<Navigator logout={logout} navigationSpec={navigationSpec} user={user} />
+					{/* <Navigator logout={logout} navigationSpec={navigationSpec} user={user} /> */}
+					<SideNavigator logout={logout} navigationSpec={navigationSpec} user={user} />
 					{children}
 				</div>
 			</body>
