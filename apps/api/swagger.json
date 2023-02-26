@@ -78,7 +78,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/GetSearchStockResponse"
+                                    "$ref": "#/components/schemas/StockDataViewResponse"
                                 }
                             }
                         }
@@ -1617,6 +1617,85 @@
                 "required": [
                     "statusCode",
                     "message"
+                ]
+            },
+            "StockValueResponse": {
+                "type": "object",
+                "properties": {
+                    "open": {
+                        "type": "number"
+                    },
+                    "high": {
+                        "type": "number"
+                    },
+                    "low": {
+                        "type": "number"
+                    },
+                    "close": {
+                        "type": "number"
+                    },
+                    "volume": {
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "open",
+                    "high",
+                    "low",
+                    "close",
+                    "volume"
+                ]
+            },
+            "StockValuePaginatedResponse": {
+                "type": "object",
+                "properties": {
+                    "page": {
+                        "$ref": "#/components/schemas/PaginatedResponsePage"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/StockValueResponse"
+                        }
+                    }
+                },
+                "required": [
+                    "page",
+                    "data"
+                ]
+            },
+            "StockDataViewResponseData": {
+                "type": "object",
+                "properties": {
+                    "stockData": {
+                        "$ref": "#/components/schemas/StockDataResponse"
+                    },
+                    "yearlyValues": {
+                        "$ref": "#/components/schemas/StockValuePaginatedResponse"
+                    },
+                    "hasValues": {
+                        "type": "boolean"
+                    }
+                },
+                "required": [
+                    "stockData",
+                    "yearlyValues",
+                    "hasValues"
+                ]
+            },
+            "StockDataViewResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/StockDataViewResponseData"
+                    }
+                },
+                "required": [
+                    "success",
+                    "data"
                 ]
             },
             "GetStockListResponse": {

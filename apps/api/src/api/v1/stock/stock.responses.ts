@@ -86,7 +86,7 @@ export class StockDataViewResponse extends SuccessResponse implements SuccessRes
 						total: response.data.yearlyValues.page.total
 					}
 				},
-				hasValues: false
+				hasValues: response.data.hasValues
 			},
 			success: response.success
 		}
