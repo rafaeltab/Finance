@@ -6,8 +6,8 @@ import {
 	QueueListIcon
 } from '@heroicons/react/24/outline';
 import { usePathname } from "next/navigation";
-import React from 'react';
-import { Navigator } from "../components/navigation/Navigator";
+import React, { useEffect } from 'react';
+import { SideNavigator } from '../components/sidenav/SideNavigator';
 import { AuthenticationProvider, useLogout } from "../hooks/useAuthentication";
 import { FinanceApiProvider } from '../hooks/useFinanceApi';
 import type { NavigationSpec } from "../hooks/useNavigation";
@@ -67,8 +67,10 @@ function Layout({ children }: { children: React.ReactNode }) {
 			</head>
 			<body className="h-full">
 				<div className="min-h-full">
-					<Navigator logout={logout} navigationSpec={navigationSpec} user={user} />
-					{children}
+					{/* <Navigator logout={logout} navigationSpec={navigationSpec} user={user} /> */}
+					<SideNavigator logout={logout} navigationSpec={navigationSpec} user={user} >
+						{children}
+					</SideNavigator>
 				</div>
 			</body>
 		</html>
@@ -78,9 +80,11 @@ function Layout({ children }: { children: React.ReactNode }) {
 function Authentication({ children }: { children: React.ReactNode }) {
 	const { isAuthenticated, loginWithPopup, isLoading } = useAuth0();
 
-	if (!isAuthenticated && !isLoading) {
-		loginWithPopup();
-	}
+	useEffect(() => {
+		if (!isAuthenticated && !isLoading) {
+			loginWithPopup();
+		}
+	}, [isAuthenticated, isLoading]);	
 
 	return (
 		<>
