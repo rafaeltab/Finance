@@ -1108,7 +1108,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Function"
+                                "$ref": "#/components/schemas/CreateAssetGroupBody"
                             }
                         }
                     }
@@ -2261,7 +2261,7 @@
                     "data"
                 ]
             },
-            "Function": {
+            "CreateAssetGroupBody": {
                 "type": "object",
                 "properties": {}
             },

@@ -1,15 +1,15 @@
 import type { User } from "@auth0/auth0-react";
 import { Dialog, Transition } from "@headlessui/react";
 import { ArrowRightOnRectangleIcon, Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import React, { Fragment } from "react";
+import React, { Children, Fragment } from "react";
 import { HrefOrOnClick, NavigationItem, NavigationSpec, useNavigation } from "../../hooks/useNavigation";
 import { SideNavigationButton } from "./SideNavigationButton";
 
 type Props = {
 	navigationSpec: NavigationSpec[];
 	user: User,
-	logout: () => void
-}
+	logout: () => void,
+} & React.PropsWithChildren
 
 export function SideNavigator(props: Props) {
 	const navigation = useNavigation(props.navigationSpec);
@@ -75,11 +75,12 @@ export function SideNavigator(props: Props) {
 											className="h-8 w-auto"
 											src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
 											alt="Your Company"
+											referrerPolicy="no-referrer"
 										/>
 									</div>
 									<nav className="mt-5 space-y-1 px-2">
-										{navigation.map((item) => (
-											<SideNavigationButton item={item} isPopover />
+										{navigation.map((item, index) => (
+											<SideNavigationButton item={item} isPopover key={index} />
 										))}
 									</nav>
 								</div>
@@ -120,8 +121,8 @@ export function SideNavigator(props: Props) {
 							/>
 						</div>
 						<nav className="mt-5 flex-1 space-y-1 px-2">
-							{navigation.map((item) => (
-								<SideNavigationButton item={item} />
+							{navigation.map((item, index) => (
+								<SideNavigationButton item={item} key={index} />
 							))}
 						</nav>
 					</div>
@@ -133,6 +134,7 @@ export function SideNavigator(props: Props) {
 									className="inline-block h-9 w-9 rounded-full"
 									src={props.user.picture}
 									alt=""
+									referrerPolicy="no-referrer"
 								/>
 								<div className="ml-3">
 									<p className="text-sm font-medium text-white">{props.user.name}</p>
@@ -161,6 +163,9 @@ export function SideNavigator(props: Props) {
 				</div>
 
 			</div>
+		</div>
+		<div className="md:ml-64">
+			{props.children}
 		</div>
 	</>);
 }

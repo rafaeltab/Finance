@@ -12,6 +12,7 @@ import { Dispatch, Fragment, SetStateAction, useState } from "react";
 import { Seek } from "react-loading-indicators";
 import { AddAssetGroupSlideOver } from "../../components/assets/addAssetGroupSlideOver";
 import { AddAssetSlideOver, AddAssetSlideOverContextType } from "../../components/assets/addAssetSlideOver";
+import { DefaultPage } from "../../components/defaultPage";
 import type { SubRequired } from "../../hooks/useAuthentication";
 import { useApi } from "../../hooks/useFinanceApi";
 import { classNames } from "../../util/classNames";
@@ -43,7 +44,7 @@ export default function Assets() {
 	// console.log(data);
 
 	return (
-		<BasePage>
+		<DefaultPage title="Assets">
 			<div className="px-4 sm:px-6 lg:px-8">
 				<Header
 					addAssetSetOpen={data.setAddAssetOpen}
@@ -69,7 +70,7 @@ export default function Assets() {
 					</div>
 				</div>
 			</div>
-		</BasePage>
+		</DefaultPage>
 	);
 }
 
@@ -405,31 +406,6 @@ function AddDropDown(props: { addAssetSetOpen: Dispatch<SetStateAction<boolean>>
 			</Transition>
 		</Menu>
 	)
-}
-
-function BasePage(props: React.PropsWithChildren) {
-	return (
-		<>
-			<header className="bg-gray-800 shadow">
-				<div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8 pb-32">
-					<h1 className="text-3xl font-bold tracking-tight text-gray-200">
-						Assets
-					</h1>
-				</div>
-			</header>
-			<main className="-mt-32">
-				<div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
-					{/* Replace with your content */}
-					<div className="px-4 py-6 sm:px-0">
-						<div className="rounded-lg bg-white p-10 shadow-md">
-							{props.children}
-						</div>
-					</div>
-					{/* /End replace */}
-				</div>
-			</main>
-		</>
-	);
 }
 
 function calculateTotalValue(stockOrders: StockOrderResponse[] | undefined) {
