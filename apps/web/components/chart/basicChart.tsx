@@ -13,7 +13,7 @@ type Props = {
 	}
 }
 
-export function Chart({
+export function BasicChart({
 	data,
 	colors: {
 		backgroundColor,
@@ -40,11 +40,13 @@ export function Chart({
 					textColor,
 				},
 				width: chartContainerRef.current.clientWidth,
-				height: 300,
+				height: 500,
 			});
 			chart.timeScale().fitContent();
 
-			const newSeries = chart.addCandlestickSeries({});
+			const newSeries = chart.addCandlestickSeries({
+				
+			});
 			newSeries.setData(data);
 
 			window.addEventListener('resize', handleResize);

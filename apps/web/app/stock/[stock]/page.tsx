@@ -2,6 +2,7 @@
 
 import type { CandlestickData } from "lightweight-charts";
 import { Chart } from "../../../components/chart/chart";
+import { DetailedChart } from "../../../components/chart/detailedChart";
 import { DefaultPage } from "../../../components/defaultPage";
 import { useApiRequest } from "../../../hooks/useFinanceApi";
 
@@ -22,20 +23,14 @@ export default function Page({ params }: Props) {
 		</DefaultPage>
 	}
 
-	const chartData: (CandlestickData)[] = res.data.data.yearlyValues.data.map((x, i) => ({
-		time: `${new Date().getFullYear() - res.data.data.yearlyValues.data.length + i}-01-01`,
-		...x
-	} satisfies (CandlestickData)));
+	
 
 	return (
 		<DefaultPage title={res.data.data.stockData.symbol}>
-			<Chart data={chartData} colors={{
-				backgroundColor: 'white',
-				lineColor: '#2962FF',
-				textColor: 'black',
-				areaTopColor: '#2962FF',
-				areaBottomColor: 'rgba(41, 98, 255, 0.28)',
-			}} />
+			<div className="h-128">
+				<DetailedChart symbol={res.data.data.stockData.symbol} exchange={res.data.data.stockData.exchange} />
+			</div>
 		</DefaultPage>
 	);
 }
+

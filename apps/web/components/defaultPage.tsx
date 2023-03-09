@@ -6,14 +6,14 @@ export function DefaultPage(props: Props) {
 	return (
 		<>
 			<header className="bg-gray-800 shadow">
-				<div className="max-w-7xl py-6 px-2 sm:px-4 lg:px-6 pb-32">
+				<div className="px-2 py-6 pb-32 max-w-7xl sm:px-4 lg:px-6">
 					<h1 className="text-3xl font-bold tracking-tight text-gray-200">{props.title}</h1>
 				</div>
 			</header>
 			<main className='-mt-32'>
-				<div className="w-full py-6 px-2 sm:px-4 lg:px-6">
+				<div className="w-full px-2 py-6 sm:px-4 lg:px-6">
 					<div className="py-6">
-						<div className="h-96 rounded-lg bg-white p-10 shadow-md" >
+						<div className="h-auto p-10 bg-white rounded-lg shadow-md" >
 							{props.children}
 						</div>
 					</div>
