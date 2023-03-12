@@ -1,0 +1,22 @@
+{
+	"extends": "@finance/lib-tsconfig/configs/tsconfig.base.json",
+	"include": [
+		"src/**/*.ts",
+		"tests/**/*.ts"
+	],
+	"compilerOptions": {
+		"outDir": "build",
+		"declaration": true,
+		"rootDir": "./",
+		"baseUrl": "./",
+		"moduleResolution": "Node",
+		"paths": {
+			"#src/*": [
+				"src/*"
+			],
+			"#tests/*": [
+				"tests/*"
+			]
+		}
+	}
+}

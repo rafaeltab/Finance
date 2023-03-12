@@ -1,0 +1,28 @@
+{
+	"configurations": [
+		{
+			"type": "node",
+			"name": "vscode-jest-tests.v2",
+			"request": "launch",
+			"console": "internalConsole",
+			"internalConsoleOptions": "openOnFirstSessionStart",
+			"disableOptimisticBPs": true,
+			"cwd": "${workspaceFolder}",
+			"env": {
+				"NODE_OPTIONS": "--experimental-vm-modules"
+			},
+			"runtimeExecutable": "yarn",
+			"args": [
+				"jest",
+				"-c",
+				"jest.config.ts",
+				"--runInBand",
+				"--watchAll=false",
+				"--testNamePattern",
+				"${jest.testNamePattern}",
+				"--runTestsByPath",
+				"${jest.testFile}"
+			]
+		}
+	]
+}

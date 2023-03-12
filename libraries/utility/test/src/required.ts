@@ -1,4 +1,4 @@
-import type { OptionalReadonly } from "./readonly";
+import type { OptionalReadonly } from "@finance/lib-basic-types";
 
 export type WithRequiredProperty<Type, Key extends keyof Type> = Type & {
 	[Property in Key]-?: Type[Property];

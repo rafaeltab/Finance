@@ -1,5 +1,5 @@
 {
-	"name": "@finance/modules",
+	"name": "@finance/lib-module-types",
 	"version": "1.0.0",
 	"private": true,
 	"license": "MIT",
@@ -15,7 +15,7 @@
 		"clean": "rimraf build"
 	},
 	"dependencies": {
-		"@finance/libs-tsconfig": "*",
+		"@finance/lib-tsconfig": "*",
 		"@types/lodash-es": "^4.17.6",
 		"lodash-es": "^4.17.21",
 		"tsyringe": "^4.7.0"

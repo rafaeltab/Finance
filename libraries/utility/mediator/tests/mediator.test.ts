@@ -1,5 +1,5 @@
 import "reflect-metadata"
-import { ICommand, ICommandHandler, ICommandResult, IEvent, IEventHandler, IQuery, IQueryHandler, IQueryResult, Mediator, MediatorModule } from "#src/mediator";
+import { ICommand, ICommandHandler, ICommandResult, IEvent, IEventHandler, IQuery, IQueryHandler, IQueryResult, Mediator, MediatorModule } from "#src/index";
 
 let mediator: Mediator;
 

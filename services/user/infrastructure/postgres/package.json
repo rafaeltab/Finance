@@ -20,12 +20,10 @@
 		"clean": "rimraf build"
 	},
 	"dependencies": {
+		"@finance/lib-errors": "*",
+		"@finance/lib-module-types": "*",
+		"@finance/lib-tsconfig": "*",
 		"@finance/svc-user-domain": "*",
-
-		"@finance/errors": "*",
-		"@finance/libs-tsconfig": "*",
-		"@finance/modules": "*",
-
 		"cross-env": "^7.0.3",
 		"pg": "^8.4.0",
 		"reflect-metadata": "^0.1.13",

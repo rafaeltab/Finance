@@ -20,11 +20,9 @@
 		"clean": "rimraf build"
 	},
 	"dependencies": {
+		"@finance/lib-basic-types": "*",
+		"@finance/lib-errors-nest": "*",
 		"@finance/svc-user-application": "*",
-
-		"@finance/errors-nest": "*",
-		"@finance/libs-types": "*",
-		
 		"@nestjs/common": "^9.0.0",
 		"@nestjs/config": "^2.2.0",
 		"@nestjs/core": "^9.0.0",

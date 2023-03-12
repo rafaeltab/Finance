@@ -11,8 +11,8 @@
 	"dependencies": {
 		"@auth0/auth0-react": "^2.0.0",
 		"@auth0/auth0-spa-js": "^2.0.2",
-		"@finance/api~sdk": "*",
-		"@finance/libs-tsconfig": "*",
+		"@finance/lib-tsconfig": "*",
+		"@finance/svc-user-sdk": "*",
 		"@headlessui/react": "^1.7.7",
 		"@heroicons/react": "^2.0.13",
 		"@next/font": "13.1.1",
