@@ -4,52 +4,76 @@
 			"name": "Root",
 			"path": "."
 		},
+		
 		{
 			"name": "[App] Web",
 			"path": "apps/web"
 		},
+
 		{
-			"name": "[App] Api",
-			"path": "apps/api"
+			"name": "[Svc] User api",
+			"path": "services/user/api"
 		},
 		{
-			"name": "[Package] Application",
-			"path": "packages/application"
+			"name": "[Svc] User application",
+			"path": "services/user/application"
 		},
 		{
-			"name": "[Package] Domain",
-			"path": "packages/domain"
+			"name": "[Svc] User domain",
+			"path": "services/user/domain"
 		},
 		{
-			"name": "[Package] Infra",
-			"path": "packages/infrastructure/infra"
+			"name": "[Svc] User infra postgres",
+			"path": "services/user/infrastructure/postgres"
 		},
 		{
-			"name": "[Package] Postgres",
-			"path": "packages/infrastructure/postgres"
+			"name": "[Svc] User sdk",
+			"path": "services/user/sdk"
+		},
+
+		{
+			"name": "[Lib] Libraries",
+			"path": "libraries"
+		},
+
+		{
+			"name": "[Lib] basic types",
+			"path": "libraries/types/basic"
 		},
 		{
-			"name": "[Package] libs types",
-			"path": "packages/libs/types"
+			"name": "[Lib] module types",
+			"path": "libraries/types/module"
+		},
+
+		{
+			"name": "[Lib] errors",
+			"path": "libraries/utility/errors"
 		},
 		{
-			"name": "[Package] errors",
-			"path": "packages/libs/errors"
+			"name": "[Lib] errors nest",
+			"path": "libraries/utility/errors-nest"
 		},
 		{
-			"name": "[Package] errors nest",
-			"path": "packages/libs/errors-nest",
-		}
+			"name": "[Lib] mediator",
+			"path": "libraries/utility/mediator"
+		},
+		{
+			"name": "[Lib] test",
+			"path": "libraries/utility/test"
+		},
 	],
 	"settings": {
 		"jest.disabledWorkspaceFolders": [
 			"Root",
-			"[Package] Domain",
 			"[App] Web",
-			"[Package] Infra",
-			"[Package] Application",
-			"[Package] errors",
-			"[Package] errors nest",
+			"[Svc] User application",
+			"[Svc] User domain",
+			"[Svc] User sdk",
+			"[Lib] Libraries",
+			"[Lib] basic types",
+			"[Lib] module types",
+			"[Lib] errors",
+			"[Lib] errors nest"
 		],
 		"typescript.tsdk": "..\\..\\node_modules\\typescript\\lib",
 		"typescript.enablePromptUseWorkspaceTsdk": true
