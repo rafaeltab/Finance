@@ -1,5 +1,5 @@
 {
-	"name": "@finance/libs-tsconfig",
+	"name": "@finance/lib-tsconfig",
 	"version": "1.0.0",
 	"private": true,
 	"license": "MIT",
