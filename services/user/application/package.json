@@ -1,5 +1,5 @@
 {
-	"name": "@finance/application",
+	"name": "@finance/svc-user-application",
 	"version": "1.0.0",
 	"private": true,
 	"license": "MIT",
