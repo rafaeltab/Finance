@@ -1,5 +1,5 @@
 {
-	"name": "@finance/api~sdk",
+	"name": "@finance/svc-user-sdk",
 	"main": "./build/index.js",
 	"types": "./build/index.d.ts",
 	"files": [
