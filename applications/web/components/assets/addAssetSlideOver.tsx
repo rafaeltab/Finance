@@ -1,4 +1,4 @@
-import type { AssetResponse } from "@finance/api~sdk";
+import type { AssetResponse } from "@finance/svc-user-sdk";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { forwardRef, Fragment, useImperativeHandle, useRef, useState, type Dispatch, type ForwardedRef, type SetStateAction } from "react";

@@ -5,7 +5,7 @@ import type {
 	AssetGroupResponse,
 	AssetResponse, PaginatedResponsePage,
 	StockOrderResponse
-} from "@finance/api~sdk";
+} from "@finance/svc-user-sdk";
 import { Menu, Transition } from "@headlessui/react";
 import { ArrowLongLeftIcon, ArrowLongRightIcon, ChevronDownIcon, EllipsisVerticalIcon, EyeIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { Dispatch, Fragment, SetStateAction, useState } from "react";

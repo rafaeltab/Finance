@@ -33,7 +33,7 @@
 			"runtimeExecutable": "yarn",
 			"runtimeArgs": [
 				"workspace",
-				"@finance/api",
+				"@finance/svc-user-api",
 				"run",
 				"start:debug"
 			],

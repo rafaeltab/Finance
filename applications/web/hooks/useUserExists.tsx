@@ -1,4 +1,4 @@
-import type { UserResponse } from "@finance/api~sdk";
+import type { UserResponse } from "@finance/svc-user-sdk";
 import { useState } from "react";
 import { useUser, catchAuth } from "./useAuthentication";
 import { useApi } from "./useFinanceApi";

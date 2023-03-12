@@ -1,4 +1,4 @@
-import type { AssetResponse, AssetGroupResponse } from "@finance/api~sdk";
+import type { AssetResponse, AssetGroupResponse } from "@finance/svc-user-sdk";
 import { useState, type Dispatch, type SetStateAction } from "react";
 import type { AddAssetSlideOverContextType } from "../../components/assets/addAssetSlideOver";
 import { useAdditionalData } from "../../hooks/useAdditionalData";

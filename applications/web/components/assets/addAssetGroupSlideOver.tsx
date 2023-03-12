@@ -1,4 +1,4 @@
-import type { AssetGroupResponse } from "@finance/api~sdk";
+import type { AssetGroupResponse } from "@finance/svc-user-sdk";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Fragment, useState, type Dispatch, type SetStateAction } from "react";

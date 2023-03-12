@@ -1,5 +1,5 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import { DefaultApi } from "@finance/api~sdk";
+import { DefaultApi } from "@finance/svc-user-sdk";
 import { createContext, useContext, useState } from "react";
 
 const financeApiContext = createContext<DefaultApi | null>(null);
