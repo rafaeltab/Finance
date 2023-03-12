@@ -89,18 +89,14 @@ describe("get", () => {
 });
 
 describe("delete", () => {
-	test('Should do nothing if no user with the given id is found', async () => {
+	test('Should throw if no user with the given id is found', async () => {
 		const uniqueId = v4();
 
-		await assetRepository.delete({
-			uniqueId
-		});
-
-		const asset = await assetRepository.get({
-			uniqueId: testData.asset.uniqueId
-		});
-
-		expect(asset).not.toBeNull();
+		expect(async () => {
+			await assetRepository.delete({
+				uniqueId
+			});
+		}).rejects.toThrow();
 	});
 
 	test('Should delete a user if it\'s id is provided', async () => {

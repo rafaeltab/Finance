@@ -23,7 +23,7 @@ export class ScopeGuard implements CanActivate {
 		const req = context.switchToHttp().getRequest();
 		let presentScopes: string[] = [];
 
-		if (req.user || req.user.scope) {
+		if (req.user && req.user.scope) {
 			presentScopes = req.user.scope.split(" ");
 		} 
 

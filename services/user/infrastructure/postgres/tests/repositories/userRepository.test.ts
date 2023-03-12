@@ -80,15 +80,11 @@ describe("get", () => {
 });
 
 describe("delete", () => {
-	test('Should do nothing if no user with the given id is found', async () => {
+	test('Should throw if no user with the given id is found', async () => {
 		const uniqueId = v4();
 
-		await userRepository.delete({
-			uniqueId
-		});
-
 		expect(async () => {
-			await userRepository.get({
+			await userRepository.delete({
 				uniqueId
 			});
 		}).rejects.toThrow();

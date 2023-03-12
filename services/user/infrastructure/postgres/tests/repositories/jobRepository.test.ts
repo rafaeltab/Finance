@@ -71,18 +71,14 @@ describe("get", () => {
 });
 
 describe("delete", () => {
-	test('Should do nothing if no user with the given id is found', async () => {
+	test('Should throw if no user with the given id is found', async () => {
 		const uniqueId = v4();
 
-		await jobRepository.delete({
-			uniqueId
-		});
-
-		const job = await jobRepository.get({
-			uniqueId: testData.job.uniqueId
-		});
-
-		expect(job).not.toBeNull();
+		expect(async () => {
+			await jobRepository.delete({
+				uniqueId
+			});
+		}).rejects.toThrow();
 	});
 
 	test('Should delete a user if it\'s id is provided', async () => {

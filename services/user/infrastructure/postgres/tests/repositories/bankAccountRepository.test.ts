@@ -71,18 +71,14 @@ describe("get", () => {
 });
 
 describe("delete", () => {
-	test('Should do nothing if no user with the given id is found', async () => {
+	test('Should throw if no user with the given id is found', async () => {
 		const uniqueId = v4();
 
-		await bankAccountRepository.delete({
-			uniqueId
-		});
-
-		const bankAccount = await bankAccountRepository.get({
-			uniqueId: testData.bankAccount.uniqueId
-		});
-
-		expect(bankAccount).not.toBeNull();
+		expect(async () => {
+			await bankAccountRepository.delete({
+				uniqueId
+			});
+		}).rejects.toThrow();
 	});
 
 	test('Should delete a user if it\'s id is provided', async () => {
