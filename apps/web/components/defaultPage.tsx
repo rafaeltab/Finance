@@ -11,9 +11,9 @@ export function DefaultPage(props: Props) {
 				</div>
 			</header>
 			<main className='-mt-32'>
-				<div className="w-full px-2 py-6 sm:px-4 lg:px-6">
+				<div className="w-full py-6 sm:px-0 md:px-0 lg:px-4 xl:px-6 2xl:px-8">
 					<div className="py-6">
-						<div className="h-auto p-10 bg-white rounded-lg shadow-md" >
+						<div className="h-auto p-8 bg-white shadow-md lg:rounded-lg xl:rounded-lg 2xl:rounded-lg" >
 							{props.children}
 						</div>
 					</div>
