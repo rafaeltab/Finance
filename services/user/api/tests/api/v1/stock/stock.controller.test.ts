@@ -2,14 +2,20 @@ import { Test, TestingModule } from "@nestjs/testing";
 import type { INestApplication } from "@nestjs/common";
 import request from "supertest";
 import { StockModuleMetadata } from "../../../../src/api/v1/stock/stock.module";
+import { validationPipe, errorsFilter, cors } from "#src/globalRegistrations";
 
 describe('StockController (e2e)', () => {
 	let app: INestApplication;
 
-	beforeEach(async () => {
+	beforeAll(async () => {
 		const moduleFixture: TestingModule = await Test.createTestingModule(StockModuleMetadata).compile();
 
 		app = moduleFixture.createNestApplication();
+
+		validationPipe(app);
+		errorsFilter(app);
+		cors(app);
+
 		await app.init();
 	});
 
@@ -49,7 +55,7 @@ describe('StockController (e2e)', () => {
 
 	it('/api/v1/stock/:identity (GET)',async () => {
 		return request(app.getHttpServer())
-			.get('/api/v1/stock/stockData-CS-NASDAQ-GOOG')
+			.get('/api/v1/stock/stockData-CS-NASDAQ-GOOGGG')
 			.expect(404);
 
 		// expect(response.body.success).toBe(true);

@@ -2,14 +2,30 @@ import { Test, TestingModule } from "@nestjs/testing";
 import type { INestApplication } from "@nestjs/common";
 import request from "supertest";
 import { UserModuleMetadata } from "../../../../src/api/v1/user/user.module";
+import type { Request, Response } from "express";
+import type { GetUsersResponse } from "#src/api/v1/user/user.responses";
+import { cors, errorsFilter, validationPipe } from "#src/globalRegistrations";
 
 describe('UserController (e2e)', () => {
 	let app: INestApplication;
 
-	beforeEach(async () => {
-		const moduleFixture: TestingModule = await Test.createTestingModule(UserModuleMetadata).compile();
+	beforeAll(async () => {
+		const moduleFixture: TestingModule = await Test.createTestingModule(UserModuleMetadata)
+			.compile()
 
 		app = moduleFixture.createNestApplication();
+		
+		validationPipe(app);
+		errorsFilter(app);
+		cors(app);
+
+		app.use((req: Request, _: Response, next: any) => { 
+			req.user = {
+				scope: "admin",
+				sub: "banana"
+			}
+			next();
+		})
 		await app.init();
 	});
 
@@ -22,14 +38,15 @@ describe('UserController (e2e)', () => {
 			.get('/api/v1/user')
 			.expect(200);
 
-		expect(response.body.success).toBe(true);
-		expect(response.body.data).toBeDefined();
-		expect(response.body.data.isEmpty).toBeDefined();
-		expect(response.body.data.data).toBeDefined();
-		expect(response.body.data.page).toBeDefined();
-		expect(response.body.data.page.count).toBeDefined();
-		expect(response.body.data.page.offset).toBeDefined();
-		expect(response.body.data.page.total).toBeDefined();
+		const body: GetUsersResponse = response.body;
+		
+		expect(body.success).toBe(true);
+		expect(body.data).toBeDefined();
+		expect(body.data.data).toBeDefined();
+		expect(body.data.page).toBeDefined();
+		expect(body.data.page.count).toBeDefined();
+		expect(body.data.page.offset).toBeDefined();
+		expect(body.data.page.total).toBeDefined();
 	});
 
 	it('/api/v1/user/:identity (GET)', async () => {

@@ -94,7 +94,7 @@ describe("addStockValues", () => {
 
 		const result = await stockRepository.getStockValues({
 			uniqueId: testData.googlStockData.uniqueId,
-		}, "minute", TimeRange.fromDay(new Date()), 100, 0);
+		}, "minute", TimeRange.halfDayAroundNow(new Date()), 100, 0);
 
 		expectNotNullOrUndefined(result);
 		expectRequiredProps(result, ["data"]);

@@ -23,6 +23,7 @@
 		"@finance/lib-errors": "*",
 		"@finance/lib-module-types": "*",
 		"@finance/lib-tsconfig": "*",
+		"@finance/lib-test": "*",
 		"@finance/svc-user-domain": "*",
 		"cross-env": "^7.0.3",
 		"pg": "^8.4.0",

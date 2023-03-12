@@ -1,10 +1,9 @@
+import type { INestApplication } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
-import { AppModule } from "./app.module";
-import { ValidationPipe } from "@nestjs/common";
-import { createSwaggerDocument, setupSwagger } from "./swagger";
 import { writeFileSync } from "fs";
-import { FinanceProgrammerErrorExceptionFilter, FinanceUserErrorExceptionFilter } from "@finance/lib-errors-nest";
-import { AuthzGuard } from "./authz/authz.guard";
+import { AppModule } from "./app.module";
+import { authzGuard, cors, errorsFilter, validationPipe } from "./globalRegistrations";
+import { createSwaggerDocument, setupSwagger } from "./swagger";
 
 async function bootstrap() {
 	const app = await createApp();
@@ -16,16 +15,15 @@ async function bootstrap() {
 
 async function createApp() {
 	const app = await NestFactory.create(AppModule);
-	app.useGlobalPipes(new ValidationPipe({
-		transform: true,
-		forbidUnknownValues: false,
-	}));
-	app.useGlobalGuards(new AuthzGuard());
-	app.useGlobalFilters(new FinanceUserErrorExceptionFilter(app.getHttpAdapter()), new FinanceProgrammerErrorExceptionFilter(app.getHttpAdapter()));
-	app.enableCors({
-		origin: /http:\/\/localhost:(3000|3001)/
-	});
+	registerComponents(app);
 	return app;
+}
+
+function registerComponents(app: INestApplication) {
+	validationPipe(app);
+	authzGuard(app);
+	errorsFilter(app);
+	cors(app);
 }
 
 async function generateDefinition() {

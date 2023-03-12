@@ -49,7 +49,6 @@ export class TimeRange {
 		var start = new Date(day.getTime() - 60 * 60 * 12 * 1000);
 		var end = new Date(day.getTime() + 60 * 60 * 12 * 1000);
 
-		console.log(start, end);
 		return new TimeRange(start, end);
 	}
 }

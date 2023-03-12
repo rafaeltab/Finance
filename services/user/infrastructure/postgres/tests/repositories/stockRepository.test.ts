@@ -45,14 +45,14 @@ describe("getAllStockData", () => {
 describe("getStockValues", () => {
 	test('getStockValues without pagination and minute granularity should return all stock values with a maximum of 500', async () => {
 		const stockValues = await stockRepository.getStockValues({ identity: testData.googlStockData.identity }, "minute",
-		TimeRange.fromDay(new Date()));
+		TimeRange.halfDayAroundNow(new Date()));
 		expectNotNullOrUndefined(stockValues);
 		expect(stockValues.data.length).toBe(Math.min(testData.testData.StockValue.length, 500));
 	});
 
 	test('getStockValues without pagination and hour granularity should return hourly stock values with a maximum of 500', async () => {
 		const stockValues = await stockRepository.getStockValues({ identity: testData.googlStockData.identity }, "hour",
-			TimeRange.fromDay(new Date()));
+			TimeRange.halfDayAroundNow(new Date()));
 		expectNotNullOrUndefined(stockValues);
 		expect(stockValues.data.length).toBeLessThan(3);// 1 or 2 depending on when the test is run
 	});
@@ -61,7 +61,7 @@ describe("getStockValues", () => {
 describe("getStockEvents", () => {
 	test('getStockEvents should return all stock events', async () => {
 		const [dividendEvents, splitEvents] = await stockRepository.getStockEvents({ identity: testData.googlStockData.identity },
-			TimeRange.fromDay(new Date()));
+			TimeRange.halfDayAroundNow(new Date()));
 		
 		expectNotNullOrUndefined(dividendEvents);
 		expectNotNullOrUndefined(splitEvents);
