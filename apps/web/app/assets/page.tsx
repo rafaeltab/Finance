@@ -214,7 +214,9 @@ function AssetRow({ asset, removeAssetData, group, removeAssetFromGroupData }: {
 					...asset.stockAsset != null ? [
 						{
 							label: (<ViewStockDataActionLabel />),
-							onClick: () => { }
+							onClick: () => {
+								window.location.href = "/stock/" + asset.stockAsset?.stockData.identity
+							}
 						}
 					] : [],
 					{

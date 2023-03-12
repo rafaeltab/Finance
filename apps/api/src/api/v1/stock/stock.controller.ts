@@ -39,7 +39,7 @@ export class StockController {
 	@FinanceErrors([EntryNotFoundError])
 	@ApiBearerAuth("oauth2")
 	@ApiOkResponse({
-		type: GetSearchStockResponse
+		type: StockDataViewResponse
 	})
 	async get(
 		@Param("identity") identity: string
