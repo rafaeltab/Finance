@@ -1,5 +1,5 @@
 {
-	"name": "@finance/web",
+	"name": "@finance/ui-web",
 	"version": "0.1.0",
 	"private": true,
 	"scripts": {
