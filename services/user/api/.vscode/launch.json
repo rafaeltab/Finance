@@ -1,0 +1,48 @@
+{
+	"configurations": [
+		{
+			"type": "node",
+			"name": "vscode-jest-tests.v2",
+			"request": "launch",
+			"console": "internalConsole",
+			"internalConsoleOptions": "openOnFirstSessionStart",
+			"disableOptimisticBPs": true,
+			"cwd": "${workspaceFolder}",
+			"env": {
+				"NODE_OPTIONS": "--experimental-vm-modules"
+			},
+			"runtimeExecutable": "yarn",
+			"args": [
+				"jest",
+				"-c",
+				"jest.config.ts",
+				"--runInBand",
+				"--watchAll=false",
+				"--testNamePattern",
+				"${jest.testNamePattern}",
+				"--runTestsByPath",
+				"${jest.testFile}"
+			]
+		},
+		{
+			"name": "Launch via NPM",
+			"request": "launch",
+			"env": {
+				"NODE_OPTIONS": "--experimental-specifier-resolution=node --no-warnings"
+			},
+			"runtimeExecutable": "yarn",
+			"runtimeArgs": [
+				"workspace",
+				"@finance/svc-user-api",
+				"run",
+				"start:debug"
+			],
+			"skipFiles": [
+				"<node_internals>/**"
+			],
+			"cwd": "${workspaceFolder}/../../",
+			"type": "node",
+			"outputCapture": "std"
+		}
+	]
+}

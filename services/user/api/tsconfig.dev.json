@@ -1,0 +1,12 @@
+{
+	"extends": "@finance/lib-tsconfig/configs/tsconfig.dev.json",
+	"include": [
+		"src/**/*.ts"
+	],
+	"compilerOptions": {
+		"outDir": "build",
+		"declaration": true,
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true
+	}
+}

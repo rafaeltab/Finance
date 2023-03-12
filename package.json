@@ -4,14 +4,16 @@
 	"private": true,
 	"license": "MIT",
 	"workspaces": [
-		"apps/api",
-		"apps/sdks/*",
-		"apps/web",
-		"packages/application",
-		"packages/domain",
-		"packages/infrastructure/*",
-		"packages/libs/*",
-		"tools/*"
+		"services/*/api",
+		"services/*/sdk",
+		"services/*/application",
+		"services/*/domain",
+		"services/*/infrastructure/*",
+		"libraries/config/*",
+		"libraries/component/*",
+		"libraries/types/*",
+		"libraries/utility/*",
+		"applications/*"
 	],
 	"scripts": {
 		"build": "turbo run build",

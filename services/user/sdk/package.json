@@ -1,0 +1,24 @@
+{
+	"name": "@finance/svc-user-sdk",
+	"main": "./build/index.js",
+	"types": "./build/index.d.ts",
+	"files": [
+		"./build/*"
+	],
+	"version": "0.0.1",
+	"scripts": {
+		"copy:swagger": "shx rm -f ./swagger.json && shx cp ../api/swagger.json ./swagger.json",
+		"copy:swagger-dev": "shx rm -f ./swagger.json && shx cp ../api/swagger.json ./swagger.json",
+		"generate:sdk": "shx rm -rf ./lib/ && openapi-generator-cli generate -o lib -g typescript-axios -i ./swagger.json --strict-spec true",
+		"generate:sdk-dev": "shx rm -rf ./lib/ && openapi-generator-cli generate -o lib -g typescript-axios -i ./swagger.json --strict-spec true",
+		"build": "shx rm -rf ./build/ && tsc",
+		"build:dev": "shx rm -rf ./build/ && tsc -p ./tsconfig.dev.json"
+	},
+	"devDependencies": {
+		"@finance/lib-tsconfig": "*",
+		"@finance/svc-user-api": "*",
+		"@openapitools/openapi-generator-cli": "^2.5.2",
+		"shx": "^0.3.4",
+		"typescript": "^4.9.4"
+	}
+}

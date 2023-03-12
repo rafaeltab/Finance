@@ -1,0 +1,35 @@
+{
+	"name": "@finance/svc-user-domain",
+	"version": "1.0.0",
+	"private": true,
+	"license": "MIT",
+	"main": "./build/index.js",
+	"types": "./build/index.d.ts",
+	"type": "module",
+	"scripts": {
+		"build": "rimraf ./build/ && tsc",
+		"build:dev": "rimraf ./build/ && tsc -p ./tsconfig.dev.json",
+		"dev": "tsc -p ./tsconfig.dev.json --watch",
+		"clean": "rimraf build"
+	},
+	"dependencies": {
+		"@finance/lib-basic-types": "*",
+		"@finance/lib-module-types": "*",
+		"@finance/lib-tsconfig": "*",
+		"@types/lodash-es": "^4.17.6",
+		"esbuild": "^0.15.12",
+		"lodash-es": "^4.17.21",
+		"pg": "^8.4.0",
+		"reflect-metadata": "^0.1.13",
+		"tsyringe": "^4.7.0",
+		"typeorm": "0.3.10",
+		"uuidv4": "^6.2.13",
+		"zod": "^3.19.1"
+	},
+	"devDependencies": {
+		"@types/node": "^16.11.10",
+		"rimraf": "^3.0.2",
+		"ts-node": "10.7.0",
+		"typescript": "^4.9.4"
+	}
+}

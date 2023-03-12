@@ -1,0 +1,28 @@
+{
+	"name": "@finance/lib-basic-types",
+	"version": "1.0.0",
+	"private": true,
+	"license": "MIT",
+	"files": [
+		"./build/*"
+	],
+	"main": "./build/index.js",
+	"types": "./build/index.d.ts",
+	"type": "module",
+	"scripts": {
+		"build": "rimraf ./build/ && tsc",
+		"build:dev": "rimraf ./build/ && tsc -p ./tsconfig.dev.json",
+		"dev": "tsc -p ./tsconfig.dev.json --watch",
+		"clean": "rimraf build"
+	},
+	"dependencies": {
+		"@finance/lib-module-types": "*",
+		"@finance/lib-tsconfig": "*",
+		"@types/babel__core": "^7.1.20",
+		"@types/lodash-es": "^4.17.6",
+		"lodash-es": "^4.17.21"
+	},
+	"devDependencies": {
+		"rimraf": "^3.0.2"
+	}
+}
