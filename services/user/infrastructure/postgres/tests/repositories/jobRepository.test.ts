@@ -3,7 +3,7 @@ import { JobRepository } from "#src/repositories/jobRepository";
 import { v4 } from "uuid";
 import { arrayIdentityEquals, identityEquals } from "../test-utils/arrayUtils";
 import { DbFixture, TestDataType } from "../test-utils/dbfixture";
-import type { IJobRepository } from "@finance/domain";
+import type { IJobRepository } from "@finance/svc-user-domain";
 
 let fixture: DbFixture;
 let testData: TestDataType;

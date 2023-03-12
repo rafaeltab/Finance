@@ -3,7 +3,7 @@ import { BankAccountFactory } from "#src/factories/bankAccountFactory";
 import { BankAccountRepository } from "#src/repositories/bankAccountRepository";
 import { UserRepository } from "#src/repositories/userRepository";
 import { DbFixture, TestDataType } from "../test-utils/dbfixture";
-import type { IBankAccountFactory, IBankAccountRepository, IUserRepository } from "@finance/domain";
+import type { IBankAccountFactory, IBankAccountRepository, IUserRepository } from "@finance/svc-user-domain";
 import { expectNotNullOrUndefined, expectRequiredProps } from "#tests/test-utils/expectUtils";
 
 let fixture: DbFixture;

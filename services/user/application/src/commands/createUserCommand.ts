@@ -1,8 +1,8 @@
 // list a maximum of 30 asset groups
 
-import { IUserFactory, userFactory } from "@finance/domain";
-import { ICommand, ICommandHandler, ICommandResult } from "@finance/libs-types";
-import { IUnitOfWork, unitOfWork } from "@finance/postgres";
+import { IUserFactory, userFactory } from "@finance/svc-user-domain";
+import { ICommand, ICommandHandler, ICommandResult } from "@finance/lib-mediator";
+import { IUnitOfWork, unitOfWork } from "@finance/svc-user-infra-postgres";
 import type { DateTime } from "luxon";
 import { inject, injectable } from "tsyringe";
 

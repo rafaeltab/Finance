@@ -1,6 +1,6 @@
 import { StockFactory } from "#src/factories/stockFactory";
 import { StockRepository } from "#src/repositories/stockRepository";
-import { InsertStockValue, StockAssetKind, TimeRange } from "@finance/domain";
+import { InsertStockValue, StockAssetKind, TimeRange } from "@finance/svc-user-domain";
 import "reflect-metadata";
 import { DbFixture, TestDataType } from "../test-utils/dbfixture";
 import { expectNotNullOrUndefined, expectRequiredProps } from "#tests/test-utils/expectUtils";

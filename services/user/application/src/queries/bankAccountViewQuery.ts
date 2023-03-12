@@ -1,8 +1,8 @@
 // list a maximum of 30 asset groups
 
-import { IBankAccountRepository, BankAccount, PaginatedBase, bankAccountRepository } from "@finance/domain";
-import { IQuery, IQueryHandler, IQueryResult, ISuccessQueryResult } from "@finance/libs-types";
-import { unitOfWork, type IUnitOfWork } from "@finance/postgres";
+import { IBankAccountRepository, BankAccount, PaginatedBase, bankAccountRepository } from "@finance/svc-user-domain";
+import { IQuery, IQueryHandler, IQueryResult, ISuccessQueryResult } from "@finance/lib-mediator";
+import { unitOfWork, type IUnitOfWork } from "@finance/svc-user-infra-postgres";
 import { inject, injectable } from "tsyringe";
 
 export type ResponseType = IQueryResult<PaginatedBase<BankAccount>>

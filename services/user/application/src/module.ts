@@ -1,7 +1,7 @@
-import type { Module } from "@finance/modules";
+import type { Module } from "@finance/lib-module-types";
 import type { DependencyContainer } from "tsyringe";
 import { ApplicationMediatorModule } from "./applicationMediatorModule";
-import { Mediator } from "@finance/libs-types";
+import { Mediator } from "@finance/lib-mediator";
 
 export class ApplicationModule implements Module {
 	private mediator?: Mediator;

@@ -7,9 +7,9 @@
 		"dev": "py src/run.py"
 	},
 	"dependencies": {
-		"@finance/libs-tsconfig": "*",
-		"@finance/libs-types": "*",
-		"@finance/modules": "*",
+		"@finance/lib-tsconfig": "*",
+		"@finance/lib-basic-types": "*",
+		"@finance/lib-module-types": "*",
 		"@types/lodash-es": "^4.17.6",
 		"esbuild": "^0.15.12",
 		"lodash-es": "^4.17.21",

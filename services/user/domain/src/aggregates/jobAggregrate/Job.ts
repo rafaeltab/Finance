@@ -2,7 +2,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToOne, Relation } from "typeo
 import { ActiveIncome } from "./ActiveIncome";
 import { EnitityBase } from "../../utils/Entity";
 import { User } from "../User";
-import type { EntityMeta } from "@finance/libs-types";
+import type { EntityMeta } from "@finance/lib-basic-types";
 
 @Entity()
 export class Job extends EnitityBase { 

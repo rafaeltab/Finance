@@ -1,7 +1,7 @@
-import { CreateJobCommand, DeleteJobCommand, JobViewQuery } from "@finance/application";
-import { DuplicateEntryError, EntryNotFoundError } from "@finance/errors";
-import { FinanceErrors } from "@finance/errors-nest";
-import { Mediator } from "@finance/libs-types";
+import { CreateJobCommand, DeleteJobCommand, JobViewQuery } from "@finance/svc-user-application";
+import { DuplicateEntryError, EntryNotFoundError } from "@finance/lib-errors";
+import { FinanceErrors } from "@finance/lib-errors-nest";
+import { Mediator } from "@finance/lib-mediator";
 import { Body, Controller, Get, Inject, Param, Put } from "@nestjs/common";
 import { Delete } from "@nestjs/common/decorators";
 import { ApiBearerAuth, ApiOkResponse } from "@nestjs/swagger";

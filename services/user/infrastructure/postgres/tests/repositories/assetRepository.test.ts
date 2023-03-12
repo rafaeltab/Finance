@@ -3,7 +3,7 @@ import { AssetRepository } from "#src/repositories/assetRepository";
 import { v4 } from "uuid";
 import { arrayIdentityEquals, identityEquals } from "../test-utils/arrayUtils";
 import { DbFixture, TestDataType } from "../test-utils/dbfixture";
-import type { IAssetRepository } from "@finance/domain";
+import type { IAssetRepository } from "@finance/svc-user-domain";
 
 let fixture: DbFixture;
 let testData: TestDataType;

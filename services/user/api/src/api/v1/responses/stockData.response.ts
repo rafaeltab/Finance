@@ -1,4 +1,4 @@
-import { StockAssetKind, StockData, StockValue } from "@finance/domain";
+import { StockAssetKind, StockData, StockValue } from "@finance/svc-user-domain";
 import { ApiProperty } from "@nestjs/swagger";
 import { EntityResponse } from "./identity.response";
 

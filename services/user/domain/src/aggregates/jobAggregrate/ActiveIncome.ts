@@ -1,4 +1,4 @@
-import type { EntityMeta } from "@finance/libs-types";
+import type { EntityMeta } from "@finance/lib-basic-types";
 import { Column, Entity, OneToOne, Relation } from "typeorm";
 import { ValueObjectBase } from "../../utils/ValueObject";
 import { Job } from "./Job";

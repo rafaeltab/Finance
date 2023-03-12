@@ -1,4 +1,4 @@
-import type { Job } from "@finance/domain";
+import type { Job } from "@finance/svc-user-domain";
 import { ApiProperty } from "@nestjs/swagger";
 import { EntityResponse } from "./identity.response";
 

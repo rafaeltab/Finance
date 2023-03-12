@@ -1,6 +1,6 @@
 import "reflect-metadata"
 import { DataSource } from "typeorm"
-import { entities } from "@finance/domain";
+import { entities } from "@finance/svc-user-domain";
 import * as migrations from "./migrations/index";
 import type { InjectionToken } from "tsyringe";
 

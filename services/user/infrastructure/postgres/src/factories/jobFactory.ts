@@ -1,7 +1,7 @@
-import { IJobFactory, EntityKey, Job, ActiveIncome, User, getKey } from "@finance/domain";
+import { IJobFactory, EntityKey, Job, ActiveIncome, User, getKey } from "@finance/svc-user-domain";
 import { inject, injectable } from "tsyringe";
 import { UnitOfWork, unitOfWork } from "../unitOfWork/unitOfWork";
-import { DuplicateEntryError, EntryNotFoundError, UnexpectedError } from "@finance/errors";
+import { DuplicateEntryError, EntryNotFoundError, UnexpectedError } from "@finance/lib-errors";
 
 @injectable()
 export class JobFactory implements IJobFactory {

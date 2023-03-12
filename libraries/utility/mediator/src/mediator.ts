@@ -2,8 +2,8 @@ import { container, DependencyContainer, } from "tsyringe";
 import { IQuery, IQueryHandler, IQueryResult } from "./query";
 import { IEvent, IEventHandler } from "./event";
 import { ICommand, ICommandHandler, ICommandResult } from "./command";
-import type { AnyConstructor } from "../constructor";
-import type { Module } from "@finance/modules";
+import type { AnyConstructor } from "@finance/lib-basic-types";
+import type { Module } from "@finance/lib-module-types";
 
 export interface ITokenable { 
 	token: string;

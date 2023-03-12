@@ -17,6 +17,7 @@
 		"clean": "rimraf build"
 	},
 	"dependencies": {
+		"@finance/lib-basic-types": "*",
 		"@finance/lib-module-types": "*",
 		"@finance/lib-tsconfig": "*",
 		"@types/babel__core": "^7.1.20",

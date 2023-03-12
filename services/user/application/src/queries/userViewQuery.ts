@@ -1,8 +1,9 @@
 // list a maximum of 30 asset groups
 
-import { IUserRepository, User, userRepository } from "@finance/domain";
-import { IQuery, IQueryHandler, IQueryResult, WithRequiredProperty, assertContains } from "@finance/libs-types";
-import { IUnitOfWork, unitOfWork } from "@finance/postgres";
+import { IUserRepository, User, userRepository } from "@finance/svc-user-domain";
+import { assertContains, WithRequiredProperty } from "@finance/lib-test";
+import { IQuery, IQueryHandler, IQueryResult } from "@finance/lib-mediator";
+import { IUnitOfWork, unitOfWork } from "@finance/svc-user-infra-postgres";
 import { inject, injectable } from "tsyringe";
 
 

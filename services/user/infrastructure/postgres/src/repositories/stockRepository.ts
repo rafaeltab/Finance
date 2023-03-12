@@ -1,5 +1,5 @@
-import { EntityKey, IStockRepository, PaginatedBase, StockAssetKind, StockData, StockDividendEvent, StockSplitEvent, StockValue, TimeRange, ValueGranularity, getKey } from "@finance/domain";
-import { EntryNotFoundError } from "@finance/errors";
+import { EntityKey, IStockRepository, PaginatedBase, StockAssetKind, StockData, StockDividendEvent, StockSplitEvent, StockValue, TimeRange, ValueGranularity, getKey } from "@finance/svc-user-domain";
+import { EntryNotFoundError } from "@finance/lib-errors";
 import { set } from "lodash-es";
 import { inject, injectable } from "tsyringe";
 import { EntityManager, EntityMetadata, EntityTarget, FindOptionsWhere, In, Like, ObjectLiteral } from "typeorm";

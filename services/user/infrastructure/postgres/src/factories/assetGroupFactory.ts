@@ -1,6 +1,6 @@
 import { UnitOfWork, unitOfWork } from "../unitOfWork/unitOfWork";
-import { AssetGroup, EntityKey, IAssetGroupFactory, User, getKey } from "@finance/domain";
-import { DuplicateEntryError, EntryNotFoundError, UnexpectedError } from "@finance/errors";
+import { AssetGroup, EntityKey, IAssetGroupFactory, User, getKey } from "@finance/svc-user-domain";
+import { DuplicateEntryError, EntryNotFoundError, UnexpectedError } from "@finance/lib-errors";
 import { inject, injectable } from "tsyringe";
 
 @injectable()

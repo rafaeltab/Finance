@@ -1,5 +1,5 @@
-import type { ResponseType as BankAccountsViewQueryResponse } from "@finance/application/build/queries/bankAccountViewQuery";
-import type { ResponseType as CreateBankAccountCommandResponse } from "@finance/application/build/commands/createBankAccountCommand";
+import type { ResponseType as BankAccountsViewQueryResponse } from "@finance/svc-user-application/build/queries/bankAccountViewQuery";
+import type { ResponseType as CreateBankAccountCommandResponse } from "@finance/svc-user-application/build/commands/createBankAccountCommand";
 
 import { ApiProperty } from "@nestjs/swagger";
 import { BankAccountResponse } from "../../responses/bankAccount.response";

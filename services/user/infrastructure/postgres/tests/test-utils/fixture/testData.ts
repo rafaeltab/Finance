@@ -1,4 +1,4 @@
-import { BankAccount, Balance, User, ActiveIncome, Job, Asset, AssetGroup, StockAsset, StockOrder, StockData, StockAssetKind, StockValue, StockSplitEvent, StockDividendEvent } from "@finance/domain";
+import { BankAccount, Balance, User, ActiveIncome, Job, Asset, AssetGroup, StockAsset, StockOrder, StockData, StockAssetKind, StockValue, StockSplitEvent, StockDividendEvent } from "@finance/svc-user-domain";
 import { v4 } from "uuid";
 
 export const user = new User({

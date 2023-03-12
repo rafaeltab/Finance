@@ -1,4 +1,4 @@
-import type { EntityMeta } from "@finance/libs-types";
+import type { EntityMeta } from "@finance/lib-basic-types";
 import { Column, Entity, OneToMany, Relation } from "typeorm";
 import { EnitityBase } from "../../utils";
 import { StockDividendEvent } from "./StockDividendEvent";

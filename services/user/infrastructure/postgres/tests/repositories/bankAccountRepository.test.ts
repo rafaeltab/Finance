@@ -3,7 +3,7 @@ import { BankAccountRepository } from "#src/repositories/bankAccountRepository";
 import { v4 } from "uuid";
 import { arrayIdentityEquals, identityEquals } from "../test-utils/arrayUtils";
 import { DbFixture, TestDataType } from "../test-utils/dbfixture";
-import type { IBankAccountRepository } from "@finance/domain";
+import type { IBankAccountRepository } from "@finance/svc-user-domain";
 
 let fixture: DbFixture;
 let testData: TestDataType;

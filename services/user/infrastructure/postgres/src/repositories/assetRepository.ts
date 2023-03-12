@@ -1,6 +1,6 @@
 import { unitOfWork, UnitOfWork } from "../unitOfWork/unitOfWork";
-import { EntityKey, IAssetRepository, PaginatedBase, Asset, getKey } from "@finance/domain";
-import { EntryNotFoundError } from "@finance/errors";
+import { EntityKey, IAssetRepository, PaginatedBase, Asset, getKey } from "@finance/svc-user-domain";
+import { EntryNotFoundError } from "@finance/lib-errors";
 import { inject, injectable } from "tsyringe";
 
 @injectable()

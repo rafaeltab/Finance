@@ -1,6 +1,6 @@
-import { IHttpCodeError, UnexpectedError } from "@finance/errors";
+import { IHttpCodeError, UnexpectedError } from "@finance/lib-errors";
 import { ApiProperty, ApiResponse } from "@nestjs/swagger";
-import type { AnyConstructor } from "@finance/libs-types";
+import type { AnyConstructor } from "@finance/lib-basic-types";
 
 type HttpErrorConstructor = AnyConstructor<IHttpCodeError & Error>;
 

@@ -1,4 +1,4 @@
-import type { EntityMeta } from "@finance/libs-types"
+import type { EntityMeta } from "@finance/lib-basic-types"
 import { Entity, Column, OneToMany, Relation } from "typeorm"
 import { EnitityBase } from "../utils/Entity"
 import { Asset } from "./assetAggregate/Asset"

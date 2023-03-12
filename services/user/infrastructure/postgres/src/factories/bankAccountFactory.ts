@@ -1,7 +1,7 @@
 import { UnitOfWork, unitOfWork } from "../unitOfWork/unitOfWork";
-import { Balance, BankAccount, EntityKey, IBankAccountFactory, User, getKey } from "@finance/domain";
-import { DuplicateEntryError, EntryNotFoundError, UnexpectedError } from "@finance/errors";
-import { assertContains } from "@finance/libs-types";
+import { Balance, BankAccount, EntityKey, IBankAccountFactory, User, getKey } from "@finance/svc-user-domain";
+import { DuplicateEntryError, EntryNotFoundError, UnexpectedError } from "@finance/lib-errors";
+import { assertContains } from "@finance/lib-test";
 import { inject, injectable } from "tsyringe";
 
 @injectable()

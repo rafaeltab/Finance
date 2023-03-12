@@ -1,7 +1,7 @@
 import { Column, Entity, JoinColumn, OneToOne, Relation } from "typeorm";
 import { EnitityBase } from "../../../utils";
 import { Asset } from "../Asset";
-import type { EntityMeta } from "@finance/libs-types";
+import type { EntityMeta } from "@finance/lib-basic-types";
 
 @Entity()
 export class RealEstateAsset extends EnitityBase {

@@ -1,5 +1,5 @@
-import { BankAccount, EntityKey, IBankAccountRepository, PaginatedBase, getKey } from "@finance/domain";
-import { EntryNotFoundError } from "@finance/errors";
+import { BankAccount, EntityKey, IBankAccountRepository, PaginatedBase, getKey } from "@finance/svc-user-domain";
+import { EntryNotFoundError } from "@finance/lib-errors";
 import { inject, injectable } from "tsyringe";
 import { UnitOfWork, unitOfWork } from "../unitOfWork/unitOfWork";
 

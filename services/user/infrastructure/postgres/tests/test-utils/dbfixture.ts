@@ -1,5 +1,5 @@
 import { UnitOfWork } from "#src/unitOfWork/unitOfWork";
-import { entities, User } from "@finance/domain";
+import { entities, User } from "@finance/svc-user-domain";
 import { DataSource } from "typeorm";
 
 export type TestDataType = typeof import("./fixture/testData")

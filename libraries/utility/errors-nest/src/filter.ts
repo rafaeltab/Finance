@@ -1,4 +1,4 @@
-import { ProgrammerError, UserError } from "@finance/errors";
+import { ProgrammerError, UserError } from "@finance/lib-errors";
 import { ArgumentsHost, Catch, ExceptionFilter, HttpServer, Logger } from "@nestjs/common";
 import { BaseExceptionFilter } from "@nestjs/core";
 import { handleError } from "./handleError";

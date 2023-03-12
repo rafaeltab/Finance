@@ -3,7 +3,7 @@ import { AssetGroupFactory } from "#src/factories/assetGroupFactory";
 import { AssetGroupRepository } from "#src/repositories/assetGroupRepository";
 import { UserRepository } from "#src/repositories/userRepository";
 import { DbFixture, TestDataType } from "../test-utils/dbfixture";
-import type { IAssetGroupFactory, IAssetGroupRepository, IUserRepository } from "@finance/domain";
+import type { IAssetGroupFactory, IAssetGroupRepository, IUserRepository } from "@finance/svc-user-domain";
 import { expectNotNullOrUndefined, expectRequiredProps } from "#tests/test-utils/expectUtils";
 
 let fixture: DbFixture;

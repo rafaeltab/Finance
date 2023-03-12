@@ -1,6 +1,6 @@
 import { unitOfWork, UnitOfWork } from "../unitOfWork/unitOfWork";
-import { EntityKey, IStockFactory, InsertEvent, InsertStockValue, StockAssetKind, StockData, StockDividendEvent, StockValue, StockSplitEvent, getKey } from "@finance/domain";
-import { EntryNotFoundError } from "@finance/errors";
+import { EntityKey, IStockFactory, InsertEvent, InsertStockValue, StockAssetKind, StockData, StockDividendEvent, StockValue, StockSplitEvent, getKey } from "@finance/svc-user-domain";
+import { EntryNotFoundError } from "@finance/lib-errors";
 import { inject, injectable } from "tsyringe";
 
 @injectable()

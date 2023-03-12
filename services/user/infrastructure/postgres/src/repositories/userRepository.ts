@@ -1,9 +1,9 @@
-import { IUserRepository, User, EntityKey, PaginatedBase, UserMeta, getKey } from "@finance/domain";
+import { IUserRepository, User, EntityKey, PaginatedBase, UserMeta, getKey } from "@finance/svc-user-domain";
 import { inject, injectable } from "tsyringe";
 import { UnitOfWork, unitOfWork } from "../unitOfWork/unitOfWork";
 import { intersection } from "lodash-es"
 import type { FindOptionsRelations } from "typeorm";
-import { EntryNotFoundError } from "@finance/errors";
+import { EntryNotFoundError } from "@finance/lib-errors";
 
 @injectable()
 export class UserRepository implements IUserRepository {

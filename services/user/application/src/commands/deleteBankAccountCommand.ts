@@ -1,8 +1,8 @@
 // list a maximum of 30 asset groups
 
-import { IBankAccountRepository, bankAccountRepository } from "@finance/domain";
-import { ICommand, ICommandHandler, ICommandResult } from "@finance/libs-types";
-import { IUnitOfWork, unitOfWork } from "@finance/postgres";
+import { IBankAccountRepository, bankAccountRepository } from "@finance/svc-user-domain";
+import { ICommand, ICommandHandler, ICommandResult } from "@finance/lib-mediator";
+import { IUnitOfWork, unitOfWork } from "@finance/svc-user-infra-postgres";
 import { inject, injectable } from "tsyringe";
 
 export type ResponseType = ICommandResult<undefined>;

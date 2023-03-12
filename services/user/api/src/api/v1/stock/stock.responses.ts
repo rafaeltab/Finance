@@ -3,8 +3,8 @@ import { PaginatedResponse, PaginatedResponseData } from "../responses/paginated
 import { StockDataResponse, StockValueResponse } from "../responses/stockData.response";
 import { SuccessResponse, SuccessResponseData } from "../responses/success.response";
 
-import type { ResponseType as StockDataSearchQueryResponse } from "@finance/application/build/queries/stockDataSearchQuery";
-import type { ResponseType as StockDataViewQueryResponse } from "@finance/application/build/queries/stockDataViewQuery";
+import type { ResponseType as StockDataSearchQueryResponse } from "@finance/svc-user-application/build/queries/stockDataSearchQuery";
+import type { ResponseType as StockDataViewQueryResponse } from "@finance/svc-user-application/build/queries/stockDataViewQuery";
 
 class GetSearchStockPaginatedResponse extends PaginatedResponse implements PaginatedResponseData<StockDataResponse> {
 	@ApiProperty({

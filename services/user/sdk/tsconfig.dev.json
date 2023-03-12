@@ -1,5 +1,5 @@
 {
-	"extends": "@finance/libs-tsconfig/configs/tsconfig.dev.json",
+	"extends": "@finance/lib-tsconfig/configs/tsconfig.dev.json",
 	"include": [
 		"lib/**/*.ts"
 	],

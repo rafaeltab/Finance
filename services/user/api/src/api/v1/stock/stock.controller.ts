@@ -1,8 +1,8 @@
-import { AddValuesToStockDataCommand, CreateStockDatasCommand, StockDataSearchQuery, StockDataViewQuery, StocksDataListViewQuery } from "@finance/application";
-import { InsertStockValue, StockAssetKind } from "@finance/domain";
-import { DuplicateEntryError, EntryNotFoundError } from "@finance/errors";
-import { FinanceErrors } from "@finance/errors-nest";
-import { IQueryResult, Mediator } from "@finance/libs-types";
+import { AddValuesToStockDataCommand, CreateStockDatasCommand, StockDataSearchQuery, StockDataViewQuery, StocksDataListViewQuery } from "@finance/svc-user-application";
+import { InsertStockValue, StockAssetKind } from "@finance/svc-user-domain";
+import { DuplicateEntryError, EntryNotFoundError } from "@finance/lib-errors";
+import { FinanceErrors } from "@finance/lib-errors-nest";
+import { IQueryResult, Mediator } from "@finance/lib-mediator";
 import { Controller, Get, HttpException, Inject, Param, Query, UploadedFile, UseInterceptors } from "@nestjs/common";
 import { Put } from "@nestjs/common/decorators/http/request-mapping.decorator";
 import { FileInterceptor } from "@nestjs/platform-express";

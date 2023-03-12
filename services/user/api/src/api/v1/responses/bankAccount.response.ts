@@ -1,4 +1,4 @@
-import type { BankAccount } from "@finance/domain";
+import type { BankAccount } from "@finance/svc-user-domain";
 import { ApiProperty,  } from "@nestjs/swagger";
 import { EntityResponse } from "./identity.response";
 

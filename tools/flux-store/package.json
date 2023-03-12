@@ -7,9 +7,9 @@
 		"dev": "ts-node ./src/index.ts"
 	},
 	"dependencies": {
-		"@finance/libs-tsconfig": "*",
-		"@finance/libs-types": "*",
-		"@finance/modules": "*",
+		"@finance/lib-tsconfig": "*",
+		"@finance/lib-basic-types": "*",
+		"@finance/lib-module-types": "*",
 		"@influxdata/influxdb-client": "^1.33.0",
 		"@types/lodash-es": "^4.17.6",
 		"csv-parser": "^3.0.0",

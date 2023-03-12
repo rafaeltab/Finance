@@ -1,7 +1,7 @@
-import { CreateUserCommand, DeleteUserCommand, UserListQuery, UserViewQuery } from "@finance/application";
-import { DuplicateEntryError, EntryNotFoundError } from "@finance/errors";
-import { FinanceErrors } from "@finance/errors-nest";
-import { Mediator } from "@finance/libs-types";
+import { CreateUserCommand, DeleteUserCommand, UserListQuery, UserViewQuery } from "@finance/svc-user-application";
+import { DuplicateEntryError, EntryNotFoundError } from "@finance/lib-errors";
+import { FinanceErrors } from "@finance/lib-errors-nest";
+import { Mediator } from "@finance/lib-mediator";
 import { Body, Controller, Get, Inject, Param, Put } from "@nestjs/common";
 import { Delete, UseGuards } from "@nestjs/common/decorators";
 import { ApiBearerAuth, ApiOkResponse } from "@nestjs/swagger";

@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { DbFixture, TestDataType } from "../test-utils/dbfixture";
-import { IStockRepository, StockAssetKind, TimeRange } from "@finance/domain";
+import { IStockRepository, StockAssetKind, TimeRange } from "@finance/svc-user-domain";
 import { StockRepository } from "#src/repositories/stockRepository";
 import { expectNotNullOrUndefined, expectRequiredProps } from "#tests/test-utils/expectUtils";
 

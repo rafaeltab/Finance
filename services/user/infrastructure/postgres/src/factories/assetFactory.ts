@@ -1,7 +1,7 @@
 import { inject, injectable } from "tsyringe";
 import { UnitOfWork, unitOfWork } from "../unitOfWork/unitOfWork";
-import { Asset, AssetGroup, EntityKey, IAssetFactory, RealEstateAsset, StockAsset, User, StockOrder, StockData, getKey } from "@finance/domain";
-import { DuplicateEntryError, EntryNotFoundError, UnexpectedError } from "@finance/errors";
+import { Asset, AssetGroup, EntityKey, IAssetFactory, RealEstateAsset, StockAsset, User, StockOrder, StockData, getKey } from "@finance/svc-user-domain";
+import { DuplicateEntryError, EntryNotFoundError, UnexpectedError } from "@finance/lib-errors";
 
 @injectable()
 export class AssetFactory implements IAssetFactory {

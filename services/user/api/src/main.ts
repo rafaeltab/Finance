@@ -3,7 +3,7 @@ import { AppModule } from "./app.module";
 import { ValidationPipe } from "@nestjs/common";
 import { createSwaggerDocument, setupSwagger } from "./swagger";
 import { writeFileSync } from "fs";
-import { FinanceProgrammerErrorExceptionFilter, FinanceUserErrorExceptionFilter } from "@finance/errors-nest";
+import { FinanceProgrammerErrorExceptionFilter, FinanceUserErrorExceptionFilter } from "@finance/lib-errors-nest";
 import { AuthzGuard } from "./authz/authz.guard";
 
 async function bootstrap() {

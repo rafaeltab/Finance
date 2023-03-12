@@ -1,5 +1,5 @@
-import { MediatorModule } from "@finance/libs-types";
-import { PostgresInfrastructureModule } from "@finance/postgres";
+import { MediatorModule } from "@finance/lib-mediator";
+import { PostgresInfrastructureModule } from "@finance/svc-user-infra-postgres";
 import { CreateRealEstateAssetForAssetGroupCommand, CreateRealEstateAssetForAssetGroupCommandHandler } from "./commands/assets/createRealEstateAssetForAssetGroupCommand";
 import { CreateBankAccountCommand, CreateBankAccountCommandHandler } from "./commands/createBankAccountCommand";
 import { CreateJobCommand, CreateJobCommandHandler } from "./commands/createJobCommand";

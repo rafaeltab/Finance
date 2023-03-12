@@ -1,5 +1,5 @@
-import type { ResponseType as JobsViewQueryResponse } from "@finance/application/build/queries/jobViewQuery";
-import type { ResponseType as CreateJobCommandResponse } from "@finance/application/build/commands/createJobCommand";
+import type { ResponseType as JobsViewQueryResponse } from "@finance/svc-user-application/build/queries/jobViewQuery";
+import type { ResponseType as CreateJobCommandResponse } from "@finance/svc-user-application/build/commands/createJobCommand";
 
 import { ApiProperty } from "@nestjs/swagger";
 import { JobResponse } from "../../responses/jobs.response";

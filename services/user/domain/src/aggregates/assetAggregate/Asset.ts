@@ -4,7 +4,7 @@ import { EnitityBase } from "../../utils/Entity";
 import { User } from "../User";
 import { StockAsset } from "./assetKinds/StockAsset";
 import { RealEstateAsset } from "./assetKinds/RealEstateAsset";
-import type { EntityMeta } from "@finance/libs-types";
+import type { EntityMeta } from "@finance/lib-basic-types";
 
 @Entity()
 export class Asset extends EnitityBase {

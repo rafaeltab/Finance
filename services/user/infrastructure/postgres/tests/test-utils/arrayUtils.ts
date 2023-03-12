@@ -1,4 +1,4 @@
-import type { ValueObjectBase } from "@finance/domain";
+import type { ValueObjectBase } from "@finance/svc-user-domain";
 
 export function identityEquals<T extends ValueObjectBase>(resultA: PossibleReadonly<T>, resultB: PossibleReadonly<T>): boolean {
 	if ((resultA as any).identity !== (resultB as any).identity) return false;

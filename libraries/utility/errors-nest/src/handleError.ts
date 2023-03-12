@@ -1,4 +1,4 @@
-import { UnexpectedError, type IHttpCodeError } from "@finance/errors";
+import { UnexpectedError, type IHttpCodeError } from "@finance/lib-errors";
 import { HttpException } from "@nestjs/common";
 
 export function handleError(err: unknown): HttpException {

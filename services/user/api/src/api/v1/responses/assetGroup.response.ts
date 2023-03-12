@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { AssetResponse } from "./asset.response";
-import type { AssetGroup } from "@finance/domain";
+import type { AssetGroup } from "@finance/svc-user-domain";
 import { EntityResponse } from "./identity.response";
 
 export class AssetGroupResponse extends EntityResponse { 

@@ -1,6 +1,6 @@
-import type { ResponseType as UserListQueryResponseType } from "@finance/application/build/queries/userListQuery";
-import type { ResponseType as UserViewQueryResponseType } from "@finance/application/build/queries/userViewQuery";
-import type { ResponseType as CreateUserCommandResponseType } from "@finance/application/build/commands/createUserCommand";
+import type { ResponseType as UserListQueryResponseType } from "@finance/svc-user-application/build/queries/userListQuery";
+import type { ResponseType as UserViewQueryResponseType } from "@finance/svc-user-application/build/queries/userViewQuery";
+import type { ResponseType as CreateUserCommandResponseType } from "@finance/svc-user-application/build/commands/createUserCommand";
 import { ApiProperty, IntersectionType } from "@nestjs/swagger";
 import { AssetGroupResponse } from "../responses/assetGroup.response";
 import { BankAccountResponse } from "../responses/bankAccount.response";

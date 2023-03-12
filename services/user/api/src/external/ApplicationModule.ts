@@ -1,6 +1,6 @@
 import { Module, OnModuleDestroy, Provider } from "@nestjs/common";
-import { Mediator } from "@finance/libs-types";
-import { ApplicationMediatorModule } from "@finance/application";
+import { Mediator } from "@finance/lib-mediator";
+import { ApplicationMediatorModule } from "@finance/svc-user-application";
 
 var mediator = new Mediator();
 
