@@ -13,11 +13,13 @@
 		"clean": "rimraf build"
 	},
 	"dependencies": {
-		"@finance/domain": "*",
+		"@finance/svc-user-domain": "*",
+		"@finance/svc-user-infra-postgres": "*",
+
 		"@finance/libs-tsconfig": "*",
 		"@finance/libs-types": "*",
 		"@finance/modules": "*",
-		"@finance/postgres": "*",
+
 		"@types/lodash-es": "^4.17.6",
 		"@types/luxon": "^3.2.0",
 		"ajv": "^8.12.0",

@@ -16,6 +16,7 @@
 		"@finance/libs-tsconfig": "*",
 		"@finance/libs-types": "*",
 		"@finance/modules": "*",
+		
 		"@types/lodash-es": "^4.17.6",
 		"esbuild": "^0.15.12",
 		"lodash-es": "^4.17.21",
