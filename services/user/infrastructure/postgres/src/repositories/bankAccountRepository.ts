@@ -10,7 +10,7 @@ export class BankAccountRepository implements IBankAccountRepository {
 	async getAllBankAccountsForUser(user: EntityKey, limit: number, offset: number): Promise<PaginatedBase<BankAccount>> {
 		const res = await this._unitOfWork.getQueryRunner().manager.findAndCount(BankAccount, {
 			where: {
-				user: user
+				user
 			},
 			skip: offset,
 			take: limit,
@@ -19,7 +19,7 @@ export class BankAccountRepository implements IBankAccountRepository {
 		return {
 			page: {
 				count: limit,
-				offset: offset,
+				offset,
 				total: res[1]
 			},
 			data: res[0]

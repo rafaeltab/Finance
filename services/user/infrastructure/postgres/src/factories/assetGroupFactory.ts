@@ -1,7 +1,7 @@
-import { UnitOfWork, unitOfWork } from "../unitOfWork/unitOfWork";
 import { AssetGroup, EntityKey, IAssetGroupFactory, User, getKey } from "@finance/svc-user-domain";
 import { DuplicateEntryError, EntryNotFoundError, UnexpectedError } from "@finance/lib-errors";
 import { inject, injectable } from "tsyringe";
+import { UnitOfWork, unitOfWork } from "../unitOfWork/unitOfWork";
 
 @injectable()
 export class AssetGroupFactory implements IAssetGroupFactory {
@@ -33,8 +33,8 @@ export class AssetGroupFactory implements IAssetGroupFactory {
 		}
 
 		const assetGroup = new AssetGroup({
-			name: name,
-			identity: identity
+			name,
+			identity
 		})
 
 		if (userEntity.assetGroups === undefined) {

@@ -1,16 +1,18 @@
-import { UnitOfWork } from "#src/unitOfWork/unitOfWork";
 import { entities, User } from "@finance/svc-user-domain";
 import { DataSource } from "typeorm";
+import { UnitOfWork } from "#src/unitOfWork/unitOfWork";
 
 export type TestDataType = typeof import("./fixture/testData")
 
 async function createTestData() {
-	return await import("./fixture/testData");
+	return import("./fixture/testData");
 }
 
 export class DbFixture {
 	private unitOfWork?: UnitOfWork;
+
 	private dataSource?: DataSource;
+
 	private testData?: TestDataType;
 
 	private constructor() { }
@@ -62,7 +64,7 @@ export class DbFixture {
 }
 
 export async function createDataSource() {
-	var dataSource = new DataSource({
+	const dataSource = new DataSource({
 		type: "postgres",
 		host: "localhost",
 		port: 5433,
@@ -71,7 +73,7 @@ export async function createDataSource() {
 		database: "finance-test",
 		synchronize: false,
 		logging: false,
-		entities: entities,
+		entities,
 		subscribers: [],
 	});
 	await dataSource.initialize();

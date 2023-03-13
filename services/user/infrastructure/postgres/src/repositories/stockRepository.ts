@@ -40,7 +40,7 @@ export class StockRepository implements IStockRepository {
 	}
 
 	async getStockValues(stockDataId: EntityKey, granularity: ValueGranularity, timerange: TimeRange, limit?: number, offset?: number): Promise<PaginatedBase<StockValue>> {
-		let isValidGranularity = granularities.has(granularity);
+		const isValidGranularity = granularities.has(granularity);
 		if (!isValidGranularity) {
 			throw new Error("Invalid granularity");
 		}
@@ -62,10 +62,8 @@ export class StockRepository implements IStockRepository {
 		const entityManager = this._unitOfWork.getQueryRunner().manager;
 		const queryResult = await entityManager
 			.createQueryBuilder()
-			.from((subQuery) => {
-				return subQuery
-					.from((subQuery) => {
-						return subQuery.from(StockValue, "sv")
+			.from((subQuery) => subQuery
+					.from((subQuery) => subQuery.from(StockValue, "sv")
 							.distinctOn(distinct)
 							.where("sv.stockDataUniqueId = :stockId", stockId)
 							.andWhere("sv.date >= :startDate", { startDate: timerange.start })
@@ -73,10 +71,8 @@ export class StockRepository implements IStockRepository {
 							.addSelect(`"sv"."open"`, "open")
 							.addSelect(trunc, "trunc")
 							.addOrderBy(trunc)
-							.addOrderBy(`"sv"."date"`)
-					}, "o")
-					.innerJoin((subQuery) => {
-						return subQuery.from(StockValue, "sv")
+							.addOrderBy(`"sv"."date"`), "o")
+					.innerJoin((subQuery) => subQuery.from(StockValue, "sv")
 							.distinctOn(distinct)
 							.where("sv.stockDataUniqueId = :stockId", stockId)
 							.andWhere("sv.date >= :startDate", { startDate: timerange.start })
@@ -84,10 +80,8 @@ export class StockRepository implements IStockRepository {
 							.addSelect(`"sv"."close"`, "close")
 							.addSelect(trunc, "trunc")
 							.addOrderBy(trunc)
-							.addOrderBy(`"sv"."date"`, "DESC")
-					}, "c", `"o"."trunc" = "c"."trunc"`)
-					.innerJoin((subQuery) => {
-						return subQuery.from(StockValue, "sv")
+							.addOrderBy(`"sv"."date"`, "DESC"), "c", `"o"."trunc" = "c"."trunc"`)
+					.innerJoin((subQuery) => subQuery.from(StockValue, "sv")
 							.where("sv.stockDataUniqueId = :stockId", stockId)
 							.andWhere("sv.date >= :startDate", { startDate: timerange.start })
 							.andWhere("sv.date <= :endDate", { endDate: timerange.end })
@@ -96,15 +90,13 @@ export class StockRepository implements IStockRepository {
 							.addSelect(`max("sv"."high")`, "high")
 							.addSelect(`sum("sv"."volume")`, "volume")
 							.addSelect(trunc, "trunc")
-							.groupBy(groupby)
-					}, "lhv", `"lhv"."trunc" = "o"."trunc"`)
+							.groupBy(groupby), "lhv", `"lhv"."trunc" = "o"."trunc"`)
 					.select(`"o"."open"`, "open")
 					.addSelect(`"c"."close"`, "close")
 					.addSelect(`"lhv"."low"`, "low")
 					.addSelect(`"lhv"."high"`, "high")
 					.addSelect(`"lhv"."volume"`, "volume")
-					.addSelect(`"lhv"."date"`, "date")
-			}, "res")
+					.addSelect(`"lhv"."date"`, "date"), "res")
 			.select(`res.*`)
 			.addSelect(`count(res.*) OVER ()`, `total`)
 			.skip(offset)
@@ -162,7 +154,7 @@ export class StockRepository implements IStockRepository {
 			allowedKinds = kinds;
 		}
 
-		let where: FindOptionsWhere<StockData> = {
+		const where: FindOptionsWhere<StockData> = {
 			assetKind: In(allowedKinds),
 		}
 		if (symbol !== undefined) {
@@ -174,7 +166,7 @@ export class StockRepository implements IStockRepository {
 
 
 		const stockData = await this._unitOfWork.getQueryRunner().manager.findAndCount(StockData, {
-			where: where,
+			where,
 			order: {
 				symbol: "ASC",
 				exchange: "ASC",
@@ -210,10 +202,10 @@ export class StockRepository implements IStockRepository {
 			return stockData;
 		}
 		
-		var twoYearsAgo = new Date();
+		const twoYearsAgo = new Date();
 		twoYearsAgo.setFullYear(twoYearsAgo.getFullYear() - 2);
 
-		var stockDataMap = new Map<string, StockData>();
+		const stockDataMap = new Map<string, StockData>();
 		stockData.forEach(x => stockDataMap.set(x.uniqueId, x));
 
 		const trunc = `DATE_TRUNC('month', "sv"."date")`
@@ -227,8 +219,7 @@ export class StockRepository implements IStockRepository {
 		const entityManager = this._unitOfWork.getQueryRunner().manager;
 		const queryResult = await entityManager
 			.createQueryBuilder()
-			.from((subQuery) => {
-				return subQuery.from(StockValue, "sv")
+			.from((subQuery) => subQuery.from(StockValue, "sv")
 					.distinctOn(distinct)
 					.where("sv.stockDataUniqueId in (:...stockIds)", stockIds)
 					.andWhere("sv.date >= :startDate", { startDate: twoYearsAgo })
@@ -237,10 +228,8 @@ export class StockRepository implements IStockRepository {
 					.addSelect(stockDataUniqueId, "stockDataUniqueId")
 					.addOrderBy(trunc)
 					.addOrderBy(stockDataUniqueId)
-					.addOrderBy(`"sv"."date"`)
-			}, "o")
-			.innerJoin((subQuery) => {
-				return subQuery.from(StockValue, "sv")
+					.addOrderBy(`"sv"."date"`), "o")
+			.innerJoin((subQuery) => subQuery.from(StockValue, "sv")
 					.distinctOn(distinct)
 					.where("sv.stockDataUniqueId in (:...stockIds)", stockIds)
 					.andWhere("sv.date >= :startDate", { startDate: twoYearsAgo })
@@ -249,10 +238,8 @@ export class StockRepository implements IStockRepository {
 					.addSelect(stockDataUniqueId, "stockDataUniqueId")
 					.addOrderBy(trunc)
 					.addOrderBy(stockDataUniqueId)
-					.addOrderBy(`"sv"."date"`, "DESC")
-			}, "c", `"o"."trunc" = "c"."trunc" AND "o"."stockDataUniqueId" = "c"."stockDataUniqueId"`)
-			.innerJoin((subQuery) => {
-				return subQuery.from(StockValue, "sv")
+					.addOrderBy(`"sv"."date"`, "DESC"), "c", `"o"."trunc" = "c"."trunc" AND "o"."stockDataUniqueId" = "c"."stockDataUniqueId"`)
+			.innerJoin((subQuery) => subQuery.from(StockValue, "sv")
 					.where("sv.stockDataUniqueId in (:...stockIds)", stockIds)
 					.andWhere("sv.date >= :startDate", { startDate: twoYearsAgo })
 					.addSelect(`max("sv"."date")`, "date")
@@ -261,8 +248,7 @@ export class StockRepository implements IStockRepository {
 					.addSelect(`sum("sv"."volume")`, "volume")
 					.addSelect(stockDataUniqueId, "stockDataUniqueId")
 					.addSelect(trunc, "trunc")
-					.groupBy(groupby)
-			}, "lhv", `"lhv"."trunc" = "o"."trunc" AND "lhv"."stockDataUniqueId" = "o"."stockDataUniqueId"`)
+					.groupBy(groupby), "lhv", `"lhv"."trunc" = "o"."trunc" AND "lhv"."stockDataUniqueId" = "o"."stockDataUniqueId"`)
 			.select(`"o"."open"`, "open")
 			.addSelect(`"c"."close"`, "close")
 			.addSelect(`"lhv"."low"`, "low")
@@ -277,7 +263,7 @@ export class StockRepository implements IStockRepository {
 		for (const value of stockValues) {
 			if(value.stockData == undefined) continue;
 
-			const uniqueId = value.stockData.uniqueId;
+			const {uniqueId} = value.stockData;
 
 			if (stockDataMap.get(uniqueId) == undefined) continue;
 
@@ -296,7 +282,7 @@ function mapRawsToEntities<T>(entity: EntityTarget<T>, raw: ObjectLiteral[], ent
 }
 
 function mapRawToEntity<T>(entity: EntityTarget<T>, raw: ObjectLiteral, entityManager: EntityManager, meta?: EntityMetadata): T {
-	var result: Partial<T> = {}
+	const result: Partial<T> = {}
 	
 	if(meta === undefined) {
 		meta = entityManager.connection.getMetadata(entity);

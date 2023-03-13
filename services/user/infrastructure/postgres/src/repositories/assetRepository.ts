@@ -1,7 +1,7 @@
-import { unitOfWork, UnitOfWork } from "../unitOfWork/unitOfWork";
 import { EntityKey, IAssetRepository, PaginatedBase, Asset, getKey } from "@finance/svc-user-domain";
 import { EntryNotFoundError } from "@finance/lib-errors";
 import { inject, injectable } from "tsyringe";
+import { unitOfWork, UnitOfWork } from "../unitOfWork/unitOfWork";
 
 @injectable()
 export class AssetRepository implements IAssetRepository {
@@ -11,7 +11,7 @@ export class AssetRepository implements IAssetRepository {
 	async getAllAssetsForUser(user: EntityKey, limit: number, offset: number): Promise<PaginatedBase<Asset>> {
 		const res = await this._unitOfWork.getQueryRunner().manager.findAndCount(Asset, {
 			where: {
-				user: user
+				user
 			},
 			skip: offset,
 			take: limit,
@@ -24,7 +24,7 @@ export class AssetRepository implements IAssetRepository {
 		return {
 			page: {
 				count: limit,
-				offset: offset,
+				offset,
 				total: res[1]
 			},
 			data: res[0]
@@ -47,7 +47,7 @@ export class AssetRepository implements IAssetRepository {
 		return {
 			page: {
 				count: limit,
-				offset: offset,
+				offset,
 				total: res[1]
 			},
 			data: res[0]

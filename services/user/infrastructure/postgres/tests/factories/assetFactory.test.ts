@@ -1,9 +1,9 @@
 import "reflect-metadata";
+import type { Asset, IAssetFactory, IAssetGroupRepository, IAssetRepository, IUserRepository, RealEstateAsset, StockAsset } from "@finance/svc-user-domain";
 import { AssetFactory } from "#src/factories/assetFactory";
 import { AssetGroupRepository } from "#src/repositories/assetGroupRepository";
 import { AssetRepository } from "#src/repositories/assetRepository";
 import { UserRepository } from "#src/repositories/userRepository";
-import type { Asset, IAssetFactory, IAssetGroupRepository, IAssetRepository, IUserRepository, RealEstateAsset, StockAsset } from "@finance/svc-user-domain";
 import { DbFixture, TestDataType } from "../test-utils/dbfixture";
 import { expectNotNullOrUndefined, expectRequiredProps } from "#tests/test-utils/expectUtils";
 

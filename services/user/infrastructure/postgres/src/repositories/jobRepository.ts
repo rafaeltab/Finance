@@ -10,7 +10,7 @@ export class JobRepository implements IJobRepository {
 	async getAllJobsForUser(user: EntityKey, limit: number, offset: number): Promise<PaginatedBase<Job>> {
 		const res = await this._unitOfWork.getQueryRunner().manager.findAndCount(Job, {
 			where: {
-				user: user
+				user
 			},
 			skip: offset,
 			take: limit
@@ -19,7 +19,7 @@ export class JobRepository implements IJobRepository {
 		return {
 			page: {
 				count: limit,
-				offset: offset,
+				offset,
 				total: res[1]
 			},
 			data: res[0]

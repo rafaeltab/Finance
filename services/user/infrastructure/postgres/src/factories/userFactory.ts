@@ -1,7 +1,7 @@
 import { User, IUserFactory } from "@finance/svc-user-domain";
 import { inject, injectable } from "tsyringe";
-import { UnitOfWork, unitOfWork } from "../unitOfWork/unitOfWork";
 import { DuplicateEntryError } from "@finance/lib-errors";
+import { UnitOfWork, unitOfWork } from "../unitOfWork/unitOfWork";
 
 @injectable()
 export class UserFactory implements IUserFactory {
@@ -20,10 +20,10 @@ export class UserFactory implements IUserFactory {
 		}
 		
 		const user = this._unitOfWork.getQueryRunner().manager.create(User, {
-			identity: identity,
-			firstName: firstName,
-			lastName: lastName,
-			dateOfBirth: dateOfBirth
+			identity,
+			firstName,
+			lastName,
+			dateOfBirth
 		})
 
 		const saveRes = await this._unitOfWork.getQueryRunner().manager.save(user);

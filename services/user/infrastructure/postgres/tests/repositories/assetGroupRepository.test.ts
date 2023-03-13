@@ -1,9 +1,9 @@
 import "reflect-metadata";
-import { AssetGroupRepository } from "#src/repositories/assetGroupRepository";
 import { v4 } from "uuid";
+import type { IAssetGroupRepository } from "@finance/svc-user-domain";
+import { AssetGroupRepository } from "#src/repositories/assetGroupRepository";
 import { arrayIdentityEquals, identityEquals } from "../test-utils/arrayUtils";
 import { DbFixture, TestDataType } from "../test-utils/dbfixture";
-import type { IAssetGroupRepository } from "@finance/svc-user-domain";
 
 let fixture: DbFixture;
 let testData: TestDataType;
@@ -82,7 +82,7 @@ describe("delete", () => {
 	});
 
 	test('Should delete a user if it\'s id is provided', async () => {
-		const uniqueId = testData.assetGroup.uniqueId;
+		const {uniqueId} = testData.assetGroup;
 
 		await assetGroupRepository.delete({
 			uniqueId

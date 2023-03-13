@@ -1,6 +1,6 @@
 import "reflect-metadata";
-import { DbFixture, TestDataType } from "../test-utils/dbfixture";
 import { IStockRepository, StockAssetKind, TimeRange } from "@finance/svc-user-domain";
+import { DbFixture, TestDataType } from "../test-utils/dbfixture";
 import { StockRepository } from "#src/repositories/stockRepository";
 import { expectNotNullOrUndefined, expectRequiredProps } from "#tests/test-utils/expectUtils";
 
@@ -38,7 +38,7 @@ describe("getAllStockData", () => {
 		expectNotNullOrUndefined(stockData.data[0]);
 		expectRequiredProps(stockData.data[0], ["values"]);
 
-		expect(stockData.data[0]!.values.length).toBe(1); //only one because the test data has small interval in the same month
+		expect(stockData.data[0]!.values.length).toBe(1); // only one because the test data has small interval in the same month
 	});
 });
 

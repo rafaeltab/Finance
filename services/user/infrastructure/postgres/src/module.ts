@@ -44,7 +44,7 @@ export class PostgresInfrastructureModule implements Module {
 		container.register<IBankAccountFactory>(bankAccountFactory, BankAccountFactory);
 		container.register<IJobFactory>(jobFactory, JobFactory);
 		container.register<IStockFactory>(stockFactory, StockFactory);
-		return;
+		
 	}
 
 	async dispose() {

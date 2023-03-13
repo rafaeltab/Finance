@@ -1,7 +1,7 @@
 import { inject, injectable } from "tsyringe";
-import { UnitOfWork, unitOfWork } from "../unitOfWork/unitOfWork";
 import { Asset, AssetGroup, EntityKey, IAssetFactory, RealEstateAsset, StockAsset, User, StockOrder, StockData, getKey } from "@finance/svc-user-domain";
 import { DuplicateEntryError, EntryNotFoundError, UnexpectedError } from "@finance/lib-errors";
+import { UnitOfWork, unitOfWork } from "../unitOfWork/unitOfWork";
 
 @injectable()
 export class AssetFactory implements IAssetFactory {
@@ -60,6 +60,7 @@ export class AssetFactory implements IAssetFactory {
 
 		return [stockAssetEntity, assetEntity];
 	}
+
 	async addRealEstateToAssetGroup(assetGroup: EntityKey, address: string): Promise<[RealEstateAsset, Asset]> {
 		const assetGroupEntity = await this._unitOfWork.getQueryRunner().manager.findOne(AssetGroup, {
 			where: assetGroup,
@@ -81,6 +82,7 @@ export class AssetFactory implements IAssetFactory {
 
 		return [realEstateAsset, assetEntity];
 	}
+
 	async addStockToUser(user: EntityKey, stockDataId: EntityKey, stockOrders: { amount: number, price: number }[]): Promise<[StockAsset, Asset]> {
 		const userEntity = await this._unitOfWork.getQueryRunner().manager.findOne(User, {
 			where: user,
@@ -102,6 +104,7 @@ export class AssetFactory implements IAssetFactory {
 
 		return [stockAssetEntity, assetEntity];
 	}
+
 	async addRealEstateToUser(user: EntityKey, address: string): Promise<[RealEstateAsset, Asset]> {
 		const userEntity = await this._unitOfWork.getQueryRunner().manager.findOne(User, {
 			where: user,
@@ -156,7 +159,7 @@ export class AssetFactory implements IAssetFactory {
 		}
 
 		const stockAssetEntity = new StockAsset({
-			stockData: stockData,
+			stockData,
 			identity: identities[0],
 		});
 
@@ -214,12 +217,12 @@ export class AssetFactory implements IAssetFactory {
 		}
 
 		const realEstateAsset = new RealEstateAsset({
-			address: address,
+			address,
 			identity: identities[0],
 		});
 		const assetEntity = new Asset({
 			identity: identities[1],
-			realEstateAsset: realEstateAsset,
+			realEstateAsset,
 		});
 
 		if (ownerEntity.kind === "group") {

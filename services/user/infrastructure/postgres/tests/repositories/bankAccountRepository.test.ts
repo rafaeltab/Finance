@@ -1,9 +1,9 @@
 import "reflect-metadata";
-import { BankAccountRepository } from "#src/repositories/bankAccountRepository";
 import { v4 } from "uuid";
+import type { IBankAccountRepository } from "@finance/svc-user-domain";
+import { BankAccountRepository } from "#src/repositories/bankAccountRepository";
 import { arrayIdentityEquals, identityEquals } from "../test-utils/arrayUtils";
 import { DbFixture, TestDataType } from "../test-utils/dbfixture";
-import type { IBankAccountRepository } from "@finance/svc-user-domain";
 
 let fixture: DbFixture;
 let testData: TestDataType;
@@ -82,7 +82,7 @@ describe("delete", () => {
 	});
 
 	test('Should delete a user if it\'s id is provided', async () => {
-		const uniqueId = testData.bankAccount.uniqueId;
+		const {uniqueId} = testData.bankAccount;
 
 		await bankAccountRepository.delete({
 			uniqueId

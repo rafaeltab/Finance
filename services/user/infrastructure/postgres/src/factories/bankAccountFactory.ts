@@ -1,8 +1,8 @@
-import { UnitOfWork, unitOfWork } from "../unitOfWork/unitOfWork";
 import { Balance, BankAccount, EntityKey, IBankAccountFactory, User, getKey } from "@finance/svc-user-domain";
 import { DuplicateEntryError, EntryNotFoundError, UnexpectedError } from "@finance/lib-errors";
 import { assertContains } from "@finance/lib-test";
 import { inject, injectable } from "tsyringe";
+import { UnitOfWork, unitOfWork } from "../unitOfWork/unitOfWork";
 
 @injectable()
 export class BankAccountFactory implements IBankAccountFactory {
@@ -35,13 +35,13 @@ export class BankAccountFactory implements IBankAccountFactory {
 
 		const balanceEntity = new Balance({
 			amount: balance,
-			currency: currency,
+			currency,
 		});
 
 		const bankAccount = new BankAccount({
-			bank: bank,
+			bank,
 			balance: balanceEntity,
-			identity: identity
+			identity
 		})
 
 		if (userEntity.bankAccounts === null) {

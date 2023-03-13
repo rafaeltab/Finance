@@ -1,7 +1,7 @@
 import { IJobFactory, EntityKey, Job, ActiveIncome, User, getKey } from "@finance/svc-user-domain";
 import { inject, injectable } from "tsyringe";
-import { UnitOfWork, unitOfWork } from "../unitOfWork/unitOfWork";
 import { DuplicateEntryError, EntryNotFoundError, UnexpectedError } from "@finance/lib-errors";
+import { UnitOfWork, unitOfWork } from "../unitOfWork/unitOfWork";
 
 @injectable()
 export class JobFactory implements IJobFactory {
@@ -32,13 +32,13 @@ export class JobFactory implements IJobFactory {
 		}
 
 		const activeIncome = new ActiveIncome({
-			monthlySalary: monthlySalary
+			monthlySalary
 		});
 
 		const job = new Job({
-			identity: identity,
-			title: title,
-			activeIncome: activeIncome
+			identity,
+			title,
+			activeIncome
 		});
 
 		if (userEntity.jobs === undefined) {

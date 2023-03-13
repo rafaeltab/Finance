@@ -12,6 +12,7 @@ const responseSymbol = Symbol("response");
 export abstract class IQuery<TImplementation, TResult extends IQueryResult<any>> implements ITokenable { 
 	/** This should be created by the query class, not the user */
 	readonly abstract token: string;
+
 	/** Just ignore this */
 	[responseSymbol]?: TResult;
 

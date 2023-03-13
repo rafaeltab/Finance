@@ -1,9 +1,9 @@
 import { IUserRepository, User, EntityKey, PaginatedBase, UserMeta, getKey } from "@finance/svc-user-domain";
 import { inject, injectable } from "tsyringe";
-import { UnitOfWork, unitOfWork } from "../unitOfWork/unitOfWork";
 import { intersection } from "lodash-es"
 import type { FindOptionsRelations } from "typeorm";
 import { EntryNotFoundError } from "@finance/lib-errors";
+import { UnitOfWork, unitOfWork } from "../unitOfWork/unitOfWork";
 
 @injectable()
 export class UserRepository implements IUserRepository {
@@ -23,7 +23,7 @@ export class UserRepository implements IUserRepository {
 		return {
 			page: {
 				count: limit,
-				offset: offset,
+				offset,
 				total: res[1]
 			},
 			data: res[0]
@@ -51,7 +51,7 @@ export class UserRepository implements IUserRepository {
 		const user = await this._unitOfWork.getQueryRunner().manager
 			.findOne(User, {
 				where: id,
-				relations: relations
+				relations
 			});
 		
 		if (!user) {

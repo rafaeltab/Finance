@@ -6,12 +6,13 @@ import { handleError } from "./handleError";
 @Catch(UserError)
 export class FinanceUserErrorExceptionFilter implements ExceptionFilter<UserError> {
 	private _baseFilter: BaseExceptionFilter;
+
 	constructor(applicationRef?: HttpServer) {
 		this._baseFilter = new BaseExceptionFilter(applicationRef);
 	}
 
 	catch(exception: UserError, host: ArgumentsHost) {
-		var error = handleError(exception);
+		const error = handleError(exception);
 		this._baseFilter.catch(error, host);
 	}
 }
@@ -19,6 +20,7 @@ export class FinanceUserErrorExceptionFilter implements ExceptionFilter<UserErro
 @Catch(ProgrammerError)
 export class FinanceProgrammerErrorExceptionFilter implements ExceptionFilter<ProgrammerError> {
 	private _baseFilter: BaseExceptionFilter;
+
 	constructor(applicationRef?: HttpServer) {
 		this._baseFilter = new BaseExceptionFilter(applicationRef);
 	}
@@ -26,7 +28,7 @@ export class FinanceProgrammerErrorExceptionFilter implements ExceptionFilter<Pr
 	catch(exception: ProgrammerError, host: ArgumentsHost) {
 		Logger.error(exception);
 
-		var error = handleError(exception);
+		const error = handleError(exception);
 		this._baseFilter.catch(error, host);
 	}
 }

@@ -11,13 +11,11 @@ export function FinanceErrors<T extends HttpErrorConstructor>(errors: T[]) {
 		allErrors.push(UnexpectedError);
 	}
 	
-	const decorators = errors.map(x => {
-		return ApiResponse({
+	const decorators = errors.map(x => ApiResponse({
 			status: (new x()).httpCode(),
 			description: x.name,
 			type: HttpErrorResponse
-		})
-	})
+		}))
 
 	return function (target: object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<any>) {
 		decorators.forEach(x => x(target, propertyKey, descriptor))

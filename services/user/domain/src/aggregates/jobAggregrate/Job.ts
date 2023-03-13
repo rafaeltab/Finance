@@ -1,8 +1,8 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne, Relation } from "typeorm";
+import type { EntityMeta } from "@finance/lib-basic-types";
 import { ActiveIncome } from "./ActiveIncome";
 import { EnitityBase } from "../../utils/Entity";
 import { User } from "../User";
-import type { EntityMeta } from "@finance/lib-basic-types";
 
 @Entity()
 export class Job extends EnitityBase { 

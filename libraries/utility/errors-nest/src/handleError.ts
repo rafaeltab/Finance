@@ -8,15 +8,15 @@ export function handleError(err: unknown): HttpException {
 				return new HttpException(err.message, err.httpCode(), {
 					cause: err.cause
 				});
-			} else {
+			} 
 				return new HttpException(err.message, err.httpCode());
-			}
-		} else {
+			
+		} 
 			return handleError(new UnexpectedError(err));
-		}
-	} else {
+		
+	} 
 		return handleError(new UnexpectedError(err));
-	}
+	
 }
 
 function isHttpCodeError(err: Error): err is IHttpCodeError & Error {

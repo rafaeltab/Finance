@@ -1,9 +1,9 @@
 import "reflect-metadata";
-import { UserRepository } from "#src/repositories/userRepository";
 import { v4 } from "uuid";
+import type { IUserRepository } from "@finance/svc-user-domain";
+import { UserRepository } from "#src/repositories/userRepository";
 import { arrayIdentityEquals, identityEquals } from "../test-utils/arrayUtils";
 import { DbFixture, TestDataType } from "../test-utils/dbfixture";
-import type { IUserRepository } from "@finance/svc-user-domain";
 
 let fixture: DbFixture;
 let testData: TestDataType;
@@ -49,7 +49,7 @@ describe("getAll", () => {
 
 describe("get", () => {
 	test('get should return the user identified by a uniqueId, with at the very least all identities set', async () => {
-		const uniqueId = testData.user.uniqueId;
+		const {uniqueId} = testData.user;
 
 		const user = await userRepository.get({
 			uniqueId
@@ -59,7 +59,7 @@ describe("get", () => {
 	});
 
 	test('get should return the user identified by a identity, with at the very least all identities set', async () => {
-		const identity = testData.user.identity;
+		const {identity} = testData.user;
 
 		const user = await userRepository.get({
 			identity
@@ -91,7 +91,7 @@ describe("delete", () => {
 	});
 
 	test('Should delete a user if it\'s id is provided', async () => {
-		const uniqueId = testData.user.uniqueId;
+		const {uniqueId} = testData.user;
 
 		await userRepository.delete({
 			uniqueId

@@ -1,9 +1,9 @@
 import "reflect-metadata";
-import { JobRepository } from "#src/repositories/jobRepository";
 import { v4 } from "uuid";
+import type { IJobRepository } from "@finance/svc-user-domain";
+import { JobRepository } from "#src/repositories/jobRepository";
 import { arrayIdentityEquals, identityEquals } from "../test-utils/arrayUtils";
 import { DbFixture, TestDataType } from "../test-utils/dbfixture";
-import type { IJobRepository } from "@finance/svc-user-domain";
 
 let fixture: DbFixture;
 let testData: TestDataType;
@@ -82,7 +82,7 @@ describe("delete", () => {
 	});
 
 	test('Should delete a user if it\'s id is provided', async () => {
-		const uniqueId = testData.job.uniqueId;
+		const {uniqueId} = testData.job;
 
 		await jobRepository.delete({
 			uniqueId
