@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions, max-classes-per-file */
 import type {
 	Constructor,
-	AnyConstructor
+	AnyConstructor,
+	ConstructorArguments
 } from "#src/constructor";
-
 
 describe("Constructor", () => {
 	it("Should match a constructor with specific arguments", () => {
@@ -66,6 +66,7 @@ describe("AnyConstructor", () => {
 		c;
 		b;
 	});
+
 	it("Should not match a constructor with wrong return type", () => {
 		class CoolA {
 			constructor(public banana: string) {
@@ -118,3 +119,32 @@ describe("AnyConstructor", () => {
 		b;
 	});
 });
+
+describe("ConstructorArguments", () => {
+	it("Should match the constructor arguments", () => {
+		class CoolA {
+			constructor(banana: string, num: number) {
+				banana;
+				num;
+			}
+		}
+
+		const c: ConstructorArguments<typeof CoolA> = ["cool", 5]
+
+		c;
+	});
+
+	it("Should not match if there are missing arguments", () => {
+		class CoolA {
+			constructor(banana: string, num: number) {
+				banana;
+				num;
+			}
+		}
+
+		// @ts-expect-error missing argument should make error
+		const c: ConstructorArguments<typeof CoolA> = ["cool"]
+
+		c;
+	});
+})
