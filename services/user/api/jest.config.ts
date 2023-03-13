@@ -22,8 +22,8 @@ const config: JestConfigWithTsJest = {
 	moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
 	rootDir: __dirname,
 	"moduleNameMapper": {
-		"#src\/(.*)": "<rootDir>/src/$1",
-		"#tests\/(.*)": "<rootDir>/tests/$1",
+		"#src/(.*)": "<rootDir>/src/$1",
+		"#tests/(.*)": "<rootDir>/tests/$1",
 	},
 };
 
