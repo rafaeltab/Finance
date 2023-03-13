@@ -1,10 +1,10 @@
-import { Test, TestingModule } from "@nestjs/testing";
 import type { INestApplication } from "@nestjs/common";
-import request from "supertest";
-import { UserModuleMetadata } from "../../../../src/api/v1/user/user.module";
+import { Test, TestingModule } from "@nestjs/testing";
 import type { Request, Response } from "express";
-import type { GetUsersResponse } from "#src/api/v1/user/user.responses";
+import request from "supertest";
 import { cors, errorsFilter, validationPipe } from "#src/globalRegistrations";
+import type { GetUsersResponse } from "#src/api/v1/user/user.responses";
+import { UserModuleMetadata } from "../../../../src/api/v1/user/user.module";
 
 describe('UserController (e2e)', () => {
 	let app: INestApplication;
@@ -38,7 +38,7 @@ describe('UserController (e2e)', () => {
 			.get('/api/v1/user')
 			.expect(200);
 
-		const body: GetUsersResponse = response.body;
+		const {body} = response;
 		
 		expect(body.success).toBe(true);
 		expect(body.data).toBeDefined();

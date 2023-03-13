@@ -1,5 +1,6 @@
 import { BankAccount, Balance, User, ActiveIncome, Job, Asset, AssetGroup, StockAsset, StockOrder, StockData, StockAssetKind, StockValue, StockSplitEvent, StockDividendEvent } from "@finance/svc-user-domain";
 import { v4 } from "uuid";
+import { createDates } from "../arrayUtils";
 
 export const user = new User({
 	dateOfBirth: new Date("2001-02-27"),
@@ -122,7 +123,7 @@ export const asset = new Asset({
 	uniqueId: v4(),
 	user,
 });
-assetGroup.assets = [asset]; 
+assetGroup.assets = [asset];
 user.assets = [asset];
 
 export const stockAsset = new StockAsset({
@@ -150,15 +151,6 @@ export const stockOrder = new StockOrder({
 });
 stockAsset.orders = [stockOrder];
 asset.stockAsset = stockAsset;
-
-function createDates(count: number) {
-	// create a list of length count contiaining dates with 10 minute intervals
-	const dates = [];
-	for (let i = 0; i < count; i++) {
-		dates.push(new Date(new Date().getTime() - i * 10 * 60 * 1000));
-	}
-	return dates;
-}
 
 
 export const testData = {
