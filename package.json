@@ -21,6 +21,7 @@
 		"dev": "turbo run dev --parallel",
 		"start:dev": "turbo run start:dev --parallel",
 		"lint": "turbo run lint",
+		"lint:fix": "turbo run lint:fix",
 		"test": "turbo run test",
 		"start": "turbo run start",
 		"clean": "turbo run clean",

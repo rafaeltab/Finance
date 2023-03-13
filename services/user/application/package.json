@@ -11,7 +11,8 @@
 		"build:dev": "rimraf ./build/ && tsc -p ./tsconfig.dev.json",
 		"dev": "tsc -p ./tsconfig.dev.json --watch",
 		"clean": "rimraf build",
-		"lint": "eslint ."
+		"lint": "eslint .",
+		"lint:fix": "eslint . --fix"
 	},
 	"dependencies": {
 		"@finance/eslint-config-lib-lint": "*",

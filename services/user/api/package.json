@@ -18,7 +18,8 @@
 		"test": "yarn node --experimental-vm-modules $(yarn bin jest) --detectOpenHandles",
 		"test:watch": "yarn node --experimental-vm-modules $(yarn bin jest) --detectOpenHandles --watch",
 		"clean": "rimraf build",
-		"lint": "eslint ."
+		"lint": "eslint .",
+		"lint:fix": "eslint . --fix"
 	},
 	"dependencies": {
 		"@finance/eslint-config-lib-lint": "*",

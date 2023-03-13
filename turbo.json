@@ -92,7 +92,16 @@
 			]
 		},
 		"lint": {
-			"cache": false
+			"cache": true,
+			"dependsOn": [
+				"^build"
+			]
+		},
+		"lint:fix": {
+			"cache": false,
+			"dependsOn": [
+				"^build"
+			]
 		}
 	}	
 }

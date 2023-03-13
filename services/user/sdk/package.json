@@ -13,7 +13,8 @@
 		"generate:sdk-dev": "shx rm -rf ./lib/ && openapi-generator-cli generate -o lib -g typescript-axios -i ./swagger.json --strict-spec true",
 		"build": "shx rm -rf ./build/ && tsc",
 		"build:dev": "shx rm -rf ./build/ && tsc -p ./tsconfig.dev.json",
-		"lint": "eslint ."
+		"lint": "eslint .",
+		"lint:fix": "eslint . --fix"
 	},
 	"devDependencies": {
 		"@finance/lib-tsconfig": "*",

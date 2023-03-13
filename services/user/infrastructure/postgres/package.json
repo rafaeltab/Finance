@@ -13,11 +13,12 @@
 		"build": "rimraf ./build/ && tsc",
 		"build:dev": "rimraf ./build/ && tsc -p ./tsconfig.dev.json",
 		"dev": "tsc -p ./tsconfig.dev.json --watch",
-		"lint": "eslint .",
 		"test": "yarn node --experimental-vm-modules $(yarn bin jest) --detectOpenHandles",
 		"typeorm": "cross-env NODE_OPTIONS=\"--experimental-specifier-resolution=node\" typeorm-ts-node-esm",
 		"test-setup": "cd tests && docker-compose up -d",
-		"clean": "rimraf build"
+		"clean": "rimraf build",
+		"lint": "eslint .",
+		"lint:fix": "eslint . --fix"
 	},
 	"dependencies": {
 		"@finance/eslint-config-lib-lint": "*",

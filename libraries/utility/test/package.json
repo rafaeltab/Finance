@@ -15,7 +15,8 @@
 		"dev": "tsc -p ./tsconfig.dev.json --watch",
 		"test": "yarn node --experimental-vm-modules $(yarn bin jest) --detectOpenHandles",
 		"clean": "rimraf build",
-		"lint": "eslint ."
+		"lint": "eslint .",
+		"lint:fix": "eslint . --fix"
 	},
 	"dependencies": {
 		"@finance/eslint-config-lib-lint": "*",
