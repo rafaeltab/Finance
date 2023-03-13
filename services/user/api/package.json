@@ -17,9 +17,11 @@
 		"start:prod": "node --experimental-specifier-resolution=node build/main",
 		"test": "yarn node --experimental-vm-modules $(yarn bin jest) --detectOpenHandles",
 		"test:watch": "yarn node --experimental-vm-modules $(yarn bin jest) --detectOpenHandles --watch",
-		"clean": "rimraf build"
+		"clean": "rimraf build",
+		"lint": "eslint ."
 	},
 	"dependencies": {
+		"@finance/eslint-config-lib-lint": "*",
 		"@finance/lib-basic-types": "*",
 		"@finance/lib-errors-nest": "*",
 		"@finance/svc-user-application": "*",

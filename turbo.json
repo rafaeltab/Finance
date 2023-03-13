@@ -90,6 +90,9 @@
 			"dependsOn": [
 				"build:dev"
 			]
+		},
+		"lint": {
+			"cache": false
 		}
 	}	
 }

@@ -7,7 +7,7 @@
 		
 		{
 			"name": "[App] Web",
-			"path": "apps/web"
+			"path": "applications/web"
 		},
 
 		{
