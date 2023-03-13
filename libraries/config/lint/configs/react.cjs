@@ -9,6 +9,19 @@ module.exports = {
 		'prettier',
 		'plugin:@typescript-eslint/recommended',
 	],
+	rules: {
+		"import/prefer-default-export": "off",
+		"import/extensions": [
+			"error",
+			"ignorePackages",
+			{
+				"js": "never",
+				"jsx": "never",
+				"ts": "never",
+				"tsx": "never"
+			}
+		]
+	},
 	parser: '@typescript-eslint/parser',
 	ignorePatterns: [
 		"**/*.js",

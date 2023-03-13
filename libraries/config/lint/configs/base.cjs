@@ -15,7 +15,17 @@ module.exports = {
 		project: './tsconfig.eslint.json',
 	},
 	rules: {
-		"import/prefer-default-export": "off"
+		"import/prefer-default-export": "off",
+		"import/extensions": [
+			"error",
+			"ignorePackages",
+			{
+				"js": "never",
+				"jsx": "never",
+				"ts": "never",
+				"tsx": "never"
+			}
+		]
 	},
 	ignorePatterns: [
 		"**/*.js",
