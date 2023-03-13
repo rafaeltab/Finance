@@ -14,6 +14,9 @@ module.exports = {
 	parserOptions: {
 		project: './tsconfig.eslint.json',
 	},
+	rules: {
+		"import/prefer-default-export": "off"
+	},
 	ignorePatterns: [
 		"**/*.js",
 		"**/*.cjs",
