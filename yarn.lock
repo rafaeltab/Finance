@@ -603,9 +603,12 @@ __metadata:
     "@finance/lib-module-types": "*"
     "@finance/lib-tsconfig": "*"
     "@types/babel__core": ^7.1.20
+    "@types/jest": ^29.2.4
     "@types/lodash-es": ^4.17.6
+    jest: ^29.3.1
     lodash-es: ^4.17.21
     rimraf: ^3.0.2
+    ts-jest: ^29.0.3
   languageName: unknown
   linkType: soft
 
