@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import { container, DependencyContainer, } from "tsyringe";
 import type { AnyConstructor } from "@finance/lib-basic-types";
 import type { Module } from "@finance/lib-module-types";
