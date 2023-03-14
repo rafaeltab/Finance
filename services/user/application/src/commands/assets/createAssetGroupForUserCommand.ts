@@ -9,7 +9,9 @@ export type ResponseType = ICommandResult<AssetGroup>;
 
 export class CreateAssetGroupForUserCommand extends ICommand<CreateAssetGroupForUserCommand, ResponseType> {
 	token = "CreateAssetGroupForUserCommand";
+
 	userIdentity!: string;
+
 	name!: string;
 }
 

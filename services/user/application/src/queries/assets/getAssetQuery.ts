@@ -10,6 +10,7 @@ export type ResponseType = IQueryResult<Asset>
 
 export class GetAssetQuery extends IQuery<GetAssetQuery, ResponseType> {
 	token = "GetAssetQuery";
+
 	assetIdentity!: string;
 }
 

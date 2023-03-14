@@ -1,5 +1,3 @@
-import { ChevronDownIcon } from "@heroicons/react/24/outline";
-import React from "react";
 import type { NavigationItem } from "../../hooks/useNavigation";
 import { classNames } from "../../util/classNames";
 
@@ -20,7 +18,7 @@ export function SideNavigationButton({ item, isPopover }: Props) {
 	if ("flyout" in item && item.flyout !== undefined) {
 		return (
 			<>
-				<div className="w-5/6 mx-auto border-b border-gray-400 text-gray-400 justify-center flex pt-6 pb-2 text-sm">
+				<div className="flex justify-center w-5/6 pt-6 pb-2 mx-auto text-sm text-gray-400 border-b border-gray-400">
 					{item.name}
 				</div>
 				
@@ -28,15 +26,14 @@ export function SideNavigationButton({ item, isPopover }: Props) {
 					<SideNavigationButton item={{
 						...flyout,
 						..."href" in flyout && "href" in item ? { href: `${item.href}/${flyout.href}` } : undefined,
-					}} key={index} isPopover={true} />
+					}} key={index} isPopover />
 				))}
 			</>
 		);
 	}
 
 	return (
-		<>
-			<a
+		<a
 				key={item.name}
 				{...clickAction}
 				className={classNames(
@@ -58,6 +55,9 @@ export function SideNavigationButton({ item, isPopover }: Props) {
 					/>) : undefined}
 				{item.name}
 			</a>
-		</>
 	);
+}
+
+SideNavigationButton.defaultProps = {
+	isPopover: true
 }

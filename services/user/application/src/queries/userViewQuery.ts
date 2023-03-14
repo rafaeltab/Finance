@@ -13,6 +13,7 @@ export type ResponseType = IQueryResult<WithRequiredProperty<User, (typeof field
 
 export class UserViewQuery extends IQuery<UserViewQuery, ResponseType> {
 	token = "UserViewQuery";
+
 	userIdentity!: string;
 }
 

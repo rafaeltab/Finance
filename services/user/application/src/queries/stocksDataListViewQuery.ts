@@ -14,8 +14,9 @@ type Response = {
 export class StocksDataListViewQuery extends IQuery<StocksDataListViewQuery, ResponseType> {
 	token = "StocksDataListViewQuery";
 
-	limit: number = 30;
-	offset: number = 0;
+	limit = 30;
+
+	offset = 0;
 }
 
 @injectable()

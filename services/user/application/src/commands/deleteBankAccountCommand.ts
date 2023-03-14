@@ -9,6 +9,7 @@ export type ResponseType = ICommandResult<undefined>;
 
 export class DeleteBankAccountCommand extends ICommand<DeleteBankAccountCommand, ResponseType> {
 	token = "DeleteBankAccountCommand";
+
 	bankAccountIdentity!: string;
 }
 

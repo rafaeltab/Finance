@@ -61,7 +61,7 @@ export class JobController {
 	async delete(
 		@Param() param: IdentityParams
 	): Promise<SuccessResponse> {
-		return await this.mediator.command(new DeleteJobCommand({
+		return this.mediator.command(new DeleteJobCommand({
 			jobIdentity: param.identity
 		}));
 	}

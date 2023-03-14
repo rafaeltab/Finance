@@ -9,6 +9,7 @@ type Scopes = {
 
 export class ScopeGuard implements CanActivate {
 	private _scopes: Scopes;
+
 	private _userIdentityParam: string | null;
 
 	constructor(scopes: Scopes | string[], userIdentityParam: string | null = null) {
@@ -41,11 +42,11 @@ export class ScopeGuard implements CanActivate {
 function validateScopes(scopes: Scopes, presentScopes: string[]): boolean {
 	if (isOr(scopes)) {
 		return scopes.or.some(scope => presentScopes.includes(scope));
-	} else if (isAnd(scopes)) {
+	} if (isAnd(scopes)) {
 		return scopes.and.every(scope => presentScopes.includes(scope));
-	} else {
+	} 
 		return false;
-	}
+	
 }
 
 function isOr(scopes: Scopes): scopes is { or: string[] } {

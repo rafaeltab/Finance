@@ -29,7 +29,7 @@ export function createSwaggerDocument(app: INestApplication) {
 						"profile": "profile",
 						"email": "email"
 					},
-					authorizationUrl: "https://" + process.env["AUTH0_DOMAIN"] + "/authorize",
+					authorizationUrl: `https://${  process.env["AUTH0_DOMAIN"]  }/authorize`,
 				},
 			},
 			bearerFormat: "JWT",

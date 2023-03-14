@@ -12,7 +12,9 @@ export type ResponseType = ICommandResult<{
 
 export class CreateRealEstateAssetForUserCommand extends ICommand<CreateRealEstateAssetForUserCommand, ResponseType> {
 	token = "CreateRealEstateAssetForUserCommand";
+
 	userIdentity!: string;
+
 	address!: string;
 }
 

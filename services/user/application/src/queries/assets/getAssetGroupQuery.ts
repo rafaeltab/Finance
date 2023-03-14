@@ -12,10 +12,12 @@ export type ResponseType = IQueryResult<{
 
 export class GetAssetGroupQuery extends IQuery<GetAssetGroupQuery, ResponseType> {
 	token = "GetAssetGroupQuery";
+
 	assetGroupIdentity!: string;
 
-	limit: number = 30;
-	offset: number = 0;
+	limit = 30;
+
+	offset = 0;
 }
 
 @injectable()

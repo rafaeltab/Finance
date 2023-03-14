@@ -9,8 +9,11 @@ export type ResponseType = ICommandResult<Job>;
 
 export class CreateJobCommand extends ICommand<CreateJobCommand, ResponseType> {
 	token = "CreateJobCommand";
+
 	userIdentity!: string;
+
 	title!: string;
+
 	monthlySalary!: number;
 }
 

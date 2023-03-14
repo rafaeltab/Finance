@@ -12,8 +12,11 @@ export type ResponseType = ICommandResult<{
 
 export class CreateStockAssetForUserCommand extends ICommand<CreateStockAssetForUserCommand, ResponseType> {
 	token = "CreateStockAssetForUserCommand";
+
 	userIdentity!: string;
+
 	stockDataIdentity!: string;
+
 	stockOrders!: {
 		price: number;
 		amount: number;

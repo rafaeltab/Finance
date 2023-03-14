@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { StockDataResponse } from "./stockData.response";
 import type { Asset, StockOrder } from "@finance/svc-user-domain";
+import { StockDataResponse } from "./stockData.response";
 import { EntityResponse } from "./identity.response";
 
 export class StockOrderResponse { 

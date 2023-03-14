@@ -9,9 +9,13 @@ export type ResponseType = ICommandResult<BankAccount>;
 
 export class CreateBankAccountCommand extends ICommand<CreateBankAccountCommand, ResponseType> {
 	token = "CreateBankAccountCommand";
+
 	userIdentity!: string;
+
 	bank!: string;
+
 	balance!: number;
+
 	currrency!: string;
 }
 

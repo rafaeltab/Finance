@@ -12,9 +12,13 @@ export type ResponseType = ICommandResult<{
 
 export class CreateUserCommand extends ICommand<CreateUserCommand, ResponseType> {
 	token = "CreateUserCommand";
+
 	firstName!: string;
+
 	lastName!: string;
+
 	dateOfBirth!: DateTime;
+
 	identity?: string;
 }
 

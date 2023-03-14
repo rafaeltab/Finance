@@ -20,11 +20,3 @@ export abstract class ICommand<TImplementation, TResult extends ICommandResult<a
 		Object.assign(this, c);
 	}
 }
-
-export abstract class ICommandHandler<TCommand extends ICommand<TCommand, TResult>, TResult extends ICommandResult<any>> {
-	static createToken<TCommand extends ICommand<TCommand, TResult>, TResult extends ICommandResult<any>>(command: new () => TCommand) {
-		return `ICommandHandler<${new command().token}>`
-	}
-
-	abstract handle(command: TCommand): Promise<TResult>
-}

@@ -1,10 +1,12 @@
-/* eslint-disable max-classes-per-file */
-import { container, DependencyContainer, } from "tsyringe";
-import type { AnyConstructor } from "@finance/lib-basic-types";
-import type { Module } from "@finance/lib-module-types";
-import { IQuery, IQueryHandler, IQueryResult } from "./query";
-import { IEvent, IEventHandler } from "./event";
-import { ICommand, ICommandHandler, ICommandResult } from "./command";
+
+import { container, DependencyContainer } from "tsyringe";
+import type { ICommand, ICommandResult } from "./command";
+import { ICommandHandler } from "./commandHandler";
+import type { IEvent } from "./event";
+import { IEventHandler } from "./eventHandler";
+import type { MediatorModule } from "./module";
+import type { IQuery, IQueryResult } from "./query";
+import { IQueryHandler } from "./queryHandler";
 
 export interface ITokenable { 
 	token: string;
@@ -20,12 +22,12 @@ export class Mediator {
 		this.container = container.createChildContainer();
 	}
 
-	private _mediatorModules: MediatorModule[] = [];
+	private mediatorModules: MediatorModule[] = [];
 
-	async register<TModule extends new (container: DependencyContainer) => MediatorModule>(module: TModule) {
-		const moduleInstance = new module(this.container);
+	async register<TModule extends new (dependencyContainer: DependencyContainer) => MediatorModule>(Module: TModule) {
+		const moduleInstance = new Module(this.container);
 		await moduleInstance.register();
-		this._mediatorModules.push(moduleInstance);
+		this.mediatorModules.push(moduleInstance);
 	}
 
 	/** Run a query and wait for the result */
@@ -37,7 +39,7 @@ export class Mediator {
 	/** Send an event and let it run behind the scenes */
 	send<TEvent extends IEvent<TEvent>>(event: TEvent): void{
 		const handler: IEventHandler<TEvent> = this.container.resolve(IEventHandler.createToken(Object.getPrototypeOf(event).constructor));
-		void handler.handle(event);
+		handler.handle(event);
 	}
 
 	/** Run a command, and wait for it to complete */
@@ -47,49 +49,7 @@ export class Mediator {
 	}
 
 	async dispose() { 
-		await Promise.all(this._mediatorModules.map(async (x) => {
-			await x.dispose();
-		}));
-	}
-}
-
-export abstract class MediatorModule {  
-	constructor(private container: DependencyContainer) { 
-	}
-
-	private _modules: Module[] = [];
-
-	abstract register(): Promise<void>;
-
-	protected registerQuery<TQuery extends IQuery<TQuery, TResult>, TResult extends IQueryResult<any>>(query: AnyConstructor<TQuery>, handler: AnyConstructor<IQueryHandler<TQuery, TResult>>) {
-		const handlerToken = IQueryHandler.createToken(query);
-
-		this.container.register(handlerToken, handler);
-	}
-
-	protected registerEvent<TEvent extends IEvent<TEvent>>(event: AnyConstructor<TEvent>, handler: AnyConstructor<IEventHandler<TEvent>>) {
-		const handlerToken = IEventHandler.createToken(event);
-
-		this.container.register(handlerToken, handler);
-	}
-
-	protected registerCommand<TCommand extends ICommand<TCommand, TResult>, TResult extends ICommandResult<any>>(comand: AnyConstructor<TCommand>, handler: AnyConstructor<ICommandHandler<TCommand, TResult>>) {
-		const handlerToken = ICommandHandler.createToken(comand);
-
-		this.container.register(handlerToken, handler);
-	}
-
-	protected async registerModule<TModule extends Module>(module: new () => TModule) {
-		const moduleInstance = new module();
-		await moduleInstance.init();
-		await moduleInstance.register(this.container);
-		this._modules.push(moduleInstance);
-	}
-
-	abstract dispose(): Promise<void>;
-
-	protected disposeModules() {
-		return Promise.all(this._modules.map(async x => {
+		await Promise.all(this.mediatorModules.map(async (x) => {
 			await x.dispose();
 		}));
 	}

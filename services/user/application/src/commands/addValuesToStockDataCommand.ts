@@ -9,7 +9,9 @@ export type ResponseType = ICommandResult<number>;
 
 export class AddValuesToStockDataCommand extends ICommand<AddValuesToStockDataCommand, ResponseType> {
 	token = "AddValuesToStockDataCommand";
+
 	stockDataIdentity!: string;
+
 	values!: InsertStockValue[];
 }
 

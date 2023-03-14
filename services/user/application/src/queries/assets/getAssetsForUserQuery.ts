@@ -10,10 +10,12 @@ export type ResponseType = IQueryResult<PaginatedBase<Asset>>
 
 export class GetAssetsForUserQuery extends IQuery<GetAssetsForUserQuery, ResponseType> {
 	token = "GetAssetsForUserQuery";
+
 	userIdentity!: string;
 
-	limit: number = 30;
-	offset: number = 0;
+	limit = 30;
+
+	offset = 0;
 }
 
 @injectable()

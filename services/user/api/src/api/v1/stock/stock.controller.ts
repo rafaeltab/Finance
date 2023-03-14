@@ -27,9 +27,9 @@ export class StockController {
 		@Query("type") type: string
 	): Promise<GetSearchStockResponse> {
 		return GetSearchStockResponse.map(await this.mediator.query(new StockDataSearchQuery({
-			exchange: exchange,
-			symbol: symbol,
-			type: type,
+			exchange,
+			symbol,
+			type,
 			limit: 30,
 			offset: 0
 		})));
@@ -77,7 +77,7 @@ export class StockController {
 
 		const parsed = await parseDataCsv(stockData.buffer);
 
-		return await this.mediator.command(new CreateStockDatasCommand({
+		return this.mediator.command(new CreateStockDatasCommand({
 			stockDatas: parsed
 		}))
 	}
@@ -98,10 +98,10 @@ export class StockController {
 
 		const zipFile = await zip.loadAsync(stockValues.buffer)
 
-		let previousInsert: Promise<IQueryResult<unknown>> | undefined = undefined;
-		let previousStock: string | undefined = undefined;
+		let previousInsert: Promise<IQueryResult<unknown>> | undefined;
+		let previousStock: string | undefined;
 
-		let failed: string[] = [];
+		const failed: string[] = [];
 
 		for (const fileName of Object.keys(zipFile.files)) {
 			const file = zipFile.files[fileName];
@@ -169,16 +169,16 @@ export class StockController {
 					await previousInsert;
 				} catch (e) {
 					failed.push(previousStock ?? "UNKNOWN");
-					console.log("Store values failed for " + previousStock ?? "UNKNOWN")
+					console.log(`Store values failed for ${  previousStock}` ?? "UNKNOWN")
 					continue;
 				}
 
-				console.log("Stored values for " + previousStock ?? "UNKNOWN")
+				console.log(`Stored values for ${  previousStock}` ?? "UNKNOWN")
 			}
 
 			previousInsert = this.mediator.command(new AddValuesToStockDataCommand({
 				stockDataIdentity: identity,
-				values: values
+				values
 			}));
 			previousStock = stock;
 		}
@@ -278,7 +278,7 @@ async function parseDataCsv(csv: Buffer): Promise<StockData[]> {
 			row.TYPE = StockAssetKind.CS;
 		}
 
-		data.push({ symbol: symbol, exchange: row.EXCHANGE, type: row.TYPE });
+		data.push({ symbol, exchange: row.EXCHANGE, type: row.TYPE });
 	}
 
 	return data;

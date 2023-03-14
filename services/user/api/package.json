@@ -25,6 +25,7 @@
 		"@finance/eslint-config-lib-lint": "*",
 		"@finance/lib-basic-types": "*",
 		"@finance/lib-errors-nest": "*",
+		"@finance/lib-mediator": "*",
 		"@finance/svc-user-application": "*",
 		"@nestjs/common": "^9.0.0",
 		"@nestjs/config": "^2.2.0",

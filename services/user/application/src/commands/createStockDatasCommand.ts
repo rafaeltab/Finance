@@ -11,6 +11,7 @@ export type ResponseType = ICommandResult<{
 
 export class CreateStockDatasCommand extends ICommand<CreateStockDatasCommand, ResponseType> {
 	token = "CreateStockDatasCommand";
+
 	stockDatas!: CreateStockData[];
 }
 

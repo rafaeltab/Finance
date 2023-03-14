@@ -9,6 +9,7 @@ export type ResponseType = ICommandResult<undefined>;
 
 export class DeleteAssetGroupCommand extends ICommand<DeleteAssetGroupCommand, ResponseType> {
 	token = "DeleteAssetGroupCommand";
+
 	assetGroupIdentity!: string;
 }
 

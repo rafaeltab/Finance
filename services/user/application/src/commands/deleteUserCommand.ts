@@ -9,6 +9,7 @@ export type ResponseType = ICommandResult<undefined>;
 
 export class DeleteUserCommand extends ICommand<DeleteUserCommand, ResponseType> {
 	token = "DeleteUserCommand";
+
 	userIdentity!: string;
 }
 

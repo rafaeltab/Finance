@@ -12,8 +12,9 @@ export type ResponseType = IQueryResult<{
 export class UserListQuery extends IQuery<UserListQuery, ResponseType> {
 	token = "UserListQuery";
 
-	limit: number = 30;
-	offset: number = 0;
+	limit = 30;
+
+	offset = 0;
 }
 
 @injectable()

@@ -31,7 +31,7 @@ export function FinanceErrors<T extends HttpErrorConstructor>(errors: T[]) {
 			type: HttpErrorResponse
 		}))
 
-	return (target: object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<unknown>) => {
+	return (target: object, propertyKey: string | symbol, descriptor: PropertyDescriptor) => {
 		decorators.forEach(x => x(target, propertyKey, descriptor))
 	}
 }

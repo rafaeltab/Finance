@@ -9,16 +9,19 @@ export type ResponseType = IQueryResult<PaginatedBase<BankAccount>>
 
 export class Response implements ISuccessQueryResult<PaginatedBase<BankAccount>> {
 	success!: true;
+
 	data!: PaginatedBase<BankAccount>;
 }
 
 
 export class BankAccountViewQuery extends IQuery<BankAccountViewQuery, ResponseType> {
 	token = "BankAccountViewQuery";
+
 	userIdentity!: string;
 
-	limit: number = 30;
-	offset: number = 0;
+	limit = 30;
+
+	offset = 0;
 }
 
 @injectable()

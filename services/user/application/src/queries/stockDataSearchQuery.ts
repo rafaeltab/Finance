@@ -15,12 +15,15 @@ export class StockDataSearchQuery extends IQuery<StockDataSearchQuery, ResponseT
 	token = "StockDataSearchQuery";
 
 	exchange?: string;
+
 	symbol?: string;
+
 	type?: string;
 
 
-	limit: number = 30;
-	offset: number = 0;
+	limit = 30;
+
+	offset = 0;
 }
 
 @injectable()
@@ -45,7 +48,7 @@ export class StockDataSearchQueryHandler extends IQueryHandler<StockDataSearchQu
 
 			const kinds = Object.keys(StockAssetKind).map(x => x.toLowerCase());
 
-			let kind: StockAssetKind | undefined = undefined;
+			let kind: StockAssetKind | undefined;
 
 			if (query.type !== undefined) {
 				if (kinds.includes(query.type.toLowerCase())) {

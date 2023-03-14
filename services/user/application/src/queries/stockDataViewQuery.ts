@@ -15,10 +15,12 @@ type Response = {
 
 export class StockDataViewQuery extends IQuery<StockDataViewQuery, ResponseType> {
 	token = "stockDataViewQuery";
+
 	stockDataIdentity!: string;
 
-	limit: number = 30;
-	offset: number = 0;
+	limit = 30;
+
+	offset = 0;
 }
 
 @injectable()
@@ -66,7 +68,7 @@ export class StockDataViewQueryHandler extends IQueryHandler<StockDataViewQuery,
 						},
 						data: stocks.data
 					},
-					stockData: stockData
+					stockData
 				}
 			}
 		} catch (e: unknown) {
