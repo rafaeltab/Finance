@@ -25,7 +25,8 @@ module.exports = {
 				"ts": "never",
 				"tsx": "never"
 			}
-		]
+		],
+		"class-methods-use-this": "off"
 	},
 	ignorePatterns: [
 		"**/*.js",
