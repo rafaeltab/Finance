@@ -1,8 +1,8 @@
 // list a maximum of 30 asset groups
 
-import { IStockFactory, StockAssetKind, stockFactory } from "@finance/svc-user-domain";
+import { IStockFactory, StockAssetKind, stockFactoryToken } from "@finance/svc-user-domain";
 import { ICommand, ICommandHandler, ICommandResult } from "@finance/lib-mediator";
-import { IUnitOfWork, unitOfWork } from "@finance/svc-user-infra-postgres";
+import { IUnitOfWork, unitOfWorkToken } from "@finance/svc-user-infra-postgres";
 import { inject, injectable } from "tsyringe";
 
 export type ResponseType = ICommandResult<{
@@ -24,8 +24,8 @@ type CreateStockData = {
 @injectable()
 export class CreateStockDatasCommandHandler extends ICommandHandler<CreateStockDatasCommand, ResponseType> {
 	constructor(
-		@inject(stockFactory) private stockFactory: IStockFactory,
-		@inject(unitOfWork) private unitOfWork: IUnitOfWork
+		@inject(stockFactoryToken) private stockFactory: IStockFactory,
+		@inject(unitOfWorkToken) private unitOfWork: IUnitOfWork
 	) {
 		super();
 	}

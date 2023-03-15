@@ -1,8 +1,8 @@
 // list a maximum of 30 asset groups
 
-import { IBankAccountFactory, BankAccount, bankAccountFactory } from "@finance/svc-user-domain";
+import { IBankAccountFactory, BankAccount, bankAccountFactoryToken } from "@finance/svc-user-domain";
 import { ICommand, ICommandHandler, ICommandResult } from "@finance/lib-mediator";
-import { IUnitOfWork, unitOfWork } from "@finance/svc-user-infra-postgres";
+import { IUnitOfWork, unitOfWorkToken } from "@finance/svc-user-infra-postgres";
 import { inject, injectable } from "tsyringe";
 
 export type ResponseType = ICommandResult<BankAccount>;
@@ -22,8 +22,8 @@ export class CreateBankAccountCommand extends ICommand<CreateBankAccountCommand,
 @injectable()
 export class CreateBankAccountCommandHandler extends ICommandHandler<CreateBankAccountCommand, ResponseType> {
 	constructor(
-		@inject(bankAccountFactory) private bankAccountFactory: IBankAccountFactory,
-		@inject(unitOfWork) private unitOfWork: IUnitOfWork
+		@inject(bankAccountFactoryToken) private bankAccountFactory: IBankAccountFactory,
+		@inject(unitOfWorkToken) private unitOfWork: IUnitOfWork
 	) {
 		super();
 	}

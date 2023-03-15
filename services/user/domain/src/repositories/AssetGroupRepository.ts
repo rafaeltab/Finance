@@ -3,7 +3,7 @@ import type { AssetGroup } from "../aggregates/AssetGroup";
 import type { EntityKey } from "../utils";
 import type { PaginatedBase } from "../utils/PaginatedBase";
 
-export const assetGroupRepository: InjectionToken = "IAssetGroupRepository";
+export const assetGroupRepositoryToken: InjectionToken = "IAssetGroupRepository";
 
 export interface IAssetGroupRepository {
 	getAllAssetGroupsForUser(user: EntityKey, limit: number, offset: number): Promise<PaginatedBase<AssetGroup>>;

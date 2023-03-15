@@ -3,7 +3,7 @@ import type { Job } from "../aggregates/jobAggregrate";
 import type { EntityKey } from "../utils";
 import type { PaginatedBase } from "../utils/PaginatedBase";
 
-export const jobRepository: InjectionToken = "IJobRepository";
+export const jobRepositoryToken: InjectionToken = "IJobRepository";
 
 export interface IJobRepository {
 	getAllJobsForUser(user: EntityKey, limit: number, offset: number): Promise<PaginatedBase<Job>>;

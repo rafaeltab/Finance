@@ -1,6 +1,6 @@
 import { Lifecycle, scoped, InjectionToken, injectable, inject } from "tsyringe";
 import { DataSource, QueryRunner } from "typeorm";
-import { dataSource as dataSourceToken } from "../data-source";
+import { dataSourceToken } from "../data-source";
 
 
 export const unitOfWorkToken: InjectionToken = "unitOfWork";

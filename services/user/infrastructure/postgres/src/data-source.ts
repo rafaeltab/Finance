@@ -4,7 +4,7 @@ import { entities } from "@finance/svc-user-domain";
 import type { InjectionToken } from "tsyringe";
 import * as migrations from "./migrations/index";
 
-export const dataSource: InjectionToken = "DataSource";
+export const dataSourceToken: InjectionToken = "DataSource";
 export const AppDataSource = new DataSource({
 	type: "postgres",
 	host: "localhost",

@@ -1,9 +1,9 @@
 // list a maximum of 30 asset groups
 
-import { IUserRepository, User, userRepository } from "@finance/svc-user-domain";
+import { IUserRepository, User, userRepositoryToken } from "@finance/svc-user-domain";
 import { assertContains, WithRequiredProperty } from "@finance/lib-test";
 import { IQuery, IQueryHandler, IQueryResult } from "@finance/lib-mediator";
-import { IUnitOfWork, unitOfWork } from "@finance/svc-user-infra-postgres";
+import { IUnitOfWork, unitOfWorkToken } from "@finance/svc-user-infra-postgres";
 import { inject, injectable } from "tsyringe";
 
 
@@ -20,8 +20,8 @@ export class UserViewQuery extends IQuery<UserViewQuery, ResponseType> {
 @injectable()
 export class UserViewQueryHandler extends IQueryHandler<UserViewQuery, ResponseType> {
 	constructor(
-		@inject(userRepository) private userRepository: IUserRepository,
-		@inject(unitOfWork) private unitOfWork: IUnitOfWork
+		@inject(userRepositoryToken) private userRepository: IUserRepository,
+		@inject(unitOfWorkToken) private unitOfWork: IUnitOfWork
 	) {
 		super();
 	}

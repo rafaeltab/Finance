@@ -11,5 +11,11 @@ module.exports = [
 			"@typescript-eslint/no-empty-function": "off",
 			"no-await-in-loop": "off"
 		}
+	},
+	{
+		files: ["**/commands/**/*", "**/events/**/*", "**/queries/**/*"],
+		rules: {
+			"max-classes-per-file": "off",
+		}
 	}
 ]

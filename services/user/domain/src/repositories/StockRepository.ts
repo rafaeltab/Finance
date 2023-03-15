@@ -6,7 +6,7 @@ import type { EntityKey, PaginatedBase } from "../utils";
 
 export type ValueGranularity = "minute" | "hour" | "day" | "week" | "month" | "year";
 
-export const stockRepository: InjectionToken = "IStockRepository";
+export const stockRepositoryToken: InjectionToken = "IStockRepository";
 
 
 export interface IStockRepository  {

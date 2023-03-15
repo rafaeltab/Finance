@@ -4,7 +4,7 @@ import type { User } from "../aggregates/User";
 import type { EntityKey } from "../utils";
 import type { PaginatedBase } from "../utils/PaginatedBase";
 
-export const userRepository: InjectionToken = "IUserRepository";
+export const userRepositoryToken: InjectionToken = "IUserRepository";
 
 export interface IUserRepository {
 	getAll(limit: number, offset: number, fields?: (keyof User)[]): Promise<PaginatedBase<User>>;

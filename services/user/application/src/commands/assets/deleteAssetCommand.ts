@@ -1,8 +1,8 @@
 // list a maximum of 30 asset groups
 
-import { IAssetRepository, assetRepository } from "@finance/svc-user-domain";
+import { IAssetRepository, assetRepositoryToken } from "@finance/svc-user-domain";
 import { ICommand, ICommandHandler, ICommandResult } from "@finance/lib-mediator";
-import { IUnitOfWork, unitOfWork } from "@finance/svc-user-infra-postgres";
+import { IUnitOfWork, unitOfWorkToken } from "@finance/svc-user-infra-postgres";
 import { inject, injectable } from "tsyringe";
 
 export type ResponseType = ICommandResult<undefined>;
@@ -16,8 +16,8 @@ export class DeleteAssetCommand extends ICommand<DeleteAssetCommand, ResponseTyp
 @injectable()
 export class DeleteAssetCommandHandler extends ICommandHandler<DeleteAssetCommand, ResponseType> {
 	constructor(
-		@inject(assetRepository) private assetRepository: IAssetRepository,
-		@inject(unitOfWork) private unitOfWork: IUnitOfWork
+		@inject(assetRepositoryToken) private assetRepository: IAssetRepository,
+		@inject(unitOfWorkToken) private unitOfWork: IUnitOfWork
 	) {
 		super();
 	}
