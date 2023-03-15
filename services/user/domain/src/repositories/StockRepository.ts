@@ -28,11 +28,11 @@ export interface IStockRepository  {
 
 
 export class TimeRange {
-	constructor(private _start: Date, private _end: Date) { }
+	constructor(private startDate: Date, private endDate: Date) { }
 
-	get start() { return this._start }
+	get start() { return this.startDate }
 
-	get end() { return this._end }
+	get end() { return this.endDate }
 
 	static fromDay(day: Date) {
 		const date = day.getDate() 

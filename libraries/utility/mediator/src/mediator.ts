@@ -12,8 +12,8 @@ export interface ITokenable {
 	token: string;
 }
 
-export type CommandResponeType<T extends ICommand<any, any>> = T extends ICommand<T, infer TResponse> ? TResponse : null;
-export type QueryResponeType<T extends IQuery<any, any>> = T extends IQuery<T, infer TResponse> ? TResponse : null;
+export type CommandResponeType<T extends ICommand<unknown, ICommandResult<unknown>>> = T extends ICommand<T, infer TResponse> ? TResponse : null;
+export type QueryResponeType<T extends IQuery<unknown, ICommandResult<unknown>>> = T extends IQuery<T, infer TResponse> ? TResponse : null;
 
 export class Mediator {
 	private container: DependencyContainer;
@@ -31,8 +31,9 @@ export class Mediator {
 	}
 
 	/** Run a query and wait for the result */
-	query<TQuery extends IQuery<TQuery, TResult>, TResult extends IQueryResult<any>>(query: TQuery): Promise<QueryResponeType<TQuery>>{
+	query<TQuery extends IQuery<TQuery, TResult>, TResult extends IQueryResult<unknown>>(query: TQuery): Promise<QueryResponeType<TQuery>>{
 		const handler: IQueryHandler<TQuery, TResult> = this.container.resolve(IQueryHandler.createToken(Object.getPrototypeOf(query).constructor));
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		return handler.handle(query) as any;
 	}
 
@@ -43,8 +44,9 @@ export class Mediator {
 	}
 
 	/** Run a command, and wait for it to complete */
-	command<TCommand extends ICommand<TCommand, TResult>, TResult extends ICommandResult<any>>(command: TCommand): Promise<CommandResponeType<TCommand>>{
+	command<TCommand extends ICommand<TCommand, TResult>, TResult extends ICommandResult<unknown>>(command: TCommand): Promise<CommandResponeType<TCommand>>{
 		const handler: ICommandHandler<TCommand, TResult> = this.container.resolve(ICommandHandler.createToken(Object.getPrototypeOf(command).constructor));
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		return handler.handle(command) as any;
 	}
 

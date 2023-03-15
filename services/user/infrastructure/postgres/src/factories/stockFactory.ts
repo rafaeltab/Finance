@@ -1,11 +1,11 @@
 import { EntityKey, IStockFactory, InsertEvent, InsertStockValue, StockAssetKind, StockData, StockDividendEvent, StockValue, StockSplitEvent, getKey } from "@finance/svc-user-domain";
 import { EntryNotFoundError } from "@finance/lib-errors";
 import { inject, injectable } from "tsyringe";
-import { unitOfWork, UnitOfWork } from "../unitOfWork/unitOfWork";
+import { unitOfWorkToken, UnitOfWork } from "../unitOfWork/unitOfWork";
 
 @injectable()
 export class StockFactory implements IStockFactory {
-	constructor(@inject(unitOfWork) private _unitOfWork: UnitOfWork) { }
+	constructor(@inject(unitOfWorkToken) private unitOfWork: UnitOfWork) { }
 
 	async addStockData(symbol: string, exchange: string, assetKind: StockAssetKind): Promise<StockData> {
 		const stockData = new StockData({
@@ -15,12 +15,12 @@ export class StockFactory implements IStockFactory {
 			identity: `stockData-${assetKind}-${exchange}-${symbol}`
 		});
 
-		await this._unitOfWork.getQueryRunner().manager.save([stockData]);
+		await this.unitOfWork.getQueryRunner().manager.save([stockData]);
 		return stockData;
 	}
 
 	async addStockValues(stockDataId: EntityKey, values: InsertStockValue[]): Promise<StockValue[]> {
-		const stockData = await this._unitOfWork.getQueryRunner().manager.findOne(StockData, {
+		const stockData = await this.unitOfWork.getQueryRunner().manager.findOne(StockData, {
 			where: stockDataId,
 		});
 
@@ -29,7 +29,7 @@ export class StockFactory implements IStockFactory {
 		}
 
 		const stockValues = values.map(value => new StockValue({
-			stockData: stockData!,
+			stockData,
 			date: value.date,
 			open: value.open,
 			high: value.high,
@@ -40,21 +40,24 @@ export class StockFactory implements IStockFactory {
 
 		const chunkSize = 5000;
 
+		const promises: Promise<unknown>[] = [];
+
 		if (stockValues.length > chunkSize) {
 			for (let i = 0; i < stockValues.length+5; i += chunkSize) {
 				const chunk = stockValues.slice(i, i + chunkSize);
 				if (chunk.length === 0) continue;
-				await this._unitOfWork.getQueryRunner().manager.insert(StockValue, chunk);
+				promises.push(this.unitOfWork.getQueryRunner().manager.insert(StockValue, chunk));
 			}
 			return stockValues;
 		}
 
-		await this._unitOfWork.getQueryRunner().manager.insert(StockValue, stockValues);
+		await Promise.all(promises);
+		await this.unitOfWork.getQueryRunner().manager.insert(StockValue, stockValues);
 		return stockValues;
 	}
 
 	async addStockDividendEvents(stockDataId: EntityKey, events: InsertEvent[]): Promise<StockDividendEvent[]> {
-		const stockData = await this._unitOfWork.getQueryRunner().manager.findOne(StockData, {
+		const stockData = await this.unitOfWork.getQueryRunner().manager.findOne(StockData, {
 			where: stockDataId,
 		});
 
@@ -63,17 +66,17 @@ export class StockFactory implements IStockFactory {
 		}
 
 		const stockDividendEvents = events.map(event => new StockDividendEvent({
-			stockData: stockData!,
+			stockData,
 			date: event.date,
 			amount: event.value,
 		}));
 
-		await this._unitOfWork.getQueryRunner().manager.save(stockDividendEvents);
+		await this.unitOfWork.getQueryRunner().manager.save(stockDividendEvents);
 		return stockDividendEvents;
 	}
 
 	async addStockSplitEvents(stockDataId: EntityKey, events: InsertEvent[]): Promise<StockSplitEvent[]> {
-		const stockData = await this._unitOfWork.getQueryRunner().manager.findOne(StockData, {
+		const stockData = await this.unitOfWork.getQueryRunner().manager.findOne(StockData, {
 			where: stockDataId,
 		});
 
@@ -82,12 +85,12 @@ export class StockFactory implements IStockFactory {
 		}
 
 		const stockDividendEvents = events.map(event => new StockSplitEvent({
-			stockData: stockData!,
+			stockData,
 			date: event.date,
 			ratio: event.value,
 		}));
 
-		await this._unitOfWork.getQueryRunner().manager.save(stockDividendEvents);
+		await this.unitOfWork.getQueryRunner().manager.save(stockDividendEvents);
 		return stockDividendEvents;
 	}
 }

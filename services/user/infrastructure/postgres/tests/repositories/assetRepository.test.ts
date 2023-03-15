@@ -4,6 +4,7 @@ import type { IAssetRepository } from "@finance/svc-user-domain";
 import { AssetRepository } from "#src/repositories/assetRepository";
 import { arrayIdentityEquals, identityEquals } from "../test-utils/arrayUtils";
 import { DbFixture, TestDataType } from "../test-utils/dbfixture";
+import { expectRequiredProps } from "#tests/test-utils/expectUtils";
 
 let fixture: DbFixture;
 let testData: TestDataType;
@@ -26,37 +27,45 @@ afterAll(async () => {
 
 describe("getAllAssetsForUser", () => {
 	test('getAllAssetsForUser should return all assets for a user by its identity, with at least their uniqueIds and identities', async () => {
+		expectRequiredProps(testData.user, ["assets"]);
+		
 		const assets = await assetRepository.getAllAssetsForUser({
 			identity: testData.user.identity
-		}, testData.user.assets!.length + 1, 0);
+		}, testData.user.assets.length + 1, 0);
 
-		expect(arrayIdentityEquals(assets.data, testData.user.assets!)).toBe(true);
+		expect(arrayIdentityEquals(assets.data, testData.user.assets)).toBe(true);
 	});
 
 	test('getAllAssetsForUser should return all assets for a user by its uniqueId, with at least their uniqueIds and identities', async () => {
+		expectRequiredProps(testData.user, ["assets"]);
+		
 		const assets = await assetRepository.getAllAssetsForUser({
 			uniqueId: testData.user.uniqueId
-		}, testData.user.assets!.length + 1, 0);
+		}, testData.user.assets.length + 1, 0);
 
-		expect(arrayIdentityEquals(assets.data, testData.user.assets!)).toBe(true);
+		expect(arrayIdentityEquals(assets.data, testData.user.assets)).toBe(true);
 	});
 });
 
 describe("getAllAssetsForAssetGroup", () => {
 	test('getAllAssetsForAssetGroup should return all assets for a user by its identity, with at least their uniqueIds and identities', async () => {
+		expectRequiredProps(testData.assetGroup, ["assets"]);
+		
 		const assets = await assetRepository.getAllAssetsForAssetGroup({
 			identity: testData.assetGroup.identity
-		}, testData.assetGroup.assets!.length + 1, 0);
+		}, testData.assetGroup.assets.length + 1, 0);
 
-		expect(arrayIdentityEquals(assets.data, testData.assetGroup.assets!)).toBe(true);
+		expect(arrayIdentityEquals(assets.data, testData.assetGroup.assets)).toBe(true);
 	});
 
 	test('getAllAssetsForAssetGroup should return all assets for a user by its uniqueId, with at least their uniqueIds and identities', async () => {
+		expectRequiredProps(testData.assetGroup, ["assets"]);
+		
 		const assets = await assetRepository.getAllAssetsForAssetGroup({
 			uniqueId: testData.assetGroup.uniqueId
-		}, testData.assetGroup.assets!.length + 1, 0);
+		}, testData.assetGroup.assets.length + 1, 0);
 
-		expect(arrayIdentityEquals(assets.data, testData.assetGroup.assets!)).toBe(true);
+		expect(arrayIdentityEquals(assets.data, testData.assetGroup.assets)).toBe(true);
 	});
 });
 

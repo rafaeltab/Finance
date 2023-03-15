@@ -1,5 +1,5 @@
 import type { InjectionToken } from "tsyringe";
-import type Job from "../aggregates/jobAggregrate";
+import type { Job } from "../aggregates/jobAggregrate";
 import type { EntityKey } from "../utils";
 import type { PaginatedBase } from "../utils/PaginatedBase";
 

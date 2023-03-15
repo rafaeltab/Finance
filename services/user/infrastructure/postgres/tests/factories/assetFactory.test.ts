@@ -146,10 +146,10 @@ describe("addRealEstateToAssetGroup", () => {
 		})		
 		expectRequiredProps(assetGroup, ["assets"]);
 
-		const assetGroupAsset = assetGroup.assets!.find(x => x.identity === asset.identity);		
+		const assetGroupAsset = assetGroup.assets.find(x => x.identity === asset.identity);		
 		expectNotNullOrUndefined(assetGroupAsset);
 
-		assetAndRealEstateAssetValid(data, assetGroupAsset!.realEstateAsset, assetGroupAsset);
+		assetAndRealEstateAssetValid(data, assetGroupAsset.realEstateAsset, assetGroupAsset);
 	});
 });
 

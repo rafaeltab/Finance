@@ -1,14 +1,14 @@
 import { EntityKey, IAssetGroupRepository, PaginatedBase, AssetGroup, getKey } from "@finance/svc-user-domain";
 import { EntryNotFoundError } from "@finance/lib-errors";
 import { inject, injectable } from "tsyringe";
-import { unitOfWork, UnitOfWork } from "../unitOfWork/unitOfWork";
+import { unitOfWorkToken, UnitOfWork } from "../unitOfWork/unitOfWork";
 
 @injectable()
 export class AssetGroupRepository implements IAssetGroupRepository {
-	constructor(@inject(unitOfWork) private _unitOfWork: UnitOfWork) { }
+	constructor(@inject(unitOfWorkToken) private unitOfWork: UnitOfWork) { }
 
 	async getAllAssetGroupsForUser(user: EntityKey, limit: number, offset: number): Promise<PaginatedBase<AssetGroup>> {
-		const res = await this._unitOfWork.getQueryRunner().manager.findAndCount(AssetGroup, {
+		const res = await this.unitOfWork.getQueryRunner().manager.findAndCount(AssetGroup, {
 			where: {
 				user
 			},
@@ -27,7 +27,7 @@ export class AssetGroupRepository implements IAssetGroupRepository {
 	}
 	
 	async get(id: EntityKey): Promise<AssetGroup> {
-		const assetGroup = await this._unitOfWork.getQueryRunner().manager.findOne(AssetGroup, {
+		const assetGroup = await this.unitOfWork.getQueryRunner().manager.findOne(AssetGroup, {
 			where: id,
 		});
 
@@ -39,8 +39,8 @@ export class AssetGroupRepository implements IAssetGroupRepository {
 	}
 
 	async delete(id: EntityKey): Promise<void> {
-		const res = await this._unitOfWork.getQueryRunner().manager.delete(AssetGroup, id);
-		if ((res.affected ?? 0) == 0) { 
+		const res = await this.unitOfWork.getQueryRunner().manager.delete(AssetGroup, id);
+		if ((res.affected ?? 0)===0) { 
 			throw new EntryNotFoundError(AssetGroup.name, getKey(id));
 		}
 	}

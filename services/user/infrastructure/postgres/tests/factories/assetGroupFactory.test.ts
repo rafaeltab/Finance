@@ -60,11 +60,11 @@ describe("addAssetGroupToUser", () => {
 
 		expectRequiredProps(user, ["assetGroups"]);
 
-		const userAssetGroup = user.assetGroups!.find(x => x.identity === assetGroup.identity);
+		const userAssetGroup = user.assetGroups.find(x => x.identity === assetGroup.identity);
 
 		expectNotNullOrUndefined(userAssetGroup)
 		expectRequiredProps(userAssetGroup, ["uniqueId"]);
 
-		expect(userAssetGroup!.uniqueId).toBe(res.uniqueId);
+		expect(userAssetGroup.uniqueId).toBe(res.uniqueId);
 	});
 });

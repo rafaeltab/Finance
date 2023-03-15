@@ -10,11 +10,6 @@ const Job = jobAggregate.default;
 const BankAccount = bankAccountAggregate.default;
 const StockData = stockAggregate.default;
 
-export { 
-	User,
-	AssetGroup
-}
-
 export const entities = [
 	Asset,
 	assetAggregate.RealEstateAsset,

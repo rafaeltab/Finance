@@ -16,7 +16,7 @@ export abstract class MediatorModule {
 
 	abstract register(): Promise<void>;
 
-	protected registerQuery<TQuery extends IQuery<TQuery, TResult>, TResult extends IQueryResult<any>>(query: AnyConstructor<TQuery>, handler: AnyConstructor<IQueryHandler<TQuery, TResult>>) {
+	protected registerQuery<TQuery extends IQuery<TQuery, TResult>, TResult extends IQueryResult<unknown>>(query: AnyConstructor<TQuery>, handler: AnyConstructor<IQueryHandler<TQuery, TResult>>) {
 		const handlerToken = IQueryHandler.createToken(query);
 
 		this.container.register(handlerToken, handler);
@@ -28,7 +28,7 @@ export abstract class MediatorModule {
 		this.container.register(handlerToken, handler);
 	}
 
-	protected registerCommand<TCommand extends ICommand<TCommand, TResult>, TResult extends ICommandResult<any>>(comand: AnyConstructor<TCommand>, handler: AnyConstructor<ICommandHandler<TCommand, TResult>>) {
+	protected registerCommand<TCommand extends ICommand<TCommand, TResult>, TResult extends ICommandResult<unknown>>(comand: AnyConstructor<TCommand>, handler: AnyConstructor<ICommandHandler<TCommand, TResult>>) {
 		const handlerToken = ICommandHandler.createToken(comand);
 
 		this.container.register(handlerToken, handler);

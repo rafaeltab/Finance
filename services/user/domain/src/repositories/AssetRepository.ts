@@ -1,5 +1,5 @@
 import type { InjectionToken } from "tsyringe";
-import type Asset from "../aggregates/assetAggregate";
+import type { Asset } from "../aggregates/assetAggregate";
 import type { EntityKey } from "../utils";
 import type { PaginatedBase } from "../utils/PaginatedBase";
 

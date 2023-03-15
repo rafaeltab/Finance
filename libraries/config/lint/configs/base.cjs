@@ -14,20 +14,7 @@ module.exports = {
 	parserOptions: {
 		project: './tsconfig.eslint.json',
 	},
-	rules: {
-		"import/prefer-default-export": "off",
-		"import/extensions": [
-			"error",
-			"ignorePackages",
-			{
-				"js": "never",
-				"jsx": "never",
-				"ts": "never",
-				"tsx": "never"
-			}
-		],
-		"class-methods-use-this": "off"
-	},
+	rules: require("./imports/rules.cjs"),
 	ignorePatterns: [
 		"**/*.js",
 		"**/*.cjs",
@@ -35,5 +22,6 @@ module.exports = {
 		"**/*.d.ts",
 		"**/*.jsx",
 		"**/migrations/**",
-	]
+	],
+	overrides: require("./imports/overrides.cjs")
 };

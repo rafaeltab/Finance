@@ -1,15 +1,15 @@
 import { inject, injectable } from "tsyringe";
 import { Asset, AssetGroup, EntityKey, IAssetFactory, RealEstateAsset, StockAsset, User, StockOrder, StockData, getKey } from "@finance/svc-user-domain";
 import { DuplicateEntryError, EntryNotFoundError, UnexpectedError } from "@finance/lib-errors";
-import { UnitOfWork, unitOfWork } from "../unitOfWork/unitOfWork";
+import { UnitOfWork, unitOfWorkToken } from "../unitOfWork/unitOfWork";
 
 @injectable()
 export class AssetFactory implements IAssetFactory {
 
-	constructor(@inject(unitOfWork) private _unitOfWork: UnitOfWork) { }
+	constructor(@inject(unitOfWorkToken) private unitOfWork: UnitOfWork) { }
 
 	async addStockOrderToStockAsset(asset: EntityKey, amount: number, price: number): Promise<StockAsset> {
-		const assetEntity = await this._unitOfWork.getQueryRunner().manager.findOne(Asset, {
+		const assetEntity = await this.unitOfWork.getQueryRunner().manager.findOne(Asset, {
 			where: asset,
 			relations: {
 				stockAsset: true,
@@ -34,13 +34,13 @@ export class AssetFactory implements IAssetFactory {
 			usdPrice: price,
 		}))
 
-		await this._unitOfWork.getQueryRunner().manager.save([assetEntity.stockAsset]);
+		await this.unitOfWork.getQueryRunner().manager.save([assetEntity.stockAsset]);
 
 		return assetEntity.stockAsset;
 	}
 
 	async addStockToAssetGroup(assetGroup: EntityKey, stockDataId: EntityKey, stockOrders: { amount: number, price: number }[]): Promise<[StockAsset, Asset]> {
-		const assetGroupEntity = await this._unitOfWork.getQueryRunner().manager.findOne(AssetGroup, {
+		const assetGroupEntity = await this.unitOfWork.getQueryRunner().manager.findOne(AssetGroup, {
 			where: assetGroup,
 			relations: {
 				assets: true,
@@ -56,13 +56,13 @@ export class AssetFactory implements IAssetFactory {
 			entity: assetGroupEntity
 		}, stockDataId, stockOrders);
 
-		await this._unitOfWork.getQueryRunner().manager.save([assetEntity, assetGroupEntity, ...stockOrderEntities]);
+		await this.unitOfWork.getQueryRunner().manager.save([assetEntity, assetGroupEntity, ...stockOrderEntities]);
 
 		return [stockAssetEntity, assetEntity];
 	}
 
 	async addRealEstateToAssetGroup(assetGroup: EntityKey, address: string): Promise<[RealEstateAsset, Asset]> {
-		const assetGroupEntity = await this._unitOfWork.getQueryRunner().manager.findOne(AssetGroup, {
+		const assetGroupEntity = await this.unitOfWork.getQueryRunner().manager.findOne(AssetGroup, {
 			where: assetGroup,
 			relations: {
 				assets: true,
@@ -78,13 +78,13 @@ export class AssetFactory implements IAssetFactory {
 			entity: assetGroupEntity
 		}, address);
 
-		await this._unitOfWork.getQueryRunner().manager.save([assetEntity, assetGroupEntity]);
+		await this.unitOfWork.getQueryRunner().manager.save([assetEntity, assetGroupEntity]);
 
 		return [realEstateAsset, assetEntity];
 	}
 
 	async addStockToUser(user: EntityKey, stockDataId: EntityKey, stockOrders: { amount: number, price: number }[]): Promise<[StockAsset, Asset]> {
-		const userEntity = await this._unitOfWork.getQueryRunner().manager.findOne(User, {
+		const userEntity = await this.unitOfWork.getQueryRunner().manager.findOne(User, {
 			where: user,
 			relations: {
 				assets: true,
@@ -100,13 +100,13 @@ export class AssetFactory implements IAssetFactory {
 			entity: userEntity
 		}, stockDataId, stockOrders);
 
-		await this._unitOfWork.getQueryRunner().manager.save([assetEntity, userEntity, ...stockOrderEntities]);
+		await this.unitOfWork.getQueryRunner().manager.save([assetEntity, userEntity, ...stockOrderEntities]);
 
 		return [stockAssetEntity, assetEntity];
 	}
 
 	async addRealEstateToUser(user: EntityKey, address: string): Promise<[RealEstateAsset, Asset]> {
-		const userEntity = await this._unitOfWork.getQueryRunner().manager.findOne(User, {
+		const userEntity = await this.unitOfWork.getQueryRunner().manager.findOne(User, {
 			where: user,
 			relations: {
 				assets: true,
@@ -122,13 +122,13 @@ export class AssetFactory implements IAssetFactory {
 			entity: userEntity
 		}, address);
 
-		await this._unitOfWork.getQueryRunner().manager.save([assetEntity, realEstateAsset]);
+		await this.unitOfWork.getQueryRunner().manager.save([assetEntity, realEstateAsset]);
 
 		return [realEstateAsset, assetEntity];
 	}
 
 	private async createStockAsset(ownerEntity: { kind: "user", entity: User } | { kind: "group", entity: AssetGroup }, stockDataId: EntityKey, stockOrders: { amount: number, price: number }[]) {
-		const stockData = await this._unitOfWork.getQueryRunner().manager.findOne(StockData, {
+		const stockData = await this.unitOfWork.getQueryRunner().manager.findOne(StockData, {
 			where: stockDataId,
 		});
 
@@ -138,7 +138,7 @@ export class AssetFactory implements IAssetFactory {
 
 		const identities = this.createStockAssetIdentity(ownerEntity.entity.identity, stockData)
 
-		const existingAsset = await this._unitOfWork.getQueryRunner().manager.findOne(Asset, {
+		const existingAsset = await this.unitOfWork.getQueryRunner().manager.findOne(Asset, {
 			where: {
 				identity: identities[1],
 			}
@@ -148,7 +148,7 @@ export class AssetFactory implements IAssetFactory {
 			throw new DuplicateEntryError(Asset.name, identities[1]);
 		}
 
-		const existingStockAsset = await this._unitOfWork.getQueryRunner().manager.findOne(StockAsset, {
+		const existingStockAsset = await this.unitOfWork.getQueryRunner().manager.findOne(StockAsset, {
 			where: {
 				identity: identities[0],
 			}
@@ -196,7 +196,7 @@ export class AssetFactory implements IAssetFactory {
 	private async createRealEstateAsset(ownerEntity: { kind: "user", entity: User } | { kind: "group", entity: AssetGroup }, address: string) {
 		const identities = this.createRealEstateAssetIdentity(ownerEntity.entity.identity, address)
 
-		const existingAsset = await this._unitOfWork.getQueryRunner().manager.findOne(Asset, {
+		const existingAsset = await this.unitOfWork.getQueryRunner().manager.findOne(Asset, {
 			where: {
 				identity: identities[1],
 			}
@@ -206,7 +206,7 @@ export class AssetFactory implements IAssetFactory {
 			throw new DuplicateEntryError(Asset.name, identities[1]);
 		}
 
-		const existingRealEstateAsset = await this._unitOfWork.getQueryRunner().manager.findOne(RealEstateAsset, {
+		const existingRealEstateAsset = await this.unitOfWork.getQueryRunner().manager.findOne(RealEstateAsset, {
 			where: {
 				identity: identities[0],
 			}

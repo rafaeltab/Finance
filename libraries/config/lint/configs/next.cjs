@@ -10,20 +10,7 @@ module.exports = {
 		'plugin:@typescript-eslint/recommended',
 		'next'
 	],
-	rules: {
-		"import/prefer-default-export": "off",
-		"import/extensions": [
-			"error",
-			"ignorePackages",
-			{
-				"js": "never",
-				"jsx": "never",
-				"ts": "never",
-				"tsx": "never"
-			}
-		],
-		"class-methods-use-this": "off"
-	},
+	rules: require("./imports/rules.cjs"),
 	parser: '@typescript-eslint/parser',
 	ignorePatterns: [
 		"**/*.js",
@@ -32,5 +19,6 @@ module.exports = {
 		"**/*.d.ts",
 		"**/*.jsx",
 		"**/migrations/**",
-	]
+	],
+	overrides: require("./imports/overrides.cjs")
 };

@@ -3,17 +3,53 @@ import { EntryNotFoundError } from "@finance/lib-errors";
 import { set } from "lodash-es";
 import { inject, injectable } from "tsyringe";
 import { EntityManager, EntityMetadata, EntityTarget, FindOptionsWhere, In, Like, ObjectLiteral } from "typeorm";
-import { UnitOfWork, unitOfWork } from "../unitOfWork/unitOfWork";
+import { UnitOfWork, unitOfWorkToken } from "../unitOfWork/unitOfWork";
 
 const granularities = new Set(["minute", "hour", "day", "week", "month", "year"]);
 
+function mapRawToEntity<T>(entity: EntityTarget<T>, raw: ObjectLiteral, entityManager: EntityManager, meta?: EntityMetadata): T {
+	const result: Partial<T> = {}
+
+	let metadata = meta;
+
+	if (metadata === undefined) {
+		metadata = entityManager.connection.getMetadata(entity);
+	}
+
+	for (const column of metadata.columns) {
+		if (raw[column.databaseName] !== undefined) {
+			let value = raw[column.databaseName];
+			if (column.transformer !== undefined) {
+				let transformers = column.transformer;
+				if (!Array.isArray(transformers)) {
+					transformers = [transformers];
+				}
+
+				for (const transformer of transformers) {
+					value = transformer.from(value);
+				}
+			}
+
+			set(result, column.propertyPath, value)
+		}
+	}
+
+	return result as T;
+}
+
+
+function mapRawsToEntities<T>(entity: EntityTarget<T>, raw: ObjectLiteral[], entityManager: EntityManager): T[] {
+	const meta = entityManager.connection.getMetadata(entity);
+	return raw.map((r) => mapRawToEntity(entity, r, entityManager, meta));
+}
+
 @injectable()
 export class StockRepository implements IStockRepository {
-	constructor(@inject(unitOfWork) private _unitOfWork: UnitOfWork) { }
+	constructor(@inject(unitOfWorkToken) private unitOfWork: UnitOfWork) { }
 
 
 	async getAllStockData(withValues?: boolean, limit?: number, offset?: number): Promise<PaginatedBase<StockData>> {
-		const stockData = await this._unitOfWork.getQueryRunner().manager.findAndCount(StockData, {
+		const stockData = await this.unitOfWork.getQueryRunner().manager.findAndCount(StockData, {
 			skip: offset,
 			take: limit,
 		});
@@ -45,7 +81,7 @@ export class StockRepository implements IStockRepository {
 			throw new Error("Invalid granularity");
 		}
 
-		const stockData = await this._unitOfWork.getQueryRunner().manager.findOne(StockData, {
+		const stockData = await this.unitOfWork.getQueryRunner().manager.findOne(StockData, {
 			where: stockDataId
 		});
 
@@ -59,11 +95,11 @@ export class StockRepository implements IStockRepository {
 
 		const stockId = { stockId: stockData.uniqueId };
 
-		const entityManager = this._unitOfWork.getQueryRunner().manager;
+		const entityManager = this.unitOfWork.getQueryRunner().manager;
 		const queryResult = await entityManager
 			.createQueryBuilder()
 			.from((subQuery) => subQuery
-					.from((subQuery) => subQuery.from(StockValue, "sv")
+					.from((openSubQuery) => openSubQuery.from(StockValue, "sv")
 							.distinctOn(distinct)
 							.where("sv.stockDataUniqueId = :stockId", stockId)
 							.andWhere("sv.date >= :startDate", { startDate: timerange.start })
@@ -72,7 +108,7 @@ export class StockRepository implements IStockRepository {
 							.addSelect(trunc, "trunc")
 							.addOrderBy(trunc)
 							.addOrderBy(`"sv"."date"`), "o")
-					.innerJoin((subQuery) => subQuery.from(StockValue, "sv")
+					.innerJoin((closeSubQuery) => closeSubQuery.from(StockValue, "sv")
 							.distinctOn(distinct)
 							.where("sv.stockDataUniqueId = :stockId", stockId)
 							.andWhere("sv.date >= :startDate", { startDate: timerange.start })
@@ -81,7 +117,7 @@ export class StockRepository implements IStockRepository {
 							.addSelect(trunc, "trunc")
 							.addOrderBy(trunc)
 							.addOrderBy(`"sv"."date"`, "DESC"), "c", `"o"."trunc" = "c"."trunc"`)
-					.innerJoin((subQuery) => subQuery.from(StockValue, "sv")
+					.innerJoin((dlhvSubQuery) => dlhvSubQuery.from(StockValue, "sv")
 							.where("sv.stockDataUniqueId = :stockId", stockId)
 							.andWhere("sv.date >= :startDate", { startDate: timerange.start })
 							.andWhere("sv.date <= :endDate", { endDate: timerange.end })
@@ -107,7 +143,7 @@ export class StockRepository implements IStockRepository {
 		const stockValues = mapRawsToEntities(StockValue, queryResult, entityManager);
 
 		return {
-			data: stockValues as any,
+			data: stockValues,
 			page: {
 				count: stockValues.length,
 				offset: offset ?? 0,
@@ -117,7 +153,7 @@ export class StockRepository implements IStockRepository {
 	}
 
 	async getStockEvents(stockDataId: EntityKey): Promise<[StockDividendEvent[], StockSplitEvent[]]> {
-		const stockData = await this._unitOfWork.getQueryRunner().manager.findOne(StockData, {
+		const stockData = await this.unitOfWork.getQueryRunner().manager.findOne(StockData, {
 			where: stockDataId,
 			relations: {
 				splitEvents: true,
@@ -133,7 +169,7 @@ export class StockRepository implements IStockRepository {
 	}
 
 	async getStockData(stockDataId: EntityKey): Promise<StockData> {
-		const stockData =  await this._unitOfWork.getQueryRunner().manager.findOne(StockData, {
+		const stockData =  await this.unitOfWork.getQueryRunner().manager.findOne(StockData, {
 			where: stockDataId
 		});
 
@@ -165,7 +201,7 @@ export class StockRepository implements IStockRepository {
 		}
 
 
-		const stockData = await this._unitOfWork.getQueryRunner().manager.findAndCount(StockData, {
+		const stockData = await this.unitOfWork.getQueryRunner().manager.findAndCount(StockData, {
 			where,
 			order: {
 				symbol: "ASC",
@@ -216,7 +252,7 @@ export class StockRepository implements IStockRepository {
 
 		const stockIds = { stockIds: stockData.map(x => x.uniqueId) }
 
-		const entityManager = this._unitOfWork.getQueryRunner().manager;
+		const entityManager = this.unitOfWork.getQueryRunner().manager;
 		const queryResult = await entityManager
 			.createQueryBuilder()
 			.from((subQuery) => subQuery.from(StockValue, "sv")
@@ -261,50 +297,20 @@ export class StockRepository implements IStockRepository {
 		const stockValues = mapRawsToEntities(StockValue, queryResult, entityManager);
 
 		for (const value of stockValues) {
-			if(value.stockData == undefined) continue;
+			if(value.stockData===undefined) continue;
 
 			const {uniqueId} = value.stockData;
 
-			if (stockDataMap.get(uniqueId) == undefined) continue;
+			const retrieved = stockDataMap.get(uniqueId);
 
-			if (stockDataMap.get(uniqueId)!.values == undefined) {
-				stockDataMap.get(uniqueId)!.values = [];
+			if (retrieved===undefined) continue;
+
+			if (retrieved.values===undefined) {
+				retrieved.values = [];
 			}
-			stockDataMap.get(uniqueId)!.values!.push(value);
+			retrieved.values.push(value);
 		}
 		return Array.from(stockDataMap.values());
 	}
 }
 
-function mapRawsToEntities<T>(entity: EntityTarget<T>, raw: ObjectLiteral[], entityManager: EntityManager): T[] {
-	const meta = entityManager.connection.getMetadata(entity);
-	return raw.map((r) => mapRawToEntity(entity, r, entityManager, meta));
-}
-
-function mapRawToEntity<T>(entity: EntityTarget<T>, raw: ObjectLiteral, entityManager: EntityManager, meta?: EntityMetadata): T {
-	const result: Partial<T> = {}
-	
-	if(meta === undefined) {
-		meta = entityManager.connection.getMetadata(entity);
-	}
-
-	for (const column of meta.columns) {
-		if (raw[column.databaseName] !== undefined) {
-			let value = raw[column.databaseName];
-			if (column.transformer !== undefined) { 
-				let transformers = column.transformer;
-				if (!Array.isArray(transformers)) { 
-					transformers = [transformers];
-				}
-
-				for (const transformer of transformers) {
-					value = transformer.from(value);
-				}
-			}
-
-			set(result, column.propertyPath, value)
-		}
-	}
-
-	return result as T;
-}

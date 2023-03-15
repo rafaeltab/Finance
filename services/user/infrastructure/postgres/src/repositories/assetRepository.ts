@@ -1,15 +1,15 @@
 import { EntityKey, IAssetRepository, PaginatedBase, Asset, getKey } from "@finance/svc-user-domain";
 import { EntryNotFoundError } from "@finance/lib-errors";
 import { inject, injectable } from "tsyringe";
-import { unitOfWork, UnitOfWork } from "../unitOfWork/unitOfWork";
+import { unitOfWorkToken, UnitOfWork } from "../unitOfWork/unitOfWork";
 
 @injectable()
 export class AssetRepository implements IAssetRepository {
-	constructor(@inject(unitOfWork) private _unitOfWork: UnitOfWork) { }
+	constructor(@inject(unitOfWorkToken) private unitOfWork: UnitOfWork) { }
 
 
 	async getAllAssetsForUser(user: EntityKey, limit: number, offset: number): Promise<PaginatedBase<Asset>> {
-		const res = await this._unitOfWork.getQueryRunner().manager.findAndCount(Asset, {
+		const res = await this.unitOfWork.getQueryRunner().manager.findAndCount(Asset, {
 			where: {
 				user
 			},
@@ -32,7 +32,7 @@ export class AssetRepository implements IAssetRepository {
 	}
 
 	async getAllAssetsForAssetGroup(assetGroup: EntityKey, limit: number, offset: number): Promise<PaginatedBase<Asset>> {
-		const res = await this._unitOfWork.getQueryRunner().manager.findAndCount(Asset, {
+		const res = await this.unitOfWork.getQueryRunner().manager.findAndCount(Asset, {
 			where: {
 				group: assetGroup
 			},
@@ -55,7 +55,7 @@ export class AssetRepository implements IAssetRepository {
 	}
 
 	async get(id: EntityKey): Promise<Asset> {
-		const asset = await this._unitOfWork.getQueryRunner().manager.findOne(Asset, {
+		const asset = await this.unitOfWork.getQueryRunner().manager.findOne(Asset, {
 			where: id,
 			relations: {
 				stockAsset: true,
@@ -71,8 +71,8 @@ export class AssetRepository implements IAssetRepository {
 	}
 
 	async delete(id: EntityKey): Promise<void> {
-		const res = await this._unitOfWork.getQueryRunner().manager.delete(Asset, id);
-		if ((res.affected ?? 0) == 0) {
+		const res = await this.unitOfWork.getQueryRunner().manager.delete(Asset, id);
+		if ((res.affected ?? 0)===0) {
 			throw new EntryNotFoundError(Asset.name, getKey(id));
 		}
 	}

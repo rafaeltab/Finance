@@ -1,14 +1,14 @@
 import { IJobFactory, EntityKey, Job, ActiveIncome, User, getKey } from "@finance/svc-user-domain";
 import { inject, injectable } from "tsyringe";
 import { DuplicateEntryError, EntryNotFoundError, UnexpectedError } from "@finance/lib-errors";
-import { UnitOfWork, unitOfWork } from "../unitOfWork/unitOfWork";
+import { UnitOfWork, unitOfWorkToken } from "../unitOfWork/unitOfWork";
 
 @injectable()
 export class JobFactory implements IJobFactory {
-	constructor(@inject(unitOfWork) private _unitOfWork: UnitOfWork) { }
+	constructor(@inject(unitOfWorkToken) private unitOfWork: UnitOfWork) { }
 	
 	async addJobToUser(user: EntityKey, title: string, monthlySalary: number): Promise<Job> {
-		const userEntity = await this._unitOfWork.getQueryRunner().manager.findOne(User, {
+		const userEntity = await this.unitOfWork.getQueryRunner().manager.findOne(User, {
 			where: user,
 			relations: {
 				jobs: true,
@@ -21,7 +21,7 @@ export class JobFactory implements IJobFactory {
 
 		const identity = this.createIdentity(userEntity, title);
 
-		const existingJob = await this._unitOfWork.getQueryRunner().manager.findOne(Job, {
+		const existingJob = await this.unitOfWork.getQueryRunner().manager.findOne(Job, {
 			where: {
 				identity
 			}
@@ -48,7 +48,7 @@ export class JobFactory implements IJobFactory {
 
 		userEntity.jobs.push(job);
 
-		await this._unitOfWork.getQueryRunner().manager.save([job, userEntity]);
+		await this.unitOfWork.getQueryRunner().manager.save([job, userEntity]);
 
 		return job;
 	}

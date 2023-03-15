@@ -34,7 +34,8 @@
 		"typeorm": "0.3.10",
 		"uuid": "^9.0.0",
 		"uuidv4": "^6.2.13",
-		"zod": "^3.19.1"
+		"zod": "^3.19.1",
+		"lodash-es": "^4.17.15"
 	},
 	"devDependencies": {
 		"@types/jest": "^29.2.3",

@@ -1,6 +1,6 @@
 import { assert } from "console";
 
-export function expectNotNullOrUndefined<T extends any>(toCheck: T): asserts toCheck is Exclude<T, undefined | null> {
+export function expectNotNullOrUndefined<T>(toCheck: T): asserts toCheck is Exclude<T, undefined | null> {
 	expect(toCheck).not.toBeUndefined();
 	expect(toCheck).not.toBeNull();
 

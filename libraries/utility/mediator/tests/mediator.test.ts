@@ -1,4 +1,4 @@
-import "reflect-metadata"
+import "reflect-metadata";
 import { ICommand, ICommandHandler, ICommandResult, IEvent, IEventHandler, IQuery, IQueryHandler, IQueryResult, Mediator, MediatorModule } from "#src/index";
 
 let mediator: Mediator;
@@ -98,7 +98,7 @@ test("command", async () => {
 	let counter = 0;
 	const command = new TestCommand({
 		data: () => {
-			counter++;
+			counter+=1;
 		}
 	});
 

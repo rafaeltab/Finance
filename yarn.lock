@@ -660,6 +660,7 @@ __metadata:
     esbuild: ^0.15.12
     jest: ^29.3.1
     lodash-es: ^4.17.21
+    reflect-metadata: ^0.1.13
     rimraf: ^3.0.2
     ts-jest: ^29.0.3
     tsyringe: ^4.7.0

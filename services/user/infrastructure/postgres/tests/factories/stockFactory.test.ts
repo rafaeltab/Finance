@@ -101,7 +101,7 @@ describe("addStockValues", () => {
 		
 		expect(result.data.length).toBe(testData.googStockValues.length + 1);
 
-		const inserted = result.data.find(x => x.volume == data.values[0].volume);
+		const inserted = result.data.find(x => x.volume===data.values[0].volume);
 
 		expectNotNullOrUndefined(inserted);
 

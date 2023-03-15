@@ -1,9 +1,9 @@
 import { Lifecycle, scoped, InjectionToken, injectable, inject } from "tsyringe";
 import { DataSource, QueryRunner } from "typeorm";
-import { dataSource } from "../data-source";
+import { dataSource as dataSourceToken } from "../data-source";
 
 
-export const unitOfWork: InjectionToken = "unitOfWork";
+export const unitOfWorkToken: InjectionToken = "unitOfWork";
 
 export interface IUnitOfWork { 
 	getQueryRunner(): QueryRunner;
@@ -15,40 +15,40 @@ export interface IUnitOfWork {
 @scoped(Lifecycle.ResolutionScoped)
 @injectable()
 export class UnitOfWork implements IUnitOfWork {
-	private _queryRunner: QueryRunner | null;
+	private queryRunner: QueryRunner | null;
 
 	constructor(
-		@inject(dataSource) private dataSource: DataSource
+		@inject(dataSourceToken) private dataSource: DataSource
 	) {
-		this._queryRunner = dataSource.createQueryRunner();
+		this.queryRunner = dataSource.createQueryRunner();
 	}
 	
 	getQueryRunner(): QueryRunner {
-		if(this._queryRunner === null) throw new Error("Query runner has been released. Call restart to get a new query runner.")
-		return this._queryRunner;
+		if(this.queryRunner === null) throw new Error("Query runner has been released. Call restart to get a new query runner.")
+		return this.queryRunner;
 	}
 	
 	async start(): Promise<void> {
-		if (this._queryRunner === null) throw new Error("Query runner has been released. Call restart to get a new query runner.")
-		await this._queryRunner.startTransaction();
+		if (this.queryRunner === null) throw new Error("Query runner has been released. Call restart to get a new query runner.")
+		await this.queryRunner.startTransaction();
 	}
 
 	async commit(): Promise<void> {
-		if (this._queryRunner === null) throw new Error("Query runner has been released. Call restart to get a new query runner.")
-		await this._queryRunner.commitTransaction();
-		await this._queryRunner.release();
-		this._queryRunner = null;
+		if (this.queryRunner === null) throw new Error("Query runner has been released. Call restart to get a new query runner.")
+		await this.queryRunner.commitTransaction();
+		await this.queryRunner.release();
+		this.queryRunner = null;
 	}
 
 	restart(): void {
-		this._queryRunner = this.dataSource.createQueryRunner();
+		this.queryRunner = this.dataSource.createQueryRunner();
 	}
 	
 	async rollback(): Promise<void> {
-		if (this._queryRunner === null) throw new Error("Query runner has been released. Call restart to get a new query runner.")
+		if (this.queryRunner === null) throw new Error("Query runner has been released. Call restart to get a new query runner.")
 
-		await this._queryRunner.rollbackTransaction();
-		await this._queryRunner.release();
-		this._queryRunner = null;
+		await this.queryRunner.rollbackTransaction();
+		await this.queryRunner.release();
+		this.queryRunner = null;
 	}
 }

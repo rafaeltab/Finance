@@ -15,7 +15,7 @@ import { BankAccountRepository } from "./repositories/bankAccountRepository";
 import { JobRepository } from "./repositories/jobRepository";
 import { StockRepository } from "./repositories/stockRepository";
 import { UserRepository } from "./repositories/userRepository";
-import { IUnitOfWork, UnitOfWork, unitOfWork } from "./unitOfWork/unitOfWork";
+import { IUnitOfWork, UnitOfWork, unitOfWorkToken } from "./unitOfWork/unitOfWork";
 
 
 export class PostgresInfrastructureModule implements Module {
@@ -24,7 +24,7 @@ export class PostgresInfrastructureModule implements Module {
 	}
 
 	register(container: DependencyContainer): void {
-		container.register<IUnitOfWork>(unitOfWork, UnitOfWork, {
+		container.register<IUnitOfWork>(unitOfWorkToken, UnitOfWork, {
 			lifecycle: Lifecycle.ResolutionScoped
 		});
 		container.register<DataSource>(dataSource, {

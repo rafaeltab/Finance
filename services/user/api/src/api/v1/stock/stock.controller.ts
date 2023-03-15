@@ -110,7 +110,7 @@ export class StockController {
 				continue;
 			}
 
-			if (file?.dir == true) {
+			if (file?.dir===true) {
 				continue;
 			}
 

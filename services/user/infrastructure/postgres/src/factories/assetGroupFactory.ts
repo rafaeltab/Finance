@@ -1,15 +1,15 @@
 import { AssetGroup, EntityKey, IAssetGroupFactory, User, getKey } from "@finance/svc-user-domain";
 import { DuplicateEntryError, EntryNotFoundError, UnexpectedError } from "@finance/lib-errors";
 import { inject, injectable } from "tsyringe";
-import { UnitOfWork, unitOfWork } from "../unitOfWork/unitOfWork";
+import { UnitOfWork, unitOfWorkToken } from "../unitOfWork/unitOfWork";
 
 @injectable()
 export class AssetGroupFactory implements IAssetGroupFactory {
 
-	constructor(@inject(unitOfWork) private _unitOfWork: UnitOfWork) { }
+	constructor(@inject(unitOfWorkToken) private unitOfWork: UnitOfWork) { }
 
 	async addAssetGroupToUser(user: EntityKey, name: string): Promise<AssetGroup> {
-		const userEntity = await this._unitOfWork.getQueryRunner().manager.findOne(User, {
+		const userEntity = await this.unitOfWork.getQueryRunner().manager.findOne(User, {
 			where: user,
 			relations: {
 				assetGroups: true,
@@ -22,7 +22,7 @@ export class AssetGroupFactory implements IAssetGroupFactory {
 
 		const identity = this.createIdentity(userEntity, name);
 
-		const existingAssetGroup = await this._unitOfWork.getQueryRunner().manager.findOne(AssetGroup, {
+		const existingAssetGroup = await this.unitOfWork.getQueryRunner().manager.findOne(AssetGroup, {
 			where: {
 				identity
 			}
@@ -43,7 +43,7 @@ export class AssetGroupFactory implements IAssetGroupFactory {
 
 		userEntity.assetGroups.push(assetGroup);
 
-		await this._unitOfWork.getQueryRunner().manager.save([assetGroup, userEntity]);
+		await this.unitOfWork.getQueryRunner().manager.save([assetGroup, userEntity]);
 
 		return assetGroup;
 	}

@@ -9,7 +9,7 @@ export type ICommandResult<TData> = ISuccessCommandResult<TData>;
 
 const responseSymbol = Symbol("response");
 
-export abstract class ICommand<TImplementation, TResult extends ICommandResult<any>> implements ITokenable {
+export abstract class ICommand<TImplementation, TResult extends ICommandResult<unknown>> implements ITokenable {
 	/** This should be created by the query class, not the user */
 	readonly abstract token: string;
 
