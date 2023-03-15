@@ -18,6 +18,7 @@
 		"@finance/eslint-config-lib-lint": "*",
 		"@finance/lib-basic-types": "*",
 		"@finance/lib-mediator": "*",
+		"@finance/lib-test": "*",
 		"@finance/lib-module-types": "*",
 		"@finance/lib-tsconfig": "*",
 		"@finance/svc-user-domain": "*",

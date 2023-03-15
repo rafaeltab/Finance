@@ -37,6 +37,7 @@ export class CreateStockDatasCommandHandler extends ICommandHandler<CreateStockD
 			const results: string[] = [];
 
 			for (const data of command.stockDatas) {
+				// eslint-disable-next-line no-await-in-loop
 				const stockData = await this.stockFactory.addStockData(
 					data.symbol,
 					data.exchange,

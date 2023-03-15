@@ -3,7 +3,6 @@ import { Test, TestingModule } from "@nestjs/testing";
 import type { Request, Response } from "express";
 import request from "supertest";
 import { cors, errorsFilter, validationPipe } from "#src/globalRegistrations";
-import type { GetUsersResponse } from "#src/api/v1/user/user.responses";
 import { UserModuleMetadata } from "../../../../src/api/v1/user/user.module";
 
 describe('UserController (e2e)', () => {
@@ -19,12 +18,16 @@ describe('UserController (e2e)', () => {
 		errorsFilter(app);
 		cors(app);
 
-		app.use((req: Request, _: Response, next: any) => { 
+		app.use((req: Request, _: Response, next: unknown) => { 
 			req.user = {
 				scope: "admin",
 				sub: "banana"
 			}
-			next();
+			if (next instanceof Function) { 
+				next();
+			} else {
+				throw new Error();
+			}
 		})
 		await app.init();
 	});

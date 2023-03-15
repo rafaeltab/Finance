@@ -22,7 +22,6 @@ export class ApplicationModule implements Module {
 		});
 	}
 
-	async dispose() { 
-
-	}
+	// eslint-disable-next-line @typescript-eslint/no-empty-function
+	async dispose() {}
 }

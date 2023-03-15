@@ -50,9 +50,11 @@ export class StockDataSearchQueryHandler extends IQueryHandler<StockDataSearchQu
 
 			let kind: StockAssetKind | undefined;
 
-			if (query.type !== undefined) {
-				if (kinds.includes(query.type.toLowerCase())) {
-					kind = StockAssetKind[Object.keys(StockAssetKind).find(x => x.toLowerCase() === query.type!.toLowerCase()) as keyof typeof StockAssetKind];
+			const queryType = query.type
+
+			if (queryType !== undefined) {
+				if (kinds.includes(queryType.toLowerCase())) {
+					kind = StockAssetKind[Object.keys(StockAssetKind).find(x => x.toLowerCase() === queryType.toLowerCase()) as keyof typeof StockAssetKind];
 				}
 			}
 
