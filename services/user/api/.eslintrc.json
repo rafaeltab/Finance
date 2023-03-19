@@ -5,5 +5,15 @@
 	],
 	"parserOptions": {
 		"project": "./tsconfig.eslint.json"
-	}
+	},
+	"overrides": [
+		{
+			"files": [
+				"*.response.ts"
+			],
+			"rules": {
+				"max-classes-per-file": "off"
+			}
+		}
+	]
 }

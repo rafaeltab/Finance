@@ -1,5 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import type { Asset, StockOrder } from "@finance/svc-user-domain";
+import { UnexpectedError } from "@finance/lib-errors";
 import { StockDataResponse } from "./stockData.response";
 import { EntityResponse } from "./identity.response";
 
@@ -65,9 +66,13 @@ export class AssetResponse extends EntityResponse {
 			}
 		}
 
+		if (asset.stockAsset.stockData === undefined) { 
+			throw new UnexpectedError("Stock data was empty on stock asset");
+		}
+
 		return {
 			stockAsset: {
-				stockData: StockDataResponse.map(asset.stockAsset.stockData!),
+				stockData: StockDataResponse.map(asset.stockAsset.stockData),
 				orders: (asset.stockAsset.orders ?? []).map(StockOrderResponse.map),
 				identity: asset.stockAsset.identity
 			},

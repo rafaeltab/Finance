@@ -65,7 +65,8 @@
 			],
 			"dependsOn": [
 				"build"
-			]
+			],
+			"cache": true
 		},
 		"generate:sdk-dev": {
 			"outputs": [

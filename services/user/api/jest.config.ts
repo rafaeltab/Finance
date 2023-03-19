@@ -1,7 +1,5 @@
 import type { JestConfigWithTsJest } from "ts-jest";
 
-console.log(process.argv)
-
 const config: JestConfigWithTsJest = {
 	transform: {
 		'^.+\\.ts?$':
