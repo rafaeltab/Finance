@@ -6,18 +6,39 @@ type Scopes = {
 } | {
 	and: string[]
 }
+function isAnd(scopes: Scopes): scopes is { and: string[] } {
+	return "and" in scopes;
+}
+
+function isOr(scopes: Scopes): scopes is { or: string[] } {
+	return "or" in scopes;
+}
+
+function validateScopes(scopes: Scopes, presentScopes: string[]): boolean {
+	if (isOr(scopes)) {
+		return scopes.or.some(scope => presentScopes.includes(scope));
+	} if (isAnd(scopes)) {
+		return scopes.and.every(scope => presentScopes.includes(scope));
+	}
+	return false;
+
+}
+
 
 export class ScopeGuard implements CanActivate {
-	private _scopes: Scopes;
+	private scopes: Scopes;
 
-	private _userIdentityParam: string | null;
+	private userIdentityParam: string | null;
 
 	constructor(scopes: Scopes | string[], userIdentityParam: string | null = null) {
-		if (Array.isArray(scopes)) { 
-			scopes = { and: scopes };
+		let actualScopes: Scopes;
+		if (Array.isArray(scopes)) {
+			actualScopes = { and: scopes };
+		} else { 
+			actualScopes = scopes;
 		}
-		this._scopes = scopes;
-		this._userIdentityParam = userIdentityParam;
+		this.scopes = actualScopes;
+		this.userIdentityParam = userIdentityParam;
 	}
 
 	canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
@@ -28,31 +49,14 @@ export class ScopeGuard implements CanActivate {
 			presentScopes = req.user.scope.split(" ");
 		} 
 
-		if (this._userIdentityParam !== null) { 
-			const userParam = req.params[this._userIdentityParam];
+		if (this.userIdentityParam !== null) { 
+			const userParam = req.params[this.userIdentityParam];
 			if (userParam !== req.user.sub || !req.user?.scope) { 
 				return false;
 			}
 		}
 
-		return validateScopes(this._scopes, presentScopes);
+		return validateScopes(this.scopes, presentScopes);
 	}
 }
 
-function validateScopes(scopes: Scopes, presentScopes: string[]): boolean {
-	if (isOr(scopes)) {
-		return scopes.or.some(scope => presentScopes.includes(scope));
-	} if (isAnd(scopes)) {
-		return scopes.and.every(scope => presentScopes.includes(scope));
-	} 
-		return false;
-	
-}
-
-function isOr(scopes: Scopes): scopes is { or: string[] } {
-	return "or" in scopes;
-}
-
-function isAnd(scopes: Scopes): scopes is { and: string[] } {
-	return "and" in scopes;
-}

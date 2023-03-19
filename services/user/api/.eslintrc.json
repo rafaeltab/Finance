@@ -9,7 +9,9 @@
 	"overrides": [
 		{
 			"files": [
-				"*.response.ts"
+				"*.response.ts",
+				"*.responses.ts",
+				"*.body.ts"
 			],
 			"rules": {
 				"max-classes-per-file": "off"

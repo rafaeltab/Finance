@@ -20,7 +20,7 @@
 		"build:dev": "turbo run build:dev",
 		"dev": "turbo run dev --parallel",
 		"start:dev": "turbo run start:dev --parallel",
-		"lint": "turbo run lint",
+		"lint": "turbo run lint --output-logs errors-only",
 		"lint:fix": "turbo run lint:fix",
 		"test": "turbo run test",
 		"start": "turbo run start",
@@ -43,7 +43,7 @@
 		"eslint-plugin-react": "^7.28.2",
 		"eslint-plugin-react-hooks": "^4.3.0",
 		"rimraf": "^4.4.0",
-		"turbo": "^1.6.2",
+		"turbo": "latest",
 		"typescript": "^4.9.4"
 	},
 	"packageManager": "yarn@3.3.1"

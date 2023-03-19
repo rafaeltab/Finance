@@ -5,25 +5,27 @@ import { AppModule } from "./app.module";
 import { authzGuard, cors, errorsFilter, validationPipe } from "./globalRegistrations";
 import { createSwaggerDocument, setupSwagger } from "./swagger";
 
+function registerComponents(app: INestApplication) {
+	validationPipe(app);
+	authzGuard(app);
+	errorsFilter(app);
+	cors(app);
+}
+
+async function createApp() {
+	const app = await NestFactory.create(AppModule, {
+		logger: console
+	});
+	registerComponents(app);
+	return app;
+}
+
 async function bootstrap() {
 	const app = await createApp();
 
 	setupSwagger(app);
 
 	await app.listen(3000);
-}
-
-async function createApp() {
-	const app = await NestFactory.create(AppModule);
-	registerComponents(app);
-	return app;
-}
-
-function registerComponents(app: INestApplication) {
-	validationPipe(app);
-	authzGuard(app);
-	errorsFilter(app);
-	cors(app);
 }
 
 async function generateDefinition() {

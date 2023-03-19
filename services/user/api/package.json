@@ -24,11 +24,11 @@
 	"dependencies": {
 		"@finance/eslint-config-lib-lint": "*",
 		"@finance/lib-basic-types": "*",
+		"@finance/lib-errors": "*",
 		"@finance/lib-errors-nest": "*",
 		"@finance/lib-mediator": "*",
 		"@finance/svc-user-application": "*",
 		"@finance/svc-user-domain": "*",
-		"@finance/lib-errors": "*",
 		"@nestjs/common": "^9.0.0",
 		"@nestjs/config": "^2.2.0",
 		"@nestjs/core": "^9.0.0",
