@@ -5,19 +5,17 @@ import { Fragment, useState, type Dispatch, type SetStateAction } from "react";
 import type { useUser } from "../../hooks/useAuthentication";
 import { useApi } from "../../hooks/useFinanceApi";
 
-export function AddAssetGroupSlideOver(props: {
+export function AddAssetGroupSlideOver({open, setOpen, user, addAssetGroup}: {
 	open: boolean;
 	setOpen: Dispatch<SetStateAction<boolean>>;
 	user: ReturnType<typeof useUser>;
 	addAssetGroup: (asset: AssetGroupResponse) => void
 }) {
-	const { open, setOpen } = props;
-
 	const { isConnected, api } = useApi();
 	const [name, setName] = useState<string>("");
 
-	var saveAction = async (): Promise<AssetGroupResponse> => {
-		if (!isConnected || !props.user) {
+	const saveAction = async (): Promise<AssetGroupResponse> => {
+		if (!isConnected || !user) {
 			// show some error
 			throw new Error();
 		}
@@ -27,7 +25,7 @@ export function AddAssetGroupSlideOver(props: {
 			throw new Error();
 		}
 
-		const res = await api.assetControllerCreateAssetGroupForUser(props.user.sub, {
+		const res = await api.assetControllerCreateAssetGroupForUser(user.sub, {
 			name
 		});
 
@@ -36,7 +34,7 @@ export function AddAssetGroupSlideOver(props: {
 			throw new Error();
 		}
 
-		props.setOpen(false);
+		setOpen(false);
 
 		return res.data.data;
 	};
@@ -53,12 +51,12 @@ export function AddAssetGroupSlideOver(props: {
 					leaveFrom="opacity-100"
 					leaveTo="opacity-0"
 				>
-					<div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+					<div className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" />
 				</Transition.Child>
 
 				<div className="fixed inset-0 overflow-hidden">
 					<div className="absolute inset-0 overflow-hidden">
-						<div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
+						<div className="fixed inset-y-0 right-0 flex max-w-full pl-10 pointer-events-none">
 							<Transition.Child
 								as={Fragment}
 								enter="transform transition ease-in-out duration-500 sm:duration-700"
@@ -68,30 +66,30 @@ export function AddAssetGroupSlideOver(props: {
 								leaveFrom="translate-x-0"
 								leaveTo="translate-x-full"
 							>
-								<Dialog.Panel className="pointer-events-auto w-screen max-w-xl">
-									<div className="flex h-full flex-col divide-y divide-gray-200 bg-white shadow-xl">
-										<div className="flex min-h-0 flex-1 flex-col overflow-y-scroll py-6">
+								<Dialog.Panel className="w-screen max-w-xl pointer-events-auto">
+									<div className="flex flex-col h-full bg-white divide-y divide-gray-200 shadow-xl">
+										<div className="flex flex-col flex-1 min-h-0 py-6 overflow-y-scroll">
 											<div className="px-4 sm:px-6">
 												<div className="flex items-start justify-between">
 													<Dialog.Title className="text-lg font-medium text-gray-900">
 														Add asset group
 													</Dialog.Title>
-													<div className="ml-3 flex h-7 items-center">
+													<div className="flex items-center ml-3 h-7">
 														<button
 															type="button"
-															className="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+															className="text-gray-400 bg-white rounded-md hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
 															onClick={() => setOpen(false)}
 														>
 															<span className="sr-only">Close panel</span>
 															<XMarkIcon
-																className="h-6 w-6"
+																className="w-6 h-6"
 																aria-hidden="true"
 															/>
 														</button>
 													</div>
 												</div>
 											</div>
-											<div className="relative mt-6 flex-1 px-4 sm:px-6">
+											<div className="relative flex-1 px-4 mt-6 sm:px-6">
 												{/* Replace with your content */}
 												<div className="mt-4">
 													<div>
@@ -100,38 +98,38 @@ export function AddAssetGroupSlideOver(props: {
 															className="block text-sm font-medium text-gray-700"
 														>
 															Name
+															<div className="mt-1">
+																<input
+																	type="text"
+																	name="name"
+																	id="name"
+																	value={name ?? ""}
+																	onChange={(e) => setName(e.target.value)}
+																	className="block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+																	placeholder="Name"
+																/>
+															</div>
 														</label>
-														<div className="mt-1">
-															<input
-																type="text"
-																name="name"
-																id="name"
-																value={name ?? ""}
-																onChange={(e) => setName(e.target.value)}
-																className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-																placeholder="Name"
-															/>
-														</div>
 													</div>
 												</div>
 
 												{/* /End replace */}
 											</div>
 										</div>
-										<div className="flex flex-shrink-0 justify-end px-4 py-4">
+										<div className="flex justify-end flex-shrink-0 px-4 py-4">
 											<button
 												type="button"
-												className="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+												className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
 												onClick={() => setOpen(false)}
 											>
 												Cancel
 											</button>
 											<button
 												type="submit"
-												className="ml-4 inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+												className="inline-flex justify-center px-4 py-2 ml-4 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
 												onClick={() => {
 													saveAction().then((data) => {
-														props.addAssetGroup(data);
+														addAssetGroup(data);
 													});
 												}}
 											>
