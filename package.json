@@ -19,7 +19,7 @@
 		"build": "turbo run build",
 		"build:dev": "turbo run build:dev",
 		"dev": "turbo run dev --parallel",
-		"start:dev": "turbo run start:dev --parallel",
+		"start:dev": "turbo run start:dev --parallel --concurrency 15",
 		"lint": "turbo run lint --output-logs errors-only",
 		"lint:fix": "turbo run lint:fix",
 		"test": "turbo run test",

@@ -73,6 +73,8 @@ export function SideNavigator({ navigationSpec, user, logout, children }: Props)
 								<div className="flex-1 h-0 pt-5 pb-4 overflow-y-auto">
 									<div className="flex items-center flex-shrink-0 px-4">
 										<Image
+											width={64}
+											height={64}
 											className="w-auto h-8"
 											src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
 											alt="Your Company"
@@ -90,6 +92,8 @@ export function SideNavigator({ navigationSpec, user, logout, children }: Props)
 										<div className="flex items-center">
 											<div>
 												<Image
+													width={64}
+													height={64}
 													className="inline-block w-10 h-10 rounded-full"
 													src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
 													alt=""
@@ -116,6 +120,8 @@ export function SideNavigator({ navigationSpec, user, logout, children }: Props)
 					<div className="flex flex-col flex-1 pt-5 pb-4 overflow-y-auto">
 						<div className="flex items-center flex-shrink-0 px-4">
 							<Image
+								width={64}
+								height={64}
 								className="w-auto h-8"
 								src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
 								alt="Your Company"
@@ -131,7 +137,9 @@ export function SideNavigator({ navigationSpec, user, logout, children }: Props)
 
 						<div className="flex items-center flex-shrink-0 w-full group">
 							<a href="/" className="flex items-center w-full pr-10">
-								<Image 
+								<Image
+									width={64}
+									height={64}
 									className="inline-block rounded-full h-9 w-9"
 									src={user.picture ?? ""}
 									alt=""
