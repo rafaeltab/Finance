@@ -3,8 +3,6 @@ import { DefaultPage } from '../../../components/defaultPage'
 
 export default function StockList() {
 	return (
-		<DefaultPage title="Stock list">
-
-		</DefaultPage>
+		<DefaultPage title="Stock list"/>
 	)
 }

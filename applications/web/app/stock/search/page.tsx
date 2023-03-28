@@ -3,8 +3,6 @@ import { DefaultPage } from '../../../components/defaultPage'
 
 export default function StockSearch() {
 	return (
-		<DefaultPage title="Stock search">
-
-		</DefaultPage>
+		<DefaultPage title="Stock search"/>
 	)
 }
