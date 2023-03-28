@@ -2,7 +2,7 @@ import { UnexpectedError, type IHttpCodeError } from "@finance/lib-errors";
 import { HttpException } from "@nestjs/common";
 
 function isHttpCodeError(err: Error): err is IHttpCodeError & Error {
-	return "httpCode" in err && typeof err.httpCode === "function";
+	return "getHttpCode" in err && typeof err.getHttpCode === "function";
 }
 
 function hasErrorCause(err: Error): err is Error & {
@@ -18,13 +18,13 @@ export function handleError(err: unknown): HttpException {
 				return new HttpException(err.message, err.getHttpCode(), {
 					cause: err.cause
 				});
-			} 
+			}
 			return new HttpException(err.message, err.getHttpCode());
-			
-		} 
-			return handleError(new UnexpectedError(err));
-		
-	} 
+
+		}
 		return handleError(new UnexpectedError(err));
-	
+
+	}
+	return handleError(new UnexpectedError(err));
+
 }
