@@ -10,26 +10,9 @@ export function DetailedChart({ symbol, exchange }: {
 
 	useEffect(
 		() => {
-			onLoadScriptRef.current = createWidget;
-
-			if (!tvScriptLoadingPromise) {
-				tvScriptLoadingPromise = new Promise((resolve) => {
-					const script = document.createElement('script');
-					script.id = 'tradingview-widget-loading-script';
-					script.src = 'https://s3.tradingview.com/tv.js';
-					script.type = 'text/javascript';
-					script.onload = resolve;
-
-					document.head.appendChild(script);
-				});
-			}
-
-			tvScriptLoadingPromise.then(() => onLoadScriptRef.current && onLoadScriptRef.current());
-
-			return () => onLoadScriptRef.current = undefined;
-
 			function createWidget() {
 				if (document.getElementById('tradingview_41ade') && 'TradingView' in window) {
+					// eslint-disable-next-line no-new, new-cap, @typescript-eslint/no-explicit-any
 					new (window as any).TradingView.widget({
 						autosize: true,
 						symbol: `${exchange}:${symbol}`,
@@ -47,8 +30,27 @@ export function DetailedChart({ symbol, exchange }: {
 					});
 				}
 			}
+
+			onLoadScriptRef.current = createWidget;
+
+			if (!tvScriptLoadingPromise) {
+				tvScriptLoadingPromise = new Promise((resolve) => {
+					const script = document.createElement('script');
+					script.id = 'tradingview-widget-loading-script';
+					script.src = 'https://s3.tradingview.com/tv.js';
+					script.type = 'text/javascript';
+					script.onload = resolve;
+
+					document.head.appendChild(script);
+				});
+			}
+
+			tvScriptLoadingPromise.then(() => onLoadScriptRef.current && onLoadScriptRef.current());
+
+			// eslint-disable-next-line no-return-assign
+			return () => onLoadScriptRef.current = undefined;
 		},
-		[]
+		[exchange, symbol]
 	);
 
 	return (

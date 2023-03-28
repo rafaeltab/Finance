@@ -7,7 +7,7 @@
 		
 		{
 			"name": "[App] Web",
-			"path": "apps/web"
+			"path": "applications/web"
 		},
 
 		{
@@ -78,4 +78,42 @@
 		"typescript.tsdk": "..\\..\\node_modules\\typescript\\lib",
 		"typescript.enablePromptUseWorkspaceTsdk": true
 	},
+	"extensions": {
+		"recommendations": [
+			"ms-vscode.vscode-typescript-next",
+			"Orta.vscode-jest",
+			"ms-vscode.vscode-js-profile-table",
+			"hbenl.vscode-test-explorer",
+			"albert.TabOut",
+			"alefragnani.Bookmarks",
+			"areai51.react-nitro-snippets",
+			"bierner.markdown-mermaid",
+			"bradgashler.htmltagwrap",
+			"bradlc.vscode-tailwindcss",
+			"BriteSnow.vscode-toggle-quotes",
+			"Cardinal90.multi-cursor-case-preserve",
+			"christian-kohler.npm-intellisense",
+			"codezombiech.gitignore",
+			"christian-kohler.path-intellisense",
+			"dbaeumer.vscode-eslint",
+			"eamodio.gitlens",
+			"ecmel.vscode-html-css",
+			"Gruntfuggly.todo-tree",
+			"ms-azuretools.vscode-docker",
+			"mikestead.dotenv",
+			"xqchen.yarn-ui",
+			"znck.grammarly",
+			"vscode-icons-team.vscode-icons",
+			"VisualStudioExptTeam.vscodeintellicode",
+			"unifiedjs.vscode-mdx",
+			"ryanluker.vscode-coverage-gutters",
+			"oderwat.indent-rainbow",
+			"ms-vsliveshare.vsliveshare",
+			"ritwickdey.LiveServer",
+			"ms-vscode.test-adapter-converter",
+			"ms-vscode.vscode-js-profile-flame",
+			"ms-vscode.js-debug",
+			"ms-vscode.js-debug-companion"
+		]
+	}
 }

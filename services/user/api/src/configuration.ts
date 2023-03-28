@@ -7,13 +7,11 @@ export type Configuration = {
 	}
 }
 
-export default () => { 
-	return {
+export default () => ({
 		auth: {
 			"auth0": {
 				"issuer": process.env["AUTH0_ISSUER_URL"],
 				"audience": process.env["AUTH0_AUDIENCE"]
 			}
 		}
-	}
-}
+	})

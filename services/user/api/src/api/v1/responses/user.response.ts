@@ -1,10 +1,10 @@
 import { ApiProperty } from "@nestjs/swagger";
+import type { User } from "@finance/svc-user-domain";
+import { DateTime } from "luxon";
 import { AssetGroupResponse } from "./assetGroup.response";
 import { AssetResponse } from "./asset.response";
 import { BankAccountResponse } from "./bankAccount.response";
 import { JobResponse } from "./jobs.response";
-import type { User } from "@finance/svc-user-domain";
-import { DateTime } from "luxon";
 import { EntityResponse } from "./identity.response";
 
 export class UserResponse extends EntityResponse { 

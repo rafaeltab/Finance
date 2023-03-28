@@ -1,9 +1,10 @@
 import "reflect-metadata";
-import { AssetGroupRepository } from "#src/repositories/assetGroupRepository";
 import { v4 } from "uuid";
+import type { IAssetGroupRepository } from "@finance/svc-user-domain";
+import { AssetGroupRepository } from "#src/repositories/assetGroupRepository";
 import { arrayIdentityEquals, identityEquals } from "../test-utils/arrayUtils";
 import { DbFixture, TestDataType } from "../test-utils/dbfixture";
-import type { IAssetGroupRepository } from "@finance/svc-user-domain";
+import { expectRequiredProps } from "#tests/test-utils/expectUtils";
 
 let fixture: DbFixture;
 let testData: TestDataType;
@@ -26,19 +27,22 @@ afterAll(async () => {
 
 describe("getAllAssetGroupsForUser", () => {
 	test('getAllAssetGroupsForUser should return all assetGroups for a user by its identity, with at least their uniqueIds and identities', async () => {
+		expectRequiredProps(testData.user, ["assetGroups"]);
 		const assetGroups = await assetGroupRepository.getAllAssetGroupsForUser({
 			identity: testData.user.identity
-		},testData.user.assetGroups!.length + 1, 0);
+		},testData.user.assetGroups.length + 1, 0);
 
-		expect(arrayIdentityEquals(assetGroups.data, testData.user.assetGroups!)).toBe(true);
+		expect(arrayIdentityEquals(assetGroups.data, testData.user.assetGroups)).toBe(true);
 	});
 
 	test('getAllAssetGroupsForUser should return all assetGroups for a user by its uniqueId, with at least their uniqueIds and identities', async () => {
+		expectRequiredProps(testData.user, ["assetGroups"]);
+
 		const assetGroups = await assetGroupRepository.getAllAssetGroupsForUser({
 			uniqueId: testData.user.uniqueId
-		}, testData.user.assetGroups!.length + 1, 0);
+		}, testData.user.assetGroups.length + 1, 0);
 
-		expect(arrayIdentityEquals(assetGroups.data, testData.user.assetGroups!)).toBe(true);
+		expect(arrayIdentityEquals(assetGroups.data, testData.user.assetGroups)).toBe(true);
 	});
 });
 
@@ -82,7 +86,7 @@ describe("delete", () => {
 	});
 
 	test('Should delete a user if it\'s id is provided', async () => {
-		const uniqueId = testData.assetGroup.uniqueId;
+		const {uniqueId} = testData.assetGroup;
 
 		await assetGroupRepository.delete({
 			uniqueId

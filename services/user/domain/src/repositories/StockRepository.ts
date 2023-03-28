@@ -6,7 +6,7 @@ import type { EntityKey, PaginatedBase } from "../utils";
 
 export type ValueGranularity = "minute" | "hour" | "day" | "week" | "month" | "year";
 
-export const stockRepository: InjectionToken = "IStockRepository";
+export const stockRepositoryToken: InjectionToken = "IStockRepository";
 
 
 export interface IStockRepository  {
@@ -28,26 +28,27 @@ export interface IStockRepository  {
 
 
 export class TimeRange {
-	constructor(private _start: Date, private _end: Date) { }
+	constructor(private startDate: Date, private endDate: Date) { }
 
-	get start() { return this._start }
-	get end() { return this._end }
+	get start() { return this.startDate }
+
+	get end() { return this.endDate }
 
 	static fromDay(day: Date) {
 		const date = day.getDate() 
 		const month = day.getMonth()
 		const year = day.getFullYear()
 
-		//start of today
-		var start = new Date(year, month, date, 0, 0, 0, 0);
-		var end = new Date(start.getTime() + 60 * 60 * 24 * 1000 - 1);
+		// start of today
+		const start = new Date(year, month, date, 0, 0, 0, 0);
+		const end = new Date(start.getTime() + 60 * 60 * 24 * 1000 - 1);
 
 		return new TimeRange(start, end);
 	}
 
 	static halfDayAroundNow(day: Date) {
-		var start = new Date(day.getTime() - 60 * 60 * 12 * 1000);
-		var end = new Date(day.getTime() + 60 * 60 * 12 * 1000);
+		const start = new Date(day.getTime() - 60 * 60 * 12 * 1000);
+		const end = new Date(day.getTime() + 60 * 60 * 12 * 1000);
 
 		return new TimeRange(start, end);
 	}

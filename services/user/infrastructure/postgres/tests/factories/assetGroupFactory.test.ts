@@ -1,9 +1,9 @@
 import "reflect-metadata";
+import type { IAssetGroupFactory, IAssetGroupRepository, IUserRepository } from "@finance/svc-user-domain";
 import { AssetGroupFactory } from "#src/factories/assetGroupFactory";
 import { AssetGroupRepository } from "#src/repositories/assetGroupRepository";
 import { UserRepository } from "#src/repositories/userRepository";
 import { DbFixture, TestDataType } from "../test-utils/dbfixture";
-import type { IAssetGroupFactory, IAssetGroupRepository, IUserRepository } from "@finance/svc-user-domain";
 import { expectNotNullOrUndefined, expectRequiredProps } from "#tests/test-utils/expectUtils";
 
 let fixture: DbFixture;
@@ -60,11 +60,11 @@ describe("addAssetGroupToUser", () => {
 
 		expectRequiredProps(user, ["assetGroups"]);
 
-		const userAssetGroup = user.assetGroups!.find(x => x.identity === assetGroup.identity);
+		const userAssetGroup = user.assetGroups.find(x => x.identity === assetGroup.identity);
 
 		expectNotNullOrUndefined(userAssetGroup)
 		expectRequiredProps(userAssetGroup, ["uniqueId"]);
 
-		expect(userAssetGroup!.uniqueId).toBe(res.uniqueId);
+		expect(userAssetGroup.uniqueId).toBe(res.uniqueId);
 	});
 });

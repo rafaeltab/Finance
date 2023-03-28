@@ -1,8 +1,8 @@
 // list a maximum of 30 asset groups
 
-import { IStockRepository, PaginatedBase, StockAssetKind, StockData, stockRepository } from "@finance/svc-user-domain";
+import { IStockRepository, PaginatedBase, StockAssetKind, StockData, stockRepositoryToken } from "@finance/svc-user-domain";
 import { IQuery, IQueryHandler, IQueryResult } from "@finance/lib-mediator";
-import { unitOfWork, type IUnitOfWork } from "@finance/svc-user-infra-postgres";
+import { unitOfWorkToken, type IUnitOfWork } from "@finance/svc-user-infra-postgres";
 import { inject, injectable } from "tsyringe";
 
 export type ResponseType = IQueryResult<Response>
@@ -15,12 +15,15 @@ export class StockDataSearchQuery extends IQuery<StockDataSearchQuery, ResponseT
 	token = "StockDataSearchQuery";
 
 	exchange?: string;
+
 	symbol?: string;
+
 	type?: string;
 
 
-	limit: number = 30;
-	offset: number = 0;
+	limit = 30;
+
+	offset = 0;
 }
 
 @injectable()
@@ -29,8 +32,8 @@ export class StockDataSearchQueryHandler extends IQueryHandler<StockDataSearchQu
 	 *
 	 */
 	constructor(
-		@inject(stockRepository) private stockRepository: IStockRepository,
-		@inject(unitOfWork) private unitOfWork: IUnitOfWork
+		@inject(stockRepositoryToken) private stockRepository: IStockRepository,
+		@inject(unitOfWorkToken) private unitOfWork: IUnitOfWork
 	) {
 		super();
 	}
@@ -45,11 +48,13 @@ export class StockDataSearchQueryHandler extends IQueryHandler<StockDataSearchQu
 
 			const kinds = Object.keys(StockAssetKind).map(x => x.toLowerCase());
 
-			let kind: StockAssetKind | undefined = undefined;
+			let kind: StockAssetKind | undefined;
 
-			if (query.type !== undefined) {
-				if (kinds.includes(query.type.toLowerCase())) {
-					kind = StockAssetKind[Object.keys(StockAssetKind).find(x => x.toLowerCase() === query.type!.toLowerCase()) as keyof typeof StockAssetKind];
+			const queryType = query.type
+
+			if (queryType !== undefined) {
+				if (kinds.includes(queryType.toLowerCase())) {
+					kind = StockAssetKind[Object.keys(StockAssetKind).find(x => x.toLowerCase() === queryType.toLowerCase()) as keyof typeof StockAssetKind];
 				}
 			}
 

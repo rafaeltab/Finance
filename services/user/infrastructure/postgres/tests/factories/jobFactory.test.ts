@@ -1,9 +1,9 @@
 import "reflect-metadata";
+import type { IJobFactory, IJobRepository, IUserRepository } from "@finance/svc-user-domain";
 import { JobFactory } from "#src/factories/jobFactory";
 import { JobRepository } from "#src/repositories/jobRepository";
 import { UserRepository } from "#src/repositories/userRepository";
 import { DbFixture, TestDataType } from "../test-utils/dbfixture";
-import type { IJobFactory, IJobRepository, IUserRepository } from "@finance/svc-user-domain";
 import { expectNotNullOrUndefined, expectRequiredProps } from "#tests/test-utils/expectUtils";
 
 let fixture: DbFixture;

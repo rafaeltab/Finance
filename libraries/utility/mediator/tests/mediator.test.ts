@@ -1,9 +1,9 @@
-import "reflect-metadata"
+import "reflect-metadata";
 import { ICommand, ICommandHandler, ICommandResult, IEvent, IEventHandler, IQuery, IQueryHandler, IQueryResult, Mediator, MediatorModule } from "#src/index";
 
 let mediator: Mediator;
 
-//#region setup
+// #region setup
 
 class TestModule extends MediatorModule {
 	async register(): Promise<void> {
@@ -20,7 +20,7 @@ class TestModule extends MediatorModule {
 }
 
 class TestQuery extends IQuery<TestQuery, IQueryResult<string>> {
-	token: string = "TestQuery"; 
+	token = "TestQuery"; 
 
 	data!: string;
 }
@@ -35,7 +35,7 @@ class TestQueryHandler extends IQueryHandler<TestQuery, IQueryResult<string>> {
 }
 
 class TestEvent extends IEvent<TestEvent> {
-	token: string = "TestEvent";
+	token = "TestEvent";
 
 	data!: () => void;
 }
@@ -47,7 +47,7 @@ class TestEventHandler extends IEventHandler<TestEvent> {
 }
 
 class TestCommand extends ICommand<TestCommand, ICommandResult<string>> {
-	token: string = "TestCommand";
+	token = "TestCommand";
 
 	data!: () => void;
 }
@@ -62,7 +62,7 @@ class TestCommandHandler extends ICommandHandler<TestCommand, ICommandResult<str
 	}
 }
 
-//#endregion setup
+// #endregion setup
 
 
 beforeAll(async () => {
@@ -83,10 +83,7 @@ test("query", async () => {
 	}
 });
 
-test("event", () => {
-	
-
-	return new Promise((resolve) => {
+test("event", () => new Promise((resolve) => {
 		const event = new TestEvent({
 			data: () => {
 				expect(true).toBe(true);
@@ -95,14 +92,13 @@ test("event", () => {
 		})
 		
 		mediator.send(event);
-	});	
-});
+	}));
 
 test("command", async () => {
 	let counter = 0;
-	let command = new TestCommand({
+	const command = new TestCommand({
 		data: () => {
-			counter++;
+			counter+=1;
 		}
 	});
 

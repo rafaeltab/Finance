@@ -12,9 +12,12 @@
 		"build": "rimraf ./build/ && tsc",
 		"build:dev": "rimraf ./build/ && tsc -p ./tsconfig.dev.json",
 		"dev": "tsc -p ./tsconfig.dev.json --watch",
-		"clean": "rimraf build"
+		"clean": "rimraf build",
+		"lint": "eslint .",
+		"lint:fix": "eslint . --fix"
 	},
 	"dependencies": {
+		"@finance/eslint-config-lib-lint": "*",
 		"@finance/lib-tsconfig": "*",
 		"@types/lodash-es": "^4.17.6",
 		"lodash-es": "^4.17.21",

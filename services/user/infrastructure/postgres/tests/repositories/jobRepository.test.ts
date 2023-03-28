@@ -1,9 +1,10 @@
 import "reflect-metadata";
-import { JobRepository } from "#src/repositories/jobRepository";
 import { v4 } from "uuid";
+import type { IJobRepository } from "@finance/svc-user-domain";
+import { JobRepository } from "#src/repositories/jobRepository";
 import { arrayIdentityEquals, identityEquals } from "../test-utils/arrayUtils";
 import { DbFixture, TestDataType } from "../test-utils/dbfixture";
-import type { IJobRepository } from "@finance/svc-user-domain";
+import { expectRequiredProps } from "#tests/test-utils/expectUtils";
 
 let fixture: DbFixture;
 let testData: TestDataType;
@@ -26,19 +27,23 @@ afterAll(async () => {
 
 describe("getAllJobsForUser", () => {
 	test('getAllJobsForUser should return all jobs for a user by its identity, with at least their uniqueIds and identities', async () => {
+		expectRequiredProps(testData.user, ["jobs"]);
+		
 		const jobs = await jobRepository.getAllJobsForUser({
 			identity: testData.user.identity
-		}, testData.user.jobs!.length + 1, 0);
+		}, testData.user.jobs.length + 1, 0);
 
-		expect(arrayIdentityEquals(jobs.data, testData.user.jobs!)).toBe(true);
+		expect(arrayIdentityEquals(jobs.data, testData.user.jobs)).toBe(true);
 	});
 
 	test('getAllJobsForUser should return all jobs for a user by its uniqueId, with at least their uniqueIds and identities', async () => {
+		expectRequiredProps(testData.user, ["jobs"]);
+		
 		const jobs = await jobRepository.getAllJobsForUser({
 			uniqueId: testData.user.uniqueId
-		}, testData.user.jobs!.length + 1, 0);
+		}, testData.user.jobs.length + 1, 0);
 
-		expect(arrayIdentityEquals(jobs.data, testData.user.jobs!)).toBe(true);
+		expect(arrayIdentityEquals(jobs.data, testData.user.jobs)).toBe(true);
 	});
 });
 
@@ -82,7 +87,7 @@ describe("delete", () => {
 	});
 
 	test('Should delete a user if it\'s id is provided', async () => {
-		const uniqueId = testData.job.uniqueId;
+		const {uniqueId} = testData.job;
 
 		await jobRepository.delete({
 			uniqueId

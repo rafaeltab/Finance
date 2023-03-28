@@ -1,9 +1,8 @@
 import type { InjectionToken } from "tsyringe";
-import type Asset from "../aggregates/assetAggregate";
-import type { RealEstateAsset, StockAsset } from "../aggregates/assetAggregate";
+import type { RealEstateAsset, StockAsset, Asset } from "../aggregates/assetAggregate";
 import type { EntityKey } from "../utils";
 
-export const assetFactory: InjectionToken = "IAssetFactory";
+export const assetFactoryToken: InjectionToken = "IAssetFactory";
 export interface IAssetFactory {
 	addStockToAssetGroup(assetGroup: EntityKey, stockDataId: EntityKey, stockOrders: {amount: number, price: number}[]): Promise<[StockAsset, Asset]>;
 	addRealEstateToAssetGroup(assetGroup: EntityKey, address: string): Promise<[RealEstateAsset, Asset]>;

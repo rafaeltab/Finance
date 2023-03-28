@@ -49,21 +49,21 @@ function Layout({ children }: { children: React.ReactNode }) {
 	
 	if (!isAuthenticated || !user || !user.sub || !logout) {
 		return (
-			<html className="h-full bg-gray-100">
-				<head></head>
-				<body className="h-full"></body>
+			<html className="h-full bg-gray-100" lang="en">
+				<head />
+				<body className="h-full" />
 			</html>
 		)
-	};
+	}
 
 	if (pathname == null) {
 		throw new Error("Unexpected empty pathname");
 	}
 
 	return (
-		<html className="h-full bg-gray-100">
+		<html className="h-full bg-gray-100" lang="en">
 			<head>
-				<link rel="stylesheet" href="https://rsms.me/inter/inter.css"></link>
+				<link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
 			</head>
 			<body className="h-full">
 				<div className="min-h-full">
@@ -77,16 +77,17 @@ function Layout({ children }: { children: React.ReactNode }) {
 	)
 }
 
-function Authentication({ children }: { children: React.ReactNode }) {
+function Authentication({ children }: React.PropsWithChildren) {
 	const { isAuthenticated, loginWithPopup, isLoading } = useAuth0();
 
 	useEffect(() => {
 		if (!isAuthenticated && !isLoading) {
 			loginWithPopup();
 		}
-	}, [isAuthenticated, isLoading]);	
+	}, [isAuthenticated, isLoading, loginWithPopup]);	
 
 	return (
+		// eslint-disable-next-line react/jsx-no-useless-fragment
 		<>
 			{children}
 		</>

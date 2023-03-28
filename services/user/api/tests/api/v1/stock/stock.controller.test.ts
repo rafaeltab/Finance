@@ -53,10 +53,10 @@ describe('StockController (e2e)', () => {
 		expect(response.body.data.page.total).toBeDefined();
 	});
 
-	it('/api/v1/stock/:identity (GET)',async () => {
-		return request(app.getHttpServer())
+	it('/api/v1/stock/:identity (GET)',async () => 
+		 request(app.getHttpServer())
 			.get('/api/v1/stock/stockData-CS-NASDAQ-GOOGGG')
-			.expect(404);
+			.expect(404)
 
 		// expect(response.body.success).toBe(true);
 		// expect(response.body.data).toBeDefined();
@@ -66,5 +66,5 @@ describe('StockController (e2e)', () => {
 		// expect(response.body.data.page.count).toBeDefined();
 		// expect(response.body.data.page.offset).toBeDefined();
 		// expect(response.body.data.page.total).toBeDefined();
-	});
+	);
 });

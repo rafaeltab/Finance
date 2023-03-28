@@ -1,8 +1,8 @@
 import "reflect-metadata";
+import type { IUserFactory, IUserRepository } from "@finance/svc-user-domain";
 import { UserFactory } from "#src/factories/userFactory";
 import { UserRepository } from "#src/repositories/userRepository";
 import { DbFixture } from "../test-utils/dbfixture";
-import type { IUserFactory, IUserRepository } from "@finance/svc-user-domain";
 import { expectNotNullOrUndefined, expectRequiredProps } from "#tests/test-utils/expectUtils";
 
 let fixture: DbFixture;

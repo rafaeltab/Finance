@@ -1,5 +1,6 @@
 import { BankAccount, Balance, User, ActiveIncome, Job, Asset, AssetGroup, StockAsset, StockOrder, StockData, StockAssetKind, StockValue, StockSplitEvent, StockDividendEvent } from "@finance/svc-user-domain";
 import { v4 } from "uuid";
+import { createDates } from "../arrayUtils";
 
 export const user = new User({
 	dateOfBirth: new Date("2001-02-27"),
@@ -13,13 +14,13 @@ export const bankAccount = new BankAccount({
 	bank: "ING",
 	identity: "NL00INGB0000000000",
 	uniqueId: v4(),
-	user: user,
+	user,
 });
 user.bankAccounts = [bankAccount]
 
 export const niceBalance = new Balance({
 	amount: 100,
-	bankAccount: bankAccount,
+	bankAccount,
 	currency: "EUR",
 	uniqueId: v4(),
 });
@@ -31,11 +32,11 @@ export const activeIncome = new ActiveIncome({
 });
 
 export const job = new Job({
-	activeIncome: activeIncome,
+	activeIncome,
 	identity: "software-engineer-methylium",
 	title: "Software Engineer",
 	uniqueId: v4(),
-	user: user,
+	user,
 });
 user.jobs = [job];
 
@@ -47,7 +48,7 @@ export const googlStockData = new StockData({
 	symbol: "GOOGL",
 });
 
-var dates = createDates(6);
+const dates = createDates(6);
 export const googStockValues = [
 	new StockValue({
 		stockData: googlStockData,
@@ -112,7 +113,7 @@ export const assetGroup = new AssetGroup({
 	name: "Stock Assets",
 	identity: "stock-assets",
 	uniqueId: v4(),
-	user: user
+	user
 });
 user.assetGroups = [assetGroup];
 
@@ -120,13 +121,13 @@ export const asset = new Asset({
 	identity: "asset-1",
 	group: assetGroup,
 	uniqueId: v4(),
-	user: user,
+	user,
 });
-assetGroup.assets = [asset]; 
+assetGroup.assets = [asset];
 user.assets = [asset];
 
 export const stockAsset = new StockAsset({
-	asset: asset,
+	asset,
 	identity: "stock-asset-1",
 	uniqueId: v4(),
 	stockData: googlStockData,
@@ -136,7 +137,7 @@ export const stockOrders = [
 	new StockOrder({
 		amount: 10,
 		usdPrice: 89.3,
-		stockAsset: stockAsset,
+		stockAsset,
 		uniqueId: v4(),
 	})
 ]
@@ -145,20 +146,11 @@ stockAsset.orders = stockOrders;
 export const stockOrder = new StockOrder({
 	amount: 10,
 	usdPrice: 89.3,
-	stockAsset: stockAsset,
+	stockAsset,
 	uniqueId: v4(),
 });
 stockAsset.orders = [stockOrder];
 asset.stockAsset = stockAsset;
-
-function createDates(count: number) {
-	// create a list of length count contiaining dates with 10 minute intervals
-	const dates = [];
-	for (let i = 0; i < count; i++) {
-		dates.push(new Date(new Date().getTime() - i * 10 * 60 * 1000));
-	}
-	return dates;
-}
 
 
 export const testData = {

@@ -1,10 +1,10 @@
 import { Entity, JoinColumn, ManyToOne, OneToOne, Relation } from "typeorm";
+import type { EntityMeta } from "@finance/lib-basic-types";
 import { AssetGroup } from "../AssetGroup";
 import { EnitityBase } from "../../utils/Entity";
 import { User } from "../User";
 import { StockAsset } from "./assetKinds/StockAsset";
 import { RealEstateAsset } from "./assetKinds/RealEstateAsset";
-import type { EntityMeta } from "@finance/lib-basic-types";
 
 @Entity()
 export class Asset extends EnitityBase {
@@ -13,6 +13,7 @@ export class Asset extends EnitityBase {
 		cascade: ["insert"]
 	})
 	stockAsset?: Relation<StockAsset>;
+
 	@OneToOne(() => RealEstateAsset, realEstateAsset => realEstateAsset.asset, {
 		eager: true,
 		cascade: ["insert"]

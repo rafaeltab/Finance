@@ -1,19 +1,59 @@
-import { UnitOfWork } from "#src/unitOfWork/unitOfWork";
 import { entities, User } from "@finance/svc-user-domain";
 import { DataSource } from "typeorm";
+import { UnitOfWork } from "#src/unitOfWork/unitOfWork";
 
 export type TestDataType = typeof import("./fixture/testData")
 
 async function createTestData() {
-	return await import("./fixture/testData");
+	return import("./fixture/testData");
+}
+
+export async function createDataSource() {
+	const dataSource = new DataSource({
+		type: "postgres",
+		host: "localhost",
+		port: 5433,
+		username: "finance-test",
+		password: "finance-test",
+		database: "finance-test",
+		synchronize: false,
+		logging: false,
+		entities,
+		subscribers: [],
+	});
+	await dataSource.initialize();
+	await dataSource.synchronize(true);
+	return dataSource;
+}
+
+export async function insertTestData(dataSource: DataSource) {
+	const testData = await createTestData();
+	const userTest = await dataSource.manager.findOne(User, {
+		where: {
+			identity: testData.user.identity
+		}
+	});
+
+	if (userTest === null) {
+		for (const entityKey of Object.keys(testData.testData)) {
+			const key = entityKey as keyof (typeof testData.testData);
+
+			for (const entity of testData.testData[key]) {
+				// eslint-disable-next-line no-await-in-loop
+				await dataSource.manager.insert(entityKey, entity);
+			}
+		}
+	}
+
+	return testData;
 }
 
 export class DbFixture {
 	private unitOfWork?: UnitOfWork;
-	private dataSource?: DataSource;
-	private testData?: TestDataType;
 
-	private constructor() { }
+	private dataSource?: DataSource;
+
+	private testData?: TestDataType;
 
 	async initialize() {
 		this.dataSource = await createDataSource();
@@ -31,10 +71,10 @@ export class DbFixture {
 		await this.unitOfWork.start();
 	}
 
-	getInstance<T extends new (unitOfWork: UnitOfWork) => InstanceType<T>>(c: T): InstanceType<T> {
+	getInstance<T extends new (unitOfWork: UnitOfWork) => InstanceType<T>>(C: T): InstanceType<T> {
 		if (!this.unitOfWork) throw new Error("UnitOfWork is not initialized");
 
-		return new c(this.unitOfWork);
+		return new C(this.unitOfWork);
 	}
 
 	getTestData() {
@@ -61,45 +101,3 @@ export class DbFixture {
 	}
 }
 
-export async function createDataSource() {
-	var dataSource = new DataSource({
-		type: "postgres",
-		host: "localhost",
-		port: 5433,
-		username: "finance-test",
-		password: "finance-test",
-		database: "finance-test",
-		synchronize: false,
-		logging: false,
-		entities: entities,
-		subscribers: [],
-	});
-	await dataSource.initialize();
-	await dataSource.synchronize(true);
-	return dataSource;
-}
-
-export async function insertTestData(dataSource: DataSource) {
-	const testData = await createTestData();
-	const userTest = await dataSource.manager.findOne(User, {
-		where: {
-			identity: testData.user.identity
-		}
-	});
-
-	if (userTest == null) {
-		for (const entityKey of Object.keys(testData.testData)) {
-			const key = entityKey as keyof (typeof testData.testData);
-
-			for (const entity of testData.testData[key]) {
-				try {
-					await dataSource.manager.insert(entityKey, entity);
-				} catch (e) {
-					console.log(e);
-				}
-			}
-		}
-	}
-
-	return testData;
-}

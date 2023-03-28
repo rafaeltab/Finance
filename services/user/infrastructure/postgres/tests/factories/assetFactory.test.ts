@@ -1,9 +1,9 @@
 import "reflect-metadata";
+import type { Asset, IAssetFactory, IAssetGroupRepository, IAssetRepository, IUserRepository, RealEstateAsset, StockAsset } from "@finance/svc-user-domain";
 import { AssetFactory } from "#src/factories/assetFactory";
 import { AssetGroupRepository } from "#src/repositories/assetGroupRepository";
 import { AssetRepository } from "#src/repositories/assetRepository";
 import { UserRepository } from "#src/repositories/userRepository";
-import type { Asset, IAssetFactory, IAssetGroupRepository, IAssetRepository, IUserRepository, RealEstateAsset, StockAsset } from "@finance/svc-user-domain";
 import { DbFixture, TestDataType } from "../test-utils/dbfixture";
 import { expectNotNullOrUndefined, expectRequiredProps } from "#tests/test-utils/expectUtils";
 
@@ -146,10 +146,10 @@ describe("addRealEstateToAssetGroup", () => {
 		})		
 		expectRequiredProps(assetGroup, ["assets"]);
 
-		const assetGroupAsset = assetGroup.assets!.find(x => x.identity === asset.identity);		
+		const assetGroupAsset = assetGroup.assets.find(x => x.identity === asset.identity);		
 		expectNotNullOrUndefined(assetGroupAsset);
 
-		assetAndRealEstateAssetValid(data, assetGroupAsset!.realEstateAsset, assetGroupAsset);
+		assetAndRealEstateAssetValid(data, assetGroupAsset.realEstateAsset, assetGroupAsset);
 	});
 });
 

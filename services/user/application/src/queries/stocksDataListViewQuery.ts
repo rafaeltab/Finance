@@ -1,8 +1,8 @@
 // list a maximum of 30 asset groups
 
-import { IStockRepository, PaginatedBase, StockData, stockRepository } from "@finance/svc-user-domain";
+import { IStockRepository, PaginatedBase, StockData, stockRepositoryToken } from "@finance/svc-user-domain";
 import { IQuery, IQueryHandler, IQueryResult } from "@finance/lib-mediator";
-import { unitOfWork, type IUnitOfWork } from "@finance/svc-user-infra-postgres";
+import { unitOfWorkToken, type IUnitOfWork } from "@finance/svc-user-infra-postgres";
 import { inject, injectable } from "tsyringe";
 
 export type ResponseType = IQueryResult<Response>
@@ -14,8 +14,9 @@ type Response = {
 export class StocksDataListViewQuery extends IQuery<StocksDataListViewQuery, ResponseType> {
 	token = "StocksDataListViewQuery";
 
-	limit: number = 30;
-	offset: number = 0;
+	limit = 30;
+
+	offset = 0;
 }
 
 @injectable()
@@ -24,8 +25,8 @@ export class StocksDataListViewQueryHandler extends IQueryHandler<StocksDataList
 	 *
 	 */
 	constructor(
-		@inject(stockRepository) private stockRepository: IStockRepository,
-		@inject(unitOfWork) private unitOfWork: IUnitOfWork
+		@inject(stockRepositoryToken) private stockRepository: IStockRepository,
+		@inject(unitOfWorkToken) private unitOfWork: IUnitOfWork
 	) {
 		super();
 

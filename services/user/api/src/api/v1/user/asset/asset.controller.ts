@@ -3,13 +3,13 @@ import { DuplicateEntryError, EntryNotFoundError } from "@finance/lib-errors";
 import { FinanceErrors } from "@finance/lib-errors-nest";
 import { Mediator } from "@finance/lib-mediator";
 import { Body, Controller, Delete, Get, Inject, Param, Put } from "@nestjs/common";
+import { ApiBearerAuth, ApiOkResponse } from "@nestjs/swagger";
 import { UserIdentityParam, UserIdentityParams } from "../userIdentity.params";
 import { AssetGroupIdentityParam, AssetGroupIdentityParams } from "./assetGroupIdentity.params";
 import { AssetIdentityParam, AssetIdentityParams } from "./assetIdentity.params";
 import { CreateRealEstateAssetBody } from "./createRealEstateAsset.body";
 import { CreateStockAssetBody } from "./createStockAsset.body";
 import { CreateAssetGroupBody } from "./createAssetGroup.body";
-import { ApiBearerAuth, ApiOkResponse } from "@nestjs/swagger";
 import { CreateAssetGroupForUserResponse, CreateRealEstateAssetForGroup, CreateRealEstateAssetForUserResponse, CreateStockAssetForAssetGroupResponse, CreateStockAssetForUserResponse, GetAssetGroupResponse, GetAssetResponse, GetUserAssetGroupsResponse, GetUserAssetsResponse } from "./asset.responses";
 import { SuccessResponse } from "../../responses/success.response";
 
@@ -191,7 +191,7 @@ export class AssetController {
 	async deleteAsset(
 		@Param() params: AssetIdentityParams
 	): Promise<SuccessResponse> {
-		return await this.mediator.command(new DeleteAssetCommand({
+		return this.mediator.command(new DeleteAssetCommand({
 			assetIdentity: params.assetIdentity
 		}));
 	}
@@ -207,7 +207,7 @@ export class AssetController {
 	async deleteAssetGroup(
 		@Param() params: AssetGroupIdentityParams
 	): Promise<SuccessResponse> {
-		return await this.mediator.command(new DeleteAssetGroupCommand({
+		return this.mediator.command(new DeleteAssetGroupCommand({
 			assetGroupIdentity: params.assetGroupIdentity
 		}))
 	}

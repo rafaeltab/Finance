@@ -16,7 +16,7 @@ export type InsertEvent = {
 	value: number;
 }
 
-export const stockFactory: InjectionToken = "IStockFactory";
+export const stockFactoryToken: InjectionToken = "IStockFactory";
 
 
 export interface IStockFactory { 

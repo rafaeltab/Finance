@@ -11,5 +11,5 @@ export class DuplicateEntryError extends UserError {
 		}
 	}
 	
-	override _httpCode: number = 409;
+	override httpCode = 409;
 }

@@ -1,8 +1,8 @@
 // list a maximum of 30 asset groups
 
-import { IUserFactory, userFactory } from "@finance/svc-user-domain";
+import { IUserFactory, userFactoryToken } from "@finance/svc-user-domain";
 import { ICommand, ICommandHandler, ICommandResult } from "@finance/lib-mediator";
-import { IUnitOfWork, unitOfWork } from "@finance/svc-user-infra-postgres";
+import { IUnitOfWork, unitOfWorkToken } from "@finance/svc-user-infra-postgres";
 import type { DateTime } from "luxon";
 import { inject, injectable } from "tsyringe";
 
@@ -12,17 +12,21 @@ export type ResponseType = ICommandResult<{
 
 export class CreateUserCommand extends ICommand<CreateUserCommand, ResponseType> {
 	token = "CreateUserCommand";
+
 	firstName!: string;
+
 	lastName!: string;
+
 	dateOfBirth!: DateTime;
+
 	identity?: string;
 }
 
 @injectable()
 export class CreateUserCommandHandler extends ICommandHandler<CreateUserCommand, ResponseType> {
 	constructor(
-		@inject(userFactory) private userFactory: IUserFactory,
-		@inject(unitOfWork) private unitOfWork: IUnitOfWork
+		@inject(userFactoryToken) private userFactory: IUserFactory,
+		@inject(unitOfWorkToken) private unitOfWork: IUnitOfWork
 	) {
 		super();
 	}

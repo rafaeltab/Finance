@@ -1,9 +1,9 @@
 import type { InjectionToken } from "tsyringe";
-import type Asset from "../aggregates/assetAggregate";
+import type { Asset } from "../aggregates/assetAggregate";
 import type { EntityKey } from "../utils";
 import type { PaginatedBase } from "../utils/PaginatedBase";
 
-export const assetRepository: InjectionToken = "IAssetRepository";
+export const assetRepositoryToken: InjectionToken = "IAssetRepository";
 export interface IAssetRepository {
 	getAllAssetsForUser(user: EntityKey, limit: number, offset: number): Promise<PaginatedBase<Asset>>;
 

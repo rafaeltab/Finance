@@ -55,13 +55,13 @@ export class UserController {
 	})
 	async insert( 
 		@Body() body: CreateUserBody,
-		@Subject() subject: String
+		@Subject() subject: string
 	): Promise<InsertUserResponse> {
-		let identity = subject;
+		const identity = subject;
 
 		if (typeof identity !== "string") throw new Error("Invalid identity type");
 
-		let dateOfBirth = DateTime.fromISO(body.dateOfBirth, {
+		const dateOfBirth = DateTime.fromISO(body.dateOfBirth, {
 			zone: "utc"
 		})
 		return InsertUserResponse.map(await this.mediator.command(new CreateUserCommand({

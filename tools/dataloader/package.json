@@ -7,6 +7,7 @@
 		"dev": "py src/run.py"
 	},
 	"dependencies": {
+		"@finance/eslint-config-lib-lint": "*",
 		"@finance/lib-tsconfig": "*",
 		"@finance/lib-basic-types": "*",
 		"@finance/lib-module-types": "*",

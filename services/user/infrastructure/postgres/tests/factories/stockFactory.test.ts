@@ -1,6 +1,6 @@
+import { InsertStockValue, StockAssetKind, TimeRange } from "@finance/svc-user-domain";
 import { StockFactory } from "#src/factories/stockFactory";
 import { StockRepository } from "#src/repositories/stockRepository";
-import { InsertStockValue, StockAssetKind, TimeRange } from "@finance/svc-user-domain";
 import "reflect-metadata";
 import { DbFixture, TestDataType } from "../test-utils/dbfixture";
 import { expectNotNullOrUndefined, expectRequiredProps } from "#tests/test-utils/expectUtils";
@@ -60,7 +60,7 @@ describe("addStockData", () => {
 
 describe("addStockValues", () => {
 	test('addStockValues should add values to a stock', async () => {
-		var inFiveMinutes = new Date()
+		const inFiveMinutes = new Date()
 		inFiveMinutes.setMinutes(inFiveMinutes.getMinutes() + 5);
 
 		const data = {
@@ -101,7 +101,7 @@ describe("addStockValues", () => {
 		
 		expect(result.data.length).toBe(testData.googStockValues.length + 1);
 
-		const inserted = result.data.find(x => x.volume == data.values[0].volume);
+		const inserted = result.data.find(x => x.volume===data.values[0].volume);
 
 		expectNotNullOrUndefined(inserted);
 

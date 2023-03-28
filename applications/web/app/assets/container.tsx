@@ -9,11 +9,11 @@ import type { AssetPageProps } from "./page";
 export function useAssetContainer() {
 
 	const authUser = useUser(false);
-	let [assetResponse, assetError] = useApiRequest(
+	const [assetResponse, assetError] = useApiRequest(
 		"assetControllerGetUserAssets",
 		authUser.sub
 	);
-	let [assetGroupResponse, assetGroupError] = useApiRequest(
+	const [assetGroupResponse, assetGroupError] = useApiRequest(
 		"assetControllerGetUserAssetGroups",
 		authUser.sub
 	);
@@ -32,7 +32,7 @@ export function useAssetContainer() {
 			c.push({
 				...group,
 				assets: [
-					...group.assets.filter(x => !additionalGroupAssets[group.identity]?.removedAssets.find(y => y.identity == x.identity)),
+					...group.assets.filter(x => !additionalGroupAssets[group.identity]?.removedAssets.find(y => y.identity === x.identity)),
 					...additionalGroupAssets[group.identity]?.addedAssets ?? []
 				]
 			})
@@ -63,14 +63,14 @@ export function useAssetContainer() {
 		setAdditionalGroupAssets((prev) => ({
 			...prev,
 			[group]: {
-				removedAssets: prev[group]?.removedAssets.filter(x => x.identity != asset.identity) ?? [],
+				removedAssets: prev[group]?.removedAssets.filter(x => x.identity !== asset.identity) ?? [],
 				addedAssets: [...(prev[group]?.addedAssets ?? []), asset]
 			}
 		}));
 		setAddAssetContext(null);
 	}
 
-	var setAddAssetOpen: Dispatch<SetStateAction<boolean>> = function (value: SetStateAction<boolean>) {
+	const setAddAssetOpen: Dispatch<SetStateAction<boolean>> = (value: SetStateAction<boolean>) => {
 		setAddAssetContext(value ? { type: "user", id: authUser.sub } : null);
 	}
 
@@ -78,7 +78,7 @@ export function useAssetContainer() {
 		setAdditionalGroupAssets((prev) => ({
 			...prev,
 			[group]: {
-				addedAssets: prev[group]?.addedAssets.filter(x => x.identity != asset.identity) ?? [],
+				addedAssets: prev[group]?.addedAssets.filter(x => x.identity !== asset.identity) ?? [],
 				removedAssets: [...(prev[group]?.removedAssets ?? []), asset]
 			}
 		}));
@@ -89,7 +89,7 @@ export function useAssetContainer() {
 		assetPage: assetResponse?.data.data.page ?? null,
 		assetGroups: calculateTotalAssetGroups(),
 		assetGroupsPage: assetGroupResponse?.data.data.page ?? null,
-		isLoading: isLoading,
+		isLoading,
 		removeAssetData,
 		removeAssetGroupData,
 		setAddAssetContext,

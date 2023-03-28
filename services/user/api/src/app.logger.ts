@@ -11,39 +11,6 @@ function getDuration (start: [number, number])  {
 	return (diff[0] * NS_PER_SEC + diff[1]) / NS_TO_MS;
 }
 
-@Injectable()
-export class AppLoggerMiddleware implements NestMiddleware {
-	private logger = new Logger('HTTP');
-
-	use(request: Request, response: Response, next: NextFunction): void {
-		const requestId = clc.cyanBright(randomUUID());
-		const { ip, method, baseUrl: url } = request;
-
-		const userAgent = request.get('user-agent') ?? '';
-		const start = process.hrtime();
-
-		const message = `${requestId} ${method} ${url} {User-Agent: "${userAgent}", Ip: "${ip}"}}`
-		this.logger.log(message);
-
-		response.on('close', () => {
-			const time = getDuration(start);
-
-			const executionString = yellow(`+${time.toFixed(0)}ms`);
-			const { statusCode } = response;
-
-			const coloredStatusCode = (httpColorMap[statusCode] ?? (clc.red))(statusCode.toString());
-
-			const contentLength = parseInt(response.get('content-length') ?? "0");
-
-			const message = `${requestId} ${method} ${coloredStatusCode} ${url} {Content-Length: ${contentLength}} ${executionString}`
-
-			this.logger.log(message);
-		});
-
-		next();
-	}
-}
-
 const httpColorMap: Record<number, (txt: string) => string> = {
 	100: clc.green,// Continue
 	101: clc.green,// Switching Protocols
@@ -100,3 +67,37 @@ const httpColorMap: Record<number, (txt: string) => string> = {
 	510: clc.red,// Not Extended
 	511: clc.red,// Network Authentication Required
 }
+
+@Injectable()
+export class AppLoggerMiddleware implements NestMiddleware {
+	private logger = new Logger('HTTP');
+
+	use(request: Request, response: Response, next: NextFunction): void {
+		const requestId = clc.cyanBright(randomUUID());
+		const { ip, method, baseUrl: url } = request;
+
+		const userAgent = request.get('user-agent') ?? '';
+		const start = process.hrtime();
+
+		const requestMessage = `${requestId} ${method} ${url} {User-Agent: "${userAgent}", Ip: "${ip}"}}`
+		this.logger.log(requestMessage);
+
+		response.on('close', () => {
+			const time = getDuration(start);
+
+			const executionString = yellow(`+${time.toFixed(0)}ms`);
+			const { statusCode } = response;
+
+			const coloredStatusCode = (httpColorMap[statusCode] ?? (clc.red))(statusCode.toString());
+
+			const contentLength = parseInt(response.get('content-length') ?? "0", 10);
+
+			const responseMessage = `${requestId} ${method} ${coloredStatusCode} ${url} {Content-Length: ${contentLength}} ${executionString}`
+
+			this.logger.log(responseMessage);
+		});
+
+		next();
+	}
+}
+

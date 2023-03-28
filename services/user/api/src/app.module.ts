@@ -1,9 +1,9 @@
 import { MiddlewareConsumer, Module, ModuleMetadata, NestModule } from "@nestjs/common";
+import { ConfigModule } from "@nestjs/config";
 import { ApplicationModule } from "./external/ApplicationModule";
 import { StockModule } from "./api/v1/stock/stock.module";
 import { UserModule } from "./api/v1/user/user.module";
 import { AppLoggerMiddleware } from "./app.logger";
-import { ConfigModule } from "@nestjs/config";
 import configuration from "./configuration";
 import { AuthzModule } from "./authz/authz.module";
 

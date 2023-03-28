@@ -1,8 +1,8 @@
 // list a maximum of 30 asset groups
 
-import { assetFactory, IAssetFactory, Asset } from "@finance/svc-user-domain";
+import { assetFactoryToken, IAssetFactory, Asset } from "@finance/svc-user-domain";
 import { ICommand, ICommandHandler, ICommandResult } from "@finance/lib-mediator";
-import { IUnitOfWork, unitOfWork } from "@finance/svc-user-infra-postgres";
+import { IUnitOfWork, unitOfWorkToken } from "@finance/svc-user-infra-postgres";
 import { inject, injectable } from "tsyringe";
 
 export type ResponseType = ICommandResult<{
@@ -12,15 +12,17 @@ export type ResponseType = ICommandResult<{
 
 export class CreateRealEstateAssetForAssetGroupCommand extends ICommand<CreateRealEstateAssetForAssetGroupCommand, ResponseType> {
 	token = "CreateRealEstateAssetForAssetGroupCommand";
+
 	assetGroupIdentity!: string;
+
 	address!: string;	
 }
 
 @injectable()
 export class CreateRealEstateAssetForAssetGroupCommandHandler extends ICommandHandler<CreateRealEstateAssetForAssetGroupCommand, ResponseType> {
 	constructor(
-		@inject(assetFactory) private assetFactory: IAssetFactory,
-		@inject(unitOfWork) private unitOfWork: IUnitOfWork
+		@inject(assetFactoryToken) private assetFactory: IAssetFactory,
+		@inject(unitOfWorkToken) private unitOfWork: IUnitOfWork
 	) {
 		super();
 	}

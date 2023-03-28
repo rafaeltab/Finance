@@ -1,0 +1,12 @@
+{
+	"root": true,
+	"extends": [
+		"@finance/eslint-config-lib-lint/configs/base.cjs"
+	],
+	"parserOptions": {
+		"project": "./tsconfig.eslint.json"
+	},
+	"rules": {
+		"import/no-cycle": "off"
+	}
+}

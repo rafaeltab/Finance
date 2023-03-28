@@ -3,17 +3,53 @@ import { EntryNotFoundError } from "@finance/lib-errors";
 import { set } from "lodash-es";
 import { inject, injectable } from "tsyringe";
 import { EntityManager, EntityMetadata, EntityTarget, FindOptionsWhere, In, Like, ObjectLiteral } from "typeorm";
-import { UnitOfWork, unitOfWork } from "../unitOfWork/unitOfWork";
+import { UnitOfWork, unitOfWorkToken } from "../unitOfWork/unitOfWork";
 
 const granularities = new Set(["minute", "hour", "day", "week", "month", "year"]);
 
+function mapRawToEntity<T>(entity: EntityTarget<T>, raw: ObjectLiteral, entityManager: EntityManager, meta?: EntityMetadata): T {
+	const result: Partial<T> = {}
+
+	let metadata = meta;
+
+	if (metadata === undefined) {
+		metadata = entityManager.connection.getMetadata(entity);
+	}
+
+	for (const column of metadata.columns) {
+		if (raw[column.databaseName] !== undefined) {
+			let value = raw[column.databaseName];
+			if (column.transformer !== undefined) {
+				let transformers = column.transformer;
+				if (!Array.isArray(transformers)) {
+					transformers = [transformers];
+				}
+
+				for (const transformer of transformers) {
+					value = transformer.from(value);
+				}
+			}
+
+			set(result, column.propertyPath, value)
+		}
+	}
+
+	return result as T;
+}
+
+
+function mapRawsToEntities<T>(entity: EntityTarget<T>, raw: ObjectLiteral[], entityManager: EntityManager): T[] {
+	const meta = entityManager.connection.getMetadata(entity);
+	return raw.map((r) => mapRawToEntity(entity, r, entityManager, meta));
+}
+
 @injectable()
 export class StockRepository implements IStockRepository {
-	constructor(@inject(unitOfWork) private _unitOfWork: UnitOfWork) { }
+	constructor(@inject(unitOfWorkToken) private unitOfWork: UnitOfWork) { }
 
 
 	async getAllStockData(withValues?: boolean, limit?: number, offset?: number): Promise<PaginatedBase<StockData>> {
-		const stockData = await this._unitOfWork.getQueryRunner().manager.findAndCount(StockData, {
+		const stockData = await this.unitOfWork.getQueryRunner().manager.findAndCount(StockData, {
 			skip: offset,
 			take: limit,
 		});
@@ -40,12 +76,12 @@ export class StockRepository implements IStockRepository {
 	}
 
 	async getStockValues(stockDataId: EntityKey, granularity: ValueGranularity, timerange: TimeRange, limit?: number, offset?: number): Promise<PaginatedBase<StockValue>> {
-		let isValidGranularity = granularities.has(granularity);
+		const isValidGranularity = granularities.has(granularity);
 		if (!isValidGranularity) {
 			throw new Error("Invalid granularity");
 		}
 
-		const stockData = await this._unitOfWork.getQueryRunner().manager.findOne(StockData, {
+		const stockData = await this.unitOfWork.getQueryRunner().manager.findOne(StockData, {
 			where: stockDataId
 		});
 
@@ -59,13 +95,11 @@ export class StockRepository implements IStockRepository {
 
 		const stockId = { stockId: stockData.uniqueId };
 
-		const entityManager = this._unitOfWork.getQueryRunner().manager;
+		const entityManager = this.unitOfWork.getQueryRunner().manager;
 		const queryResult = await entityManager
 			.createQueryBuilder()
-			.from((subQuery) => {
-				return subQuery
-					.from((subQuery) => {
-						return subQuery.from(StockValue, "sv")
+			.from((subQuery) => subQuery
+					.from((openSubQuery) => openSubQuery.from(StockValue, "sv")
 							.distinctOn(distinct)
 							.where("sv.stockDataUniqueId = :stockId", stockId)
 							.andWhere("sv.date >= :startDate", { startDate: timerange.start })
@@ -73,10 +107,8 @@ export class StockRepository implements IStockRepository {
 							.addSelect(`"sv"."open"`, "open")
 							.addSelect(trunc, "trunc")
 							.addOrderBy(trunc)
-							.addOrderBy(`"sv"."date"`)
-					}, "o")
-					.innerJoin((subQuery) => {
-						return subQuery.from(StockValue, "sv")
+							.addOrderBy(`"sv"."date"`), "o")
+					.innerJoin((closeSubQuery) => closeSubQuery.from(StockValue, "sv")
 							.distinctOn(distinct)
 							.where("sv.stockDataUniqueId = :stockId", stockId)
 							.andWhere("sv.date >= :startDate", { startDate: timerange.start })
@@ -84,10 +116,8 @@ export class StockRepository implements IStockRepository {
 							.addSelect(`"sv"."close"`, "close")
 							.addSelect(trunc, "trunc")
 							.addOrderBy(trunc)
-							.addOrderBy(`"sv"."date"`, "DESC")
-					}, "c", `"o"."trunc" = "c"."trunc"`)
-					.innerJoin((subQuery) => {
-						return subQuery.from(StockValue, "sv")
+							.addOrderBy(`"sv"."date"`, "DESC"), "c", `"o"."trunc" = "c"."trunc"`)
+					.innerJoin((dlhvSubQuery) => dlhvSubQuery.from(StockValue, "sv")
 							.where("sv.stockDataUniqueId = :stockId", stockId)
 							.andWhere("sv.date >= :startDate", { startDate: timerange.start })
 							.andWhere("sv.date <= :endDate", { endDate: timerange.end })
@@ -96,15 +126,13 @@ export class StockRepository implements IStockRepository {
 							.addSelect(`max("sv"."high")`, "high")
 							.addSelect(`sum("sv"."volume")`, "volume")
 							.addSelect(trunc, "trunc")
-							.groupBy(groupby)
-					}, "lhv", `"lhv"."trunc" = "o"."trunc"`)
+							.groupBy(groupby), "lhv", `"lhv"."trunc" = "o"."trunc"`)
 					.select(`"o"."open"`, "open")
 					.addSelect(`"c"."close"`, "close")
 					.addSelect(`"lhv"."low"`, "low")
 					.addSelect(`"lhv"."high"`, "high")
 					.addSelect(`"lhv"."volume"`, "volume")
-					.addSelect(`"lhv"."date"`, "date")
-			}, "res")
+					.addSelect(`"lhv"."date"`, "date"), "res")
 			.select(`res.*`)
 			.addSelect(`count(res.*) OVER ()`, `total`)
 			.skip(offset)
@@ -115,7 +143,7 @@ export class StockRepository implements IStockRepository {
 		const stockValues = mapRawsToEntities(StockValue, queryResult, entityManager);
 
 		return {
-			data: stockValues as any,
+			data: stockValues,
 			page: {
 				count: stockValues.length,
 				offset: offset ?? 0,
@@ -125,7 +153,7 @@ export class StockRepository implements IStockRepository {
 	}
 
 	async getStockEvents(stockDataId: EntityKey): Promise<[StockDividendEvent[], StockSplitEvent[]]> {
-		const stockData = await this._unitOfWork.getQueryRunner().manager.findOne(StockData, {
+		const stockData = await this.unitOfWork.getQueryRunner().manager.findOne(StockData, {
 			where: stockDataId,
 			relations: {
 				splitEvents: true,
@@ -141,7 +169,7 @@ export class StockRepository implements IStockRepository {
 	}
 
 	async getStockData(stockDataId: EntityKey): Promise<StockData> {
-		const stockData =  await this._unitOfWork.getQueryRunner().manager.findOne(StockData, {
+		const stockData =  await this.unitOfWork.getQueryRunner().manager.findOne(StockData, {
 			where: stockDataId
 		});
 
@@ -162,7 +190,7 @@ export class StockRepository implements IStockRepository {
 			allowedKinds = kinds;
 		}
 
-		let where: FindOptionsWhere<StockData> = {
+		const where: FindOptionsWhere<StockData> = {
 			assetKind: In(allowedKinds),
 		}
 		if (symbol !== undefined) {
@@ -173,8 +201,8 @@ export class StockRepository implements IStockRepository {
 		}
 
 
-		const stockData = await this._unitOfWork.getQueryRunner().manager.findAndCount(StockData, {
-			where: where,
+		const stockData = await this.unitOfWork.getQueryRunner().manager.findAndCount(StockData, {
+			where,
 			order: {
 				symbol: "ASC",
 				exchange: "ASC",
@@ -210,10 +238,10 @@ export class StockRepository implements IStockRepository {
 			return stockData;
 		}
 		
-		var twoYearsAgo = new Date();
+		const twoYearsAgo = new Date();
 		twoYearsAgo.setFullYear(twoYearsAgo.getFullYear() - 2);
 
-		var stockDataMap = new Map<string, StockData>();
+		const stockDataMap = new Map<string, StockData>();
 		stockData.forEach(x => stockDataMap.set(x.uniqueId, x));
 
 		const trunc = `DATE_TRUNC('month', "sv"."date")`
@@ -224,11 +252,10 @@ export class StockRepository implements IStockRepository {
 
 		const stockIds = { stockIds: stockData.map(x => x.uniqueId) }
 
-		const entityManager = this._unitOfWork.getQueryRunner().manager;
+		const entityManager = this.unitOfWork.getQueryRunner().manager;
 		const queryResult = await entityManager
 			.createQueryBuilder()
-			.from((subQuery) => {
-				return subQuery.from(StockValue, "sv")
+			.from((subQuery) => subQuery.from(StockValue, "sv")
 					.distinctOn(distinct)
 					.where("sv.stockDataUniqueId in (:...stockIds)", stockIds)
 					.andWhere("sv.date >= :startDate", { startDate: twoYearsAgo })
@@ -237,10 +264,8 @@ export class StockRepository implements IStockRepository {
 					.addSelect(stockDataUniqueId, "stockDataUniqueId")
 					.addOrderBy(trunc)
 					.addOrderBy(stockDataUniqueId)
-					.addOrderBy(`"sv"."date"`)
-			}, "o")
-			.innerJoin((subQuery) => {
-				return subQuery.from(StockValue, "sv")
+					.addOrderBy(`"sv"."date"`), "o")
+			.innerJoin((subQuery) => subQuery.from(StockValue, "sv")
 					.distinctOn(distinct)
 					.where("sv.stockDataUniqueId in (:...stockIds)", stockIds)
 					.andWhere("sv.date >= :startDate", { startDate: twoYearsAgo })
@@ -249,10 +274,8 @@ export class StockRepository implements IStockRepository {
 					.addSelect(stockDataUniqueId, "stockDataUniqueId")
 					.addOrderBy(trunc)
 					.addOrderBy(stockDataUniqueId)
-					.addOrderBy(`"sv"."date"`, "DESC")
-			}, "c", `"o"."trunc" = "c"."trunc" AND "o"."stockDataUniqueId" = "c"."stockDataUniqueId"`)
-			.innerJoin((subQuery) => {
-				return subQuery.from(StockValue, "sv")
+					.addOrderBy(`"sv"."date"`, "DESC"), "c", `"o"."trunc" = "c"."trunc" AND "o"."stockDataUniqueId" = "c"."stockDataUniqueId"`)
+			.innerJoin((subQuery) => subQuery.from(StockValue, "sv")
 					.where("sv.stockDataUniqueId in (:...stockIds)", stockIds)
 					.andWhere("sv.date >= :startDate", { startDate: twoYearsAgo })
 					.addSelect(`max("sv"."date")`, "date")
@@ -261,8 +284,7 @@ export class StockRepository implements IStockRepository {
 					.addSelect(`sum("sv"."volume")`, "volume")
 					.addSelect(stockDataUniqueId, "stockDataUniqueId")
 					.addSelect(trunc, "trunc")
-					.groupBy(groupby)
-			}, "lhv", `"lhv"."trunc" = "o"."trunc" AND "lhv"."stockDataUniqueId" = "o"."stockDataUniqueId"`)
+					.groupBy(groupby), "lhv", `"lhv"."trunc" = "o"."trunc" AND "lhv"."stockDataUniqueId" = "o"."stockDataUniqueId"`)
 			.select(`"o"."open"`, "open")
 			.addSelect(`"c"."close"`, "close")
 			.addSelect(`"lhv"."low"`, "low")
@@ -275,50 +297,20 @@ export class StockRepository implements IStockRepository {
 		const stockValues = mapRawsToEntities(StockValue, queryResult, entityManager);
 
 		for (const value of stockValues) {
-			if(value.stockData == undefined) continue;
+			if(value.stockData===undefined) continue;
 
-			const uniqueId = value.stockData.uniqueId;
+			const {uniqueId} = value.stockData;
 
-			if (stockDataMap.get(uniqueId) == undefined) continue;
+			const retrieved = stockDataMap.get(uniqueId);
 
-			if (stockDataMap.get(uniqueId)!.values == undefined) {
-				stockDataMap.get(uniqueId)!.values = [];
+			if (retrieved===undefined) continue;
+
+			if (retrieved.values===undefined) {
+				retrieved.values = [];
 			}
-			stockDataMap.get(uniqueId)!.values!.push(value);
+			retrieved.values.push(value);
 		}
 		return Array.from(stockDataMap.values());
 	}
 }
 
-function mapRawsToEntities<T>(entity: EntityTarget<T>, raw: ObjectLiteral[], entityManager: EntityManager): T[] {
-	const meta = entityManager.connection.getMetadata(entity);
-	return raw.map((r) => mapRawToEntity(entity, r, entityManager, meta));
-}
-
-function mapRawToEntity<T>(entity: EntityTarget<T>, raw: ObjectLiteral, entityManager: EntityManager, meta?: EntityMetadata): T {
-	var result: Partial<T> = {}
-	
-	if(meta === undefined) {
-		meta = entityManager.connection.getMetadata(entity);
-	}
-
-	for (const column of meta.columns) {
-		if (raw[column.databaseName] !== undefined) {
-			let value = raw[column.databaseName];
-			if (column.transformer !== undefined) { 
-				let transformers = column.transformer;
-				if (!Array.isArray(transformers)) { 
-					transformers = [transformers];
-				}
-
-				for (const transformer of transformers) {
-					value = transformer.from(value);
-				}
-			}
-
-			set(result, column.propertyPath, value)
-		}
-	}
-
-	return result as T;
-}

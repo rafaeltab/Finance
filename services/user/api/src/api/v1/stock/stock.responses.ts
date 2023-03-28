@@ -1,10 +1,10 @@
 import { ApiProperty } from "@nestjs/swagger";
+import type { ResponseType as StockDataSearchQueryResponse } from "@finance/svc-user-application/build/queries/stockDataSearchQuery";
+import type { ResponseType as StockDataViewQueryResponse } from "@finance/svc-user-application/build/queries/stockDataViewQuery";
 import { PaginatedResponse, PaginatedResponseData } from "../responses/paginated.response";
 import { StockDataResponse, StockValueResponse } from "../responses/stockData.response";
 import { SuccessResponse, SuccessResponseData } from "../responses/success.response";
 
-import type { ResponseType as StockDataSearchQueryResponse } from "@finance/svc-user-application/build/queries/stockDataSearchQuery";
-import type { ResponseType as StockDataViewQueryResponse } from "@finance/svc-user-application/build/queries/stockDataViewQuery";
 
 class GetSearchStockPaginatedResponse extends PaginatedResponse implements PaginatedResponseData<StockDataResponse> {
 	@ApiProperty({

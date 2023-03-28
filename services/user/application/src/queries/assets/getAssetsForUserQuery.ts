@@ -1,8 +1,8 @@
 // list a maximum of 30 asset groups
 
-import { Asset, IAssetRepository, PaginatedBase, assetRepository } from "@finance/svc-user-domain";
+import { Asset, IAssetRepository, PaginatedBase, assetRepositoryToken } from "@finance/svc-user-domain";
 import { IQuery, IQueryHandler, IQueryResult } from "@finance/lib-mediator";
-import { unitOfWork, type IUnitOfWork } from "@finance/svc-user-infra-postgres";
+import { unitOfWorkToken, type IUnitOfWork } from "@finance/svc-user-infra-postgres";
 import { inject, injectable } from "tsyringe";
 
 
@@ -10,10 +10,12 @@ export type ResponseType = IQueryResult<PaginatedBase<Asset>>
 
 export class GetAssetsForUserQuery extends IQuery<GetAssetsForUserQuery, ResponseType> {
 	token = "GetAssetsForUserQuery";
+
 	userIdentity!: string;
 
-	limit: number = 30;
-	offset: number = 0;
+	limit = 30;
+
+	offset = 0;
 }
 
 @injectable()
@@ -22,8 +24,8 @@ export class GetAssetsForUserQueryHandler extends IQueryHandler<GetAssetsForUser
 	 *
 	 */
 	constructor(
-		@inject(assetRepository) private assetRepository: IAssetRepository,
-		@inject(unitOfWork) private unitOfWork: IUnitOfWork
+		@inject(assetRepositoryToken) private assetRepository: IAssetRepository,
+		@inject(unitOfWorkToken) private unitOfWork: IUnitOfWork
 	) {
 		super();
 

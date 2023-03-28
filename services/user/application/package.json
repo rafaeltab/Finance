@@ -10,11 +10,16 @@
 		"build": "rimraf ./build/ && tsc",
 		"build:dev": "rimraf ./build/ && tsc -p ./tsconfig.dev.json",
 		"dev": "tsc -p ./tsconfig.dev.json --watch",
-		"clean": "rimraf build"
+		"clean": "rimraf build",
+		"lint": "eslint .",
+		"lint:fix": "eslint . --fix"
 	},
 	"dependencies": {
+		"@finance/eslint-config-lib-lint": "*",
 		"@finance/lib-basic-types": "*",
+		"@finance/lib-mediator": "*",
 		"@finance/lib-module-types": "*",
+		"@finance/lib-test": "*",
 		"@finance/lib-tsconfig": "*",
 		"@finance/svc-user-domain": "*",
 		"@finance/svc-user-infra-postgres": "*",

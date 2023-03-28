@@ -62,7 +62,7 @@ export class BankAccountController {
 	async delete(
 		@Param() param: IdentityParams
 	): Promise<SuccessResponse> {
-		return await this.mediator.command(new DeleteBankAccountCommand({
+		return this.mediator.command(new DeleteBankAccountCommand({
 			bankAccountIdentity: param.identity
 		}));
 	}

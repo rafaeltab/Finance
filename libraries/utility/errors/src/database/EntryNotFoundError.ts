@@ -11,5 +11,5 @@ export class EntryNotFoundError extends UserError {
 		}
 	}
 
-	override _httpCode: number = 404;
+	override httpCode = 404;
 }

@@ -1,6 +1,6 @@
 import "reflect-metadata";
-import { DbFixture, TestDataType } from "../test-utils/dbfixture";
 import { IStockRepository, StockAssetKind, TimeRange } from "@finance/svc-user-domain";
+import { DbFixture, TestDataType } from "../test-utils/dbfixture";
 import { StockRepository } from "#src/repositories/stockRepository";
 import { expectNotNullOrUndefined, expectRequiredProps } from "#tests/test-utils/expectUtils";
 
@@ -38,7 +38,7 @@ describe("getAllStockData", () => {
 		expectNotNullOrUndefined(stockData.data[0]);
 		expectRequiredProps(stockData.data[0], ["values"]);
 
-		expect(stockData.data[0]!.values.length).toBe(1); //only one because the test data has small interval in the same month
+		expect(stockData.data[0].values.length).toBe(1); // only one because the test data has small interval in the same month
 	});
 });
 
@@ -76,9 +76,11 @@ describe("searchStockData", () => {
 		const stockData = await stockRepository.searchStockData("GOOG");
 
 		expectNotNullOrUndefined(stockData);
+		expectNotNullOrUndefined(stockData.data[0]);
+
 		expect(stockData.data.length).toBe(1);
-		expect(stockData.data[0]!.symbol).toBe(testData.googlStockData.symbol);
-		expect(stockData.data[0]!.exchange).toBe(testData.googlStockData.exchange);
+		expect(stockData.data[0].symbol).toBe(testData.googlStockData.symbol);
+		expect(stockData.data[0].exchange).toBe(testData.googlStockData.exchange);
 
 	});
 
@@ -87,8 +89,11 @@ describe("searchStockData", () => {
 
 		expectNotNullOrUndefined(stockData);
 		expect(stockData.data.length).toBe(1);
-		expect(stockData.data[0]!.symbol).toBe(testData.googlStockData.symbol);
-		expect(stockData.data[0]!.exchange).toBe(testData.googlStockData.exchange);
+
+		expectNotNullOrUndefined(stockData.data[0]);
+
+		expect(stockData.data[0].symbol).toBe(testData.googlStockData.symbol);
+		expect(stockData.data[0].exchange).toBe(testData.googlStockData.exchange);
 	});
 
 	test('searchStockData should filter on ', async () => {
@@ -96,7 +101,8 @@ describe("searchStockData", () => {
 
 		expectNotNullOrUndefined(stockData);
 		expect(stockData.data.length).toBe(1);
-		expect(stockData.data[0]!.symbol).toBe(testData.googlStockData.symbol);
-		expect(stockData.data[0]!.exchange).toBe(testData.googlStockData.exchange);
+		expectNotNullOrUndefined(stockData.data[0]);
+		expect(stockData.data[0].symbol).toBe(testData.googlStockData.symbol);
+		expect(stockData.data[0].exchange).toBe(testData.googlStockData.exchange);
 	});
 });

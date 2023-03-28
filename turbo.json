@@ -65,7 +65,8 @@
 			],
 			"dependsOn": [
 				"build"
-			]
+			],
+			"cache": true
 		},
 		"generate:sdk-dev": {
 			"outputs": [
@@ -90,6 +91,18 @@
 			"dependsOn": [
 				"build:dev"
 			]
+		},
+		"lint": {
+			"cache": true,
+			"dependsOn": [
+				"^build"
+			]
+		},
+		"lint:fix": {
+			"cache": false,
+			"dependsOn": [
+				"^build"
+			]
 		}
-	}	
+	}
 }

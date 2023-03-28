@@ -1,9 +1,10 @@
 import "reflect-metadata";
-import { BankAccountRepository } from "#src/repositories/bankAccountRepository";
 import { v4 } from "uuid";
+import type { IBankAccountRepository } from "@finance/svc-user-domain";
+import { BankAccountRepository } from "#src/repositories/bankAccountRepository";
 import { arrayIdentityEquals, identityEquals } from "../test-utils/arrayUtils";
 import { DbFixture, TestDataType } from "../test-utils/dbfixture";
-import type { IBankAccountRepository } from "@finance/svc-user-domain";
+import { expectRequiredProps } from "#tests/test-utils/expectUtils";
 
 let fixture: DbFixture;
 let testData: TestDataType;
@@ -26,19 +27,23 @@ afterAll(async () => {
 
 describe("getAllBankAccountsForUser", () => {
 	test('getAllBankAccountsForUser should return all bankAccounts for a user by its identity, with at least their uniqueIds and identities', async () => {
+		expectRequiredProps(testData.user, ["bankAccounts"]);
+		
 		const bankAccounts = await bankAccountRepository.getAllBankAccountsForUser({
 			identity: testData.user.identity
-		},testData.user.bankAccounts!.length + 1, 0);
+		},testData.user.bankAccounts.length + 1, 0);
 
-		expect(arrayIdentityEquals(bankAccounts.data, testData.user.bankAccounts!)).toBe(true);
+		expect(arrayIdentityEquals(bankAccounts.data, testData.user.bankAccounts)).toBe(true);
 	});
 
 	test('getAllBankAccountsForUser should return all bankAccounts for a user by its uniqueId, with at least their uniqueIds and identities', async () => {
+		expectRequiredProps(testData.user, ["bankAccounts"]);
+		
 		const bankAccounts = await bankAccountRepository.getAllBankAccountsForUser({
 			uniqueId: testData.user.uniqueId
-		}, testData.user.bankAccounts!.length + 1, 0);
+		}, testData.user.bankAccounts.length + 1, 0);
 
-		expect(arrayIdentityEquals(bankAccounts.data, testData.user.bankAccounts!)).toBe(true);
+		expect(arrayIdentityEquals(bankAccounts.data, testData.user.bankAccounts)).toBe(true);
 	});
 });
 
@@ -82,7 +87,7 @@ describe("delete", () => {
 	});
 
 	test('Should delete a user if it\'s id is provided', async () => {
-		const uniqueId = testData.bankAccount.uniqueId;
+		const {uniqueId} = testData.bankAccount;
 
 		await bankAccountRepository.delete({
 			uniqueId

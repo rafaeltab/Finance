@@ -8,5 +8,5 @@ export class UnexpectedError extends ProgrammerError {
 		this.cause = cause;
 	}
 
-	override _httpCode: number = 500;
+	override httpCode = 500;
 }
