@@ -11,56 +11,56 @@ import { UserAdditionalAssetGroups, UserAdditionalBankAccounts, UserAdditionalJo
 
 class PaginatedUserResponse extends PaginatedResponse implements PaginatedResponseData<UserResponse> {
 	@ApiProperty({
-		type: [UserResponse],
+	    type: [UserResponse],
 	})
-	data!: UserResponse[];
+	    data!: UserResponse[];
 }
 
 export class GetUsersResponse extends SuccessResponse implements SuccessResponseData<PaginatedUserResponse>{
 	@ApiProperty({
-		type: PaginatedUserResponse,
+	    type: PaginatedUserResponse,
 	})
-	data!: PaginatedUserResponse;
+	    data!: PaginatedUserResponse;
 
 	static map(data: UserListQueryResponseType): GetUsersResponse {
-		return {
-			success: data.success,
-			data: {
-				data: data.data.data.map(x => UserResponse.map(x)),
-				page: {
-					count: data.data.page.count,
-					offset: data.data.page.offset,
-					total: data.data.page.total
-				}
-			}
-		}
+	    return {
+	        success: data.success,
+	        data: {
+	            data: data.data.data.map(x => UserResponse.map(x)),
+	            page: {
+	                count: data.data.page.count,
+	                offset: data.data.page.offset,
+	                total: data.data.page.total
+	            }
+	        }
+	    }
 	}
 }
 
 export class UserViewResponse extends IntersectionType(
-	IntersectionType(UserResponse,
-		UserAdditionalAssetGroups),
-	IntersectionType(UserAdditionalBankAccounts,
-		UserAdditionalJobs)) {
-	static map(data: UserViewQueryResponseType): UserViewResponse { 
-		return {
-			...UserResponse.map(data.data),
-			jobs: data.data.jobs.map(x => JobResponse.map(x)),
-			assetGroups: data.data.assetGroups.map(x => AssetGroupResponse.map(x)),
-			bankAccounts: data.data.bankAccounts.map(x => BankAccountResponse.map(x)),
-		}
-	}
+    IntersectionType(UserResponse,
+        UserAdditionalAssetGroups),
+    IntersectionType(UserAdditionalBankAccounts,
+        UserAdditionalJobs)) {
+    static map(data: UserViewQueryResponseType): UserViewResponse { 
+        return {
+            ...UserResponse.map(data.data),
+            jobs: data.data.jobs.map(x => JobResponse.map(x)),
+            assetGroups: data.data.assetGroups.map(x => AssetGroupResponse.map(x)),
+            bankAccounts: data.data.bankAccounts.map(x => BankAccountResponse.map(x)),
+        }
+    }
 }
 
 export class InsertUserResponse { 
 	@ApiProperty({
-		type: "string"
+	    type: "string"
 	})
-	userIdentity!: string;
+	    userIdentity!: string;
 
 	static map(data: CreateUserCommandResponseType): InsertUserResponse { 
-		return {
-			userIdentity: data.data.userIdentity
-		}
+	    return {
+	        userIdentity: data.data.userIdentity
+	    }
 	}
 }

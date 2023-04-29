@@ -8,43 +8,43 @@ import { inject, injectable } from "tsyringe";
 export type ResponseType = ICommandResult<BankAccount>;
 
 export class CreateBankAccountCommand extends ICommand<CreateBankAccountCommand, ResponseType> {
-	token = "CreateBankAccountCommand";
+    token = "CreateBankAccountCommand";
 
-	userIdentity!: string;
+    userIdentity!: string;
 
-	bank!: string;
+    bank!: string;
 
-	balance!: number;
+    balance!: number;
 
-	currrency!: string;
+    currrency!: string;
 }
 
 @injectable()
 export class CreateBankAccountCommandHandler extends ICommandHandler<CreateBankAccountCommand, ResponseType> {
-	constructor(
+    constructor(
 		@inject(bankAccountFactoryToken) private bankAccountFactory: IBankAccountFactory,
 		@inject(unitOfWorkToken) private unitOfWork: IUnitOfWork
-	) {
-		super();
-	}
+    ) {
+        super();
+    }
 
-	async handle(command: CreateBankAccountCommand): Promise<ResponseType> {
-		try {
-			await this.unitOfWork.start();
+    async handle(command: CreateBankAccountCommand): Promise<ResponseType> {
+        try {
+            await this.unitOfWork.start();
 
-			const bankAccount = await this.bankAccountFactory.addBankAccountToUser({
-				identity: command.userIdentity,
-			}, command.bank, command.balance, command.currrency);
+            const bankAccount = await this.bankAccountFactory.addBankAccountToUser({
+                identity: command.userIdentity,
+            }, command.bank, command.balance, command.currrency);
 
-			await this.unitOfWork.commit();
+            await this.unitOfWork.commit();
 
-			return {
-				success: true,
-				data: bankAccount
-			}
-		} catch (error) {
-			await this.unitOfWork.rollback();
-			throw error;
-		}
-	}
+            return {
+                success: true,
+                data: bankAccount
+            }
+        } catch (error) {
+            await this.unitOfWork.rollback();
+            throw error;
+        }
+    }
 }

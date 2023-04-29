@@ -5,14 +5,14 @@ import { handleError } from "../handleError";
 
 @Catch(UserError)
 export class FinanceUserErrorExceptionFilter implements ExceptionFilter<UserError> {
-	private baseFilter: BaseExceptionFilter;
+    private baseFilter: BaseExceptionFilter;
 
-	constructor(applicationRef?: HttpServer) {
-		this.baseFilter = new BaseExceptionFilter(applicationRef);
-	}
+    constructor(applicationRef?: HttpServer) {
+        this.baseFilter = new BaseExceptionFilter(applicationRef);
+    }
 
-	catch(exception: UserError, host: ArgumentsHost) {
-		const error = handleError(exception);
-		this.baseFilter.catch(error, host);
-	}
+    catch(exception: UserError, host: ArgumentsHost) {
+        const error = handleError(exception);
+        this.baseFilter.catch(error, host);
+    }
 }

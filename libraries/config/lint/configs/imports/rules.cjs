@@ -21,5 +21,9 @@ module.exports = {
 			"message": "`with` is disallowed in strict mode because it makes code impossible to predict and optimize."
 		}
 	],
-	"no-continue": "off"
+	"no-continue": "off",
+	"indent": ["error", 4],
+	"max-len": ["warn", {
+		"code": 150
+	}]
 }

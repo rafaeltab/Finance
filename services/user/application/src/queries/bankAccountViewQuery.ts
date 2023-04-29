@@ -8,58 +8,58 @@ import { inject, injectable } from "tsyringe";
 export type ResponseType = IQueryResult<PaginatedBase<BankAccount>>
 
 export class Response implements ISuccessQueryResult<PaginatedBase<BankAccount>> {
-	success!: true;
+    success!: true;
 
-	data!: PaginatedBase<BankAccount>;
+    data!: PaginatedBase<BankAccount>;
 }
 
 
 export class BankAccountViewQuery extends IQuery<BankAccountViewQuery, ResponseType> {
-	token = "BankAccountViewQuery";
+    token = "BankAccountViewQuery";
 
-	userIdentity!: string;
+    userIdentity!: string;
 
-	limit = 30;
+    limit = 30;
 
-	offset = 0;
+    offset = 0;
 }
 
 @injectable()
 export class BankAccountViewQueryHandler extends IQueryHandler<BankAccountViewQuery, ResponseType> {
-	/**
+    /**
 	 *
 	 */
-	constructor(
+    constructor(
 		@inject(bankAccountRepositoryToken) private bankAccountRepository: IBankAccountRepository,
 		@inject(unitOfWorkToken) private unitOfWork: IUnitOfWork
-	) {
-		super();
-	}
+    ) {
+        super();
+    }
 
-	async handle(query: BankAccountViewQuery): Promise<ResponseType> {
-		try {
-			await this.unitOfWork.start();
+    async handle(query: BankAccountViewQuery): Promise<ResponseType> {
+        try {
+            await this.unitOfWork.start();
 
-			const bankAccounts = await this.bankAccountRepository.getAllBankAccountsForUser({
-				identity: query.userIdentity,
-			}, query.limit, query.offset);
+            const bankAccounts = await this.bankAccountRepository.getAllBankAccountsForUser({
+                identity: query.userIdentity,
+            }, query.limit, query.offset);
 
-			await this.unitOfWork.commit();
+            await this.unitOfWork.commit();
 
-			return {
-				success: true,
-				data: {
-					page: {
-						count: bankAccounts.page.count,
-						offset: bankAccounts.page.offset,
-						total: bankAccounts.page.total,
-					},
-					data: bankAccounts.data
-				}
-			}
-		} catch (e: unknown) {
-			await this.unitOfWork.rollback();
-			throw e;
-		}
-	}
+            return {
+                success: true,
+                data: {
+                    page: {
+                        count: bankAccounts.page.count,
+                        offset: bankAccounts.page.offset,
+                        total: bankAccounts.page.total,
+                    },
+                    data: bankAccounts.data
+                }
+            }
+        } catch (e: unknown) {
+            await this.unitOfWork.rollback();
+            throw e;
+        }
+    }
 }

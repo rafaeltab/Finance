@@ -8,42 +8,42 @@ import { SuccessResponse, type SuccessResponseData } from "../../responses/succe
 
 class PaginatedJobResponse extends PaginatedResponse implements PaginatedResponseData<JobResponse> {
 	@ApiProperty({
-		type: [JobResponse],
+	    type: [JobResponse],
 	})
-	data!: JobResponse[];
+	    data!: JobResponse[];
 }
 export class JobsViewResponse extends SuccessResponse implements SuccessResponseData<PaginatedJobResponse> {
 	@ApiProperty({
-		type: PaginatedJobResponse
+	    type: PaginatedJobResponse
 	})
-	data!: PaginatedJobResponse;
+	    data!: PaginatedJobResponse;
 
 	static map(jobs: JobsViewQueryResponse): JobsViewResponse {
-		return {
-			success: true,
-			data: {
-				page: {
-					count: jobs.data.page.count,
-					offset: jobs.data.page.offset,
-					total: jobs.data.page.total
-				},
-				data: jobs.data.data.map(JobResponse.map)
-			}
-		}
+	    return {
+	        success: true,
+	        data: {
+	            page: {
+	                count: jobs.data.page.count,
+	                offset: jobs.data.page.offset,
+	                total: jobs.data.page.total
+	            },
+	            data: jobs.data.data.map(JobResponse.map)
+	        }
+	    }
 	}
 }
 
 // Create a response for the createJobCommand
 export class CreateJobResponse extends SuccessResponse implements SuccessResponseData<JobResponse> {
 	@ApiProperty({
-		type: JobResponse
+	    type: JobResponse
 	})
-	data!: JobResponse;
+	    data!: JobResponse;
 
 	static map(job: CreateJobCommandResponse): CreateJobResponse {
-		return {
-			success: true,
-			data: JobResponse.map(job.data)
-		}
+	    return {
+	        success: true,
+	        data: JobResponse.map(job.data)
+	    }
 	}
 }

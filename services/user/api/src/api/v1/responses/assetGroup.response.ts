@@ -5,20 +5,20 @@ import { EntityResponse } from "./identity.response";
 
 export class AssetGroupResponse extends EntityResponse { 
 	@ApiProperty({
-		type: "string"
+	    type: "string"
 	})
-	name!: string;
+	    name!: string;
 
 	@ApiProperty({
-		type: [AssetResponse]
+	    type: [AssetResponse]
 	})
-	assets!: AssetResponse[];
+	    assets!: AssetResponse[];
 
 	static map(assetGroup: AssetGroup): AssetGroupResponse { 
-		return {
-			name: assetGroup.name ?? "",
-			assets: (assetGroup.assets ?? []).map(AssetResponse.map),
-			identity: assetGroup.identity
-		}
+	    return {
+	        name: assetGroup.name ?? "",
+	        assets: (assetGroup.assets ?? []).map(AssetResponse.map),
+	        identity: assetGroup.identity
+	    }
 	}
 }

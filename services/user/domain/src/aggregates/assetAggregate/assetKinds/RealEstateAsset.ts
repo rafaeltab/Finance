@@ -13,22 +13,22 @@ export class RealEstateAsset extends EnitityBase {
 	 * 	Main Street 123, New York, NY, USA
 	 */
 	@Column()
-	address?: string;
+	    address?: string;
 
 	@OneToOne(() => Asset, (asset) => asset.realEstateAsset, {
-		cascade: ["insert"],
-		onDelete: "CASCADE",
+	    cascade: ["insert"],
+	    onDelete: "CASCADE",
 	})
 	@JoinColumn()
-	asset?: Relation<Asset>;
+	    asset?: Relation<Asset>;
 	
 	constructor(init: Partial<RealEstateAsset>) {
-		super();
-		Object.assign(this, init);
+	    super();
+	    Object.assign(this, init);
 	}
 }
 
 export const RealEstateAssetMeta: EntityMeta<RealEstateAsset> = {
-	relations: ["asset"],
-	data: ["address", "uniqueId", "identity"]
+    relations: ["asset"],
+    data: ["address", "uniqueId", "identity"]
 }

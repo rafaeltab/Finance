@@ -8,35 +8,35 @@ import { SuccessResponse, SuccessResponseData } from "../responses/success.respo
 
 class GetSearchStockPaginatedResponse extends PaginatedResponse implements PaginatedResponseData<StockDataResponse> {
 	@ApiProperty({
-		type: [StockDataResponse]
+	    type: [StockDataResponse]
 	})
-	data!: StockDataResponse[];
+	    data!: StockDataResponse[];
 
 	@ApiProperty({
-		type: "boolean"
+	    type: "boolean"
 	})
-	isEmpty!: boolean;
+	    isEmpty!: boolean;
 }
 
 export class GetSearchStockResponse extends SuccessResponse implements SuccessResponseData<GetSearchStockPaginatedResponse> {
 	@ApiProperty({
-		type: GetSearchStockPaginatedResponse
+	    type: GetSearchStockPaginatedResponse
 	})
-	data!: GetSearchStockPaginatedResponse
+	    data!: GetSearchStockPaginatedResponse
 
 	static map(response: StockDataSearchQueryResponse): GetSearchStockResponse {
-		return {
-			data: {
-				data: response.data.data.map(StockDataResponse.map),
-				isEmpty: response.data.isEmpty,
-				page: {
-					count: response.data.page.count,
-					offset: response.data.page.offset,
-					total: response.data.page.total
-				}
-			},
-			success: response.success
-		}
+	    return {
+	        data: {
+	            data: response.data.data.map(StockDataResponse.map),
+	            isEmpty: response.data.isEmpty,
+	            page: {
+	                count: response.data.page.count,
+	                offset: response.data.page.offset,
+	                total: response.data.page.total
+	            }
+	        },
+	        success: response.success
+	    }
 	}
 }
 
@@ -46,49 +46,49 @@ export class GetStockListResponse extends GetSearchStockResponse {
 
 class StockValuePaginatedResponse extends PaginatedResponse implements PaginatedResponseData<StockValueResponse> {
 	@ApiProperty({
-		type: [StockValueResponse]
+	    type: [StockValueResponse]
 	})
-	data!: StockValueResponse[];
+	    data!: StockValueResponse[];
 }
 
 class StockDataViewResponseData { 
 	@ApiProperty({
-		type: StockDataResponse
+	    type: StockDataResponse
 	})
-	stockData!: StockDataResponse;
+	    stockData!: StockDataResponse;
 
 	@ApiProperty({
-		type: StockValuePaginatedResponse
+	    type: StockValuePaginatedResponse
 	})
-	yearlyValues!: StockValuePaginatedResponse;
+	    yearlyValues!: StockValuePaginatedResponse;
 
 	@ApiProperty({
-		type: "boolean"
+	    type: "boolean"
 	})
-	hasValues!: boolean;
+	    hasValues!: boolean;
 }
 
 export class StockDataViewResponse extends SuccessResponse implements SuccessResponseData<StockDataViewResponseData> {
 	@ApiProperty({
-		type: StockDataViewResponseData
+	    type: StockDataViewResponseData
 	})
-	data!: StockDataViewResponseData;
+	    data!: StockDataViewResponseData;
 
 	static map(response: StockDataViewQueryResponse): StockDataViewResponse {
-		return {
-			data: {
-				stockData: StockDataResponse.map(response.data.stockData),
-				yearlyValues: {
-					data: response.data.yearlyValues.data.map(StockValueResponse.map),
-					page: {
-						count: response.data.yearlyValues.page.count,
-						offset: response.data.yearlyValues.page.offset,
-						total: response.data.yearlyValues.page.total
-					}
-				},
-				hasValues: response.data.hasValues
-			},
-			success: response.success
-		}
+	    return {
+	        data: {
+	            stockData: StockDataResponse.map(response.data.stockData),
+	            yearlyValues: {
+	                data: response.data.yearlyValues.data.map(StockValueResponse.map),
+	                page: {
+	                    count: response.data.yearlyValues.page.count,
+	                    offset: response.data.yearlyValues.page.offset,
+	                    total: response.data.yearlyValues.page.total
+	                }
+	            },
+	            hasValues: response.data.hasValues
+	        },
+	        success: response.success
+	    }
 	}
 }

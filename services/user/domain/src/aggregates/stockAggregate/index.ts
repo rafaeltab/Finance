@@ -6,13 +6,13 @@ import { StockValue, StockValueMeta } from "./StockValue";
 export default StockData;
 
 export { 
-	StockAssetKind,
-	StockData,
-	StockDataMeta,
-	StockValue,
-	StockValueMeta,
-	StockDividendEvent,
-	StockDividendEventMeta,
-	StockSplitEvent,
-	StockSplitEventMeta
+    StockAssetKind,
+    StockData,
+    StockDataMeta,
+    StockValue,
+    StockValueMeta,
+    StockDividendEvent,
+    StockDividendEventMeta,
+    StockSplitEvent,
+    StockSplitEventMeta
 }

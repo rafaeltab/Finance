@@ -11,48 +11,48 @@ export type ResponseType = ICommandResult<{
 }>;
 
 export class CreateUserCommand extends ICommand<CreateUserCommand, ResponseType> {
-	token = "CreateUserCommand";
+    token = "CreateUserCommand";
 
-	firstName!: string;
+    firstName!: string;
 
-	lastName!: string;
+    lastName!: string;
 
-	dateOfBirth!: DateTime;
+    dateOfBirth!: DateTime;
 
-	identity?: string;
+    identity?: string;
 }
 
 @injectable()
 export class CreateUserCommandHandler extends ICommandHandler<CreateUserCommand, ResponseType> {
-	constructor(
+    constructor(
 		@inject(userFactoryToken) private userFactory: IUserFactory,
 		@inject(unitOfWorkToken) private unitOfWork: IUnitOfWork
-	) {
-		super();
-	}
+    ) {
+        super();
+    }
 
-	async handle(command: CreateUserCommand): Promise<ResponseType> {
-		try {
-			await this.unitOfWork.start();
+    async handle(command: CreateUserCommand): Promise<ResponseType> {
+        try {
+            await this.unitOfWork.start();
 
-			const identity = command.identity ?? `user-${command.firstName}-${command.lastName}-${command.dateOfBirth.toFormat("yyyy-MM-dd")}`;
+            const identity = command.identity ?? `user-${command.firstName}-${command.lastName}-${command.dateOfBirth.toFormat("yyyy-MM-dd")}`;
 
-			const user = await this.userFactory.createUser(identity,
-				command.firstName,
-				command.lastName,
-				command.dateOfBirth.toJSDate());
+            const user = await this.userFactory.createUser(identity,
+                command.firstName,
+                command.lastName,
+                command.dateOfBirth.toJSDate());
 
-			await this.unitOfWork.commit();
+            await this.unitOfWork.commit();
 
-			return {
-				success: true,
-				data: {
-					userIdentity: user.identity
-				}
-			}
-		} catch (error) {
-			await this.unitOfWork.rollback();
-			throw error;
-		}
-	}
+            return {
+                success: true,
+                data: {
+                    userIdentity: user.identity
+                }
+            }
+        } catch (error) {
+            await this.unitOfWork.rollback();
+            throw error;
+        }
+    }
 }

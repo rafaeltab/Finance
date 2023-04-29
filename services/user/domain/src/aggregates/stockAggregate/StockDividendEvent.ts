@@ -8,28 +8,28 @@ import { ColumnNumericTransformer } from "../../utils/numericTransformer";
 @Entity()
 export class StockDividendEvent extends ValueObjectBase {
 	@Column()
-	date?: Date;
+	    date?: Date;
 
 	@Column({
-		type: "decimal",
-		precision: 10,
-		transformer: new ColumnNumericTransformer()
+	    type: "decimal",
+	    precision: 10,
+	    transformer: new ColumnNumericTransformer()
 	})
-	amount?: number;
+	    amount?: number;
 
 	@ManyToOne(() => StockData, (data) => data.dividendsEvents, {
-		cascade: ["insert"],
-		onDelete: "CASCADE",
+	    cascade: ["insert"],
+	    onDelete: "CASCADE",
 	})
-	stockData?: Relation<StockData>;
+	    stockData?: Relation<StockData>;
 
 	constructor(init: Partial<StockDividendEvent>) {
-		super();
-		Object.assign(this, init);
+	    super();
+	    Object.assign(this, init);
 	}
 }
 
 export const StockDividendEventMeta: EntityMeta<StockDividendEvent> = {
-	relations: ["stockData"],
-	data: ["amount", "date", "uniqueId"]
+    relations: ["stockData"],
+    data: ["amount", "date", "uniqueId"]
 }

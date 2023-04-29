@@ -34,35 +34,35 @@ export enum StockAssetKind {
 @Entity()
 export class StockData extends EnitityBase {
 	@Column()
-	symbol?: string;
+	    symbol?: string;
 
 	@Column()
-	exchange?: string;
+	    exchange?: string;
 
 	@Column({
-		type: "enum",
-		enum: StockAssetKind,
+	    type: "enum",
+	    enum: StockAssetKind,
 	})
-	assetKind?: StockAssetKind;
+	    assetKind?: StockAssetKind;
 
 	@OneToMany(() => StockValue, (value) => value.stockData, {
-		cascade: ["insert"],
+	    cascade: ["insert"],
 	})
-	values?: Relation<StockValue>[];
+	    values?: Relation<StockValue>[];
 
 	@OneToMany(() => StockSplitEvent, (event) => event.stockData)
-	splitEvents?: Relation<StockSplitEvent>[];
+	    splitEvents?: Relation<StockSplitEvent>[];
 
 	@OneToMany(() => StockDividendEvent, (event) => event.stockData)
-	dividendsEvents?: Relation<StockDividendEvent>[];
+	    dividendsEvents?: Relation<StockDividendEvent>[];
 
 	constructor(init: Partial<StockData>) {
-		super();
-		Object.assign(this, init);
+	    super();
+	    Object.assign(this, init);
 	}
 }
 
 export const StockDataMeta: EntityMeta<StockData> = {
-	relations: ["values"],
-	data: ["symbol", "exchange", "assetKind", "uniqueId", "identity"]
+    relations: ["values"],
+    data: ["symbol", "exchange", "assetKind", "uniqueId", "identity"]
 }

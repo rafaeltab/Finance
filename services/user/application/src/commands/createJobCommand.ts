@@ -8,41 +8,41 @@ import { inject, injectable } from "tsyringe";
 export type ResponseType = ICommandResult<Job>;
 
 export class CreateJobCommand extends ICommand<CreateJobCommand, ResponseType> {
-	token = "CreateJobCommand";
+    token = "CreateJobCommand";
 
-	userIdentity!: string;
+    userIdentity!: string;
 
-	title!: string;
+    title!: string;
 
-	monthlySalary!: number;
+    monthlySalary!: number;
 }
 
 @injectable()
 export class CreateJobCommandHandler extends ICommandHandler<CreateJobCommand, ResponseType> {
-	constructor(
+    constructor(
 		@inject(jobFactoryToken) private jobFactory: IJobFactory,
 		@inject(unitOfWorkToken) private unitOfWork: IUnitOfWork
-	) {
-		super();
-	}
+    ) {
+        super();
+    }
 
-	async handle(command: CreateJobCommand): Promise<ResponseType> {
-		try {
-			await this.unitOfWork.start();
+    async handle(command: CreateJobCommand): Promise<ResponseType> {
+        try {
+            await this.unitOfWork.start();
 
-			const job = await this.jobFactory.addJobToUser({
-				identity: command.userIdentity,
-			}, command.title, command.monthlySalary);
+            const job = await this.jobFactory.addJobToUser({
+                identity: command.userIdentity,
+            }, command.title, command.monthlySalary);
 
-			await this.unitOfWork.commit();
+            await this.unitOfWork.commit();
 
-			return {
-				success: true,
-				data: job
-			}
-		} catch (error) {
-			await this.unitOfWork.rollback();
-			throw error;
-		}
-	}
+            return {
+                success: true,
+                data: job
+            }
+        } catch (error) {
+            await this.unitOfWork.rollback();
+            throw error;
+        }
+    }
 }

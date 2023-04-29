@@ -11,13 +11,13 @@ export type ResponseType = ICommandResult<{
 }>;
 
 export class CreateStockAssetForUserCommand extends ICommand<CreateStockAssetForUserCommand, ResponseType> {
-	token = "CreateStockAssetForUserCommand";
+    token = "CreateStockAssetForUserCommand";
 
-	userIdentity!: string;
+    userIdentity!: string;
 
-	stockDataIdentity!: string;
+    stockDataIdentity!: string;
 
-	stockOrders!: {
+    stockOrders!: {
 		price: number;
 		amount: number;
 	}[];
@@ -25,35 +25,35 @@ export class CreateStockAssetForUserCommand extends ICommand<CreateStockAssetFor
 
 @injectable()
 export class CreateStockAssetForUserCommandHandler extends ICommandHandler<CreateStockAssetForUserCommand, ResponseType> {
-	constructor(
+    constructor(
 		@inject(assetFactoryToken) private assetFactory: IAssetFactory,
 		@inject(unitOfWorkToken) private unitOfWork: IUnitOfWork
-	) {
-		super();
-	}
+    ) {
+        super();
+    }
 
-	async handle(command: CreateStockAssetForUserCommand): Promise<ResponseType> {
-		try {
-			await this.unitOfWork.start();
+    async handle(command: CreateStockAssetForUserCommand): Promise<ResponseType> {
+        try {
+            await this.unitOfWork.start();
 
-			const [stockAsset, asset] = await this.assetFactory.addStockToUser({
-				identity: command.userIdentity,
-			}, {
-				identity: command.stockDataIdentity
-			}, command.stockOrders)
+            const [stockAsset, asset] = await this.assetFactory.addStockToUser({
+                identity: command.userIdentity,
+            }, {
+                identity: command.stockDataIdentity
+            }, command.stockOrders)
 
-			await this.unitOfWork.commit();
+            await this.unitOfWork.commit();
 
-			return {
-				success: true,
-				data: {
-					asset,
-					stockAsset
-				}
-			}
-		} catch (error) {
-			await this.unitOfWork.rollback();
-			throw error;
-		}
-	}
+            return {
+                success: true,
+                data: {
+                    asset,
+                    stockAsset
+                }
+            }
+        } catch (error) {
+            await this.unitOfWork.rollback();
+            throw error;
+        }
+    }
 }

@@ -8,42 +8,42 @@ import { SuccessResponse, type SuccessResponseData } from "../../responses/succe
 
 class PaginatedBankAccountResponse extends PaginatedResponse implements PaginatedResponseData<BankAccountResponse> {
 	@ApiProperty({
-		type: [BankAccountResponse],
+	    type: [BankAccountResponse],
 	})
-	data!: BankAccountResponse[];
+	    data!: BankAccountResponse[];
 }
 export class BankAccountsViewResponse extends SuccessResponse implements SuccessResponseData<PaginatedBankAccountResponse> {
 	@ApiProperty({
-		type: PaginatedBankAccountResponse
+	    type: PaginatedBankAccountResponse
 	})
-	data!: PaginatedBankAccountResponse;
+	    data!: PaginatedBankAccountResponse;
 
 	static map(bankAccounts: BankAccountsViewQueryResponse): BankAccountsViewResponse {
-		return {
-			success: true,
-			data: {
-				page: {
-					count: bankAccounts.data.page.count,
-					offset: bankAccounts.data.page.offset,
-					total: bankAccounts.data.page.total
-				},
-				data: bankAccounts.data.data.map(BankAccountResponse.map)
-			}
-		}
+	    return {
+	        success: true,
+	        data: {
+	            page: {
+	                count: bankAccounts.data.page.count,
+	                offset: bankAccounts.data.page.offset,
+	                total: bankAccounts.data.page.total
+	            },
+	            data: bankAccounts.data.data.map(BankAccountResponse.map)
+	        }
+	    }
 	}
 }
 
 // Create a response for the createBankAccountCommand
 export class CreateBankAccountResponse extends SuccessResponse implements SuccessResponseData<BankAccountResponse> {
 	@ApiProperty({
-		type: BankAccountResponse
+	    type: BankAccountResponse
 	})
-	data!: BankAccountResponse;
+	    data!: BankAccountResponse;
 
 	static map(bankAccount: CreateBankAccountCommandResponse): CreateBankAccountResponse {
-		return {
-			success: true,
-			data: BankAccountResponse.map(bankAccount.data)
-		}
+	    return {
+	        success: true,
+	        data: BankAccountResponse.map(bankAccount.data)
+	    }
 	}
 }

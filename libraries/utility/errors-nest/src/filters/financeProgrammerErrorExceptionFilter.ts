@@ -5,16 +5,16 @@ import { handleError } from "../handleError";
 
 @Catch(ProgrammerError)
 export class FinanceProgrammerErrorExceptionFilter implements ExceptionFilter<ProgrammerError> {
-	private baseFilter: BaseExceptionFilter;
+    private baseFilter: BaseExceptionFilter;
 
-	constructor(applicationRef?: HttpServer) {
-		this.baseFilter = new BaseExceptionFilter(applicationRef);
-	}
+    constructor(applicationRef?: HttpServer) {
+        this.baseFilter = new BaseExceptionFilter(applicationRef);
+    }
 
-	catch(exception: ProgrammerError, host: ArgumentsHost) {
-		Logger.error(exception);
+    catch(exception: ProgrammerError, host: ArgumentsHost) {
+        Logger.error(exception);
 
-		const error = handleError(exception);
-		this.baseFilter.catch(error, host);
-	}
+        const error = handleError(exception);
+        this.baseFilter.catch(error, host);
+    }
 }

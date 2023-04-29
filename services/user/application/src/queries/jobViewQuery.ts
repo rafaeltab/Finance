@@ -8,52 +8,52 @@ import { inject, injectable } from "tsyringe";
 export type ResponseType = IQueryResult<PaginatedBase<Job>>
 
 export class JobViewQuery extends IQuery<JobViewQuery, ResponseType> {
-	token = "JobViewQuery";
+    token = "JobViewQuery";
 
-	userIdentity!: string;
+    userIdentity!: string;
 
-	limit = 30;
+    limit = 30;
 
-	offset = 0;
+    offset = 0;
 }
 
 @injectable()
 export class JobViewQueryHandler extends IQueryHandler<JobViewQuery, ResponseType> {
-	/**
+    /**
 	 *
 	 */
-	constructor(
+    constructor(
 		@inject(jobRepositoryToken) private jobRepository: IJobRepository,
 		@inject(unitOfWorkToken) private unitOfWork: IUnitOfWork
-	) {
-		super();
+    ) {
+        super();
 
-	}
+    }
 
-	async handle(query: JobViewQuery): Promise<ResponseType> {
-		try {
-			await this.unitOfWork.start();
+    async handle(query: JobViewQuery): Promise<ResponseType> {
+        try {
+            await this.unitOfWork.start();
 
-			const jobs = await this.jobRepository.getAllJobsForUser({
-				identity: query.userIdentity,
-			}, query.limit, query.offset);
+            const jobs = await this.jobRepository.getAllJobsForUser({
+                identity: query.userIdentity,
+            }, query.limit, query.offset);
 
-			await this.unitOfWork.commit();
+            await this.unitOfWork.commit();
 
-			return {
-				success: true,
-				data: {
-					page: {
-						count: jobs.page.count,
-						offset: jobs.page.offset,
-						total: jobs.page.total,
-					},
-					data: jobs.data
-				}
-			}
-		} catch (e: unknown) {
-			await this.unitOfWork.rollback();
-			throw e;
-		}
-	}
+            return {
+                success: true,
+                data: {
+                    page: {
+                        count: jobs.page.count,
+                        offset: jobs.page.offset,
+                        total: jobs.page.total,
+                    },
+                    data: jobs.data
+                }
+            }
+        } catch (e: unknown) {
+            await this.unitOfWork.rollback();
+            throw e;
+        }
+    }
 }

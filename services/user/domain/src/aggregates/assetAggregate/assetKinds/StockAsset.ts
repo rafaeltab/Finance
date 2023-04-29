@@ -9,32 +9,32 @@ import { StockOrder } from "./StockOrder";
 export class StockAsset extends EnitityBase {
 
 	@OneToMany(() => StockOrder, (order) => order.stockAsset, {
-		eager: true
+	    eager: true
 	})
-	orders?: Relation<StockOrder>[];
+	    orders?: Relation<StockOrder>[];
 
 	@OneToOne(() => Asset, (asset) => asset.stockAsset, {
-		cascade: ["insert"],
-		onDelete: "CASCADE",
+	    cascade: ["insert"],
+	    onDelete: "CASCADE",
 	})
 	@JoinColumn()
-	asset?: Relation<Asset>;
+	    asset?: Relation<Asset>;
 
 	@ManyToOne(() => StockData, {
-		eager: true,
-		cascade: ["insert"],
-		onDelete: "CASCADE",
+	    eager: true,
+	    cascade: ["insert"],
+	    onDelete: "CASCADE",
 	})
 	@JoinColumn()
-	stockData?: Relation<StockData>;
+	    stockData?: Relation<StockData>;
 
 	constructor(init: Partial<StockAsset>) {
-		super();
-		Object.assign(this, init);
+	    super();
+	    Object.assign(this, init);
 	}
 }
 
 export const StockAssetMeta: EntityMeta<StockAsset> = {
-	relations: ["asset", "orders"],
-	data: ["uniqueId", "identity"]
+    relations: ["asset", "orders"],
+    data: ["uniqueId", "identity"]
 }

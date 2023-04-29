@@ -13,42 +13,42 @@ import { CreateBankAccountBody } from "./createBankAccount.body";
 
 @Controller("/api/v1/user/:userIdentity/bankAccount")
 export class BankAccountController {
-	constructor(@Inject(Mediator) private mediator: Mediator) { }
+    constructor(@Inject(Mediator) private mediator: Mediator) { }
 
 	@Get()
 	@FinanceErrors([EntryNotFoundError])
 	@ApiBearerAuth("oauth2")
 	@UserIdentityParam()
 	@ApiOkResponse({
-		type: BankAccountsViewResponse
+	    type: BankAccountsViewResponse
 	})
-	async get(
+    async get(
 		@Param() param: UserIdentityParams,
-	): Promise<BankAccountsViewResponse> {
-		return BankAccountsViewResponse.map(await this.mediator.query(new BankAccountViewQuery({
-			userIdentity: param.userIdentity,
-			limit: 30,
-			offset: 0,
-		})));
-	}
+    ): Promise<BankAccountsViewResponse> {
+        return BankAccountsViewResponse.map(await this.mediator.query(new BankAccountViewQuery({
+            userIdentity: param.userIdentity,
+            limit: 30,
+            offset: 0,
+        })));
+    }
 
 	@Put()
 	@FinanceErrors([DuplicateEntryError, EntryNotFoundError])
 	@ApiBearerAuth("oauth2")
 	@UserIdentityParam()
 	@ApiOkResponse({
-		type: CreateBankAccountResponse
+	    type: CreateBankAccountResponse
 	})
 	async insert(
 		@Param() param: UserIdentityParams,
 		@Body(new ValidationPipe()) body: CreateBankAccountBody
 	): Promise<CreateBankAccountResponse> {
-		return CreateBankAccountResponse.map(await this.mediator.command(new CreateBankAccountCommand({
-			userIdentity: param.userIdentity,
-			balance: body.balance,
-			bank: body.bank,
-			currrency: body.currency,
-		})));
+	    return CreateBankAccountResponse.map(await this.mediator.command(new CreateBankAccountCommand({
+	        userIdentity: param.userIdentity,
+	        balance: body.balance,
+	        bank: body.bank,
+	        currrency: body.currency,
+	    })));
 	}
 
 	@Delete("/:identity")
@@ -57,13 +57,13 @@ export class BankAccountController {
 	@IdentityParam()
 	@UserIdentityParam()
 	@ApiOkResponse({
-		type: SuccessResponse
+	    type: SuccessResponse
 	})
 	async delete(
 		@Param() param: IdentityParams
 	): Promise<SuccessResponse> {
-		return this.mediator.command(new DeleteBankAccountCommand({
-			bankAccountIdentity: param.identity
-		}));
+	    return this.mediator.command(new DeleteBankAccountCommand({
+	        bankAccountIdentity: param.identity
+	    }));
 	}
 }

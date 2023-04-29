@@ -11,13 +11,13 @@ export type ResponseType = ICommandResult<{
 }>;
 
 export class CreateStockAssetForAssetGroupCommand extends ICommand<CreateStockAssetForAssetGroupCommand, ResponseType> {
-	token = "CreateStockAssetForAssetGroupCommand";
+    token = "CreateStockAssetForAssetGroupCommand";
 
-	assetGroupIdentity!: string;
+    assetGroupIdentity!: string;
 
-	stockDataIdentity!: string;
+    stockDataIdentity!: string;
 
-	stockOrders!: {
+    stockOrders!: {
 		price: number;
 		amount: number;
 	}[];
@@ -25,35 +25,35 @@ export class CreateStockAssetForAssetGroupCommand extends ICommand<CreateStockAs
 
 @injectable()
 export class CreateStockAssetForAssetGroupCommandHandler extends ICommandHandler<CreateStockAssetForAssetGroupCommand, ResponseType> {
-	constructor(
+    constructor(
 		@inject(assetFactoryToken) private assetFactory: IAssetFactory,
 		@inject(unitOfWorkToken) private unitOfWork: IUnitOfWork
-	) {
-		super();
-	}
+    ) {
+        super();
+    }
 
-	async handle(command: CreateStockAssetForAssetGroupCommand): Promise<ResponseType> {
-		try {
-			await this.unitOfWork.start();
+    async handle(command: CreateStockAssetForAssetGroupCommand): Promise<ResponseType> {
+        try {
+            await this.unitOfWork.start();
 
-			const [stockAsset, asset] = await this.assetFactory.addStockToAssetGroup({
-				identity: command.assetGroupIdentity,
-			}, {
-				identity: command.stockDataIdentity
-			}, command.stockOrders)
+            const [stockAsset, asset] = await this.assetFactory.addStockToAssetGroup({
+                identity: command.assetGroupIdentity,
+            }, {
+                identity: command.stockDataIdentity
+            }, command.stockOrders)
 
-			await this.unitOfWork.commit();
+            await this.unitOfWork.commit();
 
-			return {
-				success: true,
-				data: {
-					asset,
-					stockAsset
-				}
-			}
-		} catch (error) {
-			await this.unitOfWork.rollback();
-			throw error;
-		}
-	}
+            return {
+                success: true,
+                data: {
+                    asset,
+                    stockAsset
+                }
+            }
+        } catch (error) {
+            await this.unitOfWork.rollback();
+            throw error;
+        }
+    }
 }

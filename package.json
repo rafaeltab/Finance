@@ -22,7 +22,7 @@
 		"start:dev": "turbo run start:dev --parallel --concurrency 15",
 		"lint": "turbo run lint --output-logs errors-only",
 		"lint:fix": "turbo run lint:fix",
-		"test": "turbo run test",
+		"test": "turbo run test --output-logs new-only",
 		"start": "turbo run start",
 		"clean": "turbo run clean",
 		"clean:node_modules": "rimraf ./**/node_modules/**/* -g -v"

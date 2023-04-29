@@ -5,6 +5,6 @@ export abstract class IEvent<TImplementation> implements ITokenable {
 	readonly abstract token: string;
 
 	constructor(c: Omit<TImplementation, "token">) {
-		Object.assign(this, c);
+	    Object.assign(this, c);
 	}
 }

@@ -1,150 +1,150 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions, max-classes-per-file */
 import type {
-	Constructor,
-	AnyConstructor,
-	ConstructorArguments
+    Constructor,
+    AnyConstructor,
+    ConstructorArguments
 } from "#src/constructor";
 
 describe("Constructor", () => {
-	it("Should match a constructor with specific arguments", () => {
-		class CoolA {
-			constructor(banana: string) {
-				banana;
-			}
-		}
+    it("Should match a constructor with specific arguments", () => {
+        class CoolA {
+            constructor(banana: string) {
+                banana;
+            }
+        }
 
-		const c: Constructor<CoolA, [banana: string]> = CoolA;
+        const c: Constructor<CoolA, [banana: string]> = CoolA;
 
-		c;
-	});
+        c;
+    });
 
-	it("Should not match a constructor with wrongly typed argument", () => {
-		class CoolA {
-			constructor(banana: string) {
-				banana;
-			}
-		}
+    it("Should not match a constructor with wrongly typed argument", () => {
+        class CoolA {
+            constructor(banana: string) {
+                banana;
+            }
+        }
 
-		// @ts-expect-error should not allow string where we expect number
-		const c: Constructor<CoolA, [banana: number]> = CoolA;
+        // @ts-expect-error should not allow string where we expect number
+        const c: Constructor<CoolA, [banana: number]> = CoolA;
 
-		c;
-	});
+        c;
+    });
 
-	it("Should not match a constructor with too many arguments", () => {
-		class CoolA {
-			constructor(banana: string, cool: string) {
-				banana;
-				cool;
-			}
-		}
+    it("Should not match a constructor with too many arguments", () => {
+        class CoolA {
+            constructor(banana: string, cool: string) {
+                banana;
+                cool;
+            }
+        }
 
-		// @ts-expect-error Too many arguments
-		const c: Constructor<CoolA, [banana: string]> = CoolA;
+        // @ts-expect-error Too many arguments
+        const c: Constructor<CoolA, [banana: string]> = CoolA;
 
-		c;
-	});
+        c;
+    });
 });
 
 describe("AnyConstructor", () => {
-	it("Should match any constructor with a specific return type", () => {
-		class CoolA {
-			constructor(public banana: string) {
-				banana;
-			}
-		}
+    it("Should match any constructor with a specific return type", () => {
+        class CoolA {
+            constructor(public banana: string) {
+                banana;
+            }
+        }
 
-		class CoolB {
-			constructor(public banana: string) {
-				banana;
-			}
-		}
+        class CoolB {
+            constructor(public banana: string) {
+                banana;
+            }
+        }
 
-		const c: AnyConstructor<CoolA> = CoolA;
-		const b: AnyConstructor<CoolA> = CoolB;
+        const c: AnyConstructor<CoolA> = CoolA;
+        const b: AnyConstructor<CoolA> = CoolB;
 
-		c;
-		b;
-	});
+        c;
+        b;
+    });
 
-	it("Should not match a constructor with wrong return type", () => {
-		class CoolA {
-			constructor(public banana: string) {
-				banana;
-			}
-		}
+    it("Should not match a constructor with wrong return type", () => {
+        class CoolA {
+            constructor(public banana: string) {
+                banana;
+            }
+        }
 
-		class CoolB {
-			constructor(public zap: string) {
-				zap;
-			}
-		}
-
-
-		const c: AnyConstructor<CoolA> = CoolA;
-		// @ts-expect-error should not match since CoolB has zap instead of banana
-		const b: AnyConstructor<CoolA> = CoolB;
-
-		c;
-		b;
-	});
-
-	it("Should match a constructor with the same functions but different parameters", () => {
-		class CoolA {
-			constructor(banana: string) {
-				banana;
-			}
-
-			public coolA() { 
-				this;
-			}
-		}
-
-		class CoolB {
-			constructor(zap: string, cool: string) {
-				zap;
-				cool;
-			}
-
-			public coolA() {
-				this;
-			}
-		}
+        class CoolB {
+            constructor(public zap: string) {
+                zap;
+            }
+        }
 
 
-		const c: AnyConstructor<CoolA> = CoolA;
-		const b: AnyConstructor<CoolA> = CoolB;
+        const c: AnyConstructor<CoolA> = CoolA;
+        // @ts-expect-error should not match since CoolB has zap instead of banana
+        const b: AnyConstructor<CoolA> = CoolB;
 
-		c;
-		b;
-	});
+        c;
+        b;
+    });
+
+    it("Should match a constructor with the same functions but different parameters", () => {
+        class CoolA {
+            constructor(banana: string) {
+                banana;
+            }
+
+            public coolA() { 
+                this;
+            }
+        }
+
+        class CoolB {
+            constructor(zap: string, cool: string) {
+                zap;
+                cool;
+            }
+
+            public coolA() {
+                this;
+            }
+        }
+
+
+        const c: AnyConstructor<CoolA> = CoolA;
+        const b: AnyConstructor<CoolA> = CoolB;
+
+        c;
+        b;
+    });
 });
 
 describe("ConstructorArguments", () => {
-	it("Should match the constructor arguments", () => {
-		class CoolA {
-			constructor(banana: string, num: number) {
-				banana;
-				num;
-			}
-		}
+    it("Should match the constructor arguments", () => {
+        class CoolA {
+            constructor(banana: string, num: number) {
+                banana;
+                num;
+            }
+        }
 
-		const c: ConstructorArguments<typeof CoolA> = ["cool", 5]
+        const c: ConstructorArguments<typeof CoolA> = ["cool", 5]
 
-		c;
-	});
+        c;
+    });
 
-	it("Should not match if there are missing arguments", () => {
-		class CoolA {
-			constructor(banana: string, num: number) {
-				banana;
-				num;
-			}
-		}
+    it("Should not match if there are missing arguments", () => {
+        class CoolA {
+            constructor(banana: string, num: number) {
+                banana;
+                num;
+            }
+        }
 
-		// @ts-expect-error missing argument should make error
-		const c: ConstructorArguments<typeof CoolA> = ["cool"]
+        // @ts-expect-error missing argument should make error
+        const c: ConstructorArguments<typeof CoolA> = ["cool"]
 
-		c;
-	});
+        c;
+    });
 })

@@ -6,37 +6,37 @@ import { authzGuard, cors, errorsFilter, validationPipe } from "./globalRegistra
 import { createSwaggerDocument, setupSwagger } from "./swagger";
 
 function registerComponents(app: INestApplication) {
-	validationPipe(app);
-	authzGuard(app);
-	errorsFilter(app);
-	cors(app);
+    validationPipe(app);
+    authzGuard(app);
+    errorsFilter(app);
+    cors(app);
 }
 
 async function createApp() {
-	const app = await NestFactory.create(AppModule, {
-		logger: console
-	});
-	registerComponents(app);
-	return app;
+    const app = await NestFactory.create(AppModule, {
+        logger: console
+    });
+    registerComponents(app);
+    return app;
 }
 
 async function bootstrap() {
-	const app = await createApp();
+    const app = await createApp();
 
-	setupSwagger(app);
+    setupSwagger(app);
 
-	await app.listen(3000);
+    await app.listen(3000);
 }
 
 async function generateDefinition() {
-	const app = await createApp();
-	const document = createSwaggerDocument(app);
+    const app = await createApp();
+    const document = createSwaggerDocument(app);
 
-	writeFileSync("swagger.json", JSON.stringify(document, null, 4));
+    writeFileSync("swagger.json", JSON.stringify(document, null, 4));
 }
 
 if (process.argv.includes("--generate-swagger")) {
-	generateDefinition();
+    generateDefinition();
 } else {
-	bootstrap();
+    bootstrap();
 }

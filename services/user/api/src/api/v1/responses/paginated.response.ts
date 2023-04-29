@@ -2,32 +2,32 @@ import { ApiProperty } from "@nestjs/swagger";
 
 export class PaginatedResponsePage { 
 	@ApiProperty({
-		type: "number",
-		description: "The amount available in this response",
-		example: 10
+	    type: "number",
+	    description: "The amount available in this response",
+	    example: 10
 	})
-	count!: number;
+	    count!: number;
 
 	@ApiProperty({
-		type: "number",
-		description: "The starting index of the paginated data",
-		example: 0
+	    type: "number",
+	    description: "The starting index of the paginated data",
+	    example: 0
 	})
-	offset!: number;
+	    offset!: number;
 
 	@ApiProperty({
-		type: "number",
-		description: "The total number of items available",
-		example: 10
+	    type: "number",
+	    description: "The total number of items available",
+	    example: 10
 	})
-	total!: number;
+	    total!: number;
 }
 
 export class PaginatedResponse {
 	@ApiProperty({
-		type: PaginatedResponsePage
+	    type: PaginatedResponsePage
 	})
-	page!: PaginatedResponsePage
+	    page!: PaginatedResponsePage
 }
 
 export interface PaginatedResponseData<TData> { 

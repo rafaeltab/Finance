@@ -17,6 +17,6 @@ export abstract class ICommand<TImplementation, TResult extends ICommandResult<u
 	[responseSymbol]?: TResult;
 
 	constructor(c: Omit<TImplementation, "token" | typeof responseSymbol>) {
-		Object.assign(this, c);
+	    Object.assign(this, c);
 	}
 }

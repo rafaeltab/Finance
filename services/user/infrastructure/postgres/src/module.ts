@@ -1,5 +1,5 @@
 import {
-	IAssetFactory,
+    IAssetFactory,
 	 IAssetGroupFactory,
 	 IAssetGroupRepository,
 	 IAssetRepository,
@@ -44,35 +44,35 @@ import { IUnitOfWork, UnitOfWork, unitOfWorkToken } from "./unitOfWork/unitOfWor
 
 
 export class PostgresInfrastructureModule implements Module {
-	async init() {
-		await AppDataSource.initialize();
-	}
+    async init() {
+        await AppDataSource.initialize();
+    }
 
-	register(container: DependencyContainer): void {
-		container.register<IUnitOfWork>(unitOfWorkToken, UnitOfWork, {
-			lifecycle: Lifecycle.ResolutionScoped
-		});
-		container.register<DataSource>(dataSourceToken, {
-			useValue: AppDataSource
-		});
+    register(container: DependencyContainer): void {
+        container.register<IUnitOfWork>(unitOfWorkToken, UnitOfWork, {
+            lifecycle: Lifecycle.ResolutionScoped
+        });
+        container.register<DataSource>(dataSourceToken, {
+            useValue: AppDataSource
+        });
 
-		container.register<IUserRepository>(userRepositoryToken, UserRepository);
-		container.register<IAssetGroupRepository>(assetGroupRepositoryToken, AssetGroupRepository);
-		container.register<IAssetRepository>(assetRepositoryToken, AssetRepository);
-		container.register<IBankAccountRepository>(bankAccountRepositoryToken, BankAccountRepository);
-		container.register<IJobRepository>(jobRepositoryToken, JobRepository);
-		container.register<IStockRepository>(stockRepositoryToken, StockRepository);
+        container.register<IUserRepository>(userRepositoryToken, UserRepository);
+        container.register<IAssetGroupRepository>(assetGroupRepositoryToken, AssetGroupRepository);
+        container.register<IAssetRepository>(assetRepositoryToken, AssetRepository);
+        container.register<IBankAccountRepository>(bankAccountRepositoryToken, BankAccountRepository);
+        container.register<IJobRepository>(jobRepositoryToken, JobRepository);
+        container.register<IStockRepository>(stockRepositoryToken, StockRepository);
 
-		container.register<IUserFactory>(userFactoryToken, UserFactory);
-		container.register<IAssetGroupFactory>(assetGroupFactoryToken, AssetGroupFactory);
-		container.register<IAssetFactory>(assetFactoryToken, AssetFactory);
-		container.register<IBankAccountFactory>(bankAccountFactoryToken, BankAccountFactory);
-		container.register<IJobFactory>(jobFactoryToken, JobFactory);
-		container.register<IStockFactory>(stockFactoryToken, StockFactory);
+        container.register<IUserFactory>(userFactoryToken, UserFactory);
+        container.register<IAssetGroupFactory>(assetGroupFactoryToken, AssetGroupFactory);
+        container.register<IAssetFactory>(assetFactoryToken, AssetFactory);
+        container.register<IBankAccountFactory>(bankAccountFactoryToken, BankAccountFactory);
+        container.register<IJobFactory>(jobFactoryToken, JobFactory);
+        container.register<IStockFactory>(stockFactoryToken, StockFactory);
 		
-	}
+    }
 
-	async dispose() {
-		await AppDataSource.destroy();
-	}
+    async dispose() {
+        await AppDataSource.destroy();
+    }
 }

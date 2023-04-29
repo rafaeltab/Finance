@@ -14,153 +14,153 @@ import { SuccessResponse, SuccessResponseData } from "../../responses/success.re
 
 export class GetAssetResponse extends SuccessResponse implements SuccessResponseData<AssetResponse>{
 	@ApiProperty({
-		type: AssetResponse
+	    type: AssetResponse
 	})
-	data!: AssetResponse;
+	    data!: AssetResponse;
 
 	static map(asset: GetAssetQueryResponse): GetAssetResponse  { 
-		return {
-			success: asset.success,
-			data: AssetResponse.map(asset.data)
-		}
+	    return {
+	        success: asset.success,
+	        data: AssetResponse.map(asset.data)
+	    }
 	}
 }
 
 
 class PaginatedAssetResponse extends PaginatedResponse implements PaginatedResponseData<AssetResponse> {
 	@ApiProperty({
-		type: [AssetResponse],
+	    type: [AssetResponse],
 	})
-	data!: AssetResponse[];
+	    data!: AssetResponse[];
 }
 class PaginatedAssetGroupResponse extends PaginatedResponse implements PaginatedResponseData<AssetGroupResponse> {
 	@ApiProperty({
-		type: [AssetGroupResponse],
+	    type: [AssetGroupResponse],
 	})
-	data!: AssetGroupResponse[];
+	    data!: AssetGroupResponse[];
 }
 
 class GetAssetGroupResponseData { 
 	@ApiProperty({
-		type: AssetGroupResponse
+	    type: AssetGroupResponse
 	})
-	group!: AssetGroupResponse;
+	    group!: AssetGroupResponse;
 	
 	@ApiProperty({
-		type: [PaginatedAssetResponse]
+	    type: [PaginatedAssetResponse]
 	})
-	assets!: PaginatedAssetResponse;
+	    assets!: PaginatedAssetResponse;
 
 	static map(group: AssetGroup, assets: GetAssetGroupQueryResponse["data"]["assets"]): GetAssetGroupResponseData { 
-		return {
-			group: AssetGroupResponse.map(group),
-			assets: {
-				data: assets.data.map(AssetResponse.map),
-				page: {
-					count: assets.page.count,
-					offset: assets.page.offset,
-					total: assets.page.total
-				}
-			}
-		}
+	    return {
+	        group: AssetGroupResponse.map(group),
+	        assets: {
+	            data: assets.data.map(AssetResponse.map),
+	            page: {
+	                count: assets.page.count,
+	                offset: assets.page.offset,
+	                total: assets.page.total
+	            }
+	        }
+	    }
 	}
 }
 
 export class GetAssetGroupResponse extends SuccessResponse implements SuccessResponseData<GetAssetGroupResponseData>{
 	@ApiProperty({
-		type: GetAssetGroupResponseData
+	    type: GetAssetGroupResponseData
 	})
-	data!: GetAssetGroupResponseData;
+	    data!: GetAssetGroupResponseData;
 
 	static map(asset: GetAssetGroupQueryResponse): GetAssetGroupResponse {
-		return {
-			data: GetAssetGroupResponseData.map(asset.data.group, asset.data.assets),
-			success: asset.success
-		}
+	    return {
+	        data: GetAssetGroupResponseData.map(asset.data.group, asset.data.assets),
+	        success: asset.success
+	    }
 	}
 }
 
 export class GetUserAssetsResponse extends SuccessResponse implements SuccessResponseData<PaginatedAssetResponse> {
 	@ApiProperty({
-		type: PaginatedAssetResponse
+	    type: PaginatedAssetResponse
 	})
-	data!: PaginatedAssetResponse;
+	    data!: PaginatedAssetResponse;
 
 	static map(assets: GetAssetsForUserQueryResponse): GetUserAssetsResponse {
-		return {
-			success: true,
-			data: {
-				page: {
-					count: assets.data.page.count,
-					offset: assets.data.page.offset,
-					total: assets.data.page.total
-				},
-				data: assets.data.data.map(AssetResponse.map)
-			}
-		}
+	    return {
+	        success: true,
+	        data: {
+	            page: {
+	                count: assets.data.page.count,
+	                offset: assets.data.page.offset,
+	                total: assets.data.page.total
+	            },
+	            data: assets.data.data.map(AssetResponse.map)
+	        }
+	    }
 	}
 }
 
 export class GetUserAssetGroupsResponse extends SuccessResponse implements SuccessResponseData<PaginatedAssetGroupResponse> { 
 	@ApiProperty({
-		type: PaginatedAssetGroupResponse
+	    type: PaginatedAssetGroupResponse
 	})
-	data!: PaginatedAssetGroupResponse;
+	    data!: PaginatedAssetGroupResponse;
 
 	static map(groups: GetAssetGroupsForUserQueryResponse): GetUserAssetGroupsResponse {
-		return {
-			success: true,
-			data: {
-				page: {
-					count: groups.data.page.count,
-					offset: groups.data.page.offset,
-					total: groups.data.page.total
-				},
-				data: groups.data.data.map(AssetGroupResponse.map)
-			}
-		}
+	    return {
+	        success: true,
+	        data: {
+	            page: {
+	                count: groups.data.page.count,
+	                offset: groups.data.page.offset,
+	                total: groups.data.page.total
+	            },
+	            data: groups.data.data.map(AssetGroupResponse.map)
+	        }
+	    }
 	}
 }
 
 export class CreateStockAssetForUserResponse extends SuccessResponse implements SuccessResponseData<AssetResponse> {
 	@ApiProperty({
-		type: AssetResponse
+	    type: AssetResponse
 	})
-	data!: AssetResponse;
+	    data!: AssetResponse;
 
 	static map(asset: CreateStockAssetForUserCommandResponse): CreateStockAssetForUserResponse {
-		return {
-			success: true,
-			data: AssetResponse.map(asset.data.asset)
-		}
+	    return {
+	        success: true,
+	        data: AssetResponse.map(asset.data.asset)
+	    }
 	}
 }
 
 export class CreateRealEstateAssetForUserResponse extends SuccessResponse implements SuccessResponseData<AssetResponse> {
 	@ApiProperty({
-		type: AssetResponse
+	    type: AssetResponse
 	})
-	data!: AssetResponse;
+	    data!: AssetResponse;
 
 	static map(asset: CreateRealEstateAssetForUserCommandResponse): CreateStockAssetForUserResponse {
-		return {
-			success: true,
-			data: AssetResponse.map(asset.data.asset)
-		}
+	    return {
+	        success: true,
+	        data: AssetResponse.map(asset.data.asset)
+	    }
 	}
 }
 
 export class CreateAssetGroupForUserResponse extends SuccessResponse implements SuccessResponseData<AssetGroupResponse> { 
 	@ApiProperty({
-		type: AssetGroupResponse
+	    type: AssetGroupResponse
 	})
-	data!: AssetGroupResponse;
+	    data!: AssetGroupResponse;
 
 	static map(group: CreateAssetGroupForUserCommandResponse): CreateAssetGroupForUserResponse { 
-		return {
-			success: true,
-			data: AssetGroupResponse.map(group.data)
-		}
+	    return {
+	        success: true,
+	        data: AssetGroupResponse.map(group.data)
+	    }
 	}
 }
 

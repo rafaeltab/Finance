@@ -14,57 +14,57 @@ let assetGroupRepository: IAssetGroupRepository;
 let userRepository: IUserRepository;
 
 beforeAll(async () => {
-	fixture = await DbFixture.getInstance();
-	testData = fixture.getTestData();
+    fixture = await DbFixture.getInstance();
+    testData = fixture.getTestData();
 }, 20000);
 
 beforeEach(async () => {
-	await fixture.resetUnitOfWork();
-	assetGroupFactory = fixture.getInstance(AssetGroupFactory);
-	assetGroupRepository = fixture.getInstance(AssetGroupRepository);
-	userRepository = fixture.getInstance(UserRepository);
+    await fixture.resetUnitOfWork();
+    assetGroupFactory = fixture.getInstance(AssetGroupFactory);
+    assetGroupRepository = fixture.getInstance(AssetGroupRepository);
+    userRepository = fixture.getInstance(UserRepository);
 	
 });
 
 afterAll(async () => {
-	await fixture.destroy();
+    await fixture.destroy();
 });
 
 describe("addAssetGroupToUser", () => {
-	test('addAssetGroupToUser should create an entity with the given parameters and link it to a user', async () => {
-		const data = {
-			name: "cool"
-		}
+    test('addAssetGroupToUser should create an entity with the given parameters and link it to a user', async () => {
+        const data = {
+            name: "cool"
+        }
 
-		const assetGroup = await assetGroupFactory.addAssetGroupToUser({
-			identity: testData.user.identity
-		}, data.name);
+        const assetGroup = await assetGroupFactory.addAssetGroupToUser({
+            identity: testData.user.identity
+        }, data.name);
 
-		expectNotNullOrUndefined(assetGroup)
-		expectRequiredProps(assetGroup, ["uniqueId", "name"]);
+        expectNotNullOrUndefined(assetGroup)
+        expectRequiredProps(assetGroup, ["uniqueId", "name"]);
 
-		expect(assetGroup.name).toBe(data.name);
+        expect(assetGroup.name).toBe(data.name);
 
-		const res = await assetGroupRepository.get({
-			identity: assetGroup.identity
-		});
+        const res = await assetGroupRepository.get({
+            identity: assetGroup.identity
+        });
 
-		expectNotNullOrUndefined(res)
-		expectRequiredProps(res, ["uniqueId", "name"]);
+        expectNotNullOrUndefined(res)
+        expectRequiredProps(res, ["uniqueId", "name"]);
 
-		expect(res.name).toBe(data.name);
+        expect(res.name).toBe(data.name);
 
-		const user = await userRepository.get({
-			uniqueId: testData.user.uniqueId
-		}, ["assetGroups"])
+        const user = await userRepository.get({
+            uniqueId: testData.user.uniqueId
+        }, ["assetGroups"])
 
-		expectRequiredProps(user, ["assetGroups"]);
+        expectRequiredProps(user, ["assetGroups"]);
 
-		const userAssetGroup = user.assetGroups.find(x => x.identity === assetGroup.identity);
+        const userAssetGroup = user.assetGroups.find(x => x.identity === assetGroup.identity);
 
-		expectNotNullOrUndefined(userAssetGroup)
-		expectRequiredProps(userAssetGroup, ["uniqueId"]);
+        expectNotNullOrUndefined(userAssetGroup)
+        expectRequiredProps(userAssetGroup, ["uniqueId"]);
 
-		expect(userAssetGroup.uniqueId).toBe(res.uniqueId);
-	});
+        expect(userAssetGroup.uniqueId).toBe(res.uniqueId);
+    });
 });

@@ -28,28 +28,28 @@ export interface IStockRepository  {
 
 
 export class TimeRange {
-	constructor(private startDate: Date, private endDate: Date) { }
+    constructor(private startDate: Date, private endDate: Date) { }
 
-	get start() { return this.startDate }
+    get start() { return this.startDate }
 
-	get end() { return this.endDate }
+    get end() { return this.endDate }
 
-	static fromDay(day: Date) {
-		const date = day.getDate() 
-		const month = day.getMonth()
-		const year = day.getFullYear()
+    static fromDay(day: Date) {
+        const date = day.getDate() 
+        const month = day.getMonth()
+        const year = day.getFullYear()
 
-		// start of today
-		const start = new Date(year, month, date, 0, 0, 0, 0);
-		const end = new Date(start.getTime() + 60 * 60 * 24 * 1000 - 1);
+        // start of today
+        const start = new Date(year, month, date, 0, 0, 0, 0);
+        const end = new Date(start.getTime() + 60 * 60 * 24 * 1000 - 1);
 
-		return new TimeRange(start, end);
-	}
+        return new TimeRange(start, end);
+    }
 
-	static halfDayAroundNow(day: Date) {
-		const start = new Date(day.getTime() - 60 * 60 * 12 * 1000);
-		const end = new Date(day.getTime() + 60 * 60 * 12 * 1000);
+    static halfDayAroundNow(day: Date) {
+        const start = new Date(day.getTime() - 60 * 60 * 12 * 1000);
+        const end = new Date(day.getTime() + 60 * 60 * 12 * 1000);
 
-		return new TimeRange(start, end);
-	}
+        return new TimeRange(start, end);
+    }
 }

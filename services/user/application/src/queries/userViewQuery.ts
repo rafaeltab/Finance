@@ -12,39 +12,39 @@ const fields = ["assetGroups", "bankAccounts", "jobs", "dateOfBirth", "firstName
 export type ResponseType = IQueryResult<WithRequiredProperty<User, (typeof fields)[number]>>
 
 export class UserViewQuery extends IQuery<UserViewQuery, ResponseType> {
-	token = "UserViewQuery";
+    token = "UserViewQuery";
 
-	userIdentity!: string;
+    userIdentity!: string;
 }
 
 @injectable()
 export class UserViewQueryHandler extends IQueryHandler<UserViewQuery, ResponseType> {
-	constructor(
+    constructor(
 		@inject(userRepositoryToken) private userRepository: IUserRepository,
 		@inject(unitOfWorkToken) private unitOfWork: IUnitOfWork
-	) {
-		super();
-	}
+    ) {
+        super();
+    }
 
-	async handle(query: UserViewQuery): Promise<ResponseType> {
-		try {
-			await this.unitOfWork.start();
+    async handle(query: UserViewQuery): Promise<ResponseType> {
+        try {
+            await this.unitOfWork.start();
 
-			const user = await this.userRepository.get({
-				identity: query.userIdentity
-			}, ["assetGroups", "bankAccounts", "jobs", "dateOfBirth", "firstName", "lastName"])
+            const user = await this.userRepository.get({
+                identity: query.userIdentity
+            }, ["assetGroups", "bankAccounts", "jobs", "dateOfBirth", "firstName", "lastName"])
 
-			assertContains(user, fields);
+            assertContains(user, fields);
 
-			await this.unitOfWork.commit();
+            await this.unitOfWork.commit();
 
-			return {
-				success: true,
-				data: user
-			}
-		} catch (error) {
-			await this.unitOfWork.rollback();
-			throw error;
-		}
-	}
+            return {
+                success: true,
+                data: user
+            }
+        } catch (error) {
+            await this.unitOfWork.rollback();
+            throw error;
+        }
+    }
 }

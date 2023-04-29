@@ -11,42 +11,42 @@ export type ResponseType = ICommandResult<{
 }>;
 
 export class CreateRealEstateAssetForAssetGroupCommand extends ICommand<CreateRealEstateAssetForAssetGroupCommand, ResponseType> {
-	token = "CreateRealEstateAssetForAssetGroupCommand";
+    token = "CreateRealEstateAssetForAssetGroupCommand";
 
-	assetGroupIdentity!: string;
+    assetGroupIdentity!: string;
 
-	address!: string;	
+    address!: string;	
 }
 
 @injectable()
 export class CreateRealEstateAssetForAssetGroupCommandHandler extends ICommandHandler<CreateRealEstateAssetForAssetGroupCommand, ResponseType> {
-	constructor(
+    constructor(
 		@inject(assetFactoryToken) private assetFactory: IAssetFactory,
 		@inject(unitOfWorkToken) private unitOfWork: IUnitOfWork
-	) {
-		super();
-	}
+    ) {
+        super();
+    }
 
-	async handle(command: CreateRealEstateAssetForAssetGroupCommand): Promise<ResponseType> {
-		try {
-			await this.unitOfWork.start();
+    async handle(command: CreateRealEstateAssetForAssetGroupCommand): Promise<ResponseType> {
+        try {
+            await this.unitOfWork.start();
 
-			const [realEstateAsset, asset] = await this.assetFactory.addRealEstateToAssetGroup({
-				identity: command.assetGroupIdentity,
-			}, command.address)
+            const [realEstateAsset, asset] = await this.assetFactory.addRealEstateToAssetGroup({
+                identity: command.assetGroupIdentity,
+            }, command.address)
 
-			await this.unitOfWork.commit();
+            await this.unitOfWork.commit();
 
-			return {
-				success: true,
-				data: {
-					asset,
-					realEstateAsset
-				}
-			}
-		} catch (error) {
-			await this.unitOfWork.rollback();
-			throw error;
-		}
-	}
+            return {
+                success: true,
+                data: {
+                    asset,
+                    realEstateAsset
+                }
+            }
+        } catch (error) {
+            await this.unitOfWork.rollback();
+            throw error;
+        }
+    }
 }

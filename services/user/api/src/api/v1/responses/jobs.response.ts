@@ -4,29 +4,29 @@ import { EntityResponse } from "./identity.response";
 
 export class ActiveIncomeResponse { 
 	@ApiProperty({
-		type: "number"
+	    type: "number"
 	})
-	monthlySalary!: number;
+	    monthlySalary!: number;
 }
 
 export class JobResponse extends EntityResponse { 
 	@ApiProperty({
-		type: "string"
+	    type: "string"
 	})
-	title!: string;
+	    title!: string;
 	
 	@ApiProperty({
-		type: ActiveIncomeResponse
+	    type: ActiveIncomeResponse
 	})
-	activeIncome!: ActiveIncomeResponse;
+	    activeIncome!: ActiveIncomeResponse;
 
 	static map(job: Job): JobResponse {
-		return {
-			activeIncome: {
-				monthlySalary: job.activeIncome?.monthlySalary ?? 0
-			},
-			title: job.title ?? "",
-			identity: job.identity
-		}
+	    return {
+	        activeIncome: {
+	            monthlySalary: job.activeIncome?.monthlySalary ?? 0
+	        },
+	        title: job.title ?? "",
+	        identity: job.identity
+	    }
 	}
 }

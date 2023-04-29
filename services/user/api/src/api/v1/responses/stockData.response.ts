@@ -4,64 +4,64 @@ import { EntityResponse } from "./identity.response";
 
 export class StockDataResponse extends EntityResponse { 
 	@ApiProperty({
-		type: "string"
+	    type: "string"
 	})
-	symbol!: string;
+	    symbol!: string;
 
 	@ApiProperty({
-		type: "string"
+	    type: "string"
 	})
-	exchange!: string;
+	    exchange!: string;
 
 	@ApiProperty({
-		type: "string",
-		enum: StockAssetKind
+	    type: "string",
+	    enum: StockAssetKind
 	})
-	assetKind!: StockAssetKind;
+	    assetKind!: StockAssetKind;
 
 	static map(data: StockData): StockDataResponse {
-		return {
-			symbol: data.symbol ?? "",
-			exchange: data.exchange ?? "",
-			assetKind: data.assetKind ?? StockAssetKind.CS,
-			identity: data.identity
-		};
+	    return {
+	        symbol: data.symbol ?? "",
+	        exchange: data.exchange ?? "",
+	        assetKind: data.assetKind ?? StockAssetKind.CS,
+	        identity: data.identity
+	    };
 	}
 }
 
 export class StockValueResponse {
 	@ApiProperty({
-		type: "number"
+	    type: "number"
 	})
-	open?: number;
+	    open?: number;
 
 	@ApiProperty({
-		type: "number"
+	    type: "number"
 	})
-	high?: number;
+	    high?: number;
 
 	@ApiProperty({
-		type: "number"
+	    type: "number"
 	})
-	low?: number;
+	    low?: number;
 
 	@ApiProperty({
-		type: "number"
+	    type: "number"
 	})
-	close?: number;
+	    close?: number;
 
 	@ApiProperty({
-		type: "integer"
+	    type: "integer"
 	})
-	volume?: number;
+	    volume?: number;
 
 	static map(data: StockValue): StockValueResponse {
-		return {
-			open: data.open,
-			high: data.high,
-			low: data.low,
-			close: data.close,
-			volume: data.volume
-		};
+	    return {
+	        open: data.open,
+	        high: data.high,
+	        low: data.low,
+	        close: data.close,
+	        volume: data.volume
+	    };
 	}
 }

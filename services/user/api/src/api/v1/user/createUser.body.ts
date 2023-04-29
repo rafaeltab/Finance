@@ -5,13 +5,13 @@ import { ApiProperty } from "@nestjs/swagger";
 export class CreateUserBody {
 	@ApiProperty()
 	@IsString()
-	firstName!: string;
+	    firstName!: string;
 
 	@ApiProperty()
 	@IsString()
-	lastName!: string;
+	    lastName!: string;
 
 	@ApiProperty()
 	@IsDateString()
-	dateOfBirth!: string;
+	    dateOfBirth!: string;
 }

@@ -7,28 +7,28 @@ import { User } from "./User";
 @Entity()
 export class AssetGroup extends EnitityBase { 
 	@Column()
-	name?: string;
+	    name?: string;
 	
 	@OneToMany(() => Asset, asset => asset.group, {
-		eager: true,
-		cascade: ["insert"]
+	    eager: true,
+	    cascade: ["insert"]
 	})
-	assets?: Relation<Asset>[];
+	    assets?: Relation<Asset>[];
 
 	@ManyToOne(() => User, (user) => user.assetGroups, {
-		onDelete: "CASCADE",
+	    onDelete: "CASCADE",
 	})
 	@JoinColumn()
-	user?: Relation<User>;
+	    user?: Relation<User>;
 
 	constructor(init: Partial<AssetGroup>) {
-		super();
-		Object.assign(this, init);
+	    super();
+	    Object.assign(this, init);
 	}
 }
 
 
 export const AssetGroupMeta: EntityMeta<AssetGroup> = {
-	relations: ["user", "assets"],
-	data: ["name", "uniqueId", "identity"]
+    relations: ["user", "assets"],
+    data: ["name", "uniqueId", "identity"]
 }

@@ -3,8 +3,8 @@ import { ApplicationModule } from "../../../external/ApplicationModule";
 import { StockController } from "./stock.controller";
 
 export const StockModuleMetadata = {
-	imports: [ApplicationModule],
-	controllers: [StockController],
+    imports: [ApplicationModule],
+    controllers: [StockController],
 } satisfies ModuleMetadata;
 
 @Module(StockModuleMetadata)

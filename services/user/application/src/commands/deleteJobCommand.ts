@@ -8,37 +8,37 @@ import { inject, injectable } from "tsyringe";
 export type ResponseType = ICommandResult<undefined>;
 
 export class DeleteJobCommand extends ICommand<DeleteJobCommand, ResponseType> {
-	token = "DeleteJobCommand";
+    token = "DeleteJobCommand";
 
-	jobIdentity!: string;
+    jobIdentity!: string;
 }
 
 @injectable()
 export class DeleteJobCommandHandler extends ICommandHandler<DeleteJobCommand, ResponseType> {
-	constructor(
+    constructor(
 		@inject(jobRepositoryToken) private jobRepository: IJobRepository,
 		@inject(unitOfWorkToken) private unitOfWork: IUnitOfWork
-	) {
-		super();
-	}
+    ) {
+        super();
+    }
 
-	async handle(command: DeleteJobCommand): Promise<ResponseType> {
-		try {
-			await this.unitOfWork.start();
+    async handle(command: DeleteJobCommand): Promise<ResponseType> {
+        try {
+            await this.unitOfWork.start();
 
-			await this.jobRepository.delete({
-				identity: command.jobIdentity
-			});
+            await this.jobRepository.delete({
+                identity: command.jobIdentity
+            });
 
-			await this.unitOfWork.commit();
+            await this.unitOfWork.commit();
 
-			return {
-				success: true,
-				data: undefined
-			}
-		} catch (error) {
-			await this.unitOfWork.rollback();
-			throw error;
-		}
-	}
+            return {
+                success: true,
+                data: undefined
+            }
+        } catch (error) {
+            await this.unitOfWork.rollback();
+            throw error;
+        }
+    }
 }

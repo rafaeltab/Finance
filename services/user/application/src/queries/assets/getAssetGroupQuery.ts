@@ -11,57 +11,57 @@ export type ResponseType = IQueryResult<{
 }>
 
 export class GetAssetGroupQuery extends IQuery<GetAssetGroupQuery, ResponseType> {
-	token = "GetAssetGroupQuery";
+    token = "GetAssetGroupQuery";
 
-	assetGroupIdentity!: string;
+    assetGroupIdentity!: string;
 
-	limit = 30;
+    limit = 30;
 
-	offset = 0;
+    offset = 0;
 }
 
 @injectable()
 export class GetAssetGroupQueryHandler extends IQueryHandler<GetAssetGroupQuery, ResponseType> {
-	constructor(
+    constructor(
 		@inject(assetGroupRepositoryToken) private assetGroupRepository: IAssetGroupRepository,
 		@inject(assetRepositoryToken) private assetRepository: IAssetRepository,
 		@inject(unitOfWorkToken) private unitOfWork: IUnitOfWork
-	) {
-		super();
+    ) {
+        super();
 
-	}
+    }
 
-	async handle(query: GetAssetGroupQuery): Promise<ResponseType> {
-		try { 
-			await this.unitOfWork.start();
+    async handle(query: GetAssetGroupQuery): Promise<ResponseType> {
+        try { 
+            await this.unitOfWork.start();
 	
-			const assetGroup = await this.assetGroupRepository.get({
-				identity: query.assetGroupIdentity,
-			});
+            const assetGroup = await this.assetGroupRepository.get({
+                identity: query.assetGroupIdentity,
+            });
 
-			const assets = await this.assetRepository.getAllAssetsForAssetGroup({
-				identity: query.assetGroupIdentity,
-			}, query.limit, query.offset);
+            const assets = await this.assetRepository.getAllAssetsForAssetGroup({
+                identity: query.assetGroupIdentity,
+            }, query.limit, query.offset);
 	
-			await this.unitOfWork.commit();
+            await this.unitOfWork.commit();
 	
-			return {
-				success: true,
-				data: {
-					group: assetGroup,
-					assets: {
-						page: {
-							count: assets.page.count,
-							offset: assets.page.offset,
-							total: assets.page.total,
-						},
-						data: assets.data
-					}
-				}
-			}
-		} catch (e: unknown) {
-			await this.unitOfWork.rollback();
-			throw e;
-		}
-	}
+            return {
+                success: true,
+                data: {
+                    group: assetGroup,
+                    assets: {
+                        page: {
+                            count: assets.page.count,
+                            offset: assets.page.offset,
+                            total: assets.page.total,
+                        },
+                        data: assets.data
+                    }
+                }
+            }
+        } catch (e: unknown) {
+            await this.unitOfWork.rollback();
+            throw e;
+        }
+    }
 }

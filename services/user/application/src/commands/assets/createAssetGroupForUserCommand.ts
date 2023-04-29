@@ -8,39 +8,39 @@ import { inject, injectable } from "tsyringe";
 export type ResponseType = ICommandResult<AssetGroup>;
 
 export class CreateAssetGroupForUserCommand extends ICommand<CreateAssetGroupForUserCommand, ResponseType> {
-	token = "CreateAssetGroupForUserCommand";
+    token = "CreateAssetGroupForUserCommand";
 
-	userIdentity!: string;
+    userIdentity!: string;
 
-	name!: string;
+    name!: string;
 }
 
 @injectable()
 export class CreateAssetGroupForUserCommandHandler extends ICommandHandler<CreateAssetGroupForUserCommand, ResponseType> {
-	constructor(
+    constructor(
 		@inject(assetGroupFactoryToken) private assetGroupFactory: IAssetGroupFactory,
 		@inject(unitOfWorkToken) private unitOfWork: IUnitOfWork
-	) {
-		super();
-	}
+    ) {
+        super();
+    }
 
-	async handle(command: CreateAssetGroupForUserCommand): Promise<ResponseType> {
-		try {
-			await this.unitOfWork.start();
+    async handle(command: CreateAssetGroupForUserCommand): Promise<ResponseType> {
+        try {
+            await this.unitOfWork.start();
 
-			const assetGroup = await this.assetGroupFactory.addAssetGroupToUser({
-				identity: command.userIdentity,
-			}, command.name)
+            const assetGroup = await this.assetGroupFactory.addAssetGroupToUser({
+                identity: command.userIdentity,
+            }, command.name)
 
-			await this.unitOfWork.commit();
+            await this.unitOfWork.commit();
 
-			return {
-				success: true,
-				data: assetGroup
-			}
-		} catch (error) {
-			await this.unitOfWork.rollback();
-			throw error;
-		}
-	}
+            return {
+                success: true,
+                data: assetGroup
+            }
+        } catch (error) {
+            await this.unitOfWork.rollback();
+            throw error;
+        }
+    }
 }

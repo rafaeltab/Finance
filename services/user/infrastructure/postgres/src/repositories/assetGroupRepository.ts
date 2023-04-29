@@ -5,43 +5,43 @@ import { unitOfWorkToken, UnitOfWork } from "../unitOfWork/unitOfWork";
 
 @injectable()
 export class AssetGroupRepository implements IAssetGroupRepository {
-	constructor(@inject(unitOfWorkToken) private unitOfWork: UnitOfWork) { }
+    constructor(@inject(unitOfWorkToken) private unitOfWork: UnitOfWork) { }
 
-	async getAllAssetGroupsForUser(user: EntityKey, limit: number, offset: number): Promise<PaginatedBase<AssetGroup>> {
-		const res = await this.unitOfWork.getQueryRunner().manager.findAndCount(AssetGroup, {
-			where: {
-				user
-			},
-			skip: offset,
-			take: limit,
-		});
+    async getAllAssetGroupsForUser(user: EntityKey, limit: number, offset: number): Promise<PaginatedBase<AssetGroup>> {
+        const res = await this.unitOfWork.getQueryRunner().manager.findAndCount(AssetGroup, {
+            where: {
+                user
+            },
+            skip: offset,
+            take: limit,
+        });
 
-		return {
-			page: {
-				count: limit,
-				offset,
-				total: res[1]
-			},
-			data: res[0]
-		}
-	}
+        return {
+            page: {
+                count: limit,
+                offset,
+                total: res[1]
+            },
+            data: res[0]
+        }
+    }
 	
-	async get(id: EntityKey): Promise<AssetGroup> {
-		const assetGroup = await this.unitOfWork.getQueryRunner().manager.findOne(AssetGroup, {
-			where: id,
-		});
+    async get(id: EntityKey): Promise<AssetGroup> {
+        const assetGroup = await this.unitOfWork.getQueryRunner().manager.findOne(AssetGroup, {
+            where: id,
+        });
 
-		if (!assetGroup) {
-			throw new EntryNotFoundError(AssetGroup.name, getKey(id));
-		}
+        if (!assetGroup) {
+            throw new EntryNotFoundError(AssetGroup.name, getKey(id));
+        }
 
-		return assetGroup;
-	}
+        return assetGroup;
+    }
 
-	async delete(id: EntityKey): Promise<void> {
-		const res = await this.unitOfWork.getQueryRunner().manager.delete(AssetGroup, id);
-		if ((res.affected ?? 0)===0) { 
-			throw new EntryNotFoundError(AssetGroup.name, getKey(id));
-		}
-	}
+    async delete(id: EntityKey): Promise<void> {
+        const res = await this.unitOfWork.getQueryRunner().manager.delete(AssetGroup, id);
+        if ((res.affected ?? 0)===0) { 
+            throw new EntryNotFoundError(AssetGroup.name, getKey(id));
+        }
+    }
 }

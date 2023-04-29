@@ -2,7 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 
 export class EntityResponse { 
 	@ApiProperty({
-		type: "string"
+	    type: "string"
 	})
-	identity!: string;
+	    identity!: string;
 }

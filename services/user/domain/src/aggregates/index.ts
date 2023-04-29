@@ -11,24 +11,24 @@ const BankAccount = bankAccountAggregate.default;
 const StockData = stockAggregate.default;
 
 export const entities = [
-	Asset,
-	assetAggregate.RealEstateAsset,
-	assetAggregate.StockAsset,
-	assetAggregate.StockOrder,
+    Asset,
+    assetAggregate.RealEstateAsset,
+    assetAggregate.StockAsset,
+    assetAggregate.StockOrder,
 
-	Job,
-	jobAggregate.ActiveIncome,
+    Job,
+    jobAggregate.ActiveIncome,
 
-	BankAccount,
-	bankAccountAggregate.Balance,
+    BankAccount,
+    bankAccountAggregate.Balance,
 
-	StockData,
-	stockAggregate.StockValue,
-	stockAggregate.StockSplitEvent,
-	stockAggregate.StockDividendEvent,
+    StockData,
+    stockAggregate.StockValue,
+    stockAggregate.StockSplitEvent,
+    stockAggregate.StockDividendEvent,
 
-	AssetGroup,
-	User
+    AssetGroup,
+    User
 ];
 
 export * from "./User";

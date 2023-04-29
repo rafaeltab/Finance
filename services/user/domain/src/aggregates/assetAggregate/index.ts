@@ -6,12 +6,12 @@ import { StockOrder, StockOrderMeta } from "./assetKinds/StockOrder";
 export default Asset;
 
 export {
-	Asset,
-	RealEstateAsset,
-	StockAsset,
-	StockOrder,
-	AssetMeta,
-	RealEstateAssetMeta,
-	StockAssetMeta,
-	StockOrderMeta
+    Asset,
+    RealEstateAsset,
+    StockAsset,
+    StockOrder,
+    AssetMeta,
+    RealEstateAssetMeta,
+    StockAssetMeta,
+    StockOrderMeta
 }

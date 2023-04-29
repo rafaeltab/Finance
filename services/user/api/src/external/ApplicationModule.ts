@@ -5,22 +5,22 @@ import { ApplicationMediatorModule } from "@finance/svc-user-application";
 const mediator = new Mediator();
 
 const MediatorProvider: Provider = {
-	provide: Mediator,
-	useFactory: async () => {
-		await mediator.register(ApplicationMediatorModule)
-		return mediator;
-	}
+    provide: Mediator,
+    useFactory: async () => {
+        await mediator.register(ApplicationMediatorModule)
+        return mediator;
+    }
 }
 
 @Module({
-	imports: [],
-	controllers: [],
-	providers: [MediatorProvider],
-	exports: [MediatorProvider],
+    imports: [],
+    controllers: [],
+    providers: [MediatorProvider],
+    exports: [MediatorProvider],
 
 })
 export class ApplicationModule implements OnModuleDestroy {
-	async onModuleDestroy() {
-		await mediator.dispose();
-	}
+    async onModuleDestroy() {
+        await mediator.dispose();
+    }
 }

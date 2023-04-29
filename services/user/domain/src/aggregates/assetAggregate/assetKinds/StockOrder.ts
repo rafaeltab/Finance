@@ -8,33 +8,33 @@ import { ColumnNumericTransformer } from "../../../utils/numericTransformer";
 @Entity()
 export class StockOrder extends ValueObjectBase {
 	@Column({
-		type: "decimal",
-		scale: 3,
-		transformer: new ColumnNumericTransformer()
+	    type: "decimal",
+	    scale: 3,
+	    transformer: new ColumnNumericTransformer()
 	})
-	amount?: number;
+	    amount?: number;
 
 	@Column({
-		type: "decimal",
-		scale: 3,
-		transformer: new ColumnNumericTransformer()
+	    type: "decimal",
+	    scale: 3,
+	    transformer: new ColumnNumericTransformer()
 	})
-	usdPrice?: number;
+	    usdPrice?: number;
 
 	@ManyToOne(() => StockAsset, (asset) => asset.orders, {
-		cascade: ["insert"],
-		onDelete: "CASCADE",
+	    cascade: ["insert"],
+	    onDelete: "CASCADE",
 	})
 	@JoinColumn()
-	stockAsset?: Relation<StockAsset>;
+	    stockAsset?: Relation<StockAsset>;
 
 	constructor(init: Partial<StockOrder>) {
-		super();
-		Object.assign(this, init);
+	    super();
+	    Object.assign(this, init);
 	}
 }
 
 export const StockOrderMeta: EntityMeta<StockOrder> = {
-	relations: ["stockAsset"],
-	data: ["amount", "usdPrice", "uniqueId"]
+    relations: ["stockAsset"],
+    data: ["amount", "usdPrice", "uniqueId"]
 }

@@ -9,55 +9,55 @@ import { EntityResponse } from "./identity.response";
 
 export class UserResponse extends EntityResponse { 
 	@ApiProperty({
-		type: "string",
-		format: "date"
+	    type: "string",
+	    format: "date"
 	})
-	dateOfBirth!: string;
+	    dateOfBirth!: string;
 
 	@ApiProperty({
-		type: "string"
+	    type: "string"
 	})
-	firstName!: string;
+	    firstName!: string;
 
 	@ApiProperty({
-		type: "string"
+	    type: "string"
 	})
-	lastName!: string;
+	    lastName!: string;
 
 	static map(user: User): UserResponse { 
-		return {
-			dateOfBirth: user.dateOfBirth ? DateTime.fromJSDate(user.dateOfBirth).toFormat("yyyy-MM-dd") : "",
-			firstName: user.firstName ?? "",
-			lastName: user.lastName ?? "",
-			identity: user.identity
-		}
+	    return {
+	        dateOfBirth: user.dateOfBirth ? DateTime.fromJSDate(user.dateOfBirth).toFormat("yyyy-MM-dd") : "",
+	        firstName: user.firstName ?? "",
+	        lastName: user.lastName ?? "",
+	        identity: user.identity
+	    }
 	}
 }
 
 export class UserAdditionalAssetGroups {
 	@ApiProperty({
-		type: [AssetGroupResponse]
+	    type: [AssetGroupResponse]
 	})
-	assetGroups!: AssetGroupResponse[]
+	    assetGroups!: AssetGroupResponse[]
 }
 
 export class UserAdditionalAssets { 
 	@ApiProperty({
-		type: [AssetResponse]
+	    type: [AssetResponse]
 	})
-	assets!: AssetResponse[];
+	    assets!: AssetResponse[];
 }
 
 export class UserAdditionalBankAccounts { 
 	@ApiProperty({
-		type: [BankAccountResponse]
+	    type: [BankAccountResponse]
 	})
-	bankAccounts!: BankAccountResponse[]
+	    bankAccounts!: BankAccountResponse[]
 }
 
 export class UserAdditionalJobs { 
 	@ApiProperty({
-		type: [JobResponse]
+	    type: [JobResponse]
 	})
-	jobs!: JobResponse[];
+	    jobs!: JobResponse[];
 }

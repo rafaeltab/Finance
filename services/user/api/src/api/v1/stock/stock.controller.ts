@@ -12,148 +12,148 @@ import JsZip from 'jszip';
 import { GetSearchStockResponse, GetStockListResponse, StockDataViewResponse } from "./stock.responses";
 
 async function parseDataCsv(csv: Buffer): Promise<StockData[]> {
-	const parsed = await csvParse(csv, {
-		columns: true,
-		skip_empty_lines: true
-	});
+    const parsed = await csvParse(csv, {
+        columns: true,
+        skip_empty_lines: true
+    });
 
-	const data: StockData[] = []
+    const data: StockData[] = []
 
-	for await (const row of parsed) {
-		const symbol = row.SYMBOL ?? row.Symbol ?? row.symbol;
+    for await (const row of parsed) {
+        const symbol = row.SYMBOL ?? row.Symbol ?? row.symbol;
 
-		if (!symbol) {
-			throw new Error("symbol is required");
-		}
+        if (!symbol) {
+            throw new Error("symbol is required");
+        }
 
-		if (!row.EXCHANGE) {
-			row.EXCHANGE = "NASDAQ";
-		}
+        if (!row.EXCHANGE) {
+            row.EXCHANGE = "NASDAQ";
+        }
 
-		if (!row.TYPE) {
-			row.TYPE = StockAssetKind.CS;
-		}
+        if (!row.TYPE) {
+            row.TYPE = StockAssetKind.CS;
+        }
 
-		data.push({ symbol, exchange: row.EXCHANGE, type: row.TYPE });
-	}
+        data.push({ symbol, exchange: row.EXCHANGE, type: row.TYPE });
+    }
 
-	return data;
+    return data;
 }
 
 async function parseValuesCsv(csv: Buffer): Promise<InsertStockValue[]> {
-	const parsed = await csvParse(csv, {
-		columns: true,
-		skip_empty_lines: true
-	});
+    const parsed = await csvParse(csv, {
+        columns: true,
+        skip_empty_lines: true
+    });
 
-	const data: InsertStockValue[] = []
+    const data: InsertStockValue[] = []
 
-	for await (const row of parsed) {
-		const date = row.DATE ?? row.Date ?? row.date;
+    for await (const row of parsed) {
+        const date = row.DATE ?? row.Date ?? row.date;
 
-		if (!date) {
-			continue;
-		}
+        if (!date) {
+            continue;
+        }
 
-		const open = row.OPEN ?? row.Open ?? row.open;
+        const open = row.OPEN ?? row.Open ?? row.open;
 
-		if (!open) {
-			continue;
-		}
+        if (!open) {
+            continue;
+        }
 
-		const high = row.HIGH ?? row.High ?? row.high;
+        const high = row.HIGH ?? row.High ?? row.high;
 
-		if (!high) {
-			continue;
-		}
+        if (!high) {
+            continue;
+        }
 
-		const low = row.LOW ?? row.Low ?? row.low;
+        const low = row.LOW ?? row.Low ?? row.low;
 
-		if (!low) {
-			continue;
-		}
+        if (!low) {
+            continue;
+        }
 
-		const close = row.CLOSE ?? row.Close ?? row.close;
+        const close = row.CLOSE ?? row.Close ?? row.close;
 
-		if (!close) {
-			continue;
-		}
+        if (!close) {
+            continue;
+        }
 
-		const volume = row.VOLUME ?? row.Volume ?? row.volume;
+        const volume = row.VOLUME ?? row.Volume ?? row.volume;
 
-		if (!volume) {
-			continue;
-		}
+        if (!volume) {
+            continue;
+        }
 
-		data.push({
-			date: new Date(date),
-			open: parseFloat(open),
-			high: parseFloat(high),
-			low: parseFloat(low),
-			close: parseFloat(close),
-			volume: parseInt(volume, 10)
-		})
-	}
+        data.push({
+            date: new Date(date),
+            open: parseFloat(open),
+            high: parseFloat(high),
+            low: parseFloat(low),
+            close: parseFloat(close),
+            volume: parseInt(volume, 10)
+        })
+    }
 
-	return data;
+    return data;
 }
 
 
 @Controller("/api/v1/stock")
 export class StockController {
-	private readonly logger = new Logger(StockController.name);
+    private readonly logger = new Logger(StockController.name);
 
-	constructor(
+    constructor(
 		@Inject(Mediator) private readonly mediator: Mediator
-	) { }
+    ) { }
 
 	@Get("/search")
 	@FinanceErrors([])
 	@ApiBearerAuth("oauth2")
 	@ApiOkResponse({
-		type: GetSearchStockResponse
+	    type: GetSearchStockResponse
 	})
-	async getSearch(
+    async getSearch(
 		@Query("exchange") exchange: string,
 		@Query("symbol") symbol: string,
 		@Query("type") type: string
-	): Promise<GetSearchStockResponse> {
-		return GetSearchStockResponse.map(await this.mediator.query(new StockDataSearchQuery({
-			exchange,
-			symbol,
-			type,
-			limit: 30,
-			offset: 0
-		})));
-	}
+    ): Promise<GetSearchStockResponse> {
+        return GetSearchStockResponse.map(await this.mediator.query(new StockDataSearchQuery({
+            exchange,
+            symbol,
+            type,
+            limit: 30,
+            offset: 0
+        })));
+    }
 
 	@Get("/:identity")
 	@FinanceErrors([EntryNotFoundError])
 	@ApiBearerAuth("oauth2")
 	@ApiOkResponse({
-		type: StockDataViewResponse
+	    type: StockDataViewResponse
 	})
 	async get(
 		@Param("identity") identity: string
 	): Promise<StockDataViewResponse> {
-		return StockDataViewResponse.map(await this.mediator.query(new StockDataViewQuery({
-			stockDataIdentity: identity,
-			offset: 0,
-			limit: 30
-		})));
+	    return StockDataViewResponse.map(await this.mediator.query(new StockDataViewQuery({
+	        stockDataIdentity: identity,
+	        offset: 0,
+	        limit: 30
+	    })));
 	}
 
 	@Get()
 	@FinanceErrors([])
 	@ApiBearerAuth("oauth2")
 	@ApiOkResponse({
-		type: GetStockListResponse
+	    type: GetStockListResponse
 	})
 	async getStocks() {
-		return GetStockListResponse.map(await this.mediator.query(new StocksDataListViewQuery({
-			limit: 30,
-			offset: 0
-		})));
+	    return GetStockListResponse.map(await this.mediator.query(new StocksDataListViewQuery({
+	        limit: 30,
+	        offset: 0
+	    })));
 	}
 
 	@Put("data/csv")
@@ -163,15 +163,15 @@ export class StockController {
 	async createDataFromCsv(
 		@UploadedFile() stockData: Express.Multer.File
 	) {
-		if (stockData.mimetype !== "text/csv") {
-			throw new HttpException("Invalid file type, csv expected.", 400);
-		}
+	    if (stockData.mimetype !== "text/csv") {
+	        throw new HttpException("Invalid file type, csv expected.", 400);
+	    }
 
-		const parsed = await parseDataCsv(stockData.buffer);
+	    const parsed = await parseDataCsv(stockData.buffer);
 
-		return this.mediator.command(new CreateStockDatasCommand({
-			stockDatas: parsed
-		}))
+	    return this.mediator.command(new CreateStockDatasCommand({
+	        stockDatas: parsed
+	    }))
 	}
 
 	@Put("values/csv")
@@ -181,110 +181,110 @@ export class StockController {
 	async createValuesFromCsv(
 		@UploadedFile() stockValues: Express.Multer.File
 	) {
-		// if not zip, throw error
-		if (stockValues.mimetype !== "application/zip") {
-			throw new HttpException("Invalid file type, csv expected.", 400);
-		}
+	    // if not zip, throw error
+	    if (stockValues.mimetype !== "application/zip") {
+	        throw new HttpException("Invalid file type, csv expected.", 400);
+	    }
 
-		const zip = new JsZip();
+	    const zip = new JsZip();
 
-		const zipFile = await zip.loadAsync(stockValues.buffer)
+	    const zipFile = await zip.loadAsync(stockValues.buffer)
 
-		let previousInsert: Promise<IQueryResult<unknown>> | undefined;
-		let previousStock: string | undefined;
+	    let previousInsert: Promise<IQueryResult<unknown>> | undefined;
+	    let previousStock: string | undefined;
 
-		const failed: string[] = [];
+	    const failed: string[] = [];
 
-		for (const fileName of Object.keys(zipFile.files)) {
-			const file = zipFile.files[fileName];
+	    for (const fileName of Object.keys(zipFile.files)) {
+	        const file = zipFile.files[fileName];
 
-			if (file === undefined) {
-				continue;
-			}
+	        if (file === undefined) {
+	            continue;
+	        }
 
-			if (file?.dir === true) {
-				continue;
-			}
+	        if (file?.dir === true) {
+	            continue;
+	        }
 
-			// eslint-disable-next-line no-await-in-loop
-			const fileContent = await file?.async("nodebuffer")
+	        // eslint-disable-next-line no-await-in-loop
+	        const fileContent = await file?.async("nodebuffer")
 
-			if (!fileContent) {
-				continue;
-			}
+	        if (!fileContent) {
+	            continue;
+	        }
 
-			if (!fileName.endsWith(".csv")) {
-				continue;
-			}
+	        if (!fileName.endsWith(".csv")) {
+	            continue;
+	        }
 
-			if (!fileName.includes("1d")) {
-				continue;
-			}
+	        if (!fileName.includes("1d")) {
+	            continue;
+	        }
 
-			if (!fileName.includes("ohclv")) {
-				continue;
-			}
+	        if (!fileName.includes("ohclv")) {
+	            continue;
+	        }
 
-			const stock = fileName.split("ohclv/")[1]?.split("/")[0];
+	        const stock = fileName.split("ohclv/")[1]?.split("/")[0];
 
-			try {
-				// eslint-disable-next-line no-await-in-loop
-				const search = await this.mediator.query(new StockDataSearchQuery({
-					exchange: "NASDAQ",
-					symbol: stock,
-					type: StockAssetKind.CS,
-					limit: 30,
-					offset: 0
-				}));
+	        try {
+	            // eslint-disable-next-line no-await-in-loop
+	            const search = await this.mediator.query(new StockDataSearchQuery({
+	                exchange: "NASDAQ",
+	                symbol: stock,
+	                type: StockAssetKind.CS,
+	                limit: 30,
+	                offset: 0
+	            }));
 
 
-				if (search.data.isEmpty === true) {
-					failed.push(stock ?? "UNKNOWN");
-					continue;
-				}
+	            if (search.data.isEmpty === true) {
+	                failed.push(stock ?? "UNKNOWN");
+	                continue;
+	            }
 
-				let identity = search.data.data[0]?.identity ?? "unknown";
+	            let identity = search.data.data[0]?.identity ?? "unknown";
 
-				if (search.data.data.length > 1) {
-					const found = search.data.data.find(x => x.symbol === stock);
-					if (found === undefined) {
-						failed.push(stock ?? "UNKNOWN");
-						continue;
-					}
-					identity = found.identity;
-				}
+	            if (search.data.data.length > 1) {
+	                const found = search.data.data.find(x => x.symbol === stock);
+	                if (found === undefined) {
+	                    failed.push(stock ?? "UNKNOWN");
+	                    continue;
+	                }
+	                identity = found.identity;
+	            }
 
-				// eslint-disable-next-line no-await-in-loop
-				const values = await parseValuesCsv(fileContent);
-				if (previousInsert !== undefined) {
-					try {
-						// eslint-disable-next-line no-await-in-loop
-						await previousInsert;
-					} catch (e) {
-						failed.push(previousStock ?? "UNKNOWN");
-						this.logger.log(`Store values failed for ${previousStock}` ?? "UNKNOWN")
-						continue;
-					}
+	            // eslint-disable-next-line no-await-in-loop
+	            const values = await parseValuesCsv(fileContent);
+	            if (previousInsert !== undefined) {
+	                try {
+	                    // eslint-disable-next-line no-await-in-loop
+	                    await previousInsert;
+	                } catch (e) {
+	                    failed.push(previousStock ?? "UNKNOWN");
+	                    this.logger.log(`Store values failed for ${previousStock}` ?? "UNKNOWN")
+	                    continue;
+	                }
 					
-					this.logger.log(`Stored values for ${previousStock}` ?? "UNKNOWN")
-				}
+	                this.logger.log(`Stored values for ${previousStock}` ?? "UNKNOWN")
+	            }
 
-				previousInsert = this.mediator.command(new AddValuesToStockDataCommand({
-					stockDataIdentity: identity,
-					values
-				}));
-				previousStock = stock;
-			} catch (e) {
-				failed.push(stock ?? "UNKNOWN");
-				continue;
-			}
-		}
+	            previousInsert = this.mediator.command(new AddValuesToStockDataCommand({
+	                stockDataIdentity: identity,
+	                values
+	            }));
+	            previousStock = stock;
+	        } catch (e) {
+	            failed.push(stock ?? "UNKNOWN");
+	            continue;
+	        }
+	    }
 
-		await previousInsert;
+	    await previousInsert;
 
-		return {
-			failed
-		}
+	    return {
+	        failed
+	    }
 	}
 }
 

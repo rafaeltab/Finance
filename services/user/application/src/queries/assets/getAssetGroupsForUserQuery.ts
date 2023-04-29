@@ -8,52 +8,52 @@ import { inject, injectable } from "tsyringe";
 export type ResponseType = IQueryResult<PaginatedBase<AssetGroup>>
 
 export class GetAssetGroupsForUserQuery extends IQuery<GetAssetGroupsForUserQuery, ResponseType> {
-	token = "GetAssetGroupsForUserQuery";
+    token = "GetAssetGroupsForUserQuery";
 
-	userIdentity!: string;
+    userIdentity!: string;
 
-	limit = 30;
+    limit = 30;
 
-	offset = 0;
+    offset = 0;
 }
 
 @injectable()
 export class GetAssetGroupsForUserQueryHandler extends IQueryHandler<GetAssetGroupsForUserQuery, ResponseType> {
-	/**
+    /**
 	 *
 	 */
-	constructor(
+    constructor(
 		@inject(assetGroupRepositoryToken) private assetGroupRepository: IAssetGroupRepository,
 		@inject(unitOfWorkToken) private unitOfWork: IUnitOfWork
-	) {
-		super();
+    ) {
+        super();
 		
-	}
+    }
 
-	async handle(query: GetAssetGroupsForUserQuery): Promise<ResponseType> {
-		try {
-			await this.unitOfWork.start();
+    async handle(query: GetAssetGroupsForUserQuery): Promise<ResponseType> {
+        try {
+            await this.unitOfWork.start();
 			
-			const assetGroups = await this.assetGroupRepository.getAllAssetGroupsForUser({
-				identity: query.userIdentity,
-			}, query.limit, query.offset);
+            const assetGroups = await this.assetGroupRepository.getAllAssetGroupsForUser({
+                identity: query.userIdentity,
+            }, query.limit, query.offset);
 	
-			await this.unitOfWork.commit();
+            await this.unitOfWork.commit();
 	
-			return {
-				success: true,
-				data: {
-					page: {
-						count: assetGroups.page.count,
-						offset: assetGroups.page.offset,
-						total: assetGroups.page.total,
-					},
-					data: assetGroups.data
-				}
-			}
-		} catch (e: unknown) {
-			await this.unitOfWork.rollback();
-			throw e;
-		}
-	}
+            return {
+                success: true,
+                data: {
+                    page: {
+                        count: assetGroups.page.count,
+                        offset: assetGroups.page.offset,
+                        total: assetGroups.page.total,
+                    },
+                    data: assetGroups.data
+                }
+            }
+        } catch (e: unknown) {
+            await this.unitOfWork.rollback();
+            throw e;
+        }
+    }
 }

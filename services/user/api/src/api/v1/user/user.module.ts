@@ -6,8 +6,8 @@ import { BankAccountController } from "./bankAccount/bankAccount.controller";
 import { AssetController } from "./asset/asset.controller";
 
 export const UserModuleMetadata = {
-	imports: [ApplicationModule],
-	controllers: [UserController, JobController, BankAccountController, AssetController],
+    imports: [ApplicationModule],
+    controllers: [UserController, JobController, BankAccountController, AssetController],
 } satisfies ModuleMetadata;
 
 @Module(UserModuleMetadata)

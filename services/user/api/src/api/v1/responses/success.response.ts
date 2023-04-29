@@ -2,9 +2,9 @@ import { ApiProperty } from "@nestjs/swagger";
 
 export class SuccessResponse {
 	@ApiProperty({
-		type: "boolean"
+	    type: "boolean"
 	})
-	success!: true;
+	    success!: true;
 }
 
 export interface SuccessResponseData<TData> { 

@@ -3,24 +3,24 @@ import { INestApplication, ValidationPipe } from "@nestjs/common";
 import { AuthzGuard } from "./authz/authz.guard";
 
 export function validationPipe(app: INestApplication) { 
-	app.useGlobalPipes(new ValidationPipe({
-		transform: true,
-		forbidUnknownValues: false,
-	}));
+    app.useGlobalPipes(new ValidationPipe({
+        transform: true,
+        forbidUnknownValues: false,
+    }));
 }
 
 export function authzGuard(app: INestApplication) { 
-	app.useGlobalGuards(new AuthzGuard());
+    app.useGlobalGuards(new AuthzGuard());
 }
 
 export function errorsFilter(app: INestApplication) { 
-	app.useGlobalFilters(
-		new FinanceUserErrorExceptionFilter(app.getHttpAdapter()),
-		new FinanceProgrammerErrorExceptionFilter(app.getHttpAdapter()));
+    app.useGlobalFilters(
+        new FinanceUserErrorExceptionFilter(app.getHttpAdapter()),
+        new FinanceProgrammerErrorExceptionFilter(app.getHttpAdapter()));
 }
 
 export function cors(app: INestApplication) {
-	app.enableCors({
-		origin: /http:\/\/localhost:(3000|3001)/
-	});
+    app.enableCors({
+        origin: /http:\/\/localhost:(3000|3001)/
+    });
 }

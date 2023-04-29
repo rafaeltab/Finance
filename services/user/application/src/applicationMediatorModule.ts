@@ -28,39 +28,39 @@ import { AddValuesToStockDataCommand, AddValuesToStockDataCommandHandler } from 
 import { CreateAssetGroupForUserCommand, CreateAssetGroupForUserCommandHandler } from "./commands/assets/createAssetGroupForUserCommand";
 
 export class ApplicationMediatorModule extends MediatorModule {
-	async register(): Promise<void> {
-		this.registerQuery(GetAssetGroupsForUserQuery, GetAssetGroupsForUserQueryHandler);
-		this.registerQuery(GetAssetGroupQuery, GetAssetGroupQueryHandler);
-		this.registerQuery(JobViewQuery, JobViewQueryHandler);
-		this.registerQuery(BankAccountViewQuery, BankAccountViewQueryHandler);
-		this.registerQuery(StocksDataListViewQuery, StocksDataListViewQueryHandler);
-		this.registerQuery(StockDataViewQuery, StockDataViewQueryHandler);
-		this.registerQuery(StockDataSearchQuery, StockDataSearchQueryHandler);
-		this.registerQuery(UserListQuery, UserListQueryHandler);
-		this.registerQuery(UserViewQuery, UserViewQueryHandler);
-		this.registerQuery(GetAssetQuery, GetAssetQueryHandler);
-		this.registerQuery(GetAssetsForUserQuery, GetAssetsForUserQueryHandler);
+    async register(): Promise<void> {
+        this.registerQuery(GetAssetGroupsForUserQuery, GetAssetGroupsForUserQueryHandler);
+        this.registerQuery(GetAssetGroupQuery, GetAssetGroupQueryHandler);
+        this.registerQuery(JobViewQuery, JobViewQueryHandler);
+        this.registerQuery(BankAccountViewQuery, BankAccountViewQueryHandler);
+        this.registerQuery(StocksDataListViewQuery, StocksDataListViewQueryHandler);
+        this.registerQuery(StockDataViewQuery, StockDataViewQueryHandler);
+        this.registerQuery(StockDataSearchQuery, StockDataSearchQueryHandler);
+        this.registerQuery(UserListQuery, UserListQueryHandler);
+        this.registerQuery(UserViewQuery, UserViewQueryHandler);
+        this.registerQuery(GetAssetQuery, GetAssetQueryHandler);
+        this.registerQuery(GetAssetsForUserQuery, GetAssetsForUserQueryHandler);
 
-		this.registerCommand(CreateUserCommand, CreateUserCommandHandler);
-		this.registerCommand(DeleteUserCommand, DeleteUserCommandHandler);
-		this.registerCommand(CreateJobCommand, CreateJobCommandHandler);
-		this.registerCommand(DeleteJobCommand, DeleteJobCommandHandler);
-		this.registerCommand(CreateBankAccountCommand, CreateBankAccountCommandHandler);
-		this.registerCommand(DeleteBankAccountCommand, DeleteBankAccountCommandHandler);
-		this.registerCommand(CreateRealEstateAssetForAssetGroupCommand, CreateRealEstateAssetForAssetGroupCommandHandler);
-		this.registerCommand(CreateRealEstateAssetForUserCommand, CreateRealEstateAssetForUserCommandHandler);
-		this.registerCommand(CreateStockAssetForAssetGroupCommand, CreateStockAssetForAssetGroupCommandHandler);
-		this.registerCommand(CreateStockAssetForUserCommand, CreateStockAssetForUserCommandHandler);
-		this.registerCommand(DeleteAssetCommand, DeleteAssetCommandHandler);
-		this.registerCommand(DeleteAssetGroupCommand, DeleteAssetGroupCommandHandler);
-		this.registerCommand(CreateStockDatasCommand, CreateStockDatasCommandHandler);
-		this.registerCommand(AddValuesToStockDataCommand, AddValuesToStockDataCommandHandler);
-		this.registerCommand(CreateAssetGroupForUserCommand, CreateAssetGroupForUserCommandHandler);
+        this.registerCommand(CreateUserCommand, CreateUserCommandHandler);
+        this.registerCommand(DeleteUserCommand, DeleteUserCommandHandler);
+        this.registerCommand(CreateJobCommand, CreateJobCommandHandler);
+        this.registerCommand(DeleteJobCommand, DeleteJobCommandHandler);
+        this.registerCommand(CreateBankAccountCommand, CreateBankAccountCommandHandler);
+        this.registerCommand(DeleteBankAccountCommand, DeleteBankAccountCommandHandler);
+        this.registerCommand(CreateRealEstateAssetForAssetGroupCommand, CreateRealEstateAssetForAssetGroupCommandHandler);
+        this.registerCommand(CreateRealEstateAssetForUserCommand, CreateRealEstateAssetForUserCommandHandler);
+        this.registerCommand(CreateStockAssetForAssetGroupCommand, CreateStockAssetForAssetGroupCommandHandler);
+        this.registerCommand(CreateStockAssetForUserCommand, CreateStockAssetForUserCommandHandler);
+        this.registerCommand(DeleteAssetCommand, DeleteAssetCommandHandler);
+        this.registerCommand(DeleteAssetGroupCommand, DeleteAssetGroupCommandHandler);
+        this.registerCommand(CreateStockDatasCommand, CreateStockDatasCommandHandler);
+        this.registerCommand(AddValuesToStockDataCommand, AddValuesToStockDataCommandHandler);
+        this.registerCommand(CreateAssetGroupForUserCommand, CreateAssetGroupForUserCommandHandler);
 
-		await this.registerModule(PostgresInfrastructureModule)
-	}
+        await this.registerModule(PostgresInfrastructureModule)
+    }
 
-	async dispose() {
-		await this.disposeModules();
-	}
+    async dispose() {
+        await this.disposeModules();
+    }
 }

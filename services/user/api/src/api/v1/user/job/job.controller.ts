@@ -13,41 +13,41 @@ import { CreateJobResponse, JobsViewResponse } from "./job.responses";
 
 @Controller("/api/v1/user/:userIdentity/job")
 export class JobController {
-	constructor(@Inject(Mediator) private mediator: Mediator) { }
+    constructor(@Inject(Mediator) private mediator: Mediator) { }
 
 	@Get()
 	@FinanceErrors([EntryNotFoundError])
 	@ApiBearerAuth("oauth2")
 	@UserIdentityParam()
 	@ApiOkResponse({
-		type: JobsViewResponse
+	    type: JobsViewResponse
 	})
-	async get(
+    async get(
 		@Param() param: UserIdentityParams,
-	): Promise<JobsViewResponse> {
-		return JobsViewResponse.map(await this.mediator.query(new JobViewQuery({
-			userIdentity: param.userIdentity,
-			limit: 30,
-			offset: 0,
-		})));
-	}
+    ): Promise<JobsViewResponse> {
+        return JobsViewResponse.map(await this.mediator.query(new JobViewQuery({
+            userIdentity: param.userIdentity,
+            limit: 30,
+            offset: 0,
+        })));
+    }
 
 	@Put()
 	@FinanceErrors([DuplicateEntryError])
 	@ApiBearerAuth("oauth2")
 	@UserIdentityParam()
 	@ApiOkResponse({
-		type: CreateJobResponse
+	    type: CreateJobResponse
 	})
 	async insert(
 		@Param() param: UserIdentityParams,
 		@Body() body: CreateJobBody,
 	): Promise<CreateJobResponse> {
-		return CreateJobResponse.map(await this.mediator.command(new CreateJobCommand({
-			userIdentity: param.userIdentity,
-			title: body.title,
-			monthlySalary: body.monthlySalary,
-		})));
+	    return CreateJobResponse.map(await this.mediator.command(new CreateJobCommand({
+	        userIdentity: param.userIdentity,
+	        title: body.title,
+	        monthlySalary: body.monthlySalary,
+	    })));
 	}
 
 	@Delete("/:identity")
@@ -56,13 +56,13 @@ export class JobController {
 	@IdentityParam()
 	@UserIdentityParam()
 	@ApiOkResponse({
-		type: SuccessResponse
+	    type: SuccessResponse
 	})
 	async delete(
 		@Param() param: IdentityParams
 	): Promise<SuccessResponse> {
-		return this.mediator.command(new DeleteJobCommand({
-			jobIdentity: param.identity
-		}));
+	    return this.mediator.command(new DeleteJobCommand({
+	        jobIdentity: param.identity
+	    }));
 	}
 }

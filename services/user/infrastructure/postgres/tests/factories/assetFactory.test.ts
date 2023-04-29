@@ -16,22 +16,22 @@ let userRepository: IUserRepository;
 let assetGroupRepository: IAssetGroupRepository;
 
 beforeAll(async () => {
-	fixture = await DbFixture.getInstance();
-	testData = fixture.getTestData();
+    fixture = await DbFixture.getInstance();
+    testData = fixture.getTestData();
 
 }, 20000);
 
 beforeEach(async () => {
-	await fixture.resetUnitOfWork();
+    await fixture.resetUnitOfWork();
 
-	assetFactory = fixture.getInstance(AssetFactory);
-	assetRepository = fixture.getInstance(AssetRepository);
-	userRepository = fixture.getInstance(UserRepository);
-	assetGroupRepository = fixture.getInstance(AssetGroupRepository);
+    assetFactory = fixture.getInstance(AssetFactory);
+    assetRepository = fixture.getInstance(AssetRepository);
+    userRepository = fixture.getInstance(UserRepository);
+    assetGroupRepository = fixture.getInstance(AssetGroupRepository);
 });
 
 afterAll(async () => {
-	await fixture.destroy();
+    await fixture.destroy();
 });
 
 type StockAssetData = {
@@ -43,165 +43,165 @@ type RealEstateAssetData = {
 }
 
 describe("addStockToAssetGroup", () => {
-	test('addStockToAssetGroup should create an entity with the given parameters and link it to an asset group', async () => {
-		const data = {
-			stockOrders: [{
-				amount: 5,
-				price: 99.3
-			}]
-		}
+    test('addStockToAssetGroup should create an entity with the given parameters and link it to an asset group', async () => {
+        const data = {
+            stockOrders: [{
+                amount: 5,
+                price: 99.3
+            }]
+        }
 
-		const [stockAsset, asset] = await assetFactory.addStockToAssetGroup({
-			identity: testData.assetGroup.identity
-		}, {
-			identity: testData.googlStockData.identity
-		}, data.stockOrders);
+        const [stockAsset, asset] = await assetFactory.addStockToAssetGroup({
+            identity: testData.assetGroup.identity
+        }, {
+            identity: testData.googlStockData.identity
+        }, data.stockOrders);
 
-		assetAndStockAssetValid(data, stockAsset, asset);
+        assetAndStockAssetValid(data, stockAsset, asset);
 
-		const res = await assetRepository.get({
-			identity: asset.identity
-		});
+        const res = await assetRepository.get({
+            identity: asset.identity
+        });
 
-		assetAndStockAssetValid(data, res.stockAsset, res);
+        assetAndStockAssetValid(data, res.stockAsset, res);
 
-		const assetGroup = await assetGroupRepository.get({
-			uniqueId: testData.assetGroup.uniqueId
-		})
+        const assetGroup = await assetGroupRepository.get({
+            uniqueId: testData.assetGroup.uniqueId
+        })
 
-		expectRequiredProps(assetGroup, ["assets"]);
+        expectRequiredProps(assetGroup, ["assets"]);
 
-		const assetGroupAsset = assetGroup.assets.find(x => x.identity === asset.identity);
+        const assetGroupAsset = assetGroup.assets.find(x => x.identity === asset.identity);
 
-		expectNotNullOrUndefined(assetGroupAsset);
+        expectNotNullOrUndefined(assetGroupAsset);
 
-		assetAndStockAssetValid(data, assetGroupAsset.stockAsset, assetGroupAsset);
-	});
+        assetAndStockAssetValid(data, assetGroupAsset.stockAsset, assetGroupAsset);
+    });
 });
 
 describe("addStockToUser", () => {
-	test('addStockToUser should create an entity with the given parameters and link it to an asset group', async () => {
-		const data = {
-			stockOrders: [{
-				amount: 5,
-				price: 99.3
-			}],
-			symbol: "GOOG",
-			exchange: "NASDAQ"
-		}
+    test('addStockToUser should create an entity with the given parameters and link it to an asset group', async () => {
+        const data = {
+            stockOrders: [{
+                amount: 5,
+                price: 99.3
+            }],
+            symbol: "GOOG",
+            exchange: "NASDAQ"
+        }
 
-		const [stockAsset, asset] = await assetFactory.addStockToUser({
-			identity: testData.user.identity
-		}, {
-			identity: testData.googlStockData.identity
-		}, data.stockOrders);
+        const [stockAsset, asset] = await assetFactory.addStockToUser({
+            identity: testData.user.identity
+        }, {
+            identity: testData.googlStockData.identity
+        }, data.stockOrders);
 
-		assetAndStockAssetValid(data, stockAsset, asset);
+        assetAndStockAssetValid(data, stockAsset, asset);
 
-		const res = await assetRepository.get({
-			identity: asset.identity
-		});
+        const res = await assetRepository.get({
+            identity: asset.identity
+        });
 
-		assetAndStockAssetValid(data, res.stockAsset, res);
+        assetAndStockAssetValid(data, res.stockAsset, res);
 
-		const user = await userRepository.getRelations({
-			uniqueId: testData.user.uniqueId
-		}, {
-			assets: {
-				stockAsset: {
-					orders: true
-				}
-			}
-		})
-		expectRequiredProps(user, ["assets"]);
+        const user = await userRepository.getRelations({
+            uniqueId: testData.user.uniqueId
+        }, {
+            assets: {
+                stockAsset: {
+                    orders: true
+                }
+            }
+        })
+        expectRequiredProps(user, ["assets"]);
 
-		const userAsset = user.assets.find(x => x.identity === asset.identity);
+        const userAsset = user.assets.find(x => x.identity === asset.identity);
 
-		expectNotNullOrUndefined(userAsset);
+        expectNotNullOrUndefined(userAsset);
 
-		assetAndStockAssetValid(data, userAsset.stockAsset, userAsset);
-	});
+        assetAndStockAssetValid(data, userAsset.stockAsset, userAsset);
+    });
 });
 
 describe("addRealEstateToAssetGroup", () => {
-	test('addRealEstateToAssetGroup should create an entity with the given parameters and link it to an asset group', async () => {
-		const data = {
-			address: "white street 5"
-		}
+    test('addRealEstateToAssetGroup should create an entity with the given parameters and link it to an asset group', async () => {
+        const data = {
+            address: "white street 5"
+        }
 
-		const [realEstateAsset, asset] = await assetFactory.addRealEstateToAssetGroup({
-			identity: testData.assetGroup.identity
-		}, data.address);
+        const [realEstateAsset, asset] = await assetFactory.addRealEstateToAssetGroup({
+            identity: testData.assetGroup.identity
+        }, data.address);
 
-		assetAndRealEstateAssetValid(data, realEstateAsset, asset);
+        assetAndRealEstateAssetValid(data, realEstateAsset, asset);
 
-		const res = await assetRepository.get({
-			identity: asset.identity
-		});
+        const res = await assetRepository.get({
+            identity: asset.identity
+        });
 
-		assetAndRealEstateAssetValid(data, res.realEstateAsset, res);
+        assetAndRealEstateAssetValid(data, res.realEstateAsset, res);
 
-		const assetGroup = await assetGroupRepository.get({
-			uniqueId: testData.assetGroup.uniqueId
-		})		
-		expectRequiredProps(assetGroup, ["assets"]);
+        const assetGroup = await assetGroupRepository.get({
+            uniqueId: testData.assetGroup.uniqueId
+        })		
+        expectRequiredProps(assetGroup, ["assets"]);
 
-		const assetGroupAsset = assetGroup.assets.find(x => x.identity === asset.identity);		
-		expectNotNullOrUndefined(assetGroupAsset);
+        const assetGroupAsset = assetGroup.assets.find(x => x.identity === asset.identity);		
+        expectNotNullOrUndefined(assetGroupAsset);
 
-		assetAndRealEstateAssetValid(data, assetGroupAsset.realEstateAsset, assetGroupAsset);
-	});
+        assetAndRealEstateAssetValid(data, assetGroupAsset.realEstateAsset, assetGroupAsset);
+    });
 });
 
 describe("addRealEstateToUser", () => {
-	test('addRealEstateToUser should create an entity with the given parameters and link it to an asset group', async () => {
-		const data = {
-			address: "white street 5"
-		}
+    test('addRealEstateToUser should create an entity with the given parameters and link it to an asset group', async () => {
+        const data = {
+            address: "white street 5"
+        }
 
-		const [realEstateAsset, asset] = await assetFactory.addRealEstateToUser({
-			identity: testData.user.identity
-		}, data.address);
+        const [realEstateAsset, asset] = await assetFactory.addRealEstateToUser({
+            identity: testData.user.identity
+        }, data.address);
 
-		assetAndRealEstateAssetValid(data, realEstateAsset, asset);
+        assetAndRealEstateAssetValid(data, realEstateAsset, asset);
 
-		const res = await assetRepository.get({
-			identity: asset.identity
-		});
+        const res = await assetRepository.get({
+            identity: asset.identity
+        });
 
-		assetAndRealEstateAssetValid(data, res.realEstateAsset, res);
+        assetAndRealEstateAssetValid(data, res.realEstateAsset, res);
 
-		const user = await userRepository.get({
-			uniqueId: testData.user.uniqueId
-		}, ["assets"])
-		expectRequiredProps(user, ["assets"]);
+        const user = await userRepository.get({
+            uniqueId: testData.user.uniqueId
+        }, ["assets"])
+        expectRequiredProps(user, ["assets"]);
 
-		const userAsset = user.assets.find(x => x.identity === asset.identity);
-		expectNotNullOrUndefined(userAsset);
+        const userAsset = user.assets.find(x => x.identity === asset.identity);
+        expectNotNullOrUndefined(userAsset);
 
-		assetAndRealEstateAssetValid(data, userAsset.realEstateAsset, userAsset);
-	});
+        assetAndRealEstateAssetValid(data, userAsset.realEstateAsset, userAsset);
+    });
 });
 
 function assetAndStockAssetValid(data: StockAssetData, stockAsset?: StockAsset, asset?: Asset) {
-	expectNotNullOrUndefined(asset);
-	expectNotNullOrUndefined(stockAsset);
+    expectNotNullOrUndefined(asset);
+    expectNotNullOrUndefined(stockAsset);
 
 
-	expectRequiredProps(asset, ["uniqueId"]);
-	expectRequiredProps(stockAsset, ["uniqueId", "orders", "stockData"]);
+    expectRequiredProps(asset, ["uniqueId"]);
+    expectRequiredProps(stockAsset, ["uniqueId", "orders", "stockData"]);
 
-	expect(stockAsset.orders.length).toBe(data.stockOrders.length);
-	expect(stockAsset.stockData.identity).toBe(testData.googlStockData.identity);
+    expect(stockAsset.orders.length).toBe(data.stockOrders.length);
+    expect(stockAsset.stockData.identity).toBe(testData.googlStockData.identity);
 }
 
 function assetAndRealEstateAssetValid(data: RealEstateAssetData, realEstateAsset?: RealEstateAsset, asset?: Asset) {
-	expectNotNullOrUndefined(asset);
-	expectNotNullOrUndefined(realEstateAsset);
+    expectNotNullOrUndefined(asset);
+    expectNotNullOrUndefined(realEstateAsset);
 
-	expectRequiredProps(asset, ["uniqueId"]);
-	expectRequiredProps(realEstateAsset, ["uniqueId"]);
+    expectRequiredProps(asset, ["uniqueId"]);
+    expectRequiredProps(realEstateAsset, ["uniqueId"]);
 
 
-	expect(realEstateAsset.address).toBe(data.address);
+    expect(realEstateAsset.address).toBe(data.address);
 }

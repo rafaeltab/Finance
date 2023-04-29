@@ -12,79 +12,79 @@ type Response = {
 } & PaginatedBase<StockData>
 
 export class StockDataSearchQuery extends IQuery<StockDataSearchQuery, ResponseType> {
-	token = "StockDataSearchQuery";
+    token = "StockDataSearchQuery";
 
-	exchange?: string;
+    exchange?: string;
 
-	symbol?: string;
+    symbol?: string;
 
-	type?: string;
+    type?: string;
 
 
-	limit = 30;
+    limit = 30;
 
-	offset = 0;
+    offset = 0;
 }
 
 @injectable()
 export class StockDataSearchQueryHandler extends IQueryHandler<StockDataSearchQuery, ResponseType> {
-	/**
+    /**
 	 *
 	 */
-	constructor(
+    constructor(
 		@inject(stockRepositoryToken) private stockRepository: IStockRepository,
 		@inject(unitOfWorkToken) private unitOfWork: IUnitOfWork
-	) {
-		super();
-	}
+    ) {
+        super();
+    }
 
-	async handle(query: StockDataSearchQuery): Promise<ResponseType> {
-		try {
-			const start = new Date();
-			start.setFullYear(start.getFullYear() - 100);
+    async handle(query: StockDataSearchQuery): Promise<ResponseType> {
+        try {
+            const start = new Date();
+            start.setFullYear(start.getFullYear() - 100);
 
-			const end = new Date();
-			end.setDate(end.getDate() + 1);
+            const end = new Date();
+            end.setDate(end.getDate() + 1);
 
-			const kinds = Object.keys(StockAssetKind).map(x => x.toLowerCase());
+            const kinds = Object.keys(StockAssetKind).map(x => x.toLowerCase());
 
-			let kind: StockAssetKind | undefined;
+            let kind: StockAssetKind | undefined;
 
-			const queryType = query.type
+            const queryType = query.type
 
-			if (queryType !== undefined) {
-				if (kinds.includes(queryType.toLowerCase())) {
-					kind = StockAssetKind[Object.keys(StockAssetKind).find(x => x.toLowerCase() === queryType.toLowerCase()) as keyof typeof StockAssetKind];
-				}
-			}
+            if (queryType !== undefined) {
+                if (kinds.includes(queryType.toLowerCase())) {
+                    kind = StockAssetKind[Object.keys(StockAssetKind).find(x => x.toLowerCase() === queryType.toLowerCase()) as keyof typeof StockAssetKind];
+                }
+            }
 
-			await this.unitOfWork.start();
+            await this.unitOfWork.start();
 
-			const stocks = await this.stockRepository.searchStockData(
-				query.symbol,
-				query.exchange,
-				kind,
-				true,
-				query.limit,
-				query.offset);
+            const stocks = await this.stockRepository.searchStockData(
+                query.symbol,
+                query.exchange,
+                kind,
+                true,
+                query.limit,
+                query.offset);
 
-			await this.unitOfWork.commit();
+            await this.unitOfWork.commit();
 
-			return {
-				success: true,
-				data: {
-					isEmpty: stocks.page.total === 0,
-					page: {
-						count: stocks.page.count,
-						offset: stocks.page.offset,
-						total: stocks.page.total,
-					},
-					data: stocks.data
-				}
-			}
-		} catch (e: unknown) {
-			await this.unitOfWork.rollback();
-			throw e;
-		}
-	}
+            return {
+                success: true,
+                data: {
+                    isEmpty: stocks.page.total === 0,
+                    page: {
+                        count: stocks.page.count,
+                        offset: stocks.page.offset,
+                        total: stocks.page.total,
+                    },
+                    data: stocks.data
+                }
+            }
+        } catch (e: unknown) {
+            await this.unitOfWork.rollback();
+            throw e;
+        }
+    }
 }

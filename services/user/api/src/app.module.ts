@@ -12,28 +12,28 @@ const environment = isDevelopment ? "development" : "production";
 
 
 export const AppModuleMetadata = {
-	imports: [
-		ConfigModule.forRoot({
-			envFilePath: [
-				".env",
-				`.env.${environment}`
-			],
-			load: [configuration],
-			isGlobal: true,
-		}),
-		ApplicationModule,
-		StockModule,
-		UserModule,	
-		AuthzModule
-	],
-	controllers: [],
-	providers: [],
+    imports: [
+        ConfigModule.forRoot({
+            envFilePath: [
+                ".env",
+                `.env.${environment}`
+            ],
+            load: [configuration],
+            isGlobal: true,
+        }),
+        ApplicationModule,
+        StockModule,
+        UserModule,	
+        AuthzModule
+    ],
+    controllers: [],
+    providers: [],
 } satisfies ModuleMetadata;
 
 
 @Module(AppModuleMetadata)
 export class AppModule implements NestModule {
-	configure(consumer: MiddlewareConsumer): void {
-		consumer.apply(AppLoggerMiddleware).forRoutes('*');
-	}
+    configure(consumer: MiddlewareConsumer): void {
+        consumer.apply(AppLoggerMiddleware).forRoutes('*');
+    }
 }

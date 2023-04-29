@@ -8,37 +8,37 @@ import { inject, injectable } from "tsyringe";
 export type ResponseType = ICommandResult<undefined>;
 
 export class DeleteAssetGroupCommand extends ICommand<DeleteAssetGroupCommand, ResponseType> {
-	token = "DeleteAssetGroupCommand";
+    token = "DeleteAssetGroupCommand";
 
-	assetGroupIdentity!: string;
+    assetGroupIdentity!: string;
 }
 
 @injectable()
 export class DeleteAssetGroupCommandHandler extends ICommandHandler<DeleteAssetGroupCommand, ResponseType> {
-	constructor(
+    constructor(
 		@inject(assetGroupRepositoryToken) private assetGroupRepository: IAssetGroupRepository,
 		@inject(unitOfWorkToken) private unitOfWork: IUnitOfWork
-	) {
-		super();
-	}
+    ) {
+        super();
+    }
 
-	async handle(command: DeleteAssetGroupCommand): Promise<ResponseType> {
-		try {
-			await this.unitOfWork.start();
+    async handle(command: DeleteAssetGroupCommand): Promise<ResponseType> {
+        try {
+            await this.unitOfWork.start();
 
-			await this.assetGroupRepository.delete({
-				identity: command.assetGroupIdentity
-			});
+            await this.assetGroupRepository.delete({
+                identity: command.assetGroupIdentity
+            });
 
-			await this.unitOfWork.commit();
+            await this.unitOfWork.commit();
 
-			return {
-				success: true,
-				data: undefined
-			}
-		} catch (error) {
-			await this.unitOfWork.rollback();
-			throw error;
-		}
-	}
+            return {
+                success: true,
+                data: undefined
+            }
+        } catch (error) {
+            await this.unitOfWork.rollback();
+            throw error;
+        }
+    }
 }

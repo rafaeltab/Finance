@@ -7,57 +7,57 @@ import { UnitOfWork, unitOfWorkToken } from "../unitOfWork/unitOfWork";
 @injectable()
 export class BankAccountFactory implements IBankAccountFactory {
 
-	constructor(@inject(unitOfWorkToken) private unitOfWork: UnitOfWork) { }
+    constructor(@inject(unitOfWorkToken) private unitOfWork: UnitOfWork) { }
 
-	async addBankAccountToUser(user: EntityKey, bank: string, balance: number, currency: string): Promise<BankAccount> {
-		const userEntity = await this.unitOfWork.getQueryRunner().manager.findOne(User, {
-			where: user,
-			relations: {
-				bankAccounts: true,
-			}
-		});
+    async addBankAccountToUser(user: EntityKey, bank: string, balance: number, currency: string): Promise<BankAccount> {
+        const userEntity = await this.unitOfWork.getQueryRunner().manager.findOne(User, {
+            where: user,
+            relations: {
+                bankAccounts: true,
+            }
+        });
 
-		if (!userEntity) {
-			throw new EntryNotFoundError(User.name, getKey(user));
-		}
+        if (!userEntity) {
+            throw new EntryNotFoundError(User.name, getKey(user));
+        }
 
-		const identity = this.createIdentity(userEntity, bank);
+        const identity = this.createIdentity(userEntity, bank);
 
-		const existingBankAccount = await this.unitOfWork.getQueryRunner().manager.findOne(BankAccount, {
-			where: {
-				identity
-			}
-		});
+        const existingBankAccount = await this.unitOfWork.getQueryRunner().manager.findOne(BankAccount, {
+            where: {
+                identity
+            }
+        });
 
-		if (existingBankAccount != null) {
-			throw new DuplicateEntryError(BankAccount.name, identity);
-		}
+        if (existingBankAccount != null) {
+            throw new DuplicateEntryError(BankAccount.name, identity);
+        }
 
-		const balanceEntity = new Balance({
-			amount: balance,
-			currency,
-		});
+        const balanceEntity = new Balance({
+            amount: balance,
+            currency,
+        });
 
-		const bankAccount = new BankAccount({
-			bank,
-			balance: balanceEntity,
-			identity
-		})
+        const bankAccount = new BankAccount({
+            bank,
+            balance: balanceEntity,
+            identity
+        })
 
-		if (userEntity.bankAccounts === null) {
-			throw new UnexpectedError(new Error("Bank accounts not loaded"));
-		}
+        if (userEntity.bankAccounts === null) {
+            throw new UnexpectedError(new Error("Bank accounts not loaded"));
+        }
 
-		assertContains(userEntity, ["bankAccounts"]);
+        assertContains(userEntity, ["bankAccounts"]);
 
-		userEntity.bankAccounts.push(bankAccount);
+        userEntity.bankAccounts.push(bankAccount);
 
-		await this.unitOfWork.getQueryRunner().manager.save([bankAccount, userEntity]);
+        await this.unitOfWork.getQueryRunner().manager.save([bankAccount, userEntity]);
 
-		return bankAccount;
-	} 
+        return bankAccount;
+    } 
 
-	private createIdentity(user: User, bank: string): string {
-		return `${user.identity}-bank-${bank.toLowerCase()}`;
-	}
+    private createIdentity(user: User, bank: string): string {
+        return `${user.identity}-bank-${bank.toLowerCase()}`;
+    }
 }

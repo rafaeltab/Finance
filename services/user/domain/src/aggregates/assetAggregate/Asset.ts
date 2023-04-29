@@ -9,36 +9,36 @@ import { RealEstateAsset } from "./assetKinds/RealEstateAsset";
 @Entity()
 export class Asset extends EnitityBase {
 	@OneToOne(() => StockAsset, stockAsset => stockAsset.asset, {
-		eager: true,
-		cascade: ["insert"]
+	    eager: true,
+	    cascade: ["insert"]
 	})
-	stockAsset?: Relation<StockAsset>;
+	    stockAsset?: Relation<StockAsset>;
 
 	@OneToOne(() => RealEstateAsset, realEstateAsset => realEstateAsset.asset, {
-		eager: true,
-		cascade: ["insert"]
+	    eager: true,
+	    cascade: ["insert"]
 	})
-	realEstateAsset?: Relation<RealEstateAsset>;
+	    realEstateAsset?: Relation<RealEstateAsset>;
 
 	@ManyToOne(() => AssetGroup, (group) => group.assets, {
-		cascade: ["insert"],
-		onDelete: "CASCADE",
+	    cascade: ["insert"],
+	    onDelete: "CASCADE",
 	})
 	@JoinColumn()
-	group?: Relation<AssetGroup>;
+	    group?: Relation<AssetGroup>;
 
 	@ManyToOne(() => User, (user) => user.assets, {
-		onDelete: "CASCADE",
+	    onDelete: "CASCADE",
 	})
-	user?: Relation<User>;
+	    user?: Relation<User>;
 
 	constructor(init: Partial<Asset>) {
-		super();
-		Object.assign(this, init);
+	    super();
+	    Object.assign(this, init);
 	}
 }
 
 export const AssetMeta: EntityMeta<Asset> = {
-	relations: ["group", "user", "stockAsset", "realEstateAsset"],
-	data: ["uniqueId", "identity"]
+    relations: ["group", "user", "stockAsset", "realEstateAsset"],
+    data: ["uniqueId", "identity"]
 }

@@ -10,9 +10,9 @@ export type ResponseType = ICommandResult<{
 }>;
 
 export class CreateStockDatasCommand extends ICommand<CreateStockDatasCommand, ResponseType> {
-	token = "CreateStockDatasCommand";
+    token = "CreateStockDatasCommand";
 
-	stockDatas!: CreateStockData[];
+    stockDatas!: CreateStockData[];
 }
 
 type CreateStockData = {
@@ -23,41 +23,41 @@ type CreateStockData = {
 
 @injectable()
 export class CreateStockDatasCommandHandler extends ICommandHandler<CreateStockDatasCommand, ResponseType> {
-	constructor(
+    constructor(
 		@inject(stockFactoryToken) private stockFactory: IStockFactory,
 		@inject(unitOfWorkToken) private unitOfWork: IUnitOfWork
-	) {
-		super();
-	}
+    ) {
+        super();
+    }
 
-	async handle(command: CreateStockDatasCommand): Promise<ResponseType> {
-		try {
-			await this.unitOfWork.start();
+    async handle(command: CreateStockDatasCommand): Promise<ResponseType> {
+        try {
+            await this.unitOfWork.start();
 
-			const results: string[] = [];
+            const results: string[] = [];
 
-			for (const data of command.stockDatas) {
-				// eslint-disable-next-line no-await-in-loop
-				const stockData = await this.stockFactory.addStockData(
-					data.symbol,
-					data.exchange,
-					data.type
-				);
+            for (const data of command.stockDatas) {
+                // eslint-disable-next-line no-await-in-loop
+                const stockData = await this.stockFactory.addStockData(
+                    data.symbol,
+                    data.exchange,
+                    data.type
+                );
 
-				results.push(stockData.identity);
-			}
+                results.push(stockData.identity);
+            }
 
-			await this.unitOfWork.commit();
+            await this.unitOfWork.commit();
 
-			return {
-				success: true,
-				data: {
-					identities: results
-				}
-			}
-		} catch (error) {
-			await this.unitOfWork.rollback();
-			throw error;
-		}
-	}
+            return {
+                success: true,
+                data: {
+                    identities: results
+                }
+            }
+        } catch (error) {
+            await this.unitOfWork.rollback();
+            throw error;
+        }
+    }
 }

@@ -7,56 +7,56 @@ import { ColumnNumericTransformer } from "../../utils/numericTransformer";
 @Entity()
 export class StockValue extends ValueObjectBase {
 	@Column("numeric", {
-		scale: 3,
-		precision: 10,
-		transformer: new ColumnNumericTransformer()
+	    scale: 3,
+	    precision: 10,
+	    transformer: new ColumnNumericTransformer()
 	})
-	open?: number;
+	    open?: number;
 
 	@Column({
-		type: "numeric",
-		scale: 3,
-		transformer: new ColumnNumericTransformer()
+	    type: "numeric",
+	    scale: 3,
+	    transformer: new ColumnNumericTransformer()
 	})
-	high?: number;
+	    high?: number;
 
 	@Column({
-		type: "numeric",
-		scale: 3,
-		transformer: new ColumnNumericTransformer()
+	    type: "numeric",
+	    scale: 3,
+	    transformer: new ColumnNumericTransformer()
 	})
-	low?: number;
+	    low?: number;
 
 	@Column({
-		type: "numeric",
-		scale: 3,
-		transformer: new ColumnNumericTransformer()
+	    type: "numeric",
+	    scale: 3,
+	    transformer: new ColumnNumericTransformer()
 	})
-	close?: number;
+	    close?: number;
 
 	@Column({
-		type: "numeric",
-		scale: 3,
-		transformer: new ColumnNumericTransformer()
+	    type: "numeric",
+	    scale: 3,
+	    transformer: new ColumnNumericTransformer()
 	})
-	volume?: number;
+	    volume?: number;
 
 	@Column()
-	date?: Date;
+	    date?: Date;
 
 	@ManyToOne(() => StockData, (stockData) => stockData.values, {
-		cascade: ["insert"],
-		onDelete: "CASCADE",
+	    cascade: ["insert"],
+	    onDelete: "CASCADE",
 	})
-	stockData?: Relation<StockData>;
+	    stockData?: Relation<StockData>;
 
 	constructor(init: Partial<StockValue>) {
-		super();
-		Object.assign(this, init);
+	    super();
+	    Object.assign(this, init);
 	}
 }
 
 export const StockValueMeta: EntityMeta<StockValue> = {
-	relations: ["stockData"],
-	data: ["open", "high", "low", "close", "volume", "date", "uniqueId"]
+    relations: ["stockData"],
+    data: ["open", "high", "low", "close", "volume", "date", "uniqueId"]
 }

@@ -9,42 +9,42 @@ import { inject, injectable } from "tsyringe";
 export type ResponseType = IQueryResult<Asset>
 
 export class GetAssetQuery extends IQuery<GetAssetQuery, ResponseType> {
-	token = "GetAssetQuery";
+    token = "GetAssetQuery";
 
-	assetIdentity!: string;
+    assetIdentity!: string;
 }
 
 @injectable()
 export class GetAssetQueryHandler extends IQueryHandler<GetAssetQuery, ResponseType> {
-	/**
+    /**
 	 *
 	 */
-	constructor(
+    constructor(
 		@inject(assetRepositoryToken) private assetRepository: IAssetRepository,
 		@inject(unitOfWorkToken) private unitOfWork: IUnitOfWork
-	) {
-		super();
+    ) {
+        super();
 
-	}
+    }
 
-	async handle(query: GetAssetQuery): Promise<ResponseType> {
-		try {
-			await this.unitOfWork.start();
+    async handle(query: GetAssetQuery): Promise<ResponseType> {
+        try {
+            await this.unitOfWork.start();
 
-			const asset = await this.assetRepository.get({
-				identity: query.assetIdentity,
-			});
+            const asset = await this.assetRepository.get({
+                identity: query.assetIdentity,
+            });
 
-			await this.unitOfWork.commit();
+            await this.unitOfWork.commit();
 
-			return {
-				success: true,
-				data: asset
-			}
-		}
-		catch (e: unknown) {
-			await this.unitOfWork.rollback();
-			throw e;
-		}
-	}
+            return {
+                success: true,
+                data: asset
+            }
+        }
+        catch (e: unknown) {
+            await this.unitOfWork.rollback();
+            throw e;
+        }
+    }
 }

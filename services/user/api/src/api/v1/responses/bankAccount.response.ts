@@ -4,35 +4,35 @@ import { EntityResponse } from "./identity.response";
 
 export class BalanceResponse { 
 	@ApiProperty({
-		type: "number"
+	    type: "number"
 	})
-	amount!: number;
+	    amount!: number;
 
 	@ApiProperty({
-		type: "string"
+	    type: "string"
 	})
-	currency!: string;
+	    currency!: string;
 }
 
 export class BankAccountResponse extends EntityResponse { 
 	@ApiProperty({
-		type: "string"
+	    type: "string"
 	})
-	bank!: string;
+	    bank!: string;
 
 	@ApiProperty({
-		type: BalanceResponse
+	    type: BalanceResponse
 	})
-	balance!: BalanceResponse;
+	    balance!: BalanceResponse;
 
 	static map(bankAccount: BankAccount): BankAccountResponse {
-		return {
-			balance: {
-				amount: bankAccount.balance?.amount ?? 0,
-				currency: bankAccount.balance?.currency ?? ""
-			},
-			bank: bankAccount.bank ?? "",
-			identity: bankAccount.identity
-		}
+	    return {
+	        balance: {
+	            amount: bankAccount.balance?.amount ?? 0,
+	            currency: bankAccount.balance?.currency ?? ""
+	        },
+	        bank: bankAccount.bank ?? "",
+	        identity: bankAccount.identity
+	    }
 	}
 }

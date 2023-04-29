@@ -15,7 +15,7 @@ import { SuccessResponse } from "../../responses/success.response";
 
 @Controller("/api/v1")
 export class AssetController {
-	constructor(@Inject(Mediator) private mediator: Mediator) { }
+    constructor(@Inject(Mediator) private mediator: Mediator) { }
 
 	// GET /api/v1/asset/:assetIdentity -> Single asset
 	@Get("/asset/:assetIdentity")
@@ -23,15 +23,15 @@ export class AssetController {
 	@ApiBearerAuth("oauth2")
 	@AssetIdentityParam()
 	@ApiOkResponse({
-		type: GetAssetResponse
+	    type: GetAssetResponse
 	})
-	async getAsset(
+    async getAsset(
 		@Param() params: AssetIdentityParams
-	): Promise<GetAssetResponse> {
-		return GetAssetResponse.map(await this.mediator.query(new GetAssetQuery({
-			assetIdentity: params.assetIdentity
-		})));
-	}
+    ): Promise<GetAssetResponse> {
+        return GetAssetResponse.map(await this.mediator.query(new GetAssetQuery({
+            assetIdentity: params.assetIdentity
+        })));
+    }
 
 	// GET /api/v1/assetGroup/:assetGroupIdentity -> Get a group with all assets
 	@Get("/assetGroup/:assetGroupIdentity")
@@ -39,16 +39,16 @@ export class AssetController {
 	@ApiBearerAuth("oauth2")
 	@AssetGroupIdentityParam()
 	@ApiOkResponse({
-		type: GetAssetGroupResponse
+	    type: GetAssetGroupResponse
 	})
 	async getAssetGroup(
 		@Param() params: AssetGroupIdentityParams
 	): Promise<GetAssetGroupResponse> {
-		return GetAssetGroupResponse.map(await this.mediator.query(new GetAssetGroupQuery({
-			assetGroupIdentity: params.assetGroupIdentity,
-			limit: 30,
-			offset: 0
-		})));
+	    return GetAssetGroupResponse.map(await this.mediator.query(new GetAssetGroupQuery({
+	        assetGroupIdentity: params.assetGroupIdentity,
+	        limit: 30,
+	        offset: 0
+	    })));
 	}
 
 	// GET /api/v1/user/:userIdentity/asset -> All assets for user
@@ -57,16 +57,16 @@ export class AssetController {
 	@ApiBearerAuth("oauth2")
 	@UserIdentityParam()
 	@ApiOkResponse({
-		type: GetUserAssetsResponse,
+	    type: GetUserAssetsResponse,
 	})
 	async getUserAssets(
 		@Param() params: UserIdentityParams
 	): Promise<GetUserAssetsResponse> {
-		return GetUserAssetsResponse.map(await this.mediator.query(new GetAssetsForUserQuery({
-			userIdentity: params.userIdentity,
-			limit: 30,
-			offset: 0
-		})));
+	    return GetUserAssetsResponse.map(await this.mediator.query(new GetAssetsForUserQuery({
+	        userIdentity: params.userIdentity,
+	        limit: 30,
+	        offset: 0
+	    })));
 	}
 
 	// GET /api/v1/user/:userIdentity/assetGroup -> All asset groups for user
@@ -76,16 +76,16 @@ export class AssetController {
 	@ApiBearerAuth("oauth2")
 	@UserIdentityParam()
 	@ApiOkResponse({
-		type: GetUserAssetGroupsResponse,
+	    type: GetUserAssetGroupsResponse,
 	})
 	async getUserAssetGroups(
 		@Param() params: UserIdentityParams
 	): Promise<GetUserAssetGroupsResponse> {
-		return GetUserAssetGroupsResponse.map(await this.mediator.query(new GetAssetGroupsForUserQuery({
-			userIdentity: params.userIdentity,
-			limit: 30,
-			offset: 0
-		})));
+	    return GetUserAssetGroupsResponse.map(await this.mediator.query(new GetAssetGroupsForUserQuery({
+	        userIdentity: params.userIdentity,
+	        limit: 30,
+	        offset: 0
+	    })));
 	}
 
 	// PUT /api/v1/user/:userIdentity/asset/stock -> Create a stcck asset for user
@@ -94,17 +94,17 @@ export class AssetController {
 	@ApiBearerAuth("oauth2")
 	@UserIdentityParam()
 	@ApiOkResponse({
-		type: CreateStockAssetForUserResponse,
+	    type: CreateStockAssetForUserResponse,
 	})
 	async createStockAssetForUser(
 		@Param() params: UserIdentityParams,
 		@Body() body: CreateStockAssetBody
 	): Promise<CreateStockAssetForUserResponse> {
-		return CreateStockAssetForUserResponse.map(await this.mediator.command(new CreateStockAssetForUserCommand({
-			userIdentity: params.userIdentity,
-			stockDataIdentity: body.stockDataIdentity,
-			stockOrders: body.stockOrders
-		})))
+	    return CreateStockAssetForUserResponse.map(await this.mediator.command(new CreateStockAssetForUserCommand({
+	        userIdentity: params.userIdentity,
+	        stockDataIdentity: body.stockDataIdentity,
+	        stockOrders: body.stockOrders
+	    })))
 	}
 
 	// PUT /api/v1/user/:userIdentity/asset/realEstate -> Create a real estate asset for user
@@ -113,16 +113,16 @@ export class AssetController {
 	@ApiBearerAuth("oauth2")
 	@UserIdentityParam()
 	@ApiOkResponse({
-		type: CreateRealEstateAssetForUserResponse
+	    type: CreateRealEstateAssetForUserResponse
 	})
 	async createRealEstateAssetForUser(
 		@Param() params: UserIdentityParams,
 		@Body() body: CreateRealEstateAssetBody
 	): Promise<CreateRealEstateAssetForUserResponse> {
-		return CreateRealEstateAssetForUserResponse.map(await this.mediator.command(new CreateRealEstateAssetForUserCommand({
-			userIdentity: params.userIdentity,
-			address: body.address,
-		})));
+	    return CreateRealEstateAssetForUserResponse.map(await this.mediator.command(new CreateRealEstateAssetForUserCommand({
+	        userIdentity: params.userIdentity,
+	        address: body.address,
+	    })));
 	}
 
 	// PUT /api/v1/user/:userIdentity/assetGroup -> Create asset group for user
@@ -131,16 +131,16 @@ export class AssetController {
 	@ApiBearerAuth("oauth2")
 	@UserIdentityParam()
 	@ApiOkResponse({
-		type: CreateAssetGroupForUserResponse
+	    type: CreateAssetGroupForUserResponse
 	})
 	async createAssetGroupForUser(
 		@Param() params: UserIdentityParams,
 		@Body() body: CreateAssetGroupBody
 	): Promise<CreateAssetGroupForUserResponse> {
-		return CreateAssetGroupForUserResponse.map(await this.mediator.command(new CreateAssetGroupForUserCommand({
-			name: body.name,
-			userIdentity: params.userIdentity
-		})));
+	    return CreateAssetGroupForUserResponse.map(await this.mediator.command(new CreateAssetGroupForUserCommand({
+	        name: body.name,
+	        userIdentity: params.userIdentity
+	    })));
 	}
 
 	// PUT /api/v1/user/:userIdentity/assetGroup/:assetGroupIdentity/asset/stock -> Create stock asset for group
@@ -149,17 +149,17 @@ export class AssetController {
 	@ApiBearerAuth("oauth2")
 	@AssetGroupIdentityParam()
 	@ApiOkResponse({
-		type: CreateStockAssetForAssetGroupResponse
+	    type: CreateStockAssetForAssetGroupResponse
 	})
 	async createStockAssetForGroup(
 		@Param() params: AssetGroupIdentityParams,
 		@Body() body: CreateStockAssetBody
 	): Promise<CreateStockAssetForAssetGroupResponse> {
-		return CreateStockAssetForAssetGroupResponse.map(await this.mediator.command(new CreateStockAssetForAssetGroupCommand({
-			assetGroupIdentity: params.assetGroupIdentity,
-			stockDataIdentity: body.stockDataIdentity,
-			stockOrders: body.stockOrders
-		})));
+	    return CreateStockAssetForAssetGroupResponse.map(await this.mediator.command(new CreateStockAssetForAssetGroupCommand({
+	        assetGroupIdentity: params.assetGroupIdentity,
+	        stockDataIdentity: body.stockDataIdentity,
+	        stockOrders: body.stockOrders
+	    })));
 	}
 
 	// PUT /api/v1/user/:userIdentity/assetGroup/:assetGroupIdentity/asset/realEstate -> Create real estate asset for group
@@ -168,16 +168,16 @@ export class AssetController {
 	@ApiBearerAuth("oauth2")
 	@AssetGroupIdentityParam()
 	@ApiOkResponse({
-		type: CreateRealEstateAssetForGroup
+	    type: CreateRealEstateAssetForGroup
 	})
 	async createRealEstateAssetForGroup(
 		@Param() params: AssetGroupIdentityParams,
 		@Body() body: CreateRealEstateAssetBody
 	): Promise<CreateRealEstateAssetForGroup> {
-		return CreateRealEstateAssetForGroup.map(await this.mediator.command(new CreateRealEstateAssetForAssetGroupCommand({
-			assetGroupIdentity: params.assetGroupIdentity,
-			address: body.address,
-		})));
+	    return CreateRealEstateAssetForGroup.map(await this.mediator.command(new CreateRealEstateAssetForAssetGroupCommand({
+	        assetGroupIdentity: params.assetGroupIdentity,
+	        address: body.address,
+	    })));
 	}
 
 	// DELETE /api/v1/asset/:assetIdentity
@@ -186,14 +186,14 @@ export class AssetController {
 	@ApiBearerAuth("oauth2")
 	@AssetIdentityParam()
 	@ApiOkResponse({
-		type: SuccessResponse
+	    type: SuccessResponse
 	})
 	async deleteAsset(
 		@Param() params: AssetIdentityParams
 	): Promise<SuccessResponse> {
-		return this.mediator.command(new DeleteAssetCommand({
-			assetIdentity: params.assetIdentity
-		}));
+	    return this.mediator.command(new DeleteAssetCommand({
+	        assetIdentity: params.assetIdentity
+	    }));
 	}
 
 	// DELETE /api/v1/assetGroup/:assetGroupIdentity
@@ -202,13 +202,13 @@ export class AssetController {
 	@ApiBearerAuth("oauth2")
 	@AssetGroupIdentityParam()
 	@ApiOkResponse({
-		type: SuccessResponse
+	    type: SuccessResponse
 	})
 	async deleteAssetGroup(
 		@Param() params: AssetGroupIdentityParams
 	): Promise<SuccessResponse> {
-		return this.mediator.command(new DeleteAssetGroupCommand({
-			assetGroupIdentity: params.assetGroupIdentity
-		}))
+	    return this.mediator.command(new DeleteAssetGroupCommand({
+	        assetGroupIdentity: params.assetGroupIdentity
+	    }))
 	}
 }

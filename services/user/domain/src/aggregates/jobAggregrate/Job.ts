@@ -7,27 +7,27 @@ import { User } from "../User";
 @Entity()
 export class Job extends EnitityBase { 
 	@Column()
-	title?: string;
+	    title?: string;
 
 	@OneToOne(() => ActiveIncome, {
-		eager: true,
-		cascade: ["insert", "remove"],
+	    eager: true,
+	    cascade: ["insert", "remove"],
 	})
 	@JoinColumn()
-	activeIncome?: Relation<ActiveIncome>;
+	    activeIncome?: Relation<ActiveIncome>;
 	
 	@ManyToOne(() => User, user => user.jobs, {
-		onDelete: "CASCADE",
+	    onDelete: "CASCADE",
 	})
-	user?: Relation<User>;
+	    user?: Relation<User>;
 
 	constructor(init: Partial<Job>) {
-		super();
-		Object.assign(this, init);
+	    super();
+	    Object.assign(this, init);
 	}
 }
 
 export const JobMeta: EntityMeta<Job> = {
-	relations: ["user", "activeIncome"],
-	data: ["title", "uniqueId", "identity"]
+    relations: ["user", "activeIncome"],
+    data: ["title", "uniqueId", "identity"]
 }

@@ -612,6 +612,28 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@finance/lib-config@workspace:^, @finance/lib-config@workspace:libraries/types/config":
+  version: 0.0.0-use.local
+  resolution: "@finance/lib-config@workspace:libraries/types/config"
+  dependencies:
+    "@finance/eslint-config-lib-lint": "*"
+    "@finance/lib-tsconfig": "*"
+    "@total-typescript/shoehorn": ^0.1.0
+    "@types/jest": ^29.2.4
+    "@types/lodash-es": ^4.17.6
+    "@types/yaml": ^1.9.7
+    dotenv: ^16.0.3
+    jest: ^29.3.1
+    lodash-es: ^4.17.21
+    rimraf: ^3.0.2
+    toml: ^3.0.0
+    ts-jest: ^29.0.3
+    uuid: ^9.0.0
+    yaml: ^2.2.1
+    zod: ^3.21.4
+  languageName: unknown
+  linkType: soft
+
 "@finance/lib-errors-nest@*, @finance/lib-errors-nest@workspace:libraries/utility/errors-nest":
   version: 0.0.0-use.local
   resolution: "@finance/lib-errors-nest@workspace:libraries/utility/errors-nest"
@@ -740,6 +762,7 @@ __metadata:
   dependencies:
     "@finance/eslint-config-lib-lint": "*"
     "@finance/lib-basic-types": "*"
+    "@finance/lib-config": "workspace:^"
     "@finance/lib-errors": "*"
     "@finance/lib-errors-nest": "*"
     "@finance/lib-mediator": "*"
@@ -790,6 +813,7 @@ __metadata:
     ts-node: ^10.0.0
     tsconfig-paths: 4.1.1
     typescript: ^4.9.4
+    zod: ^3.21.4
   languageName: unknown
   linkType: soft
 
@@ -1829,6 +1853,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@total-typescript/shoehorn@npm:^0.1.0":
+  version: 0.1.0
+  resolution: "@total-typescript/shoehorn@npm:0.1.0"
+  checksum: b93d9b0a391946e8dff76f7a1549b45a8dbbe9a5ae5199527ea9a6929fe2e72348e9c66750e1e9ff617dae4ef6e1a96f4aaedd8d093ef317952dba19fe5d9506
+  languageName: node
+  linkType: hard
+
 "@tsconfig/node10@npm:^1.0.7":
   version: 1.0.9
   resolution: "@tsconfig/node10@npm:1.0.9"
@@ -2298,6 +2329,15 @@ __metadata:
   version: 8.3.4
   resolution: "@types/uuid@npm:8.3.4"
   checksum: 6f11f3ff70f30210edaa8071422d405e9c1d4e53abbe50fdce365150d3c698fe7bbff65c1e71ae080cbfb8fded860dbb5e174da96fdbbdfcaa3fb3daa474d20f
+  languageName: node
+  linkType: hard
+
+"@types/yaml@npm:^1.9.7":
+  version: 1.9.7
+  resolution: "@types/yaml@npm:1.9.7"
+  dependencies:
+    yaml: "*"
+  checksum: 0cdbf1857d89ade9b7d00aa09f2e0a2a56b707870b1dc1387f5be5398cd60c3f92bb32a543471147d2eaf38919f921391e0ade34fc9e1e022c7d67fb1a0da73c
   languageName: node
   linkType: hard
 
@@ -4184,7 +4224,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:^16.0.0":
+"dotenv@npm:^16.0.0, dotenv@npm:^16.0.3":
   version: 16.0.3
   resolution: "dotenv@npm:16.0.3"
   checksum: afcf03f373d7a6d62c7e9afea6328e62851d627a4e73f2e12d0a8deae1cd375892004f3021883f8aec85932cd2834b091f568ced92b4774625b321db83b827f8
@@ -9944,6 +9984,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"toml@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "toml@npm:3.0.0"
+  checksum: 5d7f1d8413ad7780e9bdecce8ea4c3f5130dd53b0a4f2e90b93340979a137739879d7b9ce2ce05c938b8cc828897fe9e95085197342a1377dd8850bf5125f15f
+  languageName: node
+  linkType: hard
+
 "tr46@npm:~0.0.3":
   version: 0.0.3
   resolution: "tr46@npm:0.0.3"
@@ -10835,6 +10882,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"yaml@npm:*, yaml@npm:^2.2.1":
+  version: 2.2.1
+  resolution: "yaml@npm:2.2.1"
+  checksum: 84f68cbe462d5da4e7ded4a8bded949ffa912bc264472e5a684c3d45b22d8f73a3019963a32164023bdf3d83cfb6f5b58ff7b2b10ef5b717c630f40bd6369a23
+  languageName: node
+  linkType: hard
+
 "yaml@npm:^1.10.0, yaml@npm:^1.10.2":
   version: 1.10.2
   resolution: "yaml@npm:1.10.2"
@@ -10904,5 +10958,12 @@ __metadata:
   version: 3.19.1
   resolution: "zod@npm:3.19.1"
   checksum: 56e420ea5845912324a8fc61833714a2aec84954e418b52660d76502183c6e62fef9447cbfa64349640c5ce190cf2c24267e006bb80f066183e2f3fa9fe11864
+  languageName: node
+  linkType: hard
+
+"zod@npm:^3.21.4":
+  version: 3.21.4
+  resolution: "zod@npm:3.21.4"
+  checksum: f185ba87342ff16f7a06686767c2b2a7af41110c7edf7c1974095d8db7a73792696bcb4a00853de0d2edeb34a5b2ea6a55871bc864227dace682a0a28de33e1f
   languageName: node
   linkType: hard

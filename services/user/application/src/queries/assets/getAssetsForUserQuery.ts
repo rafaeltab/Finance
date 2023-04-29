@@ -9,52 +9,52 @@ import { inject, injectable } from "tsyringe";
 export type ResponseType = IQueryResult<PaginatedBase<Asset>>
 
 export class GetAssetsForUserQuery extends IQuery<GetAssetsForUserQuery, ResponseType> {
-	token = "GetAssetsForUserQuery";
+    token = "GetAssetsForUserQuery";
 
-	userIdentity!: string;
+    userIdentity!: string;
 
-	limit = 30;
+    limit = 30;
 
-	offset = 0;
+    offset = 0;
 }
 
 @injectable()
 export class GetAssetsForUserQueryHandler extends IQueryHandler<GetAssetsForUserQuery, ResponseType> {
-	/**
+    /**
 	 *
 	 */
-	constructor(
+    constructor(
 		@inject(assetRepositoryToken) private assetRepository: IAssetRepository,
 		@inject(unitOfWorkToken) private unitOfWork: IUnitOfWork
-	) {
-		super();
+    ) {
+        super();
 
-	}
+    }
 
-	async handle(query: GetAssetsForUserQuery): Promise<ResponseType> {
-		try {
-			await this.unitOfWork.start();
+    async handle(query: GetAssetsForUserQuery): Promise<ResponseType> {
+        try {
+            await this.unitOfWork.start();
 
-			const assets = await this.assetRepository.getAllAssetsForUser({
-				identity: query.userIdentity,
-			}, query.limit, query.offset);
+            const assets = await this.assetRepository.getAllAssetsForUser({
+                identity: query.userIdentity,
+            }, query.limit, query.offset);
 
-			await this.unitOfWork.commit();
+            await this.unitOfWork.commit();
 
-			return {
-				success: true,
-				data: {
-					page: {
-						count: assets.page.count,
-						offset: assets.page.offset,
-						total: assets.page.total,
-					},
-					data: assets.data
-				}
-			}
-		} catch (e: unknown) {
-			await this.unitOfWork.rollback();
-			throw e;
-		}
-	}
+            return {
+                success: true,
+                data: {
+                    page: {
+                        count: assets.page.count,
+                        offset: assets.page.offset,
+                        total: assets.page.total,
+                    },
+                    data: assets.data
+                }
+            }
+        } catch (e: unknown) {
+            await this.unitOfWork.rollback();
+            throw e;
+        }
+    }
 }
