@@ -1,6 +1,7 @@
 import type { z, ZodObject, ZodRawShape } from "zod";
 import { v4 as uuidV4 } from "uuid";
 import type { Configuration } from "./configuration";
+import { ConfigSectionProvider, ConfigurationSectionProvider } from "./configSectionProvider";
 
 type ConfigurationListener<TConfig extends ZodObject<ZodRawShape>> = (config: z.infer<TConfig>) => void;
 
@@ -50,6 +51,11 @@ export class ConfigurationProvider<TConfig extends ZodObject<ZodRawShape>> {
         this.listeners.set(id, listener);
 
         return id;
+    }
+
+    createSection<TSection extends keyof z.infer<TConfig> & string>(section: TSection): ConfigSectionProvider<z.infer<TConfig>[TSection]> {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        return new ConfigurationSectionProvider<z.infer<TConfig>[TSection], TSection, any>(this, section);
     }
 }
 

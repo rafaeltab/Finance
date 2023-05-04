@@ -54,4 +54,20 @@ describe("ConfigProvider", () => {
             config: "yes"
         })
     });
+
+    it("Given correct configuration when createSection is called then it should return a section that returns only part of the configuration", async () => {
+        const configStub = {
+            config: async() => ({
+                config: "yes"
+            }) 
+        }
+
+        sut = new ConfigurationProvider<typeof testSchema>(fromPartial(configStub), 100000);
+
+        await sut.configPromise;
+
+        const section = sut.createSection("config");
+
+        expect(section.config).toEqual("yes")
+    });
 })

@@ -22,6 +22,10 @@ export class Mediator {
         this.container = container.createChildContainer();
     }
 
+    get depContainer() {
+        return container;
+    }
+
     private mediatorModules: MediatorModule[] = [];
 
     async register<TModule extends new (dependencyContainer: DependencyContainer) => MediatorModule>(Module: TModule) {
