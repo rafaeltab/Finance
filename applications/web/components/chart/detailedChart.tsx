@@ -6,59 +6,59 @@ export function DetailedChart({ symbol, exchange }: {
 	symbol: string,
 	exchange: string
 }) {
-	const onLoadScriptRef = useRef<() => void>();
+    const onLoadScriptRef = useRef<() => void>();
 
-	useEffect(
-		() => {
-			function createWidget() {
-				if (document.getElementById('tradingview_41ade') && 'TradingView' in window) {
-					// eslint-disable-next-line no-new, new-cap, @typescript-eslint/no-explicit-any
-					new (window as any).TradingView.widget({
-						autosize: true,
-						symbol: `${exchange}:${symbol}`,
-						interval: "D",
-						timezone: "Etc/UTC",
-						theme: "light",
-						style: "1",
-						locale: "en",
-						toolbar_bg: "#f1f3f6",
-						enable_publishing: false,
-						allow_symbol_change: true,
-						hide_side_toolbar: false,
-						details: true,
-						container_id: "tradingview_41ade"
-					});
-				}
-			}
+    useEffect(
+        () => {
+            function createWidget() {
+                if (document.getElementById('tradingview_41ade') && 'TradingView' in window) {
+                    // eslint-disable-next-line no-new, new-cap, @typescript-eslint/no-explicit-any
+                    new (window as any).TradingView.widget({
+                        autosize: true,
+                        symbol: `${exchange}:${symbol}`,
+                        interval: "D",
+                        timezone: "Etc/UTC",
+                        theme: "light",
+                        style: "1",
+                        locale: "en",
+                        toolbar_bg: "#f1f3f6",
+                        enable_publishing: false,
+                        allow_symbol_change: true,
+                        hide_side_toolbar: false,
+                        details: true,
+                        container_id: "tradingview_41ade"
+                    });
+                }
+            }
 
-			onLoadScriptRef.current = createWidget;
+            onLoadScriptRef.current = createWidget;
 
-			if (!tvScriptLoadingPromise) {
-				tvScriptLoadingPromise = new Promise((resolve) => {
-					const script = document.createElement('script');
-					script.id = 'tradingview-widget-loading-script';
-					script.src = 'https://s3.tradingview.com/tv.js';
-					script.type = 'text/javascript';
-					script.onload = resolve;
+            if (!tvScriptLoadingPromise) {
+                tvScriptLoadingPromise = new Promise((resolve) => {
+                    const script = document.createElement('script');
+                    script.id = 'tradingview-widget-loading-script';
+                    script.src = 'https://s3.tradingview.com/tv.js';
+                    script.type = 'text/javascript';
+                    script.onload = resolve;
 
-					document.head.appendChild(script);
-				});
-			}
+                    document.head.appendChild(script);
+                });
+            }
 
-			tvScriptLoadingPromise.then(() => onLoadScriptRef.current && onLoadScriptRef.current());
+            tvScriptLoadingPromise.then(() => onLoadScriptRef.current && onLoadScriptRef.current());
 
-			// eslint-disable-next-line no-return-assign
-			return () => onLoadScriptRef.current = undefined;
-		},
-		[exchange, symbol]
-	);
+            // eslint-disable-next-line no-return-assign
+            return () => onLoadScriptRef.current = undefined;
+        },
+        [exchange, symbol]
+    );
 
-	return (
-		<div className='tradingview-widget-container'>
-			<div className="h-128" id='tradingview_41ade' />
-			<div className="tradingview-widget-copyright">
-				<a href={`https://www.tradingview.com/symbols/${exchange}-${symbol}/`} rel="noopener" target="_blank"><span className="blue-text">{symbol} stock chart</span></a> by TradingView
-			</div>
-		</div>
-	);
+    return (
+        <div className='tradingview-widget-container'>
+            <div className="h-128" id='tradingview_41ade' />
+            <div className="tradingview-widget-copyright">
+                <a href={`https://www.tradingview.com/symbols/${exchange}-${symbol}/`} rel="noopener" target="_blank"><span className="blue-text">{symbol} stock chart</span></a> by TradingView
+            </div>
+        </div>
+    );
 }

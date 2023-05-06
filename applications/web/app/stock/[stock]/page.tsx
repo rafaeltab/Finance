@@ -11,20 +11,20 @@ type Props = {
 }
 
 export default function Page({ params }: Props) {
-	if (params.stock === undefined) throw new Error();
+    if (params.stock === undefined) throw new Error();
 
-	const [res] = useApiRequest("stockControllerGet", params.stock);
+    const [res] = useApiRequest("stockControllerGet", params.stock);
 
-	if (res == null) {
-		return <DefaultPage title="Loading" />
-	}
+    if (res == null) {
+        return <DefaultPage title="Loading" />
+    }
 
-	return (
-		<DefaultPage title={res.data.data.stockData.symbol}>
-			<div className="h-128">
-				<DetailedChart symbol={res.data.data.stockData.symbol} exchange={res.data.data.stockData.exchange} />
-			</div>
-		</DefaultPage>
-	);
+    return (
+        <DefaultPage title={res.data.data.stockData.symbol}>
+            <div className="h-128">
+                <DetailedChart symbol={res.data.data.stockData.symbol} exchange={res.data.data.stockData.exchange} />
+            </div>
+        </DefaultPage>
+    );
 }
 

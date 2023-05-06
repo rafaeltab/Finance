@@ -8,102 +8,102 @@ import type { AssetPageProps } from "./page";
 
 export function useAssetContainer() {
 
-	const authUser = useUser(false);
-	const [assetResponse, assetError] = useApiRequest(
-		"assetControllerGetUserAssets",
-		authUser.sub
-	);
-	const [assetGroupResponse, assetGroupError] = useApiRequest(
-		"assetControllerGetUserAssetGroups",
-		authUser.sub
-	);
+    const authUser = useUser(false);
+    const [assetResponse, assetError] = useApiRequest(
+        "assetControllerGetUserAssets",
+        authUser.sub
+    );
+    const [assetGroupResponse, assetGroupError] = useApiRequest(
+        "assetControllerGetUserAssetGroups",
+        authUser.sub
+    );
 
-	const { addData: addAssetData, data: assetData, removeData: removeAssetData } = useAdditionalData(assetResponse?.data?.data?.data ?? null);
-	const { addData: addAssetGroupData, data: assetGroupDatas, removeData: removeAssetGroupData } = useAdditionalData(assetGroupResponse?.data?.data?.data ?? null);
+    const { addData: addAssetData, data: assetData, removeData: removeAssetData } = useAdditionalData(assetResponse?.data?.data?.data ?? null);
+    const { addData: addAssetGroupData, data: assetGroupDatas, removeData: removeAssetGroupData } = useAdditionalData(assetGroupResponse?.data?.data?.data ?? null);
 
-	const [additionalGroupAssets, setAdditionalGroupAssets] = useState<Record<string, { addedAssets: AssetResponse[], removedAssets: AssetResponse[] }>>({});
+    const [additionalGroupAssets, setAdditionalGroupAssets] = useState<Record<string, { addedAssets: AssetResponse[], removedAssets: AssetResponse[] }>>({});
 
-	function calculateTotalAssetGroups() {
-		const c: AssetGroupResponse[] = [];
+    function calculateTotalAssetGroups() {
+        const c: AssetGroupResponse[] = [];
 
-		if (assetGroupDatas === null) return c;
+        if (assetGroupDatas === null) return c;
 
-		for (const group of assetGroupDatas) {
-			c.push({
-				...group,
-				assets: [
-					...group.assets.filter(x => !additionalGroupAssets[group.identity]?.removedAssets.find(y => y.identity === x.identity)),
-					...additionalGroupAssets[group.identity]?.addedAssets ?? []
-				]
-			})
-		}
+        for (const group of assetGroupDatas) {
+            c.push({
+                ...group,
+                assets: [
+                    ...group.assets.filter(x => !additionalGroupAssets[group.identity]?.removedAssets.find(y => y.identity === x.identity)),
+                    ...additionalGroupAssets[group.identity]?.addedAssets ?? []
+                ]
+            })
+        }
 
-		return c;
-	}
+        return c;
+    }
 
 
-	const isLoading =
+    const isLoading =
 		assetResponse == null ||
 		assetError !== null ||
 		assetGroupResponse == null ||
 		assetGroupError !== null;
 
 
-	const [addAssetContext, setAddAssetContext] = useState<AddAssetSlideOverContextType | null>(null);
-	const [addAssetGroupOpen, addAssetGroupSetOpen] = useState(false);
+    const [addAssetContext, setAddAssetContext] = useState<AddAssetSlideOverContextType | null>(null);
+    const [addAssetGroupOpen, addAssetGroupSetOpen] = useState(false);
 
-	if (addAssetContext && addAssetGroupOpen) addAssetGroupSetOpen(false);
+    if (addAssetContext && addAssetGroupOpen) addAssetGroupSetOpen(false);
 
-	function addAssetAction(asset: AssetResponse) {
-		addAssetData(asset);
-		setAddAssetContext(null);
-	}
+    function addAssetAction(asset: AssetResponse) {
+        addAssetData(asset);
+        setAddAssetContext(null);
+    }
 
-	function addAssetToGroupAction(asset: AssetResponse, group: string) {
-		setAdditionalGroupAssets((prev) => ({
-			...prev,
-			[group]: {
-				removedAssets: prev[group]?.removedAssets.filter(x => x.identity !== asset.identity) ?? [],
-				addedAssets: [...(prev[group]?.addedAssets ?? []), asset]
-			}
-		}));
-		setAddAssetContext(null);
-	}
+    function addAssetToGroupAction(asset: AssetResponse, group: string) {
+        setAdditionalGroupAssets((prev) => ({
+            ...prev,
+            [group]: {
+                removedAssets: prev[group]?.removedAssets.filter(x => x.identity !== asset.identity) ?? [],
+                addedAssets: [...(prev[group]?.addedAssets ?? []), asset]
+            }
+        }));
+        setAddAssetContext(null);
+    }
 
-	const setAddAssetOpen: Dispatch<SetStateAction<boolean>> = (value: SetStateAction<boolean>) => {
-		setAddAssetContext(value ? { type: "user", id: authUser.sub } : null);
-	}
+    const setAddAssetOpen: Dispatch<SetStateAction<boolean>> = (value: SetStateAction<boolean>) => {
+        setAddAssetContext(value ? { type: "user", id: authUser.sub } : null);
+    }
 
-	function removeAssetFromGroupData(asset: AssetResponse, group: string) {
-		setAdditionalGroupAssets((prev) => ({
-			...prev,
-			[group]: {
-				addedAssets: prev[group]?.addedAssets.filter(x => x.identity !== asset.identity) ?? [],
-				removedAssets: [...(prev[group]?.removedAssets ?? []), asset]
-			}
-		}));
-	}
+    function removeAssetFromGroupData(asset: AssetResponse, group: string) {
+        setAdditionalGroupAssets((prev) => ({
+            ...prev,
+            [group]: {
+                addedAssets: prev[group]?.addedAssets.filter(x => x.identity !== asset.identity) ?? [],
+                removedAssets: [...(prev[group]?.removedAssets ?? []), asset]
+            }
+        }));
+    }
 
-	const data = {
-		assets: assetData,
-		assetPage: assetResponse?.data.data.page ?? null,
-		assetGroups: calculateTotalAssetGroups(),
-		assetGroupsPage: assetGroupResponse?.data.data.page ?? null,
-		isLoading,
-		removeAssetData,
-		removeAssetGroupData,
-		setAddAssetContext,
-		removeAssetFromGroupData,
-		authUser,
-		setAddAssetOpen,
-		addAssetContext,
-		addAssetAction,
-		addAssetToGroupAction,
-		addAssetGroupOpen,
-		addAssetGroupSetOpen,
-		addAssetGroupData
+    const data = {
+        assets: assetData,
+        assetPage: assetResponse?.data.data.page ?? null,
+        assetGroups: calculateTotalAssetGroups(),
+        assetGroupsPage: assetGroupResponse?.data.data.page ?? null,
+        isLoading,
+        removeAssetData,
+        removeAssetGroupData,
+        setAddAssetContext,
+        removeAssetFromGroupData,
+        authUser,
+        setAddAssetOpen,
+        addAssetContext,
+        addAssetAction,
+        addAssetToGroupAction,
+        addAssetGroupOpen,
+        addAssetGroupSetOpen,
+        addAssetGroupData
 
-	} satisfies AssetPageProps;
+    } satisfies AssetPageProps;
 
-	return data;
+    return data;
 }
