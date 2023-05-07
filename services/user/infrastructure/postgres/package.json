@@ -22,6 +22,7 @@
 	},
 	"dependencies": {
 		"@finance/eslint-config-lib-lint": "*",
+		"@finance/lib-config": "*",
 		"@finance/lib-errors": "*",
 		"@finance/lib-module-types": "*",
 		"@finance/lib-test": "*",

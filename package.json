@@ -19,13 +19,14 @@
 		"build": "turbo run build",
 		"build:dev": "turbo run build:dev",
 		"dev": "turbo run dev --parallel",
-		"start:dev": "turbo run start:dev --parallel --concurrency 15",
+		"start:dev": "turbo run start:dev --parallel --concurrency 20",
 		"lint": "turbo run lint --output-logs errors-only",
 		"lint:fix": "turbo run lint:fix",
 		"test": "turbo run test --output-logs new-only",
 		"start": "turbo run start",
 		"clean": "turbo run clean",
-		"clean:node_modules": "rimraf ./**/node_modules/**/* -g -v"
+		"clean:node_modules": "rimraf ./**/node_modules/**/* -g -v",
+		"pipeline": "turbo run lint build test"
 	},
 	"dependencies": {
 		"@finance/eslint-config-lib-lint": "*",
@@ -42,6 +43,7 @@
 		"eslint-plugin-prettier": "^4.2.1",
 		"eslint-plugin-react": "^7.28.2",
 		"eslint-plugin-react-hooks": "^4.3.0",
+		"eslint_d": "^12.2.1",
 		"rimraf": "^4.4.0",
 		"turbo": "^1.8.5",
 		"typescript": "^4.9.4"

@@ -1,7 +1,7 @@
-
 import { Module, OnModuleDestroy, Provider } from "@nestjs/common";
-import { ConfigurationBuilder, ConfigurationProvider, ObjectConfigurationSource } from "@finance/lib-config";
+import { ConfigFileType, ConfigurationBuilder, ConfigurationProvider, FileConfigurationSource, ObjectConfigurationSource } from "@finance/lib-config";
 import { z } from "zod";
+import type { DatabaseConfiguration } from "@finance/svc-user-infra-postgres";
 
 const configSchema = z.object({
     auth: z.object({
@@ -11,8 +11,12 @@ const configSchema = z.object({
         })
     }),
     database: z.object({
-        
-    })
+        host: z.string(),
+        port: z.string(),
+        password: z.string(),
+        username: z.string(),
+        database: z.string(),
+    }) satisfies z.ZodType<DatabaseConfiguration>
 })
 
 const config = new ConfigurationBuilder(configSchema)
@@ -26,16 +30,14 @@ const config = new ConfigurationBuilder(configSchema)
                 issuer: "{AUTH0_ISSUER_URL}",
                 audience: "{AUTH0_AUDIENCE}"
             }
-        },
-        database: {
-            
         }
     }))
+    .addFileSource(() => new FileConfigurationSource("appsettings.json", ConfigFileType.Json))
     .useReplaceForContext("{")
     .build()
 
-const provider = new ConfigurationProvider(config, 0);
-
+export const provider = new ConfigurationProvider(config, 0);
+await provider.configPromise;
 const configProvider: Provider = {
     provide: ConfigurationProvider,
     useValue: provider

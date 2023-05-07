@@ -1,12 +1,16 @@
-import { join } from "path";
+import { join, dirname } from "path";
 import { DotenvParseOutput, parse } from "dotenv";
+import { fileURLToPath } from "url";
 
 export class ConfigurationContextBuilder {
     private conceptualContext: Record<string, string> = {};
 
     addDotEnv(environment?: string): this {
+        const currentJsFile = fileURLToPath(import.meta.url);
+        const dir = dirname(currentJsFile);
+
         const filename = `${environment ? `.{environment}` : ""}.env`;
-        const content: DotenvParseOutput = parse(join(__dirname, filename));
+        const content: DotenvParseOutput = parse(join(dir, filename));
 
         this.conceptualContext = Object.assign(this.conceptualContext, content);
         return this;

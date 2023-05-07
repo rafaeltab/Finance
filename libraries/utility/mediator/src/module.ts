@@ -36,8 +36,8 @@ export abstract class MediatorModule {
 
 	protected async registerModule<TModule extends Module>(Module: new () => TModule) {
 	    const moduleInstance = new Module();
-	    await moduleInstance.init();
 	    moduleInstance.register(this.container);
+	    await moduleInstance.init();
 	    this.modules.push(moduleInstance);
 	}
 

@@ -1,33 +1,33 @@
 import {
     IAssetFactory,
-	 IAssetGroupFactory,
-	 IAssetGroupRepository,
-	 IAssetRepository,
-	 IBankAccountFactory,
-	 IBankAccountRepository,
-	 IJobFactory,
-	 IJobRepository,
-	 IStockFactory,
-	 IStockRepository,
-	 IUserFactory,
-	 IUserRepository,
-	 assetFactoryToken,
-	 assetGroupFactoryToken,
-	 assetGroupRepositoryToken,
-	 assetRepositoryToken,
-	 bankAccountFactoryToken,
-	 bankAccountRepositoryToken,
-	 jobFactoryToken,
-	 jobRepositoryToken,
-	 stockFactoryToken,
-	 stockRepositoryToken,
-	 userFactoryToken,
-	 userRepositoryToken
+    IAssetGroupFactory,
+    IAssetGroupRepository,
+    IAssetRepository,
+    IBankAccountFactory,
+    IBankAccountRepository,
+    IJobFactory,
+    IJobRepository,
+    IStockFactory,
+    IStockRepository,
+    IUserFactory,
+    IUserRepository,
+    assetFactoryToken,
+    assetGroupFactoryToken,
+    assetGroupRepositoryToken,
+    assetRepositoryToken,
+    bankAccountFactoryToken,
+    bankAccountRepositoryToken,
+    jobFactoryToken,
+    jobRepositoryToken,
+    stockFactoryToken,
+    stockRepositoryToken,
+    userFactoryToken,
+    userRepositoryToken
 } from "@finance/svc-user-domain";
 import type { Module } from "@finance/lib-module-types";
 import { DependencyContainer, Lifecycle } from "tsyringe";
 import type { DataSource } from "typeorm";
-import { AppDataSource, dataSourceToken } from "./data-source";
+import { dataSourceToken, InfrastructureDataSource } from "./data-source";
 import { AssetFactory } from "./factories/assetFactory";
 import { AssetGroupFactory } from "./factories/assetGroupFactory";
 import { BankAccountFactory } from "./factories/bankAccountFactory";
@@ -44,16 +44,27 @@ import { IUnitOfWork, UnitOfWork, unitOfWorkToken } from "./unitOfWork/unitOfWor
 
 
 export class PostgresInfrastructureModule implements Module {
+    private dataSoure?: InfrastructureDataSource;
+
     async init() {
-        await AppDataSource.initialize();
+        if(this.dataSoure !== undefined) {
+	    await this.dataSoure?.initialize();
+        }else{
+	    throw new Error("DataSource not ready yet!");
+        }
     }
 
     register(container: DependencyContainer): void {
         container.register<IUnitOfWork>(unitOfWorkToken, UnitOfWork, {
             lifecycle: Lifecycle.ResolutionScoped
         });
+        const dataSourceCreatorContainer = container.createChildContainer()
+        dataSourceCreatorContainer.register<InfrastructureDataSource>("ds", InfrastructureDataSource);
+
+        this.dataSoure = dataSourceCreatorContainer.resolve<InfrastructureDataSource>("ds");
+
         container.register<DataSource>(dataSourceToken, {
-            useValue: AppDataSource
+	    useValue: this.dataSoure
         });
 
         container.register<IUserRepository>(userRepositoryToken, UserRepository);
@@ -69,10 +80,10 @@ export class PostgresInfrastructureModule implements Module {
         container.register<IBankAccountFactory>(bankAccountFactoryToken, BankAccountFactory);
         container.register<IJobFactory>(jobFactoryToken, JobFactory);
         container.register<IStockFactory>(stockFactoryToken, StockFactory);
-		
     }
 
     async dispose() {
-        await AppDataSource.destroy();
+        await InfrastructureDataSource.destroy();
     }
 }
+
